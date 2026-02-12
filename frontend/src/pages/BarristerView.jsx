@@ -243,6 +243,16 @@ const BarristerView = ({ user }) => {
                 Print
               </Button>
               <Button
+                variant="outline"
+                size="sm"
+                onClick={handleExportDOCX}
+                className="border-blue-300 text-blue-100 hover:bg-slate-800"
+                data-testid="export-docx-btn"
+              >
+                <FileText className="w-4 h-4 mr-2" />
+                Word
+              </Button>
+              <Button
                 size="sm"
                 onClick={handleExportPDF}
                 className="bg-white text-slate-900 hover:bg-slate-100"
