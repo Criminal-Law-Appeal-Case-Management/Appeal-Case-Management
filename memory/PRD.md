@@ -95,7 +95,6 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
 ## Prioritized Backlog
 
 ### P1 (High Priority) - Future
-- [ ] Export reports to DOCX
 - [ ] Report comparison view
 
 ### P2 (Medium Priority) - Future
