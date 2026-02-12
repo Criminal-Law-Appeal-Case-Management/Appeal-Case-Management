@@ -485,7 +485,9 @@ async def create_timeline_event(case_id: str, event_data: TimelineEventCreate, r
         {"$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
     )
     
-    return event_dict
+    # Return the event without MongoDB's _id field
+    created_event = await db.timeline_events.find_one({"event_id": event.event_id}, {"_id": 0})
+    return created_event
 
 @api_router.put("/cases/{case_id}/timeline/{event_id}", response_model=dict)
 async def update_timeline_event(case_id: str, event_id: str, event_data: TimelineEventCreate, request: Request):
