@@ -153,33 +153,57 @@ const CaseDetail = ({ user }) => {
     }
   };
 
-  const handleUploadDocument = async () => {
-    if (!uploadFile) {
-      toast.error("Please select a file");
+  const handleUploadDocuments = async () => {
+    if (uploadFiles.length === 0) {
+      toast.error("Please select at least one file");
       return;
     }
 
     setUploading(true);
-    const formData = new FormData();
-    formData.append("file", uploadFile);
-    formData.append("category", uploadCategory);
-    formData.append("description", uploadDescription);
+    setUploadProgress({ current: 0, total: uploadFiles.length });
+    
+    const uploadedDocs = [];
+    const failedFiles = [];
 
-    try {
-      const response = await axios.post(`${API}/cases/${caseId}/documents`, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
-      setDocuments([response.data, ...documents]);
-      setShowUploadDialog(false);
-      setUploadFile(null);
-      setUploadCategory("other");
-      setUploadDescription("");
-      toast.success("Document uploaded successfully");
-    } catch (error) {
-      toast.error("Failed to upload document");
-    } finally {
-      setUploading(false);
+    for (let i = 0; i < uploadFiles.length; i++) {
+      const file = uploadFiles[i];
+      setUploadProgress({ current: i + 1, total: uploadFiles.length });
+      
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("category", uploadCategory);
+      formData.append("description", uploadDescription);
+
+      try {
+        const response = await axios.post(`${API}/cases/${caseId}/documents`, formData, {
+          headers: { "Content-Type": "multipart/form-data" }
+        });
+        uploadedDocs.push(response.data);
+      } catch (error) {
+        console.error(`Failed to upload ${file.name}:`, error);
+        failedFiles.push(file.name);
+      }
     }
+
+    if (uploadedDocs.length > 0) {
+      setDocuments([...uploadedDocs, ...documents]);
+    }
+
+    setShowUploadDialog(false);
+    setUploadFiles([]);
+    setUploadCategory("other");
+    setUploadDescription("");
+    setUploadProgress({ current: 0, total: 0 });
+
+    if (failedFiles.length === 0) {
+      toast.success(`Successfully uploaded ${uploadedDocs.length} document${uploadedDocs.length > 1 ? 's' : ''}`);
+    } else if (uploadedDocs.length > 0) {
+      toast.warning(`Uploaded ${uploadedDocs.length} files. Failed: ${failedFiles.join(', ')}`);
+    } else {
+      toast.error("Failed to upload documents");
+    }
+
+    setUploading(false);
   };
 
   const handleDeleteDocument = async (docId) => {
