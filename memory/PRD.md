@@ -127,8 +127,9 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
 - **OpenAI GPT-5.2** via Emergent LLM Key - for AI analysis
 - **Emergent Google OAuth** - for authentication
 - **ReportLab** - for PDF generation
+- **Tesseract OCR** - for text extraction from images/scanned docs
+- **pdf2image** - for converting PDF pages to images for OCR
 
 ## Next Tasks
-1. Implement OCR for image documents
+1. Add DOCX export option
 2. Create report comparison feature
-3. Add DOCX export option
