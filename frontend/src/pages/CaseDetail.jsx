@@ -660,15 +660,24 @@ const CaseDetail = ({ user }) => {
                   >
                     <CardContent className="p-4 flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center">
-                          <FileText className="w-6 h-6 text-slate-600" />
+                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${doc.content_text ? 'bg-emerald-100' : 'bg-slate-100'}`}>
+                          <FileText className={`w-6 h-6 ${doc.content_text ? 'text-emerald-600' : 'text-slate-600'}`} />
                         </div>
                         <div>
                           <h4 className="font-medium text-slate-900">{doc.filename}</h4>
-                          <div className="flex items-center gap-2 mt-1">
+                          <div className="flex items-center gap-2 mt-1 flex-wrap">
                             <Badge variant="outline" className={getCategoryColor(doc.category)}>
                               {DOCUMENT_CATEGORIES.find(c => c.value === doc.category)?.label || doc.category}
                             </Badge>
+                            {doc.content_text ? (
+                              <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
+                                Text Extracted ({Math.round(doc.content_text.length / 1000)}k chars)
+                              </Badge>
+                            ) : (
+                              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+                                No Text
+                              </Badge>
+                            )}
                             <span className="text-xs text-slate-500">
                               Uploaded {formatDate(doc.uploaded_at)}
                             </span>
