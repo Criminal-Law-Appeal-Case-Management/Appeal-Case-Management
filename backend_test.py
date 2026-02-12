@@ -347,6 +347,15 @@ class JustitiaAPITester:
         print("TESTING CLEANUP OPERATIONS")
         print("="*50)
         
+        # Delete notes
+        if hasattr(self, 'note_id') and self.note_id:
+            self.run_test("Delete main note", "DELETE", f"cases/{self.case_id}/notes/{self.note_id}", 200)
+        
+        if hasattr(self, 'additional_note_ids'):
+            for i, note_id in enumerate(self.additional_note_ids):
+                if note_id:
+                    self.run_test(f"Delete additional note {i+1}", "DELETE", f"cases/{self.case_id}/notes/{note_id}", 200)
+        
         # Delete report
         if self.report_id:
             self.run_test("Delete report", "DELETE", f"cases/{self.case_id}/reports/{self.report_id}", 200)
@@ -359,9 +368,7 @@ class JustitiaAPITester:
         if self.event_id:
             self.run_test("Delete timeline event", "DELETE", f"cases/{self.case_id}/timeline/{self.event_id}", 200)
         
-        # Delete case (this will delete all related data)
-        if self.case_id:
-            self.run_test("Delete case", "DELETE", f"cases/{self.case_id}", 200)
+        # Note: Not deleting the test case since it's a shared test case
 
     def test_error_handling(self):
         """Test error handling for invalid requests"""
