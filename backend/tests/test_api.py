@@ -352,6 +352,64 @@ class TestPDFExport:
         print("✓ PDF export with invalid report correctly returns 404")
 
 
+class TestDOCXExport:
+    """DOCX (Word) Export endpoint tests"""
+    
+    def test_docx_export_endpoint(self, auth_headers, test_case_id, test_report_id):
+        """Test DOCX export endpoint returns valid Word document"""
+        response = requests.get(
+            f"{BASE_URL}/api/cases/{test_case_id}/reports/{test_report_id}/export-docx",
+            headers=auth_headers
+        )
+        assert response.status_code == 200
+        assert response.headers.get('content-type') == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        # Check DOCX magic bytes (PK zip header)
+        assert response.content[:2] == b'PK'
+        print(f"✓ DOCX export successful - Size: {len(response.content)} bytes")
+
+    def test_docx_export_invalid_report(self, auth_headers, test_case_id):
+        """Test DOCX export with invalid report ID returns 404"""
+        response = requests.get(
+            f"{BASE_URL}/api/cases/{test_case_id}/reports/invalid_report_id/export-docx",
+            headers=auth_headers
+        )
+        assert response.status_code == 404
+        print("✓ DOCX export with invalid report correctly returns 404")
+
+    def test_docx_export_unauthorized(self, test_case_id, test_report_id):
+        """Test DOCX export without authentication returns 401"""
+        response = requests.get(
+            f"{BASE_URL}/api/cases/{test_case_id}/reports/{test_report_id}/export-docx"
+        )
+        assert response.status_code == 401
+        print("✓ DOCX export without auth correctly returns 401")
+
+    def test_docx_export_content_structure(self, auth_headers, test_case_id, test_report_id):
+        """Test DOCX export contains expected content structure"""
+        from docx import Document as DocxDocument
+        from io import BytesIO
+        
+        response = requests.get(
+            f"{BASE_URL}/api/cases/{test_case_id}/reports/{test_report_id}/export-docx",
+            headers=auth_headers
+        )
+        assert response.status_code == 200
+        
+        # Parse the DOCX
+        doc = DocxDocument(BytesIO(response.content))
+        
+        # Check document has content
+        assert len(doc.paragraphs) > 0, "DOCX should have paragraphs"
+        assert len(doc.tables) >= 1, "DOCX should have at least one table (case info)"
+        
+        # Check for expected text content
+        full_text = "\n".join([p.text for p in doc.paragraphs])
+        assert "JUSTITIA AI" in full_text, "DOCX should contain Justitia AI header"
+        assert "LEGAL FRAMEWORK REFERENCE" in full_text, "DOCX should contain legal framework section"
+        
+        print(f"✓ DOCX content structure verified - {len(doc.paragraphs)} paragraphs, {len(doc.tables)} tables")
+
+
 class TestDocumentSearch:
     """Document search functionality tests"""
     
