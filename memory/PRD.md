@@ -123,6 +123,5 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
 
 ## Next Tasks
 1. Implement OCR for image documents
-2. Add document search functionality
-3. Create report comparison feature
-4. Add DOCX export option
+2. Create report comparison feature
+3. Add DOCX export option
