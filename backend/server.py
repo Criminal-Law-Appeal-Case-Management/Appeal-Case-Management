@@ -1429,17 +1429,29 @@ REQUIRED ANALYSIS (search the documents above for evidence):
     if not api_key:
         raise HTTPException(status_code=500, detail="AI service not configured")
     
-    try:
-        chat = LlmChat(
-            api_key=api_key,
-            session_id=f"ground_{ground_id}_{uuid.uuid4().hex[:8]}",
-            system_message=system_prompt
-        ).with_model("openai", "gpt-5.2")
-        
-        response = await chat.send_message(UserMessage(text=user_prompt))
-    except Exception as e:
-        logger.error(f"AI analysis failed: {e}")
-        raise HTTPException(status_code=500, detail=f"AI analysis failed: {str(e)}")
+    # Try up to 4 times with exponential backoff
+    response = None
+    last_error = None
+    for attempt in range(4):
+        try:
+            chat = LlmChat(
+                api_key=api_key,
+                session_id=f"ground_{ground_id}_{uuid.uuid4().hex[:8]}",
+                system_message=system_prompt
+            ).with_model("openai", "gpt-5.2")
+            
+            response = await chat.send_message(UserMessage(text=user_prompt))
+            break
+        except Exception as e:
+            last_error = e
+            logger.warning(f"Ground investigation attempt {attempt + 1} failed: {e}")
+            if attempt < 3:
+                import asyncio
+                await asyncio.sleep(3 * (2 ** attempt))
+    
+    if response is None:
+        logger.error(f"All ground investigation attempts failed: {last_error}")
+        raise HTTPException(status_code=500, detail=f"AI analysis failed after retries: {str(last_error)}")
     
     # Parse response to extract structured data
     law_sections = []
