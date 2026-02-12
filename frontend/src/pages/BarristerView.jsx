@@ -88,6 +88,30 @@ const BarristerView = ({ user }) => {
     }
   };
 
+  const handleExportDOCX = async () => {
+    try {
+      toast.info("Generating Word document...");
+      const response = await axios.get(
+        `${API}/cases/${caseId}/reports/${reportId}/export-docx`,
+        { responseType: 'blob' }
+      );
+      
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${caseData?.title || 'Report'}_barrister_brief.docx`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      toast.success("Word document downloaded successfully!");
+    } catch (error) {
+      console.error("DOCX export error:", error);
+      toast.error("Failed to export Word document.");
+    }
+  };
+
   const formatDate = (dateStr) => {
     if (!dateStr) return "N/A";
     return new Date(dateStr).toLocaleDateString("en-AU", {
