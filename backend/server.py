@@ -960,7 +960,7 @@ async def auto_identify_grounds(case_id: str, request: Request):
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")
     
-    # Get all case materials
+    # Get all case materials - include content_text for analysis
     documents = await db.documents.find(
         {"case_id": case_id},
         {"_id": 0, "file_data": 0}
@@ -976,7 +976,7 @@ async def auto_identify_grounds(case_id: str, request: Request):
         {"_id": 0}
     ).to_list(500)
     
-    # Build comprehensive context
+    # Build comprehensive context with full document content
     context = f"""
 CRIMINAL APPEAL CASE ANALYSIS
 
@@ -988,38 +988,61 @@ CASE DETAILS:
 - Judge: {case.get('judge', 'N/A')}
 - Summary: {case.get('summary', 'No summary provided')}
 
-DOCUMENTS ({len(documents)} total):
 """
-    for doc in documents:
-        context += f"\n[{doc.get('category', 'other')}] {doc.get('filename')}"
-        if doc.get('description'):
-            context += f": {doc.get('description')}"
-        if doc.get('content_text'):
-            context += f"\nContent excerpt: {doc.get('content_text', '')[:500]}"
+    
+    # Include substantial document content for AI to analyze
+    if documents:
+        context += f"=== CASE DOCUMENTS ({len(documents)} files) ===\n\n"
+        for doc in documents:
+            context += f"--- DOCUMENT: {doc.get('filename')} ---\n"
+            context += f"Category: {doc.get('category', 'other')}\n"
+            if doc.get('description'):
+                context += f"Description: {doc.get('description')}\n"
+            
+            # Include up to 3000 chars of content per document
+            content = doc.get('content_text', '')
+            if content:
+                context += f"CONTENT:\n{content[:3000]}\n"
+                if len(content) > 3000:
+                    context += f"[... {len(content) - 3000} more characters ...]\n"
+            else:
+                context += "CONTENT: [No text content extracted - may be image/scan]\n"
+            context += "\n"
+    else:
+        context += "NO DOCUMENTS UPLOADED YET - Analysis based on case summary only.\n\n"
+
+    if timeline:
+        context += f"=== TIMELINE OF EVENTS ({len(timeline)} events) ===\n"
+        for event in timeline:
+            context += f"- {event.get('event_date', 'Unknown date')} [{event.get('event_type', 'event')}]: {event.get('title')}\n"
+            if event.get('description'):
+                context += f"  Details: {event.get('description')}\n"
         context += "\n"
 
-    context += f"\nTIMELINE OF EVENTS ({len(timeline)} events):\n"
-    for event in timeline:
-        context += f"- [{event.get('event_date', 'Unknown')}] {event.get('event_type', 'event')}: {event.get('title')}\n"
-        if event.get('description'):
-            context += f"  {event.get('description')[:200]}\n"
-
     if notes:
-        context += f"\nLEGAL NOTES ({len(notes)} notes):\n"
-        for note in notes[:10]:
-            context += f"- [{note.get('category')}] {note.get('title')}: {note.get('content', '')[:200]}\n"
+        context += f"=== LEGAL NOTES & OBSERVATIONS ({len(notes)} notes) ===\n"
+        for note in notes:
+            context += f"- [{note.get('category', 'general')}] {note.get('title')}:\n"
+            context += f"  {note.get('content', '')[:500]}\n"
+        context += "\n"
 
-    system_prompt = """You are an expert Australian criminal appeal barrister. Your task is to analyze case materials and identify ALL potential grounds of merit for a criminal appeal.
+    system_prompt = """You are an expert Australian criminal appeal barrister specializing in murder and manslaughter cases. 
 
-You have expertise in:
-- Murder appeals (Crimes Act 1900 NSW s.18, s.19A, s.19B)
-- Manslaughter appeals (s.18, s.24)
-- High Court special leave applications
-- Miscarriage of justice claims
-- Fresh evidence appeals
-- Procedural and judicial errors
+Your task is to THOROUGHLY analyze the provided case materials and identify ALL potential grounds of merit for a criminal appeal.
 
-Be thorough - identify every possible ground, even if weak. The legal team will assess viability."""
+IMPORTANT: Carefully read and analyze ALL document content provided. Look for:
+- Procedural irregularities at trial
+- Evidence that was wrongly admitted or excluded
+- Judicial errors in directions to jury
+- Issues with legal representation
+- Fresh evidence that could change the outcome
+- Sentencing errors
+- Prosecutorial misconduct
+- Jury issues
+
+Be thorough and identify every possible ground, even weak ones. The legal team will assess viability.
+
+If no documents have been uploaded, suggest what documents would be needed to identify grounds."""
 
     user_prompt = f"""Analyze this criminal appeal case and identify ALL potential grounds of merit:
 
