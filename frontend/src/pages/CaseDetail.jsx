@@ -142,6 +142,7 @@ const CaseDetail = ({ user }) => {
       setTimeline(timelineRes.data);
       setReports(reportsRes.data);
       setNotes(notesRes.data);
+      setGrounds(groundsRes.data);
     } catch (error) {
       toast.error("Failed to load case data");
       navigate("/dashboard");
