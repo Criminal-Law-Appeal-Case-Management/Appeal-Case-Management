@@ -44,6 +44,12 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
 - Barrister presentation view (A4 format)
 - Print/PDF export functionality
 - Professional UI with Crimson Pro & Manrope fonts
+- **Notes & Comments system** (Feb 2026):
+  - Create/edit/delete notes
+  - 6 note categories: General, Legal Opinion, Evidence Note, Strategy, Question, Action Item
+  - Pin/unpin important notes
+  - Author tracking and timestamps
+  - Sorted by pinned status then date
 
 ## Prioritized Backlog
 ### P0 (Critical) - DONE
