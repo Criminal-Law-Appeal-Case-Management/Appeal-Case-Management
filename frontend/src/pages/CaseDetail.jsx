@@ -550,6 +550,34 @@ const CaseDetail = ({ user }) => {
                   Add Note
                 </Button>
               )}
+              {activeTab === "grounds" && (
+                <>
+                  <Button 
+                    onClick={handleAutoIdentifyGrounds}
+                    disabled={autoIdentifying}
+                    className="bg-amber-600 text-white hover:bg-amber-700"
+                    data-testid="auto-identify-btn"
+                  >
+                    {autoIdentifying ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Sparkles className="w-4 h-4 mr-2" />
+                    )}
+                    AI Identify Grounds
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      setNewGround({ title: "", description: "", ground_type: "other", strength: "moderate", supporting_evidence: [] });
+                      setShowGroundDialog(true);
+                    }}
+                    className="bg-slate-900 text-white hover:bg-slate-800"
+                    data-testid="add-ground-btn"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Ground
+                  </Button>
+                </>
+              )}
               {activeTab === "reports" && (
                 <Button 
                   onClick={() => setShowReportDialog(true)}
