@@ -1001,40 +1001,57 @@ const CaseDetail = ({ user }) => {
       </main>
 
       {/* Upload Document Dialog */}
-      <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+      <Dialog open={showUploadDialog} onOpenChange={(open) => {
+        setShowUploadDialog(open);
+        if (!open) {
+          setUploadFiles([]);
+          setUploadCategory("other");
+          setUploadDescription("");
+        }
+      }}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle style={{ fontFamily: 'Crimson Pro, serif' }} className="text-2xl">
-              Upload Document
+              Upload Documents
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div>
-              <Label>File</Label>
+              <Label>Files (select multiple)</Label>
               <div className="mt-2 border-2 border-dashed border-slate-200 rounded-lg p-6 text-center hover:border-slate-400 transition-colors">
                 <input
                   type="file"
-                  onChange={(e) => setUploadFile(e.target.files[0])}
+                  onChange={(e) => setUploadFiles(Array.from(e.target.files || []))}
                   className="hidden"
                   id="file-upload"
                   accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
+                  multiple
                   data-testid="file-input"
                 />
                 <label htmlFor="file-upload" className="cursor-pointer">
                   <FileUp className="w-10 h-10 text-slate-400 mx-auto mb-2" />
-                  {uploadFile ? (
-                    <p className="text-sm font-medium text-slate-900">{uploadFile.name}</p>
+                  {uploadFiles.length > 0 ? (
+                    <div>
+                      <p className="text-sm font-medium text-slate-900">
+                        {uploadFiles.length} file{uploadFiles.length > 1 ? 's' : ''} selected
+                      </p>
+                      <div className="mt-2 max-h-24 overflow-y-auto text-xs text-slate-600">
+                        {uploadFiles.map((f, i) => (
+                          <div key={i} className="truncate">{f.name}</div>
+                        ))}
+                      </div>
+                    </div>
                   ) : (
                     <>
-                      <p className="text-sm font-medium text-slate-900">Click to select file</p>
-                      <p className="text-xs text-slate-500 mt-1">PDF, DOCX, TXT, or images</p>
+                      <p className="text-sm font-medium text-slate-900">Click to select files</p>
+                      <p className="text-xs text-slate-500 mt-1">PDF, DOCX, TXT, or images • Select multiple files</p>
                     </>
                   )}
                 </label>
               </div>
             </div>
             <div>
-              <Label>Category</Label>
+              <Label>Category (applies to all files)</Label>
               <Select value={uploadCategory} onValueChange={setUploadCategory}>
                 <SelectTrigger data-testid="category-select">
                   <SelectValue />
@@ -1047,15 +1064,29 @@ const CaseDetail = ({ user }) => {
               </Select>
             </div>
             <div>
-              <Label>Description (optional)</Label>
+              <Label>Description (optional, applies to all)</Label>
               <Textarea
                 value={uploadDescription}
                 onChange={(e) => setUploadDescription(e.target.value)}
-                placeholder="Brief description of the document..."
+                placeholder="Brief description of the documents..."
                 rows={2}
                 data-testid="doc-description"
               />
             </div>
+            {uploading && uploadProgress.total > 0 && (
+              <div className="bg-slate-50 rounded-lg p-3">
+                <div className="flex items-center justify-between text-sm mb-2">
+                  <span className="text-slate-600">Uploading...</span>
+                  <span className="font-medium">{uploadProgress.current} / {uploadProgress.total}</span>
+                </div>
+                <div className="w-full bg-slate-200 rounded-full h-2">
+                  <div 
+                    className="bg-slate-900 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${(uploadProgress.current / uploadProgress.total) * 100}%` }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowUploadDialog(false)}>
