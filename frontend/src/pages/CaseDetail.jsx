@@ -947,9 +947,17 @@ const CaseDetail = ({ user }) => {
                               {DOCUMENT_CATEGORIES.find(c => c.value === doc.category)?.label || doc.category}
                             </Badge>
                             {doc.content_text ? (
-                              <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
-                                Text Extracted ({Math.round(doc.content_text.length / 1000)}k chars)
-                              </Badge>
+                              <>
+                                <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
+                                  Text Extracted ({Math.round(doc.content_text.length / 1000)}k chars)
+                                </Badge>
+                                {doc.ocr_extracted && (
+                                  <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
+                                    <ScanLine className="w-3 h-3 mr-1" />
+                                    OCR
+                                  </Badge>
+                                )}
+                              </>
                             ) : (
                               <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
                                 No Text
