@@ -2210,6 +2210,230 @@ async def export_report_pdf(case_id: str, report_id: str, request: Request):
         }
     )
 
+@api_router.get("/cases/{case_id}/reports/{report_id}/export-docx")
+async def export_report_docx(case_id: str, report_id: str, request: Request):
+    """Export a report as DOCX (Microsoft Word) with Grounds of Merit and Legal References"""
+    from docx import Document as DocxDocument
+    from docx.shared import Inches, Pt, RGBColor
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.enum.style import WD_STYLE_TYPE
+    from io import BytesIO
+    
+    user = await get_current_user(request)
+    
+    # Get report
+    report = await db.reports.find_one(
+        {"report_id": report_id, "case_id": case_id, "user_id": user.user_id},
+        {"_id": 0}
+    )
+    if not report:
+        raise HTTPException(status_code=404, detail="Report not found")
+    
+    # Get case data
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id}, {"_id": 0})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    # Get grounds of merit
+    grounds = await db.grounds_of_merit.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).to_list(100)
+    
+    # Create DOCX document
+    doc = DocxDocument()
+    
+    # Set up styles
+    styles = doc.styles
+    
+    # Title style
+    title_style = styles['Title']
+    title_style.font.size = Pt(24)
+    title_style.font.bold = True
+    title_style.font.color.rgb = RGBColor(30, 41, 59)
+    
+    # Heading 1 style
+    h1_style = styles['Heading 1']
+    h1_style.font.size = Pt(16)
+    h1_style.font.bold = True
+    h1_style.font.color.rgb = RGBColor(30, 41, 59)
+    
+    # Heading 2 style
+    h2_style = styles['Heading 2']
+    h2_style.font.size = Pt(14)
+    h2_style.font.bold = True
+    h2_style.font.color.rgb = RGBColor(146, 64, 14)
+    
+    # Header
+    header_para = doc.add_paragraph()
+    header_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    header_run = header_para.add_run("JUSTITIA AI")
+    header_run.font.size = Pt(12)
+    header_run.font.color.rgb = RGBColor(100, 116, 139)
+    
+    sub_header = doc.add_paragraph()
+    sub_header.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    sub_run = sub_header.add_run("Criminal Appeal Case Management")
+    sub_run.font.size = Pt(10)
+    sub_run.font.color.rgb = RGBColor(100, 116, 139)
+    
+    doc.add_paragraph()
+    
+    # Report Title
+    report_type_labels = {
+        'quick_summary': 'Quick Case Summary',
+        'full_detailed': 'Full Detailed Legal Analysis', 
+        'extensive_log': 'Extensive Case Log & Analysis'
+    }
+    title = doc.add_heading(report_type_labels.get(report.get('report_type'), 'Legal Report'), 0)
+    title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    
+    doc.add_paragraph()
+    
+    # Case Information Table
+    case_table = doc.add_table(rows=5, cols=2)
+    case_table.style = 'Table Grid'
+    
+    case_info = [
+        ('Case Title:', case.get('title', 'N/A')),
+        ('Defendant:', case.get('defendant_name', 'N/A')),
+        ('Case Number:', case.get('case_number', 'N/A') or 'N/A'),
+        ('Court:', case.get('court', 'N/A') or 'N/A'),
+        ('Generated:', report.get('generated_at', 'N/A')[:10] if report.get('generated_at') else 'N/A')
+    ]
+    
+    for i, (label, value) in enumerate(case_info):
+        row = case_table.rows[i]
+        row.cells[0].text = label
+        row.cells[0].paragraphs[0].runs[0].font.bold = True
+        row.cells[1].text = str(value)
+    
+    doc.add_paragraph()
+    
+    # Grounds of Merit Section
+    if grounds:
+        doc.add_heading('GROUNDS OF MERIT', level=1)
+        
+        ground_type_labels = {
+            'procedural_error': 'Procedural Error',
+            'fresh_evidence': 'Fresh Evidence',
+            'miscarriage_of_justice': 'Miscarriage of Justice',
+            'sentencing_error': 'Sentencing Error',
+            'judicial_error': 'Judicial Error',
+            'ineffective_counsel': 'Ineffective Counsel',
+            'prosecution_misconduct': 'Prosecution Misconduct',
+            'jury_irregularity': 'Jury Irregularity',
+            'constitutional_violation': 'Constitutional Violation',
+            'other': 'Other'
+        }
+        
+        for idx, ground in enumerate(grounds, 1):
+            ground_type = ground_type_labels.get(ground.get('ground_type'), 'Other')
+            strength = ground.get('strength', 'moderate').capitalize()
+            
+            # Ground heading
+            ground_heading = doc.add_heading(
+                f"{idx}. {ground.get('title', 'Unnamed Ground')} [{ground_type}] - Strength: {strength}",
+                level=2
+            )
+            
+            # Description
+            if ground.get('description'):
+                doc.add_paragraph(ground.get('description'))
+            
+            # Legal References
+            if ground.get('law_sections'):
+                law_para = doc.add_paragraph()
+                law_run = law_para.add_run('Relevant Law Sections:')
+                law_run.font.bold = True
+                law_run.font.color.rgb = RGBColor(30, 64, 175)
+                
+                for section in ground.get('law_sections', []):
+                    section_text = f"s.{section.get('section', '')} {section.get('act', '')} ({section.get('jurisdiction', 'NSW')})"
+                    bullet = doc.add_paragraph(section_text, style='List Bullet')
+                    for run in bullet.runs:
+                        run.font.color.rgb = RGBColor(30, 64, 175)
+            
+            # Similar Cases
+            if ground.get('similar_cases'):
+                cases_para = doc.add_paragraph()
+                cases_run = cases_para.add_run('Similar Cases:')
+                cases_run.font.bold = True
+                cases_run.font.color.rgb = RGBColor(146, 64, 14)
+                
+                for case_ref in ground.get('similar_cases', []):
+                    case_text = f"{case_ref.get('case_name', '')} {case_ref.get('citation', '')}"
+                    doc.add_paragraph(case_text, style='List Bullet')
+            
+            # Supporting Evidence
+            if ground.get('supporting_evidence'):
+                evidence_para = doc.add_paragraph()
+                evidence_run = evidence_para.add_run('Supporting Evidence:')
+                evidence_run.font.bold = True
+                evidence_run.font.color.rgb = RGBColor(5, 150, 105)
+                
+                for evidence in ground.get('supporting_evidence', []):
+                    doc.add_paragraph(evidence, style='List Bullet')
+            
+            doc.add_paragraph()
+    
+    # Legal Framework Reference
+    doc.add_heading('LEGAL FRAMEWORK REFERENCE', level=1)
+    
+    legal_refs = [
+        "Crimes Act 1900 (NSW) - Primary criminal law for New South Wales",
+        "Criminal Appeal Act 1912 (NSW) - Governs criminal appeals in NSW",
+        "Criminal Code Act 1995 (Cth) - Federal criminal law",
+        "Evidence Act 1995 (NSW & Cth) - Rules on evidence admissibility",
+        "Sentencing Act 1995 (NSW) - Sentencing guidelines and procedures"
+    ]
+    
+    for ref in legal_refs:
+        doc.add_paragraph(ref, style='List Bullet')
+    
+    doc.add_paragraph()
+    
+    # Detailed Analysis
+    doc.add_heading('DETAILED ANALYSIS', level=1)
+    
+    analysis_text = report.get('content', {}).get('analysis', 'No analysis available.')
+    
+    # Split analysis into paragraphs
+    paragraphs = analysis_text.split('\n\n')
+    for para in paragraphs:
+        if para.strip():
+            clean_para = para.replace('**', '').replace('##', '').strip()
+            if clean_para:
+                doc.add_paragraph(clean_para)
+    
+    # Footer disclaimer
+    doc.add_paragraph()
+    disclaimer = doc.add_paragraph()
+    disclaimer.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    disclaimer_run = disclaimer.add_run(
+        "This report was generated by Justitia AI and should be reviewed by qualified legal counsel before being relied upon in legal proceedings."
+    )
+    disclaimer_run.font.size = Pt(9)
+    disclaimer_run.font.italic = True
+    disclaimer_run.font.color.rgb = RGBColor(100, 116, 139)
+    
+    # Save to buffer
+    buffer = BytesIO()
+    doc.save(buffer)
+    buffer.seek(0)
+    
+    # Create filename
+    safe_title = "".join(c for c in case.get('title', 'Report')[:30] if c.isalnum() or c in ' -_').strip()
+    filename = f"{safe_title}_{report.get('report_type', 'report')}.docx"
+    
+    return Response(
+        content=buffer.getvalue(),
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"'
+        }
+    )
+
 # ============ HEALTH CHECK ============
 
 @api_router.get("/")
