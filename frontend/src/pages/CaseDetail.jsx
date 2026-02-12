@@ -5,7 +5,8 @@ import { toast } from "sonner";
 import { 
   Scale, ArrowLeft, FileText, Clock, Plus, Trash2, 
   Upload, Loader2, ChevronRight, FileUp, AlertCircle,
-  MessageSquare, Pin, PinOff, Edit2, User, Sparkles, Gavel
+  MessageSquare, Pin, PinOff, Edit2, User, Sparkles, Gavel,
+  Search, X
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -28,6 +29,7 @@ import {
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
 import { Badge } from "../components/ui/badge";
+import { ScrollArea } from "../components/ui/scroll-area";
 import { API } from "../App";
 import Timeline from "../components/Timeline";
 import GroundsOfMerit from "../components/GroundsOfMerit";
