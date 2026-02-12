@@ -115,6 +115,14 @@ const CaseDetail = ({ user }) => {
     category: "general"
   });
 
+  const [newGround, setNewGround] = useState({
+    title: "",
+    description: "",
+    ground_type: "other",
+    strength: "moderate",
+    supporting_evidence: []
+  });
+
   useEffect(() => {
     fetchCaseData();
   }, [caseId]);
