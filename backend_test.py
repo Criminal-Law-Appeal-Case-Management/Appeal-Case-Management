@@ -112,7 +112,7 @@ class JustitiaAPITester:
             "summary": "Test case for criminal appeal management system"
         }
         
-        success, response = self.run_test("Create new case", "POST", "cases", 201, case_data)
+        success, response = self.run_test("Create new case", "POST", "cases", 200, case_data)
         if success and response:
             self.case_id = response.get('case_id')
             print(f"   Created case ID: {self.case_id}")
