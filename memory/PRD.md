@@ -64,6 +64,10 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
   - Grounds of Merit section
   - Legal References (NSW & Federal law)
   - Full analysis content
+- **DOCX Export** - Export reports to Microsoft Word format
+  - Styled headings and case info table
+  - Grounds of Merit with legal references
+  - Editable in Word for customization
 - **Barrister presentation view** (A4 format) with:
   - Prominent Grounds of Merit display
   - Law sections for each ground
