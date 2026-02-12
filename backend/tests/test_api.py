@@ -830,6 +830,64 @@ def test_note_id(auth_headers, test_case_id):
     requests.delete(f"{BASE_URL}/api/cases/{test_case_id}/notes/{note_id}", headers=auth_headers)
 
 
+@pytest.fixture(scope="session")
+def test_case_id_with_ocr_docs(auth_headers):
+    """Create a test case with image and scanned PDF documents for OCR testing"""
+    from PIL import Image, ImageDraw
+    from reportlab.pdfgen import canvas
+    import io
+    
+    # Create case
+    payload = {
+        "title": "TEST_OCR Test Case",
+        "defendant_name": "TEST_OCR Defendant",
+        "case_number": "TEST_OCR/2024",
+        "court": "NSW Supreme Court",
+        "summary": "Test case for OCR testing"
+    }
+    response = requests.post(f"{BASE_URL}/api/cases", json=payload, headers=auth_headers)
+    assert response.status_code == 200
+    case_id = response.json()["case_id"]
+    
+    headers = {"Authorization": auth_headers["Authorization"]}
+    
+    # Create and upload test image with text
+    img = Image.new('RGB', (400, 200), color='white')
+    draw = ImageDraw.Draw(img)
+    draw.text((20, 20), "OCR TEST IMAGE\n\nThis is test text\nfor OCR extraction.\n\nCase: TEST/2024", fill='black')
+    img_buffer = io.BytesIO()
+    img.save(img_buffer, format='PNG')
+    img_buffer.seek(0)
+    
+    files1 = {'file': ('test_ocr_image.png', img_buffer, 'image/png')}
+    data1 = {'category': 'evidence', 'description': 'Test image for OCR'}
+    response1 = requests.post(f"{BASE_URL}/api/cases/{case_id}/documents", files=files1, data=data1, headers=headers)
+    image_doc_id = response1.json()["document_id"]
+    
+    # Create and upload scanned PDF
+    img2 = Image.new('RGB', (500, 300), color='white')
+    draw2 = ImageDraw.Draw(img2)
+    draw2.text((20, 20), "SCANNED PDF DOCUMENT\n\nCase Reference: TEST/2024\n\nThis is a scanned document\nfor OCR testing.", fill='black')
+    img2_path = '/tmp/ocr_test_page.png'
+    img2.save(img2_path)
+    
+    pdf_buffer = io.BytesIO()
+    c = canvas.Canvas(pdf_buffer)
+    c.drawImage(img2_path, 50, 400, width=400, height=250)
+    c.save()
+    pdf_buffer.seek(0)
+    
+    files2 = {'file': ('scanned_test.pdf', pdf_buffer, 'application/pdf')}
+    data2 = {'category': 'court_document', 'description': 'Scanned PDF for OCR'}
+    response2 = requests.post(f"{BASE_URL}/api/cases/{case_id}/documents", files=files2, data=data2, headers=headers)
+    pdf_doc_id = response2.json()["document_id"]
+    
+    yield (case_id, image_doc_id, pdf_doc_id)
+    
+    # Cleanup
+    requests.delete(f"{BASE_URL}/api/cases/{case_id}", headers=auth_headers)
+
+
 @pytest.fixture
 def test_event_id(auth_headers, test_case_id):
     """Create a test timeline event and return its ID"""
