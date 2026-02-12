@@ -964,15 +964,29 @@ const CaseDetail = ({ user }) => {
                           )}
                         </div>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteDocument(doc.document_id)}
-                        className="opacity-0 group-hover:opacity-100 text-red-600 hover:text-red-700 hover:bg-red-50"
-                        data-testid={`delete-doc-${doc.document_id}`}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                      <div className="flex items-center gap-1">
+                        {!doc.content_text && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleOcrDocument(doc.document_id)}
+                            className="text-purple-700 border-purple-200 hover:bg-purple-50"
+                            data-testid={`ocr-doc-${doc.document_id}`}
+                          >
+                            <ScanLine className="w-4 h-4 mr-1" />
+                            OCR
+                          </Button>
+                        )}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteDocument(doc.document_id)}
+                          className="opacity-0 group-hover:opacity-100 text-red-600 hover:text-red-700 hover:bg-red-50"
+                          data-testid={`delete-doc-${doc.document_id}`}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
