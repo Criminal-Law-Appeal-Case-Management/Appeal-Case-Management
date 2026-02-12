@@ -86,7 +86,6 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
 
 ### P1 (High Priority) - Future
 - [ ] Document text extraction (OCR for images)
-- [ ] Document content search
 - [ ] Export reports to DOCX
 - [ ] Report comparison view
 
