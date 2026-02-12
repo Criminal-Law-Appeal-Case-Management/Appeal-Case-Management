@@ -326,6 +326,66 @@ const CaseDetail = ({ user }) => {
     setShowNoteDialog(true);
   };
 
+  // Grounds of Merit handlers
+  const handleCreateGround = async () => {
+    if (!newGround.title || !newGround.description) {
+      toast.error("Title and description are required");
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${API}/cases/${caseId}/grounds`, newGround);
+      setGrounds([response.data, ...grounds]);
+      setShowGroundDialog(false);
+      setNewGround({ title: "", description: "", ground_type: "other", strength: "moderate", supporting_evidence: [] });
+      toast.success("Ground of merit added");
+    } catch (error) {
+      toast.error("Failed to add ground of merit");
+    }
+  };
+
+  const handleInvestigateGround = async (groundId) => {
+    setInvestigatingGround(groundId);
+    try {
+      const response = await axios.post(`${API}/cases/${caseId}/grounds/${groundId}/investigate`);
+      setGrounds(grounds.map(g => g.ground_id === groundId ? response.data : g));
+      toast.success("Deep investigation complete!");
+    } catch (error) {
+      toast.error("Failed to investigate ground");
+    } finally {
+      setInvestigatingGround(null);
+    }
+  };
+
+  const handleDeleteGround = async (groundId) => {
+    if (!window.confirm("Delete this ground of merit?")) return;
+    
+    try {
+      await axios.delete(`${API}/cases/${caseId}/grounds/${groundId}`);
+      setGrounds(grounds.filter(g => g.ground_id !== groundId));
+      toast.success("Ground of merit deleted");
+    } catch (error) {
+      toast.error("Failed to delete ground");
+    }
+  };
+
+  const handleAutoIdentifyGrounds = async () => {
+    setAutoIdentifying(true);
+    try {
+      const response = await axios.post(`${API}/cases/${caseId}/grounds/auto-identify`);
+      if (response.data.grounds && response.data.grounds.length > 0) {
+        setGrounds([...response.data.grounds, ...grounds]);
+        toast.success(`Identified ${response.data.identified_count} potential ground(s) of merit!`);
+      } else {
+        toast.info("No new grounds identified. Try adding more case documents.");
+      }
+    } catch (error) {
+      toast.error("Failed to auto-identify grounds");
+    } finally {
+      setAutoIdentifying(false);
+    }
+  };
+
   const formatDate = (dateStr) => {
     if (!dateStr) return "N/A";
     return new Date(dateStr).toLocaleDateString("en-AU", {
