@@ -371,11 +371,18 @@ const CaseDetail = ({ user }) => {
   const handleInvestigateGround = async (groundId) => {
     setInvestigatingGround(groundId);
     try {
-      const response = await axios.post(`${API}/cases/${caseId}/grounds/${groundId}/investigate`);
+      const response = await axios.post(`${API}/cases/${caseId}/grounds/${groundId}/investigate`, {}, {
+        timeout: 120000 // 2 minute timeout for AI analysis
+      });
       setGrounds(grounds.map(g => g.ground_id === groundId ? response.data : g));
       toast.success("Deep investigation complete!");
     } catch (error) {
-      toast.error("Failed to investigate ground");
+      console.error("Investigate error:", error);
+      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+        toast.error("Investigation is taking too long. Please try again.");
+      } else {
+        toast.error("Failed to investigate ground. Please try again.");
+      }
     } finally {
       setInvestigatingGround(null);
     }
