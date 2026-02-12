@@ -59,6 +59,19 @@ const NOTE_CATEGORIES = [
   { value: "action_item", label: "Action Item" }
 ];
 
+const GROUND_TYPES = [
+  { value: "procedural_error", label: "Procedural Error" },
+  { value: "fresh_evidence", label: "Fresh Evidence" },
+  { value: "miscarriage_of_justice", label: "Miscarriage of Justice" },
+  { value: "sentencing_error", label: "Sentencing Error" },
+  { value: "judicial_error", label: "Judicial Error" },
+  { value: "ineffective_counsel", label: "Ineffective Counsel" },
+  { value: "prosecution_misconduct", label: "Prosecution Misconduct" },
+  { value: "jury_irregularity", label: "Jury Irregularity" },
+  { value: "constitutional_violation", label: "Constitutional Violation" },
+  { value: "other", label: "Other Ground" }
+];
+
 const CaseDetail = ({ user }) => {
   const { caseId } = useParams();
   const navigate = useNavigate();
@@ -67,6 +80,7 @@ const CaseDetail = ({ user }) => {
   const [timeline, setTimeline] = useState([]);
   const [reports, setReports] = useState([]);
   const [notes, setNotes] = useState([]);
+  const [grounds, setGrounds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("documents");
 
@@ -75,8 +89,12 @@ const CaseDetail = ({ user }) => {
   const [showEventDialog, setShowEventDialog] = useState(false);
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [showNoteDialog, setShowNoteDialog] = useState(false);
+  const [showGroundDialog, setShowGroundDialog] = useState(false);
   const [generatingReport, setGeneratingReport] = useState(false);
   const [editingNote, setEditingNote] = useState(null);
+  const [investigatingGround, setInvestigatingGround] = useState(null);
+  const [autoIdentifying, setAutoIdentifying] = useState(false);
+  const [selectedGround, setSelectedGround] = useState(null);
 
   // Form states
   const [uploadFile, setUploadFile] = useState(null);
