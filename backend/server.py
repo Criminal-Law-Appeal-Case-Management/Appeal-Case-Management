@@ -1022,32 +1022,86 @@ async def investigate_ground_of_merit(case_id: str, ground_id: str, request: Req
     # Get case data
     case = await db.cases.find_one({"case_id": case_id}, {"_id": 0})
     
-    # Build concise context
+    # Get ALL documents with FULL content for cross-referencing
+    documents = await db.documents.find(
+        {"case_id": case_id},
+        {"_id": 0, "file_data": 0}
+    ).to_list(500)
+    
+    # Get timeline
+    timeline = await db.timeline_events.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).sort("event_date", 1).to_list(500)
+    
+    # Build comprehensive context with FULL document content
     context = f"""
-CASE: {case.get('title', 'Unknown')} | DEFENDANT: {case.get('defendant_name', 'Unknown')}
-COURT: {case.get('court', 'N/A')} | CASE NO: {case.get('case_number', 'N/A')}
+=== CASE INFORMATION ===
+Title: {case.get('title', 'Unknown')}
+Defendant: {case.get('defendant_name', 'Unknown')}
+Case Number: {case.get('case_number', 'N/A')}
+Court: {case.get('court', 'N/A')}
 
-GROUND OF MERIT:
+=== GROUND OF MERIT TO INVESTIGATE ===
 Title: {ground.get('title')}
 Type: {ground.get('ground_type')}
 Description: {ground.get('description')}
-Strength: {ground.get('strength')}
+Current Strength: {ground.get('strength')}
+Supporting Evidence Listed: {', '.join(ground.get('supporting_evidence', []))}
+
 """
+    
+    # Include FULL document content
+    if documents:
+        context += f"=== CASE DOCUMENTS ({len(documents)} files) - SEARCH THESE FOR EVIDENCE ===\n"
+        for doc in documents:
+            context += f"\n--- DOCUMENT: {doc.get('filename')} [{doc.get('category')}] ---\n"
+            content = doc.get('content_text', '')
+            if content:
+                context += f"FULL CONTENT:\n{content[:5000]}\n"
+                if len(content) > 5000:
+                    context += f"[... {len(content) - 5000} more characters ...]\n"
+            else:
+                context += "[No text content]\n"
+    
+    if timeline:
+        context += f"\n=== TIMELINE ({len(timeline)} events) ===\n"
+        for event in timeline:
+            context += f"- {event.get('event_date')}: {event.get('title')} - {event.get('description', '')[:200]}\n"
 
-    system_prompt = """You are an Australian criminal appeal barrister expert in NSW and Federal murder law. Be concise but thorough."""
+    system_prompt = """You are an Australian criminal appeal barrister expert in NSW and Federal murder law.
+IMPORTANT: You must search through ALL the document content provided and cite specific evidence.
+Quote directly from documents to support your analysis."""
 
-    user_prompt = f"""Analyze this criminal appeal ground of merit:
+    user_prompt = f"""Conduct a THOROUGH investigation of this ground of merit.
 
 {context}
 
-Provide a focused analysis covering:
-1. VIABILITY ASSESSMENT - Is this ground likely to succeed? Rate: Strong/Moderate/Weak
-2. RELEVANT LAW SECTIONS - List 3-5 specific sections (e.g., s.18 Crimes Act 1900 NSW, s.6 Criminal Appeal Act 1912 NSW)
-3. SIMILAR CASES - Name 2-3 relevant Australian cases with brief relevance
-4. EVIDENCE NEEDED - What evidence strengthens this ground
-5. RECOMMENDATION - Brief strategic advice
+REQUIRED ANALYSIS (search the documents above for evidence):
 
-Be specific with section numbers and case citations. Keep response under 800 words."""
+1. VIABILITY ASSESSMENT
+   - Rate: Strong/Moderate/Weak with detailed justification
+   - Quote specific evidence FROM THE DOCUMENTS above
+
+2. DOCUMENT EVIDENCE
+   - For EACH document, explain what it contains relevant to this ground
+   - Quote specific passages that support or undermine this ground
+
+3. RELEVANT LAW SECTIONS (be specific)
+   - s.18 Crimes Act 1900 (NSW) - Murder
+   - s.23 Crimes Act 1900 (NSW) - Provocation
+   - s.6 Criminal Appeal Act 1912 (NSW) - Grounds for appeal
+   - Other relevant sections with explanations
+
+4. SIMILAR CASES
+   - Name 2-3 Australian cases with citations
+   - Explain relevance to this ground
+
+5. EVIDENCE GAPS
+   - What additional evidence would strengthen this ground?
+
+6. STRATEGIC RECOMMENDATION
+   - How to present this ground to the court"""
 
     api_key = os.environ.get('EMERGENT_LLM_KEY')
     if not api_key:
@@ -1069,7 +1123,7 @@ Be specific with section numbers and case citations. Keep response under 800 wor
     law_sections = []
     similar_cases = []
     
-    # Simple extraction - look for section patterns
+    # Extract law sections
     import re
     section_patterns = re.findall(r'[sS]\.?\s*(\d+[A-Za-z]?)\s+([A-Za-z\s]+(?:Act|Code))\s*(?:\d{4})?', response)
     for section_num, act_name in section_patterns[:10]:
@@ -1093,7 +1147,8 @@ Be specific with section numbers and case citations. Keep response under 800 wor
         "full_analysis": response,
         "investigated_at": datetime.now(timezone.utc).isoformat(),
         "law_sections_identified": len(law_sections),
-        "similar_cases_found": len(similar_cases)
+        "similar_cases_found": len(similar_cases),
+        "documents_analyzed": len(documents)
     }
     
     await db.grounds_of_merit.update_one(
