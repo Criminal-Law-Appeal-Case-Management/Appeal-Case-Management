@@ -589,6 +589,59 @@ def test_case_id(auth_headers):
     requests.delete(f"{BASE_URL}/api/cases/{case_id}", headers=auth_headers)
 
 
+@pytest.fixture(scope="session")
+def test_case_id_with_docs(auth_headers):
+    """Create a test case with documents for search testing"""
+    # Create case
+    payload = {
+        "title": "TEST_Search Test Case",
+        "defendant_name": "TEST_Search Defendant",
+        "case_number": "TEST_SEARCH/2024",
+        "court": "NSW Supreme Court",
+        "summary": "Test case for document search testing"
+    }
+    response = requests.post(f"{BASE_URL}/api/cases", json=payload, headers=auth_headers)
+    assert response.status_code == 200
+    case_id = response.json()["case_id"]
+    
+    # Upload first document
+    headers = {"Authorization": auth_headers["Authorization"]}
+    doc1_content = b"""CRIMINAL APPEAL CASE BRIEF
+Case Reference: R v Smith [2024] NSWCCA 123
+The defendant John Smith was convicted of murder on 15 March 2023.
+The prosecution alleged that the defendant intentionally killed the victim.
+GROUNDS FOR APPEAL:
+1. Procedural Error: The judge failed to properly direct the jury on provocation
+2. Fresh Evidence: New witness testimony has emerged
+RELEVANT LAW:
+- Section 18 Crimes Act 1900 (NSW) - Murder
+- Section 23 Crimes Act 1900 (NSW) - Provocation"""
+    
+    files1 = {'file': ('legal_brief.txt', doc1_content, 'text/plain')}
+    data1 = {'category': 'brief', 'description': 'Legal brief for search testing'}
+    requests.post(f"{BASE_URL}/api/cases/{case_id}/documents", files=files1, data=data1, headers=headers)
+    
+    # Upload second document
+    doc2_content = b"""EVIDENCE SUMMARY REPORT
+Case: R v Smith [2024]
+WITNESS STATEMENTS:
+Witness 1: "I saw the defendant and the victim arguing. The defendant appeared agitated."
+Witness 2: "I didn't see the actual murder but I heard screaming."
+FORENSIC EVIDENCE:
+- DNA samples match the defendant
+- Fingerprints on the weapon belong to the defendant
+CONCLUSION:
+The evidence supports the prosecution's case that the defendant committed murder."""
+    
+    files2 = {'file': ('evidence_summary.txt', doc2_content, 'text/plain')}
+    data2 = {'category': 'evidence', 'description': 'Evidence summary for search testing'}
+    requests.post(f"{BASE_URL}/api/cases/{case_id}/documents", files=files2, data=data2, headers=headers)
+    
+    yield case_id
+    # Cleanup
+    requests.delete(f"{BASE_URL}/api/cases/{case_id}", headers=auth_headers)
+
+
 @pytest.fixture
 def test_document_id(auth_headers, test_case_id):
     """Create a test document and return its ID"""
