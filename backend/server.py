@@ -419,12 +419,45 @@ async def upload_document(
     # Extract text content based on file type
     content_text = ""
     file_type = file.content_type or "application/octet-stream"
+    filename_lower = file.filename.lower() if file.filename else ""
     
-    if "text" in file_type:
-        try:
-            content_text = file_content.decode('utf-8')
-        except:
-            content_text = ""
+    try:
+        if "text" in file_type or filename_lower.endswith('.txt'):
+            content_text = file_content.decode('utf-8', errors='ignore')
+        
+        elif "pdf" in file_type or filename_lower.endswith('.pdf'):
+            # Extract text from PDF
+            try:
+                import io
+                from PyPDF2 import PdfReader
+                pdf_reader = PdfReader(io.BytesIO(file_content))
+                text_parts = []
+                for page in pdf_reader.pages[:20]:  # Limit to first 20 pages
+                    page_text = page.extract_text()
+                    if page_text:
+                        text_parts.append(page_text)
+                content_text = "\n".join(text_parts)
+            except Exception as e:
+                logger.warning(f"PDF extraction failed: {e}")
+                content_text = ""
+        
+        elif filename_lower.endswith('.docx') or "word" in file_type:
+            # Extract text from DOCX
+            try:
+                import io
+                from docx import Document as DocxDocument
+                doc = DocxDocument(io.BytesIO(file_content))
+                text_parts = []
+                for para in doc.paragraphs:
+                    if para.text.strip():
+                        text_parts.append(para.text)
+                content_text = "\n".join(text_parts)
+            except Exception as e:
+                logger.warning(f"DOCX extraction failed: {e}")
+                content_text = ""
+    except Exception as e:
+        logger.warning(f"Text extraction error: {e}")
+        content_text = ""
     
     # Parse event date
     parsed_event_date = None
