@@ -424,6 +424,11 @@ class JustitiaAPITester:
         if self.event_id:
             self.run_test("Delete timeline event", "DELETE", f"cases/{self.case_id}/timeline/{self.event_id}", 200)
         
+        # Delete grounds of merit
+        for i, ground_id in enumerate(self.ground_ids):
+            if ground_id:
+                self.run_test(f"Delete ground {i+1}", "DELETE", f"cases/{self.case_id}/grounds/{ground_id}", 200)
+        
         # Note: Not deleting the test case since it's a shared test case
 
     def test_error_handling(self):
