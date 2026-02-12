@@ -1695,14 +1695,14 @@ async def export_report_pdf(case_id: str, report_id: str, request: Request):
     # Styles
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(
-        name='Title',
+        name='ReportTitle',
         fontSize=24,
         spaceAfter=12,
         alignment=TA_CENTER,
         fontName='Helvetica-Bold'
     ))
     styles.add(ParagraphStyle(
-        name='Subtitle',
+        name='ReportSubtitle',
         fontSize=14,
         spaceAfter=12,
         alignment=TA_CENTER,
@@ -1717,7 +1717,7 @@ async def export_report_pdf(case_id: str, report_id: str, request: Request):
         textColor=colors.HexColor('#1e293b')
     ))
     styles.add(ParagraphStyle(
-        name='BodyText',
+        name='ReportBodyText',
         fontSize=10,
         spaceAfter=8,
         alignment=TA_JUSTIFY,
