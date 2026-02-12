@@ -95,6 +95,7 @@ const CaseDetail = ({ user }) => {
   const [investigatingGround, setInvestigatingGround] = useState(null);
   const [autoIdentifying, setAutoIdentifying] = useState(false);
   const [selectedGround, setSelectedGround] = useState(null);
+  const [extractingText, setExtractingText] = useState(false);
 
   // Form states
   const [uploadFile, setUploadFile] = useState(null);
