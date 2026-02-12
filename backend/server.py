@@ -1647,6 +1647,247 @@ async def delete_report(case_id: str, report_id: str, request: Request):
     
     return {"message": "Report deleted"}
 
+# ============ PDF EXPORT ============
+
+@api_router.get("/cases/{case_id}/reports/{report_id}/export-pdf")
+async def export_report_pdf(case_id: str, report_id: str, request: Request):
+    """Export a report as PDF with Grounds of Merit and Legal References"""
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib.units import mm
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+    from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
+    from io import BytesIO
+    
+    user = await get_current_user(request)
+    
+    # Get report
+    report = await db.reports.find_one(
+        {"report_id": report_id, "case_id": case_id, "user_id": user.user_id},
+        {"_id": 0}
+    )
+    if not report:
+        raise HTTPException(status_code=404, detail="Report not found")
+    
+    # Get case data
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id}, {"_id": 0})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    # Get grounds of merit for this case
+    grounds = await db.grounds_of_merit.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).to_list(100)
+    
+    # Create PDF buffer
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        rightMargin=20*mm,
+        leftMargin=20*mm,
+        topMargin=20*mm,
+        bottomMargin=20*mm
+    )
+    
+    # Styles
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(
+        name='Title',
+        fontSize=24,
+        spaceAfter=12,
+        alignment=TA_CENTER,
+        fontName='Helvetica-Bold'
+    ))
+    styles.add(ParagraphStyle(
+        name='Subtitle',
+        fontSize=14,
+        spaceAfter=12,
+        alignment=TA_CENTER,
+        textColor=colors.grey
+    ))
+    styles.add(ParagraphStyle(
+        name='SectionHeader',
+        fontSize=14,
+        spaceBefore=20,
+        spaceAfter=10,
+        fontName='Helvetica-Bold',
+        textColor=colors.HexColor('#1e293b')
+    ))
+    styles.add(ParagraphStyle(
+        name='BodyText',
+        fontSize=10,
+        spaceAfter=8,
+        alignment=TA_JUSTIFY,
+        leading=14
+    ))
+    styles.add(ParagraphStyle(
+        name='LawSection',
+        fontSize=9,
+        spaceAfter=4,
+        leftIndent=20,
+        textColor=colors.HexColor('#1e40af')
+    ))
+    styles.add(ParagraphStyle(
+        name='GroundTitle',
+        fontSize=11,
+        spaceBefore=10,
+        spaceAfter=4,
+        fontName='Helvetica-Bold',
+        textColor=colors.HexColor('#92400e')
+    ))
+    
+    story = []
+    
+    # Header
+    story.append(Paragraph("Justitia AI", styles['Subtitle']))
+    story.append(Paragraph("Criminal Appeal Case Management", styles['Subtitle']))
+    story.append(Spacer(1, 10*mm))
+    
+    # Report Title
+    report_type_labels = {
+        'quick_summary': 'Quick Case Summary',
+        'full_detailed': 'Full Detailed Legal Analysis', 
+        'extensive_log': 'Extensive Case Log & Analysis'
+    }
+    story.append(Paragraph(report_type_labels.get(report.get('report_type'), 'Legal Report'), styles['Title']))
+    story.append(Spacer(1, 5*mm))
+    
+    # Case Info Table
+    case_data_table = [
+        ['Case Title:', case.get('title', 'N/A')],
+        ['Defendant:', case.get('defendant_name', 'N/A')],
+        ['Case Number:', case.get('case_number', 'N/A') or 'N/A'],
+        ['Court:', case.get('court', 'N/A') or 'N/A'],
+        ['Generated:', report.get('generated_at', 'N/A')[:10] if report.get('generated_at') else 'N/A']
+    ]
+    
+    case_table = Table(case_data_table, colWidths=[40*mm, 120*mm])
+    case_table.setStyle(TableStyle([
+        ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('TEXTCOLOR', (0, 0), (0, -1), colors.HexColor('#475569')),
+        ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
+        ('ALIGN', (1, 0), (1, -1), 'LEFT'),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+        ('TOPPADDING', (0, 0), (-1, -1), 6),
+    ]))
+    story.append(case_table)
+    story.append(Spacer(1, 10*mm))
+    
+    # Grounds of Merit Section
+    if grounds:
+        story.append(Paragraph("GROUNDS OF MERIT", styles['SectionHeader']))
+        story.append(Spacer(1, 5*mm))
+        
+        ground_type_labels = {
+            'procedural_error': 'Procedural Error',
+            'fresh_evidence': 'Fresh Evidence',
+            'miscarriage_of_justice': 'Miscarriage of Justice',
+            'sentencing_error': 'Sentencing Error',
+            'judicial_error': 'Judicial Error',
+            'ineffective_counsel': 'Ineffective Counsel',
+            'prosecution_misconduct': 'Prosecution Misconduct',
+            'jury_irregularity': 'Jury Irregularity',
+            'constitutional_violation': 'Constitutional Violation',
+            'other': 'Other'
+        }
+        
+        for idx, ground in enumerate(grounds, 1):
+            ground_type = ground_type_labels.get(ground.get('ground_type'), 'Other')
+            strength = ground.get('strength', 'moderate').capitalize()
+            
+            # Ground header
+            story.append(Paragraph(
+                f"{idx}. {ground.get('title', 'Unnamed Ground')} [{ground_type}] - Strength: {strength}",
+                styles['GroundTitle']
+            ))
+            
+            # Description
+            if ground.get('description'):
+                story.append(Paragraph(ground.get('description'), styles['BodyText']))
+            
+            # Legal References (Law Sections)
+            if ground.get('law_sections'):
+                story.append(Paragraph("<b>Relevant Law Sections:</b>", styles['BodyText']))
+                for section in ground.get('law_sections', []):
+                    section_text = f"• s.{section.get('section', '')} {section.get('act', '')} ({section.get('jurisdiction', 'NSW')})"
+                    story.append(Paragraph(section_text, styles['LawSection']))
+            
+            # Similar Cases
+            if ground.get('similar_cases'):
+                story.append(Paragraph("<b>Similar Cases:</b>", styles['BodyText']))
+                for case_ref in ground.get('similar_cases', []):
+                    case_text = f"• {case_ref.get('case_name', '')} {case_ref.get('citation', '')}"
+                    story.append(Paragraph(case_text, styles['LawSection']))
+            
+            # Supporting Evidence
+            if ground.get('supporting_evidence'):
+                story.append(Paragraph("<b>Supporting Evidence:</b>", styles['BodyText']))
+                for evidence in ground.get('supporting_evidence', []):
+                    story.append(Paragraph(f"• {evidence}", styles['LawSection']))
+            
+            story.append(Spacer(1, 5*mm))
+    
+    # Legal Framework Reference
+    story.append(Paragraph("LEGAL FRAMEWORK REFERENCE", styles['SectionHeader']))
+    legal_refs = [
+        "• Crimes Act 1900 (NSW) - Primary criminal law for NSW",
+        "• Criminal Appeal Act 1912 (NSW) - Governs appeals in NSW",
+        "• Criminal Code Act 1995 (Cth) - Federal criminal law",
+        "• Evidence Act 1995 (NSW & Cth) - Evidence admissibility",
+        "• Sentencing Act 1995 (NSW) - Sentencing guidelines"
+    ]
+    for ref in legal_refs:
+        story.append(Paragraph(ref, styles['LawSection']))
+    
+    story.append(Spacer(1, 10*mm))
+    
+    # Main Analysis Content
+    story.append(Paragraph("DETAILED ANALYSIS", styles['SectionHeader']))
+    
+    analysis_text = report.get('content', {}).get('analysis', 'No analysis available.')
+    
+    # Split analysis into paragraphs for better formatting
+    paragraphs = analysis_text.split('\n\n')
+    for para in paragraphs:
+        if para.strip():
+            # Clean up markdown-style formatting
+            clean_para = para.replace('**', '').replace('##', '').strip()
+            if clean_para:
+                story.append(Paragraph(clean_para, styles['BodyText']))
+                story.append(Spacer(1, 3*mm))
+    
+    # Footer disclaimer
+    story.append(Spacer(1, 15*mm))
+    story.append(Paragraph(
+        "This report was generated by Justitia AI and should be reviewed by qualified legal counsel before being relied upon in legal proceedings.",
+        ParagraphStyle(
+            name='Disclaimer',
+            fontSize=8,
+            textColor=colors.grey,
+            alignment=TA_CENTER
+        )
+    ))
+    
+    # Build PDF
+    doc.build(story)
+    buffer.seek(0)
+    
+    # Create filename
+    safe_title = "".join(c for c in case.get('title', 'Report')[:30] if c.isalnum() or c in ' -_').strip()
+    filename = f"{safe_title}_{report.get('report_type', 'report')}.pdf"
+    
+    return Response(
+        content=buffer.getvalue(),
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"'
+        }
+    )
+
 # ============ HEALTH CHECK ============
 
 @api_router.get("/")
