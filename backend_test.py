@@ -317,6 +317,86 @@ class JustitiaAPITester:
         
         return True
 
+    def test_grounds_of_merit(self):
+        """Test Grounds of Merit functionality"""
+        print("\n" + "="*50)
+        print("TESTING GROUNDS OF MERIT")
+        print("="*50)
+        
+        # Get initial grounds (should be empty or existing)
+        success, response = self.run_test("Get initial grounds", "GET", f"cases/{self.case_id}/grounds", 200)
+        initial_count = len(response) if success and response else 0
+        print(f"   Initial grounds count: {initial_count}")
+        
+        # Create a ground manually
+        ground_data = {
+            "title": "Inadequate Legal Representation at Trial",
+            "ground_type": "ineffective_counsel",
+            "description": "Defense counsel failed to present key evidence and did not adequately cross-examine prosecution witnesses, resulting in a miscarriage of justice.",
+            "strength": "strong",
+            "supporting_evidence": ["Trial transcript pages 45-67", "Witness statement from John Smith", "Expert opinion on defense strategy"]
+        }
+        
+        success, response = self.run_test("Create ground manually", "POST", f"cases/{self.case_id}/grounds", 201, ground_data)
+        if success and response.get('ground_id'):
+            ground_id = response['ground_id']
+            self.ground_ids.append(ground_id)
+            print(f"   Created ground ID: {ground_id}")
+            print(f"   Ground type: {response.get('ground_type')}")
+            print(f"   Strength: {response.get('strength')}")
+        
+        # Get grounds list after creation
+        success, response = self.run_test("Get grounds after creation", "GET", f"cases/{self.case_id}/grounds", 200)
+        if success:
+            print(f"   Total grounds now: {len(response)}")
+        
+        # Get specific ground
+        if self.ground_ids:
+            ground_id = self.ground_ids[0]
+            success, response = self.run_test("Get specific ground", "GET", f"cases/{self.case_id}/grounds/{ground_id}", 200)
+            if success:
+                print(f"   Retrieved ground: {response.get('title')}")
+        
+        # Test AI investigation of ground
+        if self.ground_ids:
+            ground_id = self.ground_ids[0]
+            print("   🤖 Testing AI investigation (may take 10-15 seconds)...")
+            success, response = self.run_test("AI investigate ground", "POST", f"cases/{self.case_id}/grounds/{ground_id}/investigate", 200)
+            if success:
+                print(f"   Investigation status: {response.get('status')}")
+                if response.get('analysis'):
+                    print(f"   Analysis length: {len(response['analysis'])} chars")
+                if response.get('law_sections'):
+                    print(f"   Law sections found: {len(response['law_sections'])}")
+                if response.get('similar_cases'):
+                    print(f"   Similar cases found: {len(response['similar_cases'])}")
+        
+        # Test AI auto-identify grounds
+        print("   🤖 Testing AI auto-identify (may take 15-20 seconds)...")
+        success, response = self.run_test("AI auto-identify grounds", "POST", f"cases/{self.case_id}/grounds/auto-identify", 200)
+        if success:
+            identified_count = response.get('identified_count', 0)
+            print(f"   AI identified {identified_count} new grounds")
+            if response.get('grounds'):
+                for ground in response['grounds']:
+                    if ground.get('ground_id'):
+                        self.ground_ids.append(ground['ground_id'])
+                        print(f"   - {ground.get('title', 'Untitled')} ({ground.get('ground_type', 'unknown')})")
+        
+        # Test updating a ground
+        if self.ground_ids:
+            ground_id = self.ground_ids[0]
+            update_data = {
+                "strength": "moderate",
+                "status": "confirmed"
+            }
+            success, response = self.run_test("Update ground", "PUT", f"cases/{self.case_id}/grounds/{ground_id}", 200, update_data)
+            if success:
+                print(f"   Updated strength: {response.get('strength')}")
+                print(f"   Updated status: {response.get('status')}")
+        
+        return True
+
     def test_cleanup_operations(self):
         """Test delete operations"""
         print("\n" + "="*50)
