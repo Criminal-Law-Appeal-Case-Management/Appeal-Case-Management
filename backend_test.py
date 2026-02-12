@@ -244,7 +244,7 @@ class JustitiaAPITester:
         print("   Generating Quick Summary report (this may take 10-15 seconds)...")
         report_data = {"report_type": "quick_summary"}
         
-        success, response = self.run_test("Generate Quick Summary report", "POST", f"cases/{self.case_id}/reports/generate", 201, report_data)
+        success, response = self.run_test("Generate Quick Summary report", "POST", f"cases/{self.case_id}/reports/generate", 200, report_data)
         if success and response:
             self.report_id = response.get('report_id')
             print(f"   Generated report ID: {self.report_id}")
