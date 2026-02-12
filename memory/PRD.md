@@ -45,6 +45,11 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
 - Case CRUD operations with dashboard overview
 - Document upload with text extraction (PDF, DOCX, TXT)
 - **Multi-file upload** - Select and upload multiple documents simultaneously
+- **Document search** - Search for specific text across all case documents
+  - Shows context (100 chars before/after match)
+  - Highlights matched text
+  - Sorted by match count
+  - Displays which documents contain matches
 - Timeline builder with event types
 - AI report generation (3 types: Quick, Full, Extensive)
 - Report viewer with formatted sections
