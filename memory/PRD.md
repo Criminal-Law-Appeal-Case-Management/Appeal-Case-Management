@@ -50,6 +50,15 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
   - Pin/unpin important notes
   - Author tracking and timestamps
   - Sorted by pinned status then date
+- **Grounds of Merit Investigation** (Feb 2026):
+  - AI auto-identify potential grounds from case materials
+  - Manually add grounds with type classification
+  - 10 ground types: Procedural Error, Fresh Evidence, Miscarriage of Justice, Sentencing Error, Judicial Error, Ineffective Counsel, Prosecution Misconduct, Jury Irregularity, Constitutional Violation, Other
+  - Deep AI investigation of individual grounds
+  - Extracts relevant law sections (NSW Crimes Act, Criminal Appeal Act, Federal Criminal Code)
+  - Identifies similar Australian cases
+  - Strength assessment (Strong/Moderate/Weak)
+  - Status tracking (Identified/Investigating/Confirmed/Rejected)
 
 ## Prioritized Backlog
 ### P0 (Critical) - DONE
