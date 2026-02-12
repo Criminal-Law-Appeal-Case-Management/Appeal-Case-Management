@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { 
-  Scale, ArrowLeft, Download, Printer, Eye, Loader2
+  Scale, ArrowLeft, Download, Printer, Eye, Loader2, FileText
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
@@ -64,6 +64,31 @@ const ReportView = ({ user }) => {
       console.error("PDF export error:", error);
       toast.error("Failed to export PDF. Using print fallback.");
       window.print();
+    }
+  };
+
+  const handleExportDOCX = async () => {
+    try {
+      toast.info("Generating Word document...");
+      const response = await axios.get(
+        `${API}/cases/${caseId}/reports/${reportId}/export-docx`,
+        { responseType: 'blob' }
+      );
+      
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${caseData?.title || 'Report'}_${report?.report_type || 'report'}.docx`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      toast.success("Word document downloaded successfully!");
+    } catch (error) {
+      console.error("DOCX export error:", error);
+      toast.error("Failed to export Word document.");
     }
   };
 
