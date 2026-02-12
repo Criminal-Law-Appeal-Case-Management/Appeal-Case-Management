@@ -1213,6 +1213,95 @@ const CaseDetail = ({ user }) => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Add Ground of Merit Dialog */}
+      <Dialog open={showGroundDialog} onOpenChange={setShowGroundDialog}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle style={{ fontFamily: 'Crimson Pro, serif' }} className="text-2xl">
+              Add Ground of Merit
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <Label>Ground Type</Label>
+              <Select 
+                value={newGround.ground_type} 
+                onValueChange={(v) => setNewGround({ ...newGround, ground_type: v })}
+              >
+                <SelectTrigger data-testid="ground-type-select">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {GROUND_TYPES.map(type => (
+                    <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Title *</Label>
+              <Input
+                value={newGround.title}
+                onChange={(e) => setNewGround({ ...newGround, title: e.target.value })}
+                placeholder="e.g., Inadequate Legal Representation at Trial"
+                data-testid="ground-title"
+              />
+            </div>
+            <div>
+              <Label>Description *</Label>
+              <Textarea
+                value={newGround.description}
+                onChange={(e) => setNewGround({ ...newGround, description: e.target.value })}
+                placeholder="Describe the ground of merit in detail..."
+                rows={4}
+                data-testid="ground-description"
+              />
+            </div>
+            <div>
+              <Label>Strength Assessment</Label>
+              <Select 
+                value={newGround.strength} 
+                onValueChange={(v) => setNewGround({ ...newGround, strength: v })}
+              >
+                <SelectTrigger data-testid="ground-strength-select">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="strong">Strong</SelectItem>
+                  <SelectItem value="moderate">Moderate</SelectItem>
+                  <SelectItem value="weak">Weak</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Supporting Evidence (comma-separated)</Label>
+              <Input
+                value={newGround.supporting_evidence.join(", ")}
+                onChange={(e) => setNewGround({ 
+                  ...newGround, 
+                  supporting_evidence: e.target.value.split(",").map(s => s.trim()).filter(Boolean)
+                })}
+                placeholder="e.g., Trial transcript pg 45, Witness statement from John"
+                data-testid="ground-evidence"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowGroundDialog(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleCreateGround}
+              className="bg-slate-900 text-white hover:bg-slate-800"
+              data-testid="ground-submit"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Ground
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
