@@ -98,10 +98,11 @@ const CaseDetail = ({ user }) => {
   const [extractingText, setExtractingText] = useState(false);
 
   // Form states
-  const [uploadFile, setUploadFile] = useState(null);
+  const [uploadFiles, setUploadFiles] = useState([]);
   const [uploadCategory, setUploadCategory] = useState("other");
   const [uploadDescription, setUploadDescription] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0 });
 
   const [newEvent, setNewEvent] = useState({
     title: "",
