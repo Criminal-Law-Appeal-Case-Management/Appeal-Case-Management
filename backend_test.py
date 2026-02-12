@@ -473,6 +473,7 @@ def main():
         tester.test_document_management()
         tester.test_timeline_management()
         tester.test_notes_management()  # Add notes testing
+        tester.test_grounds_of_merit()  # Add grounds of merit testing
         tester.test_ai_report_generation()
         tester.test_error_handling()
         tester.test_cleanup_operations()
