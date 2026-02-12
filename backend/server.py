@@ -404,9 +404,9 @@ async def upload_document(
         {"$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
     )
     
-    # Return without file_data
-    del doc_dict["file_data"]
-    return doc_dict
+    # Return the document without MongoDB's _id field and file_data
+    created_doc = await db.documents.find_one({"document_id": doc.document_id}, {"_id": 0, "file_data": 0})
+    return created_doc
 
 @api_router.get("/cases/{case_id}/documents/{document_id}", response_model=dict)
 async def get_document(case_id: str, document_id: str, request: Request):
