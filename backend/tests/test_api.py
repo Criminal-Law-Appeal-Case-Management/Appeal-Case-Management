@@ -507,6 +507,137 @@ class TestDocumentSearch:
             print("✓ Sorting test skipped (need multiple documents with matches)")
 
 
+class TestOCR:
+    """OCR (Optical Character Recognition) tests"""
+    
+    def test_ocr_single_image_document(self, auth_headers, test_case_id_with_ocr_docs):
+        """Test OCR on a single image document"""
+        case_id, image_doc_id, pdf_doc_id = test_case_id_with_ocr_docs
+        
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{case_id}/documents/{image_doc_id}/ocr",
+            headers=auth_headers,
+            timeout=120
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["success"] == True
+        assert data["ocr_used"] == True
+        assert data["content_length"] > 0
+        assert "content_preview" in data
+        print(f"✓ OCR on image extracted {data['content_length']} characters")
+    
+    def test_ocr_scanned_pdf_document(self, auth_headers, test_case_id_with_ocr_docs):
+        """Test OCR on a scanned PDF document"""
+        case_id, image_doc_id, pdf_doc_id = test_case_id_with_ocr_docs
+        
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{case_id}/documents/{pdf_doc_id}/ocr",
+            headers=auth_headers,
+            timeout=120
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["success"] == True
+        assert data["ocr_used"] == True
+        assert data["content_length"] > 0
+        print(f"✓ OCR on scanned PDF extracted {data['content_length']} characters")
+    
+    def test_ocr_updates_document_content(self, auth_headers, test_case_id_with_ocr_docs):
+        """Test that OCR updates the document's content_text field"""
+        case_id, image_doc_id, pdf_doc_id = test_case_id_with_ocr_docs
+        
+        # Run OCR
+        requests.post(
+            f"{BASE_URL}/api/cases/{case_id}/documents/{image_doc_id}/ocr",
+            headers=auth_headers,
+            timeout=120
+        )
+        
+        # Verify document was updated
+        response = requests.get(
+            f"{BASE_URL}/api/cases/{case_id}/documents/{image_doc_id}",
+            headers=auth_headers
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data.get("content_text") is not None
+        assert len(data.get("content_text", "")) > 0
+        assert data.get("ocr_extracted") == True
+        print(f"✓ Document content_text updated with OCR result")
+    
+    def test_ocr_all_documents(self, auth_headers, test_case_id_with_ocr_docs):
+        """Test OCR-all endpoint processes multiple documents"""
+        case_id, image_doc_id, pdf_doc_id = test_case_id_with_ocr_docs
+        
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{case_id}/ocr-all",
+            headers=auth_headers,
+            timeout=300
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert "total_documents" in data
+        assert "successful_extractions" in data
+        assert "results" in data
+        assert isinstance(data["results"], list)
+        print(f"✓ OCR-all processed {data['total_documents']} documents, {data['successful_extractions']} successful")
+    
+    def test_ocr_all_skips_documents_with_text(self, auth_headers, test_case_id_with_docs):
+        """Test OCR-all skips documents that already have text"""
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{test_case_id_with_docs}/ocr-all",
+            headers=auth_headers,
+            timeout=300
+        )
+        assert response.status_code == 200
+        data = response.json()
+        
+        # All documents should be skipped since they have text
+        for result in data["results"]:
+            if result["status"] == "skipped":
+                assert "Already has extracted text" in result.get("reason", "")
+        print(f"✓ OCR-all correctly skips documents with existing text")
+    
+    def test_ocr_document_not_found(self, auth_headers, test_case_id):
+        """Test OCR on non-existent document returns 404"""
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{test_case_id}/documents/doc_nonexistent/ocr",
+            headers=auth_headers
+        )
+        assert response.status_code == 404
+        print("✓ OCR on non-existent document returns 404")
+    
+    def test_ocr_unauthorized(self, test_case_id_with_ocr_docs):
+        """Test OCR without authentication returns 401"""
+        case_id, image_doc_id, pdf_doc_id = test_case_id_with_ocr_docs
+        
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{case_id}/documents/{image_doc_id}/ocr"
+        )
+        assert response.status_code == 401
+        print("✓ OCR without auth returns 401")
+    
+    def test_ocr_all_unauthorized(self, test_case_id_with_ocr_docs):
+        """Test OCR-all without authentication returns 401"""
+        case_id, image_doc_id, pdf_doc_id = test_case_id_with_ocr_docs
+        
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{case_id}/ocr-all"
+        )
+        assert response.status_code == 401
+        print("✓ OCR-all without auth returns 401")
+    
+    def test_ocr_invalid_case(self, auth_headers):
+        """Test OCR on invalid case returns 404"""
+        response = requests.post(
+            f"{BASE_URL}/api/cases/case_invalid/documents/doc_test/ocr",
+            headers=auth_headers
+        )
+        assert response.status_code == 404
+        print("✓ OCR on invalid case returns 404")
+
+
 class TestTimeline:
     """Timeline event tests"""
     
