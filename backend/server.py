@@ -1321,7 +1321,7 @@ async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str) -> 
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")
     
-    # Get documents
+    # Get documents with full content
     documents = await db.documents.find(
         {"case_id": case_id},
         {"_id": 0, "file_data": 0}
@@ -1333,9 +1333,21 @@ async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str) -> 
         {"_id": 0}
     ).sort("event_date", 1).to_list(500)
     
-    # Prepare context for AI
+    # Get notes
+    notes = await db.notes.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).to_list(100)
+    
+    # Get identified grounds
+    grounds = await db.grounds_of_merit.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).to_list(100)
+    
+    # Prepare comprehensive context for AI with FULL document content
     case_context = f"""
-CASE INFORMATION:
+=== CASE INFORMATION ===
 Title: {case.get('title', 'N/A')}
 Defendant: {case.get('defendant_name', 'N/A')}
 Case Number: {case.get('case_number', 'N/A')}
@@ -1343,25 +1355,54 @@ Court: {case.get('court', 'N/A')}
 Judge: {case.get('judge', 'N/A')}
 Summary: {case.get('summary', 'N/A')}
 
-DOCUMENTS ({len(documents)} total):
 """
-    for doc in documents:
-        case_context += f"\n- [{doc.get('category', 'other')}] {doc.get('filename', 'Unnamed')}: {doc.get('description', 'No description')}"
-        if doc.get('content_text'):
-            case_context += f"\n  Content excerpt: {doc.get('content_text', '')[:500]}..."
+    
+    # Include FULL document content for cross-referencing
+    if documents:
+        case_context += f"=== CASE DOCUMENTS ({len(documents)} files) ===\n"
+        for doc in documents:
+            case_context += f"\n--- DOCUMENT: {doc.get('filename')} [{doc.get('category', 'other')}] ---\n"
+            if doc.get('description'):
+                case_context += f"Description: {doc.get('description')}\n"
+            content = doc.get('content_text', '')
+            if content:
+                # Include up to 4000 chars per document for thorough analysis
+                case_context += f"FULL CONTENT:\n{content[:4000]}\n"
+                if len(content) > 4000:
+                    case_context += f"[... {len(content) - 4000} more characters ...]\n"
+            else:
+                case_context += "CONTENT: [No text extracted]\n"
+    else:
+        case_context += "=== NO DOCUMENTS UPLOADED ===\n"
 
-    case_context += f"\n\nTIMELINE OF EVENTS ({len(timeline)} events):\n"
-    for event in timeline:
-        case_context += f"\n- [{event.get('event_date', 'Unknown date')}] {event.get('event_type', 'event')}: {event.get('title', 'Untitled')}\n  {event.get('description', '')}"
+    if timeline:
+        case_context += f"\n=== TIMELINE OF EVENTS ({len(timeline)} events) ===\n"
+        for event in timeline:
+            case_context += f"- {event.get('event_date', 'Unknown')}: [{event.get('event_type')}] {event.get('title')}\n"
+            if event.get('description'):
+                case_context += f"  Details: {event.get('description')}\n"
+
+    if notes:
+        case_context += f"\n=== LEGAL NOTES ({len(notes)} notes) ===\n"
+        for note in notes:
+            case_context += f"- [{note.get('category')}] {note.get('title')}: {note.get('content', '')[:500]}\n"
+
+    if grounds:
+        case_context += f"\n=== IDENTIFIED GROUNDS OF MERIT ({len(grounds)} grounds) ===\n"
+        for g in grounds:
+            case_context += f"- [{g.get('ground_type')}] {g.get('title')} (Strength: {g.get('strength')})\n"
+            case_context += f"  {g.get('description', '')[:300]}\n"
 
     # Define prompts based on report type
     if report_type == "quick_summary":
         system_prompt = """You are an expert criminal appeal legal analyst specializing in NSW State and Australian Federal murder law. 
-Provide a concise summary of the case highlighting key points for an appeal."""
+Provide a concise summary of the case highlighting key points for an appeal. Reference specific documents and evidence."""
         user_prompt = f"""Analyze this criminal appeal case and provide a QUICK SUMMARY (2-3 paragraphs) including:
 1. Brief case overview
-2. Key evidence points
+2. Key evidence points (cite specific documents)
 3. Primary grounds for appeal consideration
+
+IMPORTANT: Cross-reference the actual document content provided below.
 
 {case_context}"""
 
@@ -1373,66 +1414,69 @@ You have extensive knowledge of:
 - Criminal Code Act 1995 (Cth)
 - Evidence Act 1995 (NSW & Cth)
 - Sentencing Act 1995 (NSW)
-Provide detailed legal analysis with specific law references."""
-        user_prompt = f"""Analyze this criminal appeal case and provide a FULL DETAILED REPORT including:
+Provide detailed legal analysis with specific law references. ALWAYS cite specific document content as evidence."""
+        user_prompt = f"""Analyze this criminal appeal case and provide a FULL DETAILED REPORT.
 
-1. CASE OVERVIEW: Comprehensive summary of the case facts
-2. EVIDENCE ANALYSIS: Detailed analysis of each piece of evidence and its relevance
-3. GROUNDS OF MERIT: Identify all potential grounds for appeal with:
+IMPORTANT: Cross-reference ALL document content below. Quote specific passages as evidence.
+
+{case_context}
+
+YOUR REPORT MUST INCLUDE:
+
+1. CASE OVERVIEW: Comprehensive summary citing specific documents
+
+2. DOCUMENT ANALYSIS: For EACH document above, explain:
+   - Key information it contains
+   - How it supports/undermines the appeal
+   - Specific quotes from the document
+
+3. GROUNDS OF MERIT: Identify ALL potential grounds with:
    - Ground name and description
-   - Supporting evidence
+   - Specific evidence FROM THE DOCUMENTS (quote directly)
    - Relevant law sections (NSW State and Australian Federal) with exact references
    - How this ground serves justice
-4. LEGAL FRAMEWORK: Relevant sections of NSW and Australian Federal criminal law relating to murder appeals
+
+4. LEGAL FRAMEWORK: Relevant sections of criminal law relating to this case
+
 5. STRATEGIC RECOMMENDATIONS: Recommended approach for the appeal
 
-Format your response as a structured legal brief suitable for presentation to a barrister.
-
-{case_context}"""
+Format as a structured legal brief suitable for a barrister."""
 
     else:  # extensive_log
-        system_prompt = """You are an expert criminal appeal legal analyst specializing in NSW State and Australian Federal murder law.
-Provide exhaustive documentation and analysis of every aspect of the case."""
-        user_prompt = f"""Analyze this criminal appeal case and provide an EXTENSIVE LOG REPORT covering:
+        system_prompt = """You are an expert criminal appeal legal analyst. Provide exhaustive documentation with direct quotes from case materials."""
+        user_prompt = f"""Create an EXTENSIVE LOG REPORT with FULL cross-referencing of all materials.
 
-1. COMPLETE CASE CHRONOLOGY: Every event in detailed sequence
-2. DOCUMENT-BY-DOCUMENT ANALYSIS: Analysis of each document's significance
-3. COMPREHENSIVE EVIDENCE REVIEW: All evidence with chain of custody considerations
-4. EXHAUSTIVE GROUNDS OF MERIT: All possible grounds including:
-   - Primary grounds (strong merit)
-   - Secondary grounds (moderate merit)
-   - Peripheral grounds (worth consideration)
-   For each ground:
-   - Detailed description
-   - All supporting evidence
-   - All relevant law sections (NSW Crimes Act, Criminal Appeal Act, Federal Criminal Code)
-   - Case law precedents if applicable
-   - Probability of success
-5. PROCEDURAL REVIEW: Any procedural irregularities
-6. WITNESS/TESTIMONY ANALYSIS: Review of any witness statements
-7. SENTENCING CONSIDERATIONS: Analysis of sentencing aspects
-8. COMPLETE LEGAL FRAMEWORK: All relevant legislation with section numbers
-9. DETAILED RECOMMENDATIONS: Step-by-step strategic approach
+{case_context}
 
-{case_context}"""
+REQUIRED SECTIONS:
+1. COMPLETE CASE CHRONOLOGY with document citations
+2. DOCUMENT-BY-DOCUMENT ANALYSIS - quote key passages from each
+3. COMPREHENSIVE EVIDENCE REVIEW with specific references
+4. EXHAUSTIVE GROUNDS OF MERIT - cite supporting evidence
+5. PROCEDURAL REVIEW
+6. COMPLETE LEGAL FRAMEWORK with section numbers
+7. DETAILED RECOMMENDATIONS"""
 
     # Call OpenAI via Emergent
     api_key = os.environ.get('EMERGENT_LLM_KEY')
     if not api_key:
         raise HTTPException(status_code=500, detail="AI service not configured")
     
-    chat = LlmChat(
-        api_key=api_key,
-        session_id=f"report_{case_id}_{uuid.uuid4().hex[:8]}",
-        system_message=system_prompt
-    ).with_model("openai", "gpt-5.2")
-    
-    response = await chat.send_message(UserMessage(text=user_prompt))
+    try:
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=f"report_{case_id}_{uuid.uuid4().hex[:8]}",
+            system_message=system_prompt
+        ).with_model("openai", "gpt-5.2")
+        
+        response = await chat.send_message(UserMessage(text=user_prompt))
+    except Exception as e:
+        logger.error(f"Report generation failed: {e}")
+        raise HTTPException(status_code=500, detail=f"AI report generation failed: {str(e)}")
     
     # Parse response to extract grounds of merit
     grounds_of_merit = []
     if "GROUNDS OF MERIT" in response or "Ground" in response:
-        # Simple extraction - in production would use more sophisticated parsing
         grounds_of_merit = [{
             "title": "AI-Identified Ground",
             "description": "See full report for details",
