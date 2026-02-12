@@ -110,6 +110,7 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
 - `POST /api/auth/session`: Exchange OAuth session for token
 - `POST /api/cases`: Create new case
 - `POST /api/cases/{id}/documents`: Upload document(s)
+- `POST /api/cases/{id}/documents/search`: Search text across documents
 - `POST /api/cases/{id}/grounds/auto-identify`: AI identifies grounds
 - `POST /api/cases/{id}/grounds/{id}/investigate`: Deep AI analysis
 - `POST /api/cases/{id}/reports/generate`: Generate AI report
