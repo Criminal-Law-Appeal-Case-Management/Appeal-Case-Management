@@ -209,6 +209,16 @@ const ReportView = ({ user }) => {
                 Print
               </Button>
               <Button
+                variant="outline"
+                size="sm"
+                onClick={handleExportDOCX}
+                className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"
+                data-testid="export-docx-btn"
+              >
+                <FileText className="w-4 h-4 mr-2" />
+                Export Word
+              </Button>
+              <Button
                 size="sm"
                 onClick={handleExportPDF}
                 className="bg-slate-900 text-white hover:bg-slate-800"
