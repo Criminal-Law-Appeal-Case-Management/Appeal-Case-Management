@@ -1,0 +1,114 @@
+{
+  "identity": {
+    "name": "Justitia AI",
+    "persona": "E1 - The Anti-AI Designer",
+    "tone": "Authoritative, Precise, Trustworthy, Clear",
+    "archetype": "Archetype 4: Swiss & High-Contrast (Legal Variant)"
+  },
+  "typography": {
+    "headings": {
+      "font_family": "Crimson Pro, serif",
+      "weights": ["600", "700"],
+      "usage": "All page titles, section headers, and report titles. Must use tight tracking.",
+      "sizes": {
+        "h1": "text-4xl md:text-5xl tracking-tight font-bold",
+        "h2": "text-3xl md:text-4xl tracking-tight font-semibold",
+        "h3": "text-2xl md:text-3xl tracking-tight font-semibold"
+      }
+    },
+    "body": {
+      "font_family": "Manrope, sans-serif",
+      "weights": ["400", "500", "600"],
+      "usage": "UI elements, dashboard data, buttons, inputs.",
+      "sizes": {
+        "base": "text-base leading-relaxed",
+        "sm": "text-sm leading-relaxed",
+        "xs": "text-xs tracking-wide uppercase"
+      }
+    },
+    "mono": {
+      "font_family": "JetBrains Mono, monospace",
+      "usage": "Case IDs, legal citations, timestamps."
+    }
+  },
+  "colors": {
+    "primary": {
+      "name": "Legal Navy",
+      "hex": "#0F172A",
+      "tailwind": "bg-slate-900 text-white"
+    },
+    "secondary": {
+      "name": "Justice Gold",
+      "hex": "#B45309",
+      "tailwind": "text-amber-700 bg-amber-50"
+    },
+    "background": {
+      "app": "#F8FAFC",
+      "paper": "#FFFFFF",
+      "sidebar": "#F1F5F9"
+    },
+    "status": {
+      "success": "text-emerald-700 bg-emerald-50 border-emerald-200",
+      "warning": "text-amber-700 bg-amber-50 border-amber-200",
+      "error": "text-rose-700 bg-rose-50 border-rose-200",
+      "info": "text-blue-700 bg-blue-50 border-blue-200"
+    }
+  },
+  "layout_strategies": {
+    "dashboard": {
+      "type": "Bento Grid (Mode B)",
+      "grid_cols": "grid-cols-1 md:grid-cols-4 lg:grid-cols-12",
+      "gap": "gap-6",
+      "padding": "p-6 md:p-8"
+    },
+    "timeline": {
+      "type": "Vertical Spine",
+      "structure": "Central vertical line with alternating or left-aligned cards. Each card represents an event/evidence.",
+      "connector": "border-l-2 border-slate-200 pl-8 relative"
+    },
+    "report": {
+      "type": "A4 Paper Simulation",
+      "container": "max-w-[210mm] mx-auto bg-white shadow-sm border border-slate-200 p-[20mm] min-h-[297mm]"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-slate-900 text-white hover:bg-slate-800 rounded-md px-6 py-2.5 font-medium transition-all shadow-sm hover:shadow-md",
+      "secondary": "bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 rounded-md px-6 py-2.5 font-medium transition-all",
+      "ghost": "text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md px-4 py-2 transition-colors"
+    },
+    "cards": {
+      "base": "bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
+      "interactive": "cursor-pointer hover:border-slate-300 group"
+    },
+    "inputs": {
+      "base": "bg-white border border-slate-200 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 transition-all outline-none"
+    }
+  },
+  "visual_enhancers": {
+    "shadows": "shadow-[0_2px_8px_rgba(15,23,42,0.08)]",
+    "borders": "border border-slate-200",
+    "glass": "backdrop-blur-md bg-white/80 border-b border-slate-200/50",
+    "textures": "Use subtle noise texture on the sidebar background to reduce digital flatness."
+  },
+  "image_urls": {
+    "hero_bg": "https://images.unsplash.com/photo-1583521214690-73421a1829a9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3MjQyMTd8MHwxfHNlYXJjaHwxfHxsZWdhbCUyMGRvY3VtZW50cyUyMHBpbGUlMjBkZXNrfGVufDB8fHx8MTc3MDg4MDgxNHww&ixlib=rb-4.1.0&q=85",
+    "login_bg": "https://images.unsplash.com/photo-1758708536050-e911f468ea83?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3MjQyMTd8MHwxfHNlYXJjaHwyfHxsZWdhbCUyMGRvY3VtZW50cyUyMHBpbGUlMjBkZXNrfGVufDB8fHx8MTc3MDg4MDgxNHww&ixlib=rb-4.1.0&q=85",
+    "report_placeholder": "https://images.unsplash.com/photo-1701576766277-c6160505581d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3MjQyMTd8MHwxfHNlYXJjaHwzfHxsZWdhbCUyMGRvY3VtZW50cyUyMHBpbGUlMjBkZXNrfGVufDB8fHx8MTc3MDg4MDgxNHww&ixlib=rb-4.1.0&q=85"
+  },
+  "instructions_to_main_agent": [
+    "INSTALL FONTS: Add '@fontsource/crimson-pro' and '@fontsource/manrope' to package.json immediately.",
+    "THEME: Use a 'Light Mode' first approach. Dark mode should be a 'Night Mode' (deep slate, not black).",
+    "TIMELINE: Build a custom vertical timeline component. Do not use a generic list. It must look like a chronological legal sequence.",
+    "REPORTS: The 'Barrister Presentation View' must look like a printed legal brief. Use serif fonts, generous margins, and clear section numbering.",
+    "TESTING: Add data-testid to all interactive elements (buttons, inputs, cards).",
+    "NAVIGATION: Sidebar navigation is preferred over top nav for this dashboard to allow quick switching between cases.",
+    "ACCESSIBILITY: Ensure high contrast for all text. Legal documents must be legible."
+  ],
+  "universal_guidelines": [
+    "Avoid generic 'AI slop' designs. No centered text on dashboards.",
+    "Use 2-3x more spacing than typical. Legal data is dense; spacing makes it readable.",
+    "Micro-interactions are mandatory. Hover states on every row/card.",
+    "Do not use 'Inter' font. Use Manrope for UI and Crimson Pro for Headings."
+  ]
+}
