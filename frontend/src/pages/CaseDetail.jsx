@@ -1089,17 +1089,26 @@ const CaseDetail = ({ user }) => {
             )}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowUploadDialog(false)}>
+            <Button variant="outline" onClick={() => setShowUploadDialog(false)} disabled={uploading}>
               Cancel
             </Button>
             <Button 
-              onClick={handleUploadDocument}
+              onClick={handleUploadDocuments}
               className="bg-slate-900 text-white hover:bg-slate-800"
-              disabled={uploading}
+              disabled={uploading || uploadFiles.length === 0}
               data-testid="upload-submit"
             >
-              {uploading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Upload className="w-4 h-4 mr-2" />}
-              Upload
+              {uploading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Uploading {uploadProgress.current}/{uploadProgress.total}
+                </>
+              ) : (
+                <>
+                  <Upload className="w-4 h-4 mr-2" />
+                  Upload {uploadFiles.length > 0 ? `${uploadFiles.length} File${uploadFiles.length > 1 ? 's' : ''}` : ''}
+                </>
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
