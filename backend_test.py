@@ -228,6 +228,87 @@ class JustitiaAPITester:
         
         return True
 
+    def test_notes_management(self):
+        """Test notes CRUD operations and pin functionality"""
+        print("\n" + "="*50)
+        print("TESTING NOTES MANAGEMENT")
+        print("="*50)
+        
+        if not self.case_id:
+            print("❌ No case ID available for notes testing")
+            return False
+            
+        # Get initial notes
+        self.run_test("Get case notes (initial)", "GET", f"cases/{self.case_id}/notes", 200)
+        
+        # Create a new note
+        note_data = {
+            "title": "Test Legal Opinion Note",
+            "content": "This is a test legal opinion regarding the criminal appeal case. The evidence suggests potential grounds for appeal based on procedural irregularities.",
+            "category": "legal_opinion",
+            "is_pinned": False
+        }
+        
+        success, response = self.run_test("Create new note", "POST", f"cases/{self.case_id}/notes", 200, note_data)
+        if success and response:
+            self.note_id = response.get('note_id')
+            print(f"   Created note ID: {self.note_id}")
+            print(f"   Note title: {response.get('title')}")
+            print(f"   Note category: {response.get('category')}")
+        
+        if not self.note_id:
+            print("❌ Cannot continue notes testing without note ID")
+            return False
+            
+        # Get specific note
+        self.run_test("Get specific note", "GET", f"cases/{self.case_id}/notes/{self.note_id}", 200)
+        
+        # Update note
+        update_data = {
+            "title": "Updated Legal Opinion Note",
+            "content": "This is an updated legal opinion with additional analysis of the criminal appeal case.",
+            "category": "strategy"
+        }
+        self.run_test("Update note", "PUT", f"cases/{self.case_id}/notes/{self.note_id}", 200, update_data)
+        
+        # Toggle pin status
+        success, response = self.run_test("Pin note", "PATCH", f"cases/{self.case_id}/notes/{self.note_id}/pin", 200)
+        if success and response:
+            print(f"   Note pinned status: {response.get('is_pinned')}")
+        
+        # Toggle pin status again (unpin)
+        success, response = self.run_test("Unpin note", "PATCH", f"cases/{self.case_id}/notes/{self.note_id}/pin", 200)
+        if success and response:
+            print(f"   Note pinned status: {response.get('is_pinned')}")
+        
+        # Create additional notes to test sorting
+        note_categories = ["general", "evidence_note", "question", "action_item"]
+        additional_note_ids = []
+        
+        for i, category in enumerate(note_categories):
+            note_data = {
+                "title": f"Test {category.replace('_', ' ').title()} Note {i+1}",
+                "content": f"This is a test {category} note for testing sorting and categorization.",
+                "category": category,
+                "is_pinned": i % 2 == 0  # Pin every other note
+            }
+            
+            success, response = self.run_test(f"Create {category} note", "POST", f"cases/{self.case_id}/notes", 200, note_data)
+            if success and response:
+                additional_note_ids.append(response.get('note_id'))
+        
+        # Get all notes after creation (should be sorted by pinned status then date)
+        success, response = self.run_test("Get all notes (sorted)", "GET", f"cases/{self.case_id}/notes", 200)
+        if success and response:
+            print(f"   Total notes created: {len(response)}")
+            pinned_count = sum(1 for note in response if note.get('is_pinned'))
+            print(f"   Pinned notes: {pinned_count}")
+        
+        # Store additional note IDs for cleanup
+        self.additional_note_ids = additional_note_ids
+        
+        return True
+
     def test_ai_report_generation(self):
         """Test AI-powered report generation"""
         print("\n" + "="*50)
