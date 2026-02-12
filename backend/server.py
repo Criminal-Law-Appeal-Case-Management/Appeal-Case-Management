@@ -1295,13 +1295,29 @@ Identify at least 3-5 potential grounds if the materials support them. Consider:
     if not api_key:
         raise HTTPException(status_code=500, detail="AI service not configured")
     
-    chat = LlmChat(
-        api_key=api_key,
-        session_id=f"auto_identify_{case_id}_{uuid.uuid4().hex[:8]}",
-        system_message=system_prompt
-    ).with_model("openai", "gpt-5.2")
+    # Try up to 2 times
+    response = None
+    last_error = None
+    for attempt in range(2):
+        try:
+            chat = LlmChat(
+                api_key=api_key,
+                session_id=f"auto_identify_{case_id}_{uuid.uuid4().hex[:8]}",
+                system_message=system_prompt
+            ).with_model("openai", "gpt-5.2")
+            
+            response = await chat.send_message(UserMessage(text=user_prompt))
+            break
+        except Exception as e:
+            last_error = e
+            logger.warning(f"Auto-identify attempt {attempt + 1} failed: {e}")
+            if attempt < 1:
+                import asyncio
+                await asyncio.sleep(2)
     
-    response = await chat.send_message(UserMessage(text=user_prompt))
+    if response is None:
+        logger.error(f"All auto-identify attempts failed: {last_error}")
+        raise HTTPException(status_code=500, detail=f"AI analysis failed after retries: {str(last_error)}")
     
     # Try to parse JSON from response
     identified_grounds = []
