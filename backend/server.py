@@ -915,39 +915,7 @@ Be specific with section numbers and case citations. Keep response under 800 wor
     
     return await db.grounds_of_merit.find_one({"ground_id": ground_id}, {"_id": 0})
 
-Provide thorough, legally precise analysis with specific section references."""
-
-    user_prompt = f"""Conduct a DEEP INVESTIGATION of this ground of merit for a criminal appeal:
-
-{context}
-
-Provide a comprehensive analysis including:
-
-1. **GROUND ASSESSMENT**
-   - Detailed evaluation of this ground's viability
-   - Strength rating (Strong/Moderate/Weak) with justification
-   - Likelihood of success on appeal
-
-2. **RELEVANT LAW SECTIONS**
-   For each relevant section provide:
-   - Jurisdiction (NSW State / Australian Federal / High Court)
-   - Act and Section number
-   - Section title
-   - How it applies to this ground
-   - Key elements that must be established
-
-   Consider sections from:
-   - Crimes Act 1900 (NSW) - especially ss 18, 19A, 19B, 23, 24
-   - Criminal Appeal Act 1912 (NSW) - especially ss 5, 6, 7
-   - Criminal Code Act 1995 (Cth) - Division 115
-   - Evidence Act 1995 - hearsay, tendency, admissibility
-   - Judiciary Act 1903 (Cth) - s 35A for High Court appeals
-
-3. **SIMILAR CASES**
-   Identify 3-5 relevant Australian cases with:
-   - Case name and citation
-   - Brief facts
-   - How it relates to this ground
+@api_router.post("/cases/{case_id}/grounds/auto-identify", response_model=dict)
    - Outcome and what it established
 
 4. **EVIDENCE REQUIREMENTS**
