@@ -629,6 +629,227 @@ async def search_documents(case_id: str, search_request: DocumentSearchRequest, 
         "results": results
     }
 
+# ============ OCR FUNCTIONS ============
+
+def extract_text_with_ocr(file_content: bytes, filename: str, file_type: str) -> tuple:
+    """Extract text from images and scanned PDFs using OCR"""
+    import io
+    import pytesseract
+    from PIL import Image
+    
+    filename_lower = filename.lower()
+    extracted_text = ""
+    ocr_used = False
+    
+    try:
+        # Handle image files directly
+        if any(filename_lower.endswith(ext) for ext in ['.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif', '.webp']):
+            image = Image.open(io.BytesIO(file_content))
+            # Convert to RGB if necessary
+            if image.mode in ('RGBA', 'P'):
+                image = image.convert('RGB')
+            extracted_text = pytesseract.image_to_string(image)
+            ocr_used = True
+            logger.info(f"OCR extracted {len(extracted_text)} chars from image {filename}")
+        
+        # Handle PDFs - try regular extraction first, then OCR if needed
+        elif "pdf" in file_type or filename_lower.endswith('.pdf'):
+            # First try regular PDF text extraction
+            try:
+                from PyPDF2 import PdfReader
+                pdf_reader = PdfReader(io.BytesIO(file_content))
+                text_parts = []
+                for page in pdf_reader.pages[:30]:
+                    page_text = page.extract_text()
+                    if page_text:
+                        text_parts.append(page_text)
+                extracted_text = "\n".join(text_parts)
+            except Exception as e:
+                logger.warning(f"Regular PDF extraction failed: {e}")
+            
+            # If minimal text extracted, try OCR
+            if len(extracted_text.strip()) < 100:
+                try:
+                    from pdf2image import convert_from_bytes
+                    
+                    # Convert PDF pages to images
+                    images = convert_from_bytes(
+                        file_content, 
+                        dpi=200,
+                        first_page=1,
+                        last_page=min(20, 20)  # Limit to 20 pages for performance
+                    )
+                    
+                    ocr_parts = []
+                    for i, image in enumerate(images):
+                        # Convert to RGB if necessary
+                        if image.mode in ('RGBA', 'P'):
+                            image = image.convert('RGB')
+                        page_text = pytesseract.image_to_string(image)
+                        if page_text.strip():
+                            ocr_parts.append(f"--- Page {i+1} ---\n{page_text}")
+                    
+                    if ocr_parts:
+                        extracted_text = "\n\n".join(ocr_parts)
+                        ocr_used = True
+                        logger.info(f"OCR extracted {len(extracted_text)} chars from scanned PDF {filename}")
+                except Exception as e:
+                    logger.warning(f"PDF OCR failed: {e}")
+        
+        # Handle DOCX
+        elif filename_lower.endswith('.docx') or "word" in file_type:
+            try:
+                from docx import Document as DocxDocument
+                docx_doc = DocxDocument(io.BytesIO(file_content))
+                text_parts = []
+                for para in docx_doc.paragraphs:
+                    if para.text.strip():
+                        text_parts.append(para.text)
+                extracted_text = "\n".join(text_parts)
+            except Exception as e:
+                logger.warning(f"DOCX extraction failed: {e}")
+        
+        # Handle plain text
+        elif "text" in file_type or filename_lower.endswith('.txt'):
+            extracted_text = file_content.decode('utf-8', errors='ignore')
+    
+    except Exception as e:
+        logger.error(f"OCR/Text extraction error for {filename}: {e}")
+    
+    return extracted_text, ocr_used
+
+@api_router.post("/cases/{case_id}/documents/{document_id}/ocr", response_model=dict)
+async def ocr_document(case_id: str, document_id: str, request: Request):
+    """Extract text from a document using OCR (for scanned documents and images)"""
+    user = await get_current_user(request)
+    
+    doc = await db.documents.find_one(
+        {"document_id": document_id, "case_id": case_id, "user_id": user.user_id},
+        {"_id": 0}
+    )
+    if not doc:
+        raise HTTPException(status_code=404, detail="Document not found")
+    
+    if not doc.get('file_data'):
+        raise HTTPException(status_code=400, detail="No file data available")
+    
+    # Decode file content
+    file_content = base64.b64decode(doc['file_data'])
+    filename = doc.get('filename', '')
+    file_type = doc.get('file_type', '')
+    
+    # Extract text using OCR
+    content_text, ocr_used = extract_text_with_ocr(file_content, filename, file_type)
+    
+    if not content_text.strip():
+        return {
+            "document_id": document_id,
+            "filename": filename,
+            "success": False,
+            "ocr_used": ocr_used,
+            "message": "No text could be extracted from this document",
+            "content_length": 0
+        }
+    
+    # Update document with extracted text
+    await db.documents.update_one(
+        {"document_id": document_id},
+        {"$set": {
+            "content_text": content_text,
+            "ocr_extracted": ocr_used,
+            "text_extracted_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {
+        "document_id": document_id,
+        "filename": filename,
+        "success": True,
+        "ocr_used": ocr_used,
+        "content_length": len(content_text),
+        "content_preview": content_text[:500] + "..." if len(content_text) > 500 else content_text
+    }
+
+@api_router.post("/cases/{case_id}/ocr-all", response_model=dict)
+async def ocr_all_documents(case_id: str, request: Request):
+    """Run OCR on all documents in a case that don't have extracted text"""
+    user = await get_current_user(request)
+    
+    # Verify case ownership
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    # Get documents without text or with minimal text
+    documents = await db.documents.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).to_list(500)
+    
+    results = []
+    successful_ocr = 0
+    
+    for doc in documents:
+        existing_text = doc.get('content_text', '')
+        
+        # Skip if already has substantial text
+        if len(existing_text.strip()) > 100:
+            results.append({
+                "document_id": doc['document_id'],
+                "filename": doc.get('filename'),
+                "status": "skipped",
+                "reason": "Already has extracted text"
+            })
+            continue
+        
+        if not doc.get('file_data'):
+            results.append({
+                "document_id": doc['document_id'],
+                "filename": doc.get('filename'),
+                "status": "skipped",
+                "reason": "No file data"
+            })
+            continue
+        
+        # Try OCR extraction
+        file_content = base64.b64decode(doc['file_data'])
+        content_text, ocr_used = extract_text_with_ocr(
+            file_content, 
+            doc.get('filename', ''), 
+            doc.get('file_type', '')
+        )
+        
+        if content_text.strip():
+            await db.documents.update_one(
+                {"document_id": doc['document_id']},
+                {"$set": {
+                    "content_text": content_text,
+                    "ocr_extracted": ocr_used,
+                    "text_extracted_at": datetime.now(timezone.utc).isoformat()
+                }}
+            )
+            successful_ocr += 1
+            results.append({
+                "document_id": doc['document_id'],
+                "filename": doc.get('filename'),
+                "status": "success",
+                "ocr_used": ocr_used,
+                "content_length": len(content_text)
+            })
+        else:
+            results.append({
+                "document_id": doc['document_id'],
+                "filename": doc.get('filename'),
+                "status": "failed",
+                "reason": "No text could be extracted"
+            })
+    
+    return {
+        "total_documents": len(documents),
+        "successful_extractions": successful_ocr,
+        "results": results
+    }
+
 @api_router.post("/cases/{case_id}/documents/{document_id}/extract-text", response_model=dict)
 async def extract_document_text(case_id: str, document_id: str, request: Request):
     """Re-extract text from a document (useful if initial extraction failed)"""
