@@ -129,12 +129,13 @@ const CaseDetail = ({ user }) => {
 
   const fetchCaseData = async () => {
     try {
-      const [caseRes, docsRes, timelineRes, reportsRes, notesRes] = await Promise.all([
+      const [caseRes, docsRes, timelineRes, reportsRes, notesRes, groundsRes] = await Promise.all([
         axios.get(`${API}/cases/${caseId}`),
         axios.get(`${API}/cases/${caseId}/documents`),
         axios.get(`${API}/cases/${caseId}/timeline`),
         axios.get(`${API}/cases/${caseId}/reports`),
-        axios.get(`${API}/cases/${caseId}/notes`)
+        axios.get(`${API}/cases/${caseId}/notes`),
+        axios.get(`${API}/cases/${caseId}/grounds`)
       ]);
       setCaseData(caseRes.data);
       setDocuments(docsRes.data);
