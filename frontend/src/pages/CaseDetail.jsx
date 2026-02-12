@@ -6,7 +6,7 @@ import {
   Scale, ArrowLeft, FileText, Clock, Plus, Trash2, 
   Upload, Loader2, ChevronRight, FileUp, AlertCircle,
   MessageSquare, Pin, PinOff, Edit2, User, Sparkles, Gavel,
-  Search, X
+  Search, X, ScanLine
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
