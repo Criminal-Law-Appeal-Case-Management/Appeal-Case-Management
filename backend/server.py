@@ -827,57 +827,93 @@ async def investigate_ground_of_merit(case_id: str, ground_id: str, request: Req
     # Get case data
     case = await db.cases.find_one({"case_id": case_id}, {"_id": 0})
     
-    # Get documents
-    documents = await db.documents.find(
-        {"case_id": case_id},
-        {"_id": 0, "file_data": 0}
-    ).to_list(500)
-    
-    # Get timeline
-    timeline = await db.timeline_events.find(
-        {"case_id": case_id},
-        {"_id": 0}
-    ).sort("event_date", 1).to_list(500)
-    
-    # Build context
+    # Build concise context
     context = f"""
-CASE: {case.get('title', 'Unknown')}
-DEFENDANT: {case.get('defendant_name', 'Unknown')}
-CASE NUMBER: {case.get('case_number', 'N/A')}
-COURT: {case.get('court', 'N/A')}
+CASE: {case.get('title', 'Unknown')} | DEFENDANT: {case.get('defendant_name', 'Unknown')}
+COURT: {case.get('court', 'N/A')} | CASE NO: {case.get('case_number', 'N/A')}
 
-GROUND OF MERIT TO INVESTIGATE:
+GROUND OF MERIT:
 Title: {ground.get('title')}
 Type: {ground.get('ground_type')}
 Description: {ground.get('description')}
-Current Strength Assessment: {ground.get('strength')}
-Supporting Evidence: {', '.join(ground.get('supporting_evidence', []))}
-
-CASE DOCUMENTS ({len(documents)}):
+Strength: {ground.get('strength')}
 """
-    for doc in documents:
-        context += f"\n- [{doc.get('category')}] {doc.get('filename')}: {doc.get('description', 'No description')}"
-        if doc.get('content_text'):
-            context += f"\n  Content: {doc.get('content_text', '')[:300]}..."
 
-    context += f"\n\nTIMELINE ({len(timeline)} events):\n"
-    for event in timeline:
-        context += f"- {event.get('event_date', 'Unknown')}: {event.get('title')} - {event.get('description', '')[:100]}\n"
+    system_prompt = """You are an Australian criminal appeal barrister expert in NSW and Federal murder law. Be concise but thorough."""
 
-    system_prompt = """You are an expert Australian criminal appeal barrister with deep knowledge of:
-- Crimes Act 1900 (NSW)
-- Criminal Appeal Act 1912 (NSW)  
-- Criminal Code Act 1995 (Cth)
-- Evidence Act 1995 (NSW & Cth)
-- Judiciary Act 1903 (Cth) - High Court Appeals
-- Common law principles for murder, manslaughter, and homicide offenses
-- Landmark Australian criminal appeal cases
+    user_prompt = f"""Analyze this criminal appeal ground of merit:
 
-You specialize in identifying and analyzing grounds of merit for criminal appeals, particularly for:
-- Murder (sections 18, 19A, 19B Crimes Act NSW)
-- Manslaughter (section 18, 24 Crimes Act NSW)
-- High Court special leave appeals
-- Miscarriage of justice claims
+{context}
+
+Provide a focused analysis covering:
+1. VIABILITY ASSESSMENT - Is this ground likely to succeed? Rate: Strong/Moderate/Weak
+2. RELEVANT LAW SECTIONS - List 3-5 specific sections (e.g., s.18 Crimes Act 1900 NSW, s.6 Criminal Appeal Act 1912 NSW)
+3. SIMILAR CASES - Name 2-3 relevant Australian cases with brief relevance
+4. EVIDENCE NEEDED - What evidence strengthens this ground
+5. RECOMMENDATION - Brief strategic advice
+
+Be specific with section numbers and case citations. Keep response under 800 words."""
+
+    api_key = os.environ.get('EMERGENT_LLM_KEY')
+    if not api_key:
+        raise HTTPException(status_code=500, detail="AI service not configured")
+    
+    try:
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=f"ground_{ground_id}_{uuid.uuid4().hex[:8]}",
+            system_message=system_prompt
+        ).with_model("openai", "gpt-5.2")
+        
+        response = await chat.send_message(UserMessage(text=user_prompt))
+    except Exception as e:
+        logger.error(f"AI analysis failed: {e}")
+        raise HTTPException(status_code=500, detail=f"AI analysis failed: {str(e)}")
+    
+    # Parse response to extract structured data
+    law_sections = []
+    similar_cases = []
+    
+    # Simple extraction - look for section patterns
+    import re
+    section_patterns = re.findall(r'[sS]\.?\s*(\d+[A-Za-z]?)\s+([A-Za-z\s]+(?:Act|Code))\s*(?:\d{4})?', response)
+    for section_num, act_name in section_patterns[:10]:
+        law_sections.append({
+            "section": section_num,
+            "act": act_name.strip(),
+            "jurisdiction": "NSW" if "NSW" in act_name or "1900" in response else "Federal"
+        })
+    
+    # Extract case citations
+    case_patterns = re.findall(r'([A-Z][a-z]+(?:\s+v\s+)[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)', response)
+    for case_name in list(set(case_patterns))[:5]:
+        similar_cases.append({
+            "case_name": case_name,
+            "year": "",
+            "citation": ""
+        })
+    
+    # Update the ground with investigation results
+    deep_analysis = {
+        "full_analysis": response,
+        "investigated_at": datetime.now(timezone.utc).isoformat(),
+        "law_sections_identified": len(law_sections),
+        "similar_cases_found": len(similar_cases)
+    }
+    
+    await db.grounds_of_merit.update_one(
+        {"ground_id": ground_id},
+        {"$set": {
+            "status": "investigating",
+            "analysis": response[:2000] + "..." if len(response) > 2000 else response,
+            "deep_analysis": deep_analysis,
+            "law_sections": law_sections if law_sections else ground.get("law_sections", []),
+            "similar_cases": similar_cases if similar_cases else ground.get("similar_cases", []),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return await db.grounds_of_merit.find_one({"ground_id": ground_id}, {"_id": 0})
 
 Provide thorough, legally precise analysis with specific section references."""
 
