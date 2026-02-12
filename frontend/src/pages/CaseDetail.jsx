@@ -711,20 +711,35 @@ const CaseDetail = ({ user }) => {
               {activeTab === "documents" && (
                 <>
                   {documents.length > 0 && (
-                    <Button 
-                      onClick={handleExtractAllText}
-                      disabled={extractingText}
-                      variant="outline"
-                      className="mr-2"
-                      data-testid="extract-text-btn"
-                    >
-                      {extractingText ? (
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      ) : (
-                        <FileText className="w-4 h-4 mr-2" />
-                      )}
-                      Extract Text
-                    </Button>
+                    <>
+                      <Button 
+                        onClick={handleExtractAllText}
+                        disabled={extractingText || runningOcr}
+                        variant="outline"
+                        data-testid="extract-text-btn"
+                      >
+                        {extractingText ? (
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        ) : (
+                          <FileText className="w-4 h-4 mr-2" />
+                        )}
+                        Extract Text
+                      </Button>
+                      <Button 
+                        onClick={handleRunOcrAll}
+                        disabled={runningOcr || extractingText}
+                        variant="outline"
+                        className="bg-purple-50 border-purple-200 text-purple-700 hover:bg-purple-100"
+                        data-testid="ocr-all-btn"
+                      >
+                        {runningOcr ? (
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        ) : (
+                          <ScanLine className="w-4 h-4 mr-2" />
+                        )}
+                        OCR Scan
+                      </Button>
+                    </>
                   )}
                   <Button 
                     onClick={() => setShowUploadDialog(true)}
