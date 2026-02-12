@@ -596,9 +596,6 @@ async def search_documents(case_id: str, search_request: DocumentSearchRequest, 
                 if context_end < len(content):
                     context = context + "..."
                 
-                # Highlight the match in context
-                match_start_in_context = start_pos - context_start + (3 if context_start > 0 else 0)
-                
                 matches.append({
                     "context": context,
                     "position": start_pos,
