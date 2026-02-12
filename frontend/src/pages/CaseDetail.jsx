@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { 
   Scale, ArrowLeft, FileText, Clock, Plus, Trash2, 
   Upload, Loader2, ChevronRight, FileUp, AlertCircle,
-  MessageSquare, Pin, PinOff, Edit2, User
+  MessageSquare, Pin, PinOff, Edit2, User, Sparkles, Gavel
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -30,6 +30,7 @@ import { Textarea } from "../components/ui/textarea";
 import { Badge } from "../components/ui/badge";
 import { API } from "../App";
 import Timeline from "../components/Timeline";
+import GroundsOfMerit from "../components/GroundsOfMerit";
 
 const DOCUMENT_CATEGORIES = [
   { value: "brief", label: "Legal Brief" },
