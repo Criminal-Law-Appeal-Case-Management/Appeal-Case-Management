@@ -528,6 +528,110 @@ async def delete_document(case_id: str, document_id: str, request: Request):
     
     return {"message": "Document deleted"}
 
+class DocumentSearchRequest(BaseModel):
+    query: str
+    case_sensitive: bool = False
+
+class SearchMatch(BaseModel):
+    document_id: str
+    filename: str
+    category: str
+    matches: List[dict]  # List of {context, position}
+    match_count: int
+
+@api_router.post("/cases/{case_id}/documents/search", response_model=dict)
+async def search_documents(case_id: str, search_request: DocumentSearchRequest, request: Request):
+    """Search for text across all documents in a case"""
+    import re
+    
+    user = await get_current_user(request)
+    
+    # Verify case ownership
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    query = search_request.query.strip()
+    if not query:
+        raise HTTPException(status_code=400, detail="Search query is required")
+    
+    if len(query) < 2:
+        raise HTTPException(status_code=400, detail="Search query must be at least 2 characters")
+    
+    # Get all documents with content
+    documents = await db.documents.find(
+        {"case_id": case_id, "content_text": {"$exists": True, "$ne": ""}},
+        {"_id": 0, "file_data": 0}
+    ).to_list(500)
+    
+    results = []
+    total_matches = 0
+    
+    # Search flags
+    flags = 0 if search_request.case_sensitive else re.IGNORECASE
+    
+    for doc in documents:
+        content = doc.get("content_text", "")
+        if not content:
+            continue
+        
+        matches = []
+        
+        # Find all occurrences with context
+        try:
+            pattern = re.compile(re.escape(query), flags)
+            for match in pattern.finditer(content):
+                start_pos = match.start()
+                end_pos = match.end()
+                
+                # Get context (100 chars before and after)
+                context_start = max(0, start_pos - 100)
+                context_end = min(len(content), end_pos + 100)
+                
+                context = content[context_start:context_end]
+                
+                # Add ellipsis if truncated
+                if context_start > 0:
+                    context = "..." + context
+                if context_end < len(content):
+                    context = context + "..."
+                
+                # Highlight the match in context
+                match_start_in_context = start_pos - context_start + (3 if context_start > 0 else 0)
+                
+                matches.append({
+                    "context": context,
+                    "position": start_pos,
+                    "matched_text": match.group()
+                })
+                
+                # Limit matches per document to prevent huge responses
+                if len(matches) >= 10:
+                    break
+        except re.error:
+            continue
+        
+        if matches:
+            total_matches += len(matches)
+            results.append({
+                "document_id": doc.get("document_id"),
+                "filename": doc.get("filename"),
+                "category": doc.get("category"),
+                "matches": matches,
+                "match_count": len(matches)
+            })
+    
+    # Sort by match count (most matches first)
+    results.sort(key=lambda x: x["match_count"], reverse=True)
+    
+    return {
+        "query": query,
+        "total_matches": total_matches,
+        "documents_with_matches": len(results),
+        "total_documents_searched": len(documents),
+        "results": results
+    }
+
 @api_router.post("/cases/{case_id}/documents/{document_id}/extract-text", response_model=dict)
 async def extract_document_text(case_id: str, document_id: str, request: Request):
     """Re-extract text from a document (useful if initial extraction failed)"""
