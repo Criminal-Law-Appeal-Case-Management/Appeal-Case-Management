@@ -27,6 +27,7 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
 - [x] Document upload and categorization
 - [x] **Multi-file upload** - Upload multiple documents at once
 - [x] **Document search** - Search for text across all case documents with context highlighting
+- [x] **OCR support** - Extract text from scanned PDFs and images using Tesseract OCR
 - [x] Timeline event management
 - [x] AI-powered legal analysis
 - [x] Grounds of merit identification with deep investigation
