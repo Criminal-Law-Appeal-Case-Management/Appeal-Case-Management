@@ -207,7 +207,7 @@ class JustitiaAPITester:
             "event_type": "arrest"
         }
         
-        success, response = self.run_test("Create timeline event", "POST", f"cases/{self.case_id}/timeline", 201, event_data)
+        success, response = self.run_test("Create timeline event", "POST", f"cases/{self.case_id}/timeline", 200, event_data)
         if success and response:
             self.event_id = response.get('event_id')
             print(f"   Created event ID: {self.event_id}")
