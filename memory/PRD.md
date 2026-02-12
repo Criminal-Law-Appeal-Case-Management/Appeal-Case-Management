@@ -125,6 +125,7 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
 - `POST /api/cases/{id}/grounds/{id}/investigate`: Deep AI analysis
 - `POST /api/cases/{id}/reports/generate`: Generate AI report
 - `GET /api/cases/{id}/reports/{id}/export-pdf`: Download PDF
+- `GET /api/cases/{id}/reports/{id}/export-docx`: Download Word document
 
 ### 3rd Party Integrations
 - **OpenAI GPT-5.2** via Emergent LLM Key - for AI analysis
