@@ -393,8 +393,9 @@ def main():
     print("🏛️  JUSTITIA AI - CRIMINAL APPEAL CASE MANAGEMENT API TESTING")
     print("=" * 70)
     print(f"Backend URL: https://lawbrief-sorter.preview.emergentagent.com")
-    print(f"Test User: test-user-1770881377244")
-    print(f"Session Token: test_session_1770881377244")
+    print(f"Test User: test-user-notes-1770882054339")
+    print(f"Session Token: test_session_notes_1770882054339")
+    print(f"Test Case ID: case_64f57656cd75")
     print("=" * 70)
     
     tester = JustitiaAPITester()
