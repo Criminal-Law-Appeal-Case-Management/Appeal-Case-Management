@@ -2332,7 +2332,7 @@ async def export_report_docx(case_id: str, report_id: str, request: Request):
             strength = ground.get('strength', 'moderate').capitalize()
             
             # Ground heading
-            ground_heading = doc.add_heading(
+            doc.add_heading(
                 f"{idx}. {ground.get('title', 'Unnamed Ground')} [{ground_type}] - Strength: {strength}",
                 level=2
             )
