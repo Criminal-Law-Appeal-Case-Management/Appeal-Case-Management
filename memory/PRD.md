@@ -51,6 +51,11 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
   - Highlights matched text
   - Sorted by match count
   - Displays which documents contain matches
+- **OCR support** - Extract text from scanned documents and images
+  - Uses Tesseract OCR for text recognition
+  - Supports PNG, JPG, TIFF, BMP, GIF, WebP images
+  - Handles scanned PDFs (converts to images then OCR)
+  - Individual document OCR or batch OCR for all documents
 - Timeline builder with event types
 - AI report generation (3 types: Quick, Full, Extensive)
 - Report viewer with formatted sections
