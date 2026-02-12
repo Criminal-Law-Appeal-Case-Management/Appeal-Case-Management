@@ -553,6 +553,127 @@ async def delete_timeline_event(case_id: str, event_id: str, request: Request):
     
     return {"message": "Event deleted"}
 
+# ============ NOTES & COMMENTS ENDPOINTS ============
+
+@api_router.get("/cases/{case_id}/notes", response_model=List[dict])
+async def get_notes(case_id: str, request: Request):
+    """Get all notes for a case"""
+    user = await get_current_user(request)
+    
+    # Verify case ownership
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    notes = await db.notes.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).sort([("is_pinned", -1), ("created_at", -1)]).to_list(500)
+    
+    return notes
+
+@api_router.post("/cases/{case_id}/notes", response_model=dict)
+async def create_note(case_id: str, note_data: NoteCreate, request: Request):
+    """Create a new note"""
+    user = await get_current_user(request)
+    
+    # Verify case ownership
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    note = Note(
+        case_id=case_id,
+        user_id=user.user_id,
+        author_name=user.name,
+        author_email=user.email,
+        **note_data.model_dump()
+    )
+    
+    note_dict = note.model_dump()
+    note_dict["created_at"] = note_dict["created_at"].isoformat()
+    note_dict["updated_at"] = note_dict["updated_at"].isoformat()
+    
+    await db.notes.insert_one(note_dict)
+    
+    # Update case
+    await db.cases.update_one(
+        {"case_id": case_id},
+        {"$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    created_note = await db.notes.find_one({"note_id": note.note_id}, {"_id": 0})
+    return created_note
+
+@api_router.get("/cases/{case_id}/notes/{note_id}", response_model=dict)
+async def get_note(case_id: str, note_id: str, request: Request):
+    """Get a specific note"""
+    user = await get_current_user(request)
+    
+    note = await db.notes.find_one(
+        {"note_id": note_id, "case_id": case_id, "user_id": user.user_id},
+        {"_id": 0}
+    )
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found")
+    
+    return note
+
+@api_router.put("/cases/{case_id}/notes/{note_id}", response_model=dict)
+async def update_note(case_id: str, note_id: str, note_data: NoteUpdate, request: Request):
+    """Update a note"""
+    user = await get_current_user(request)
+    
+    update_fields = {k: v for k, v in note_data.model_dump().items() if v is not None}
+    update_fields["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    result = await db.notes.update_one(
+        {"note_id": note_id, "case_id": case_id, "user_id": user.user_id},
+        {"$set": update_fields}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Note not found")
+    
+    return await db.notes.find_one({"note_id": note_id}, {"_id": 0})
+
+@api_router.delete("/cases/{case_id}/notes/{note_id}")
+async def delete_note(case_id: str, note_id: str, request: Request):
+    """Delete a note"""
+    user = await get_current_user(request)
+    
+    result = await db.notes.delete_one({
+        "note_id": note_id,
+        "case_id": case_id,
+        "user_id": user.user_id
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Note not found")
+    
+    return {"message": "Note deleted"}
+
+@api_router.patch("/cases/{case_id}/notes/{note_id}/pin")
+async def toggle_pin_note(case_id: str, note_id: str, request: Request):
+    """Toggle pin status of a note"""
+    user = await get_current_user(request)
+    
+    note = await db.notes.find_one(
+        {"note_id": note_id, "case_id": case_id, "user_id": user.user_id},
+        {"_id": 0}
+    )
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found")
+    
+    new_pin_status = not note.get("is_pinned", False)
+    
+    await db.notes.update_one(
+        {"note_id": note_id},
+        {"$set": {"is_pinned": new_pin_status, "updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    return await db.notes.find_one({"note_id": note_id}, {"_id": 0})
+
 # ============ AI ANALYSIS & REPORTS ============
 
 async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str) -> dict:
