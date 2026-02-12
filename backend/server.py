@@ -1742,8 +1742,8 @@ async def export_report_pdf(case_id: str, report_id: str, request: Request):
     story = []
     
     # Header
-    story.append(Paragraph("Justitia AI", styles['Subtitle']))
-    story.append(Paragraph("Criminal Appeal Case Management", styles['Subtitle']))
+    story.append(Paragraph("Justitia AI", styles['ReportSubtitle']))
+    story.append(Paragraph("Criminal Appeal Case Management", styles['ReportSubtitle']))
     story.append(Spacer(1, 10*mm))
     
     # Report Title
@@ -1752,7 +1752,7 @@ async def export_report_pdf(case_id: str, report_id: str, request: Request):
         'full_detailed': 'Full Detailed Legal Analysis', 
         'extensive_log': 'Extensive Case Log & Analysis'
     }
-    story.append(Paragraph(report_type_labels.get(report.get('report_type'), 'Legal Report'), styles['Title']))
+    story.append(Paragraph(report_type_labels.get(report.get('report_type'), 'Legal Report'), styles['ReportTitle']))
     story.append(Spacer(1, 5*mm))
     
     # Case Info Table
@@ -1807,25 +1807,25 @@ async def export_report_pdf(case_id: str, report_id: str, request: Request):
             
             # Description
             if ground.get('description'):
-                story.append(Paragraph(ground.get('description'), styles['BodyText']))
+                story.append(Paragraph(ground.get('description'), styles['ReportBodyText']))
             
             # Legal References (Law Sections)
             if ground.get('law_sections'):
-                story.append(Paragraph("<b>Relevant Law Sections:</b>", styles['BodyText']))
+                story.append(Paragraph("<b>Relevant Law Sections:</b>", styles['ReportBodyText']))
                 for section in ground.get('law_sections', []):
                     section_text = f"• s.{section.get('section', '')} {section.get('act', '')} ({section.get('jurisdiction', 'NSW')})"
                     story.append(Paragraph(section_text, styles['LawSection']))
             
             # Similar Cases
             if ground.get('similar_cases'):
-                story.append(Paragraph("<b>Similar Cases:</b>", styles['BodyText']))
+                story.append(Paragraph("<b>Similar Cases:</b>", styles['ReportBodyText']))
                 for case_ref in ground.get('similar_cases', []):
                     case_text = f"• {case_ref.get('case_name', '')} {case_ref.get('citation', '')}"
                     story.append(Paragraph(case_text, styles['LawSection']))
             
             # Supporting Evidence
             if ground.get('supporting_evidence'):
-                story.append(Paragraph("<b>Supporting Evidence:</b>", styles['BodyText']))
+                story.append(Paragraph("<b>Supporting Evidence:</b>", styles['ReportBodyText']))
                 for evidence in ground.get('supporting_evidence', []):
                     story.append(Paragraph(f"• {evidence}", styles['LawSection']))
             
@@ -1857,7 +1857,7 @@ async def export_report_pdf(case_id: str, report_id: str, request: Request):
             # Clean up markdown-style formatting
             clean_para = para.replace('**', '').replace('##', '').strip()
             if clean_para:
-                story.append(Paragraph(clean_para, styles['BodyText']))
+                story.append(Paragraph(clean_para, styles['ReportBodyText']))
                 story.append(Spacer(1, 3*mm))
     
     # Footer disclaimer
