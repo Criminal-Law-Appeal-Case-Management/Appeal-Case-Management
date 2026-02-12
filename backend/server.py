@@ -700,7 +700,9 @@ async def generate_report(case_id: str, request: Request):
     
     await db.reports.insert_one(report_dict)
     
-    return report_dict
+    # Return the report without MongoDB's _id field
+    created_report = await db.reports.find_one({"report_id": report.report_id}, {"_id": 0})
+    return created_report
 
 @api_router.get("/cases/{case_id}/reports", response_model=List[dict])
 async def get_reports(case_id: str, request: Request):
