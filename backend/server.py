@@ -1856,17 +1856,30 @@ REQUIRED SECTIONS:
     if not api_key:
         raise HTTPException(status_code=500, detail="AI service not configured")
     
-    try:
-        chat = LlmChat(
-            api_key=api_key,
-            session_id=f"report_{case_id}_{uuid.uuid4().hex[:8]}",
-            system_message=system_prompt
-        ).with_model("openai", "gpt-5.2")
-        
-        response = await chat.send_message(UserMessage(text=user_prompt))
-    except Exception as e:
-        logger.error(f"Report generation failed: {e}")
-        raise HTTPException(status_code=500, detail=f"AI report generation failed: {str(e)}")
+    # Try up to 4 times with exponential backoff
+    response = None
+    last_error = None
+    for attempt in range(4):
+        try:
+            chat = LlmChat(
+                api_key=api_key,
+                session_id=f"report_{case_id}_{uuid.uuid4().hex[:8]}",
+                system_message=system_prompt
+            ).with_model("openai", "gpt-5.2")
+            
+            response = await chat.send_message(UserMessage(text=user_prompt))
+            break
+        except Exception as e:
+            last_error = e
+            logger.warning(f"Report generation attempt {attempt + 1} failed: {e}")
+            if attempt < 3:
+                import asyncio
+                # Exponential backoff: 3, 6, 12 seconds
+                await asyncio.sleep(3 * (2 ** attempt))
+    
+    if response is None:
+        logger.error(f"All report generation attempts failed: {last_error}")
+        raise HTTPException(status_code=500, detail=f"AI report generation failed after retries: {str(last_error)}")
     
     # Parse response to extract grounds of merit
     grounds_of_merit = []
