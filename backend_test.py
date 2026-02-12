@@ -23,6 +23,7 @@ class JustitiaAPITester:
         self.event_id = None
         self.report_id = None
         self.note_id = None
+        self.ground_ids = []  # Track created grounds for testing
 
     def run_test(self, name, method, endpoint, expected_status, data=None, files=None):
         """Run a single API test"""
