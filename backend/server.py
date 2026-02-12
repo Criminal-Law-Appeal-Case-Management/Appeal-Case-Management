@@ -525,6 +525,165 @@ async def delete_document(case_id: str, document_id: str, request: Request):
     
     return {"message": "Document deleted"}
 
+@api_router.post("/cases/{case_id}/documents/{document_id}/extract-text", response_model=dict)
+async def extract_document_text(case_id: str, document_id: str, request: Request):
+    """Re-extract text from a document (useful if initial extraction failed)"""
+    user = await get_current_user(request)
+    
+    doc = await db.documents.find_one(
+        {"document_id": document_id, "case_id": case_id, "user_id": user.user_id},
+        {"_id": 0}
+    )
+    if not doc:
+        raise HTTPException(status_code=404, detail="Document not found")
+    
+    if not doc.get('file_data'):
+        raise HTTPException(status_code=400, detail="No file data available")
+    
+    # Decode file content
+    file_content = base64.b64decode(doc['file_data'])
+    filename_lower = doc.get('filename', '').lower()
+    file_type = doc.get('file_type', '')
+    
+    content_text = ""
+    
+    try:
+        if "text" in file_type or filename_lower.endswith('.txt'):
+            content_text = file_content.decode('utf-8', errors='ignore')
+        
+        elif "pdf" in file_type or filename_lower.endswith('.pdf'):
+            try:
+                import io
+                from PyPDF2 import PdfReader
+                pdf_reader = PdfReader(io.BytesIO(file_content))
+                text_parts = []
+                for page in pdf_reader.pages[:30]:
+                    page_text = page.extract_text()
+                    if page_text:
+                        text_parts.append(page_text)
+                content_text = "\n".join(text_parts)
+            except Exception as e:
+                logger.warning(f"PDF extraction failed: {e}")
+        
+        elif filename_lower.endswith('.docx') or "word" in file_type:
+            try:
+                import io
+                from docx import Document as DocxDocument
+                docx_doc = DocxDocument(io.BytesIO(file_content))
+                text_parts = []
+                for para in docx_doc.paragraphs:
+                    if para.text.strip():
+                        text_parts.append(para.text)
+                content_text = "\n".join(text_parts)
+            except Exception as e:
+                logger.warning(f"DOCX extraction failed: {e}")
+    except Exception as e:
+        logger.error(f"Text extraction error: {e}")
+        raise HTTPException(status_code=500, detail=f"Text extraction failed: {str(e)}")
+    
+    # Update document with extracted text
+    await db.documents.update_one(
+        {"document_id": document_id},
+        {"$set": {
+            "content_text": content_text,
+            "text_extracted_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {
+        "document_id": document_id,
+        "filename": doc.get('filename'),
+        "content_length": len(content_text),
+        "content_preview": content_text[:500] + "..." if len(content_text) > 500 else content_text,
+        "success": bool(content_text)
+    }
+
+@api_router.post("/cases/{case_id}/extract-all-text", response_model=dict)
+async def extract_all_documents_text(case_id: str, request: Request):
+    """Extract text from all documents in a case"""
+    user = await get_current_user(request)
+    
+    # Verify case ownership
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    documents = await db.documents.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).to_list(500)
+    
+    results = []
+    for doc in documents:
+        if not doc.get('file_data'):
+            results.append({"document_id": doc['document_id'], "success": False, "error": "No file data"})
+            continue
+        
+        file_content = base64.b64decode(doc['file_data'])
+        filename_lower = doc.get('filename', '').lower()
+        file_type = doc.get('file_type', '')
+        
+        content_text = ""
+        error = None
+        
+        try:
+            if "text" in file_type or filename_lower.endswith('.txt'):
+                content_text = file_content.decode('utf-8', errors='ignore')
+            
+            elif "pdf" in file_type or filename_lower.endswith('.pdf'):
+                try:
+                    import io
+                    from PyPDF2 import PdfReader
+                    pdf_reader = PdfReader(io.BytesIO(file_content))
+                    text_parts = []
+                    for page in pdf_reader.pages[:30]:
+                        page_text = page.extract_text()
+                        if page_text:
+                            text_parts.append(page_text)
+                    content_text = "\n".join(text_parts)
+                except Exception as e:
+                    error = str(e)
+            
+            elif filename_lower.endswith('.docx') or "word" in file_type:
+                try:
+                    import io
+                    from docx import Document as DocxDocument
+                    docx_doc = DocxDocument(io.BytesIO(file_content))
+                    text_parts = []
+                    for para in docx_doc.paragraphs:
+                        if para.text.strip():
+                            text_parts.append(para.text)
+                    content_text = "\n".join(text_parts)
+                except Exception as e:
+                    error = str(e)
+        except Exception as e:
+            error = str(e)
+        
+        # Update document
+        if content_text:
+            await db.documents.update_one(
+                {"document_id": doc['document_id']},
+                {"$set": {
+                    "content_text": content_text,
+                    "text_extracted_at": datetime.now(timezone.utc).isoformat()
+                }}
+            )
+        
+        results.append({
+            "document_id": doc['document_id'],
+            "filename": doc.get('filename'),
+            "success": bool(content_text),
+            "content_length": len(content_text) if content_text else 0,
+            "error": error
+        })
+    
+    successful = sum(1 for r in results if r['success'])
+    return {
+        "total_documents": len(documents),
+        "successful_extractions": successful,
+        "results": results
+    }
+
 # ============ TIMELINE ENDPOINTS ============
 
 @api_router.get("/cases/{case_id}/timeline", response_model=List[dict])
