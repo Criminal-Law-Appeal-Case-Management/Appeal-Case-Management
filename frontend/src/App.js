@@ -13,8 +13,9 @@ import BarristerView from "./pages/BarristerView";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
 
-// Configure axios
+// Configure axios with timeout and credentials
 axios.defaults.withCredentials = true;
+axios.defaults.timeout = 30000; // 30 second timeout for most requests
 
 // Auth Callback Component
 const AuthCallback = () => {
