@@ -99,6 +99,12 @@ const CaseDetail = ({ user }) => {
   const [selectedGround, setSelectedGround] = useState(null);
   const [extractingText, setExtractingText] = useState(false);
 
+  // Search states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState(null);
+  const [searching, setSearching] = useState(false);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+
   // Form states
   const [uploadFiles, setUploadFiles] = useState([]);
   const [uploadCategory, setUploadCategory] = useState("other");
