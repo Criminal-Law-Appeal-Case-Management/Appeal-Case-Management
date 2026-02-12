@@ -249,6 +249,57 @@ const CaseDetail = ({ user }) => {
     }
   };
 
+  const handleSearchDocuments = async (e) => {
+    e?.preventDefault();
+    
+    if (!searchQuery.trim()) {
+      toast.error("Please enter a search term");
+      return;
+    }
+    
+    if (searchQuery.trim().length < 2) {
+      toast.error("Search term must be at least 2 characters");
+      return;
+    }
+    
+    setSearching(true);
+    try {
+      const response = await axios.post(`${API}/cases/${caseId}/documents/search`, {
+        query: searchQuery.trim(),
+        case_sensitive: false
+      });
+      setSearchResults(response.data);
+      setShowSearchResults(true);
+      
+      if (response.data.total_matches === 0) {
+        toast.info("No matches found in documents");
+      } else {
+        toast.success(`Found ${response.data.total_matches} matches in ${response.data.documents_with_matches} documents`);
+      }
+    } catch (error) {
+      console.error("Search error:", error);
+      toast.error("Failed to search documents");
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+    setSearchResults(null);
+    setShowSearchResults(false);
+  };
+
+  const highlightMatch = (text, query) => {
+    if (!query) return text;
+    const parts = text.split(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
+    return parts.map((part, i) => 
+      part.toLowerCase() === query.toLowerCase() 
+        ? <mark key={i} className="bg-amber-200 px-0.5 rounded">{part}</mark>
+        : part
+    );
+  };
+
   const handleCreateEvent = async () => {
     if (!newEvent.title || !newEvent.event_date) {
       toast.error("Title and date are required");
