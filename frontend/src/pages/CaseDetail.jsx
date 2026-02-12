@@ -193,6 +193,29 @@ const CaseDetail = ({ user }) => {
     }
   };
 
+  const handleExtractAllText = async () => {
+    if (documents.length === 0) {
+      toast.error("No documents to extract text from");
+      return;
+    }
+    
+    setExtractingText(true);
+    try {
+      const response = await axios.post(`${API}/cases/${caseId}/extract-all-text`);
+      const { successful_extractions, total_documents, results } = response.data;
+      
+      // Refresh documents to get updated content_text
+      const docsRes = await axios.get(`${API}/cases/${caseId}/documents`);
+      setDocuments(docsRes.data);
+      
+      toast.success(`Extracted text from ${successful_extractions}/${total_documents} documents`);
+    } catch (error) {
+      toast.error("Failed to extract text from documents");
+    } finally {
+      setExtractingText(false);
+    }
+  };
+
   const handleCreateEvent = async () => {
     if (!newEvent.title || !newEvent.event_date) {
       toast.error("Title and date are required");
