@@ -41,9 +41,30 @@ const ReportView = ({ user }) => {
     window.print();
   };
 
-  const handleExportPDF = () => {
-    // Open print dialog which allows saving as PDF
-    window.print();
+  const handleExportPDF = async () => {
+    try {
+      toast.info("Generating PDF...");
+      const response = await axios.get(
+        `${API}/cases/${caseId}/reports/${reportId}/export-pdf`,
+        { responseType: 'blob' }
+      );
+      
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${caseData?.title || 'Report'}_${report?.report_type || 'report'}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      toast.success("PDF downloaded successfully!");
+    } catch (error) {
+      console.error("PDF export error:", error);
+      toast.error("Failed to export PDF. Using print fallback.");
+      window.print();
+    }
   };
 
   const formatDate = (dateStr) => {
