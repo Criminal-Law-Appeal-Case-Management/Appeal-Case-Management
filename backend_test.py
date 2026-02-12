@@ -14,14 +14,15 @@ from io import BytesIO
 class JustitiaAPITester:
     def __init__(self, base_url="https://lawbrief-sorter.preview.emergentagent.com"):
         self.base_url = base_url
-        self.session_token = "test_session_1770881377244"  # From auth setup
-        self.user_id = "test-user-1770881377244"
+        self.session_token = "test_session_notes_1770882054339"  # Updated test session
+        self.user_id = "test-user-notes-1770882054339"
         self.tests_run = 0
         self.tests_passed = 0
-        self.case_id = None
+        self.case_id = "case_64f57656cd75"  # Use existing test case
         self.document_id = None
         self.event_id = None
         self.report_id = None
+        self.note_id = None
 
     def run_test(self, name, method, endpoint, expected_status, data=None, files=None):
         """Run a single API test"""
