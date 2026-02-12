@@ -91,7 +91,6 @@ Create an app that can sort, store and organise documents, briefs, case notes, p
 ## Prioritized Backlog
 
 ### P1 (High Priority) - Future
-- [ ] Document text extraction (OCR for images)
 - [ ] Export reports to DOCX
 - [ ] Report comparison view
 
