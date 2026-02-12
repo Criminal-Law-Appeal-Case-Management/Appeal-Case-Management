@@ -1492,11 +1492,10 @@ REQUIRED SECTIONS:
     }
 
 @api_router.post("/cases/{case_id}/reports/generate", response_model=dict)
-async def generate_report(case_id: str, request: Request):
+async def generate_report(case_id: str, report_request: ReportRequest, request: Request):
     """Generate an AI-powered report for a case"""
     user = await get_current_user(request)
-    body = await request.json()
-    report_type = body.get("report_type", "quick_summary")
+    report_type = report_request.report_type
     
     if report_type not in ["quick_summary", "full_detailed", "extensive_log"]:
         raise HTTPException(status_code=400, detail="Invalid report type")
