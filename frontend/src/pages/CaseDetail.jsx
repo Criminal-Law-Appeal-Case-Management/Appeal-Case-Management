@@ -4,12 +4,12 @@ import axios from "axios";
 import { toast } from "sonner";
 import { 
   Scale, ArrowLeft, FileText, Clock, Plus, Trash2, 
-  Upload, Calendar, Download, Loader2, ChevronRight,
-  FileUp, AlertCircle
+  Upload, Loader2, ChevronRight, FileUp, AlertCircle,
+  MessageSquare, Pin, PinOff, Edit2, User
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent } from "../components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import {
   Dialog,
@@ -49,6 +49,15 @@ const EVENT_TYPES = [
   { value: "other", label: "Other" }
 ];
 
+const NOTE_CATEGORIES = [
+  { value: "general", label: "General Note" },
+  { value: "legal_opinion", label: "Legal Opinion" },
+  { value: "evidence_note", label: "Evidence Note" },
+  { value: "strategy", label: "Strategy" },
+  { value: "question", label: "Question" },
+  { value: "action_item", label: "Action Item" }
+];
+
 const CaseDetail = ({ user }) => {
   const { caseId } = useParams();
   const navigate = useNavigate();
@@ -56,6 +65,7 @@ const CaseDetail = ({ user }) => {
   const [documents, setDocuments] = useState([]);
   const [timeline, setTimeline] = useState([]);
   const [reports, setReports] = useState([]);
+  const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("documents");
 
@@ -63,7 +73,9 @@ const CaseDetail = ({ user }) => {
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [showEventDialog, setShowEventDialog] = useState(false);
   const [showReportDialog, setShowReportDialog] = useState(false);
+  const [showNoteDialog, setShowNoteDialog] = useState(false);
   const [generatingReport, setGeneratingReport] = useState(false);
+  const [editingNote, setEditingNote] = useState(null);
 
   // Form states
   const [uploadFile, setUploadFile] = useState(null);
@@ -78,22 +90,30 @@ const CaseDetail = ({ user }) => {
     event_type: "other"
   });
 
+  const [newNote, setNewNote] = useState({
+    title: "",
+    content: "",
+    category: "general"
+  });
+
   useEffect(() => {
     fetchCaseData();
   }, [caseId]);
 
   const fetchCaseData = async () => {
     try {
-      const [caseRes, docsRes, timelineRes, reportsRes] = await Promise.all([
+      const [caseRes, docsRes, timelineRes, reportsRes, notesRes] = await Promise.all([
         axios.get(`${API}/cases/${caseId}`),
         axios.get(`${API}/cases/${caseId}/documents`),
         axios.get(`${API}/cases/${caseId}/timeline`),
-        axios.get(`${API}/cases/${caseId}/reports`)
+        axios.get(`${API}/cases/${caseId}/reports`),
+        axios.get(`${API}/cases/${caseId}/notes`)
       ]);
       setCaseData(caseRes.data);
       setDocuments(docsRes.data);
       setTimeline(timelineRes.data);
       setReports(reportsRes.data);
+      setNotes(notesRes.data);
     } catch (error) {
       toast.error("Failed to load case data");
       navigate("/dashboard");
@@ -203,12 +223,97 @@ const CaseDetail = ({ user }) => {
     }
   };
 
+  // Notes handlers
+  const handleCreateNote = async () => {
+    if (!newNote.title || !newNote.content) {
+      toast.error("Title and content are required");
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${API}/cases/${caseId}/notes`, newNote);
+      setNotes([response.data, ...notes]);
+      setShowNoteDialog(false);
+      setNewNote({ title: "", content: "", category: "general" });
+      toast.success("Note added successfully");
+    } catch (error) {
+      toast.error("Failed to add note");
+    }
+  };
+
+  const handleUpdateNote = async () => {
+    if (!editingNote || !newNote.title || !newNote.content) {
+      toast.error("Title and content are required");
+      return;
+    }
+
+    try {
+      const response = await axios.put(`${API}/cases/${caseId}/notes/${editingNote.note_id}`, newNote);
+      setNotes(notes.map(n => n.note_id === editingNote.note_id ? response.data : n));
+      setShowNoteDialog(false);
+      setEditingNote(null);
+      setNewNote({ title: "", content: "", category: "general" });
+      toast.success("Note updated successfully");
+    } catch (error) {
+      toast.error("Failed to update note");
+    }
+  };
+
+  const handleDeleteNote = async (noteId) => {
+    if (!window.confirm("Delete this note?")) return;
+    
+    try {
+      await axios.delete(`${API}/cases/${caseId}/notes/${noteId}`);
+      setNotes(notes.filter(n => n.note_id !== noteId));
+      toast.success("Note deleted");
+    } catch (error) {
+      toast.error("Failed to delete note");
+    }
+  };
+
+  const handleTogglePin = async (noteId) => {
+    try {
+      const response = await axios.patch(`${API}/cases/${caseId}/notes/${noteId}/pin`);
+      setNotes(notes.map(n => n.note_id === noteId ? response.data : n)
+        .sort((a, b) => {
+          if (a.is_pinned === b.is_pinned) {
+            return new Date(b.created_at) - new Date(a.created_at);
+          }
+          return b.is_pinned ? 1 : -1;
+        }));
+      toast.success(response.data.is_pinned ? "Note pinned" : "Note unpinned");
+    } catch (error) {
+      toast.error("Failed to update note");
+    }
+  };
+
+  const openEditNote = (note) => {
+    setEditingNote(note);
+    setNewNote({
+      title: note.title,
+      content: note.content,
+      category: note.category
+    });
+    setShowNoteDialog(true);
+  };
+
   const formatDate = (dateStr) => {
     if (!dateStr) return "N/A";
     return new Date(dateStr).toLocaleDateString("en-AU", {
       day: "numeric",
       month: "short",
       year: "numeric"
+    });
+  };
+
+  const formatDateTime = (dateStr) => {
+    if (!dateStr) return "N/A";
+    return new Date(dateStr).toLocaleDateString("en-AU", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
     });
   };
 
@@ -222,6 +327,18 @@ const CaseDetail = ({ user }) => {
       other: "bg-slate-50 text-slate-600 border-slate-200"
     };
     return colors[category] || colors.other;
+  };
+
+  const getNoteCategoryColor = (category) => {
+    const colors = {
+      general: "bg-slate-50 text-slate-700 border-slate-200",
+      legal_opinion: "bg-blue-50 text-blue-700 border-blue-200",
+      evidence_note: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      strategy: "bg-purple-50 text-purple-700 border-purple-200",
+      question: "bg-amber-50 text-amber-700 border-amber-200",
+      action_item: "bg-red-50 text-red-700 border-red-200"
+    };
+    return colors[category] || colors.general;
   };
 
   if (loading) {
@@ -295,6 +412,10 @@ const CaseDetail = ({ user }) => {
                 <Clock className="w-4 h-4 mr-2" />
                 Timeline ({timeline.length})
               </TabsTrigger>
+              <TabsTrigger value="notes" data-testid="tab-notes">
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Notes ({notes.length})
+              </TabsTrigger>
               <TabsTrigger value="reports" data-testid="tab-reports">
                 <Scale className="w-4 h-4 mr-2" />
                 Reports ({reports.length})
@@ -320,6 +441,20 @@ const CaseDetail = ({ user }) => {
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Event
+                </Button>
+              )}
+              {activeTab === "notes" && (
+                <Button 
+                  onClick={() => {
+                    setEditingNote(null);
+                    setNewNote({ title: "", content: "", category: "general" });
+                    setShowNoteDialog(true);
+                  }}
+                  className="bg-slate-900 text-white hover:bg-slate-800"
+                  data-testid="add-note-btn"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Note
                 </Button>
               )}
               {activeTab === "reports" && (
@@ -415,6 +550,103 @@ const CaseDetail = ({ user }) => {
               </Card>
             ) : (
               <Timeline events={timeline} onDeleteEvent={handleDeleteEvent} />
+            )}
+          </TabsContent>
+
+          {/* Notes Tab */}
+          <TabsContent value="notes" className="space-y-4">
+            {notes.length === 0 ? (
+              <Card className="p-12 text-center">
+                <MessageSquare className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  No notes yet
+                </h3>
+                <p className="text-slate-600 mb-4">Add notes, comments, and legal opinions to the case.</p>
+                <Button 
+                  onClick={() => {
+                    setEditingNote(null);
+                    setNewNote({ title: "", content: "", category: "general" });
+                    setShowNoteDialog(true);
+                  }}
+                  className="bg-slate-900 text-white hover:bg-slate-800"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add First Note
+                </Button>
+              </Card>
+            ) : (
+              <div className="grid gap-4">
+                {notes.map((note) => (
+                  <Card 
+                    key={note.note_id} 
+                    className={`card-hover group ${note.is_pinned ? 'border-amber-300 bg-amber-50/30' : ''}`}
+                    data-testid={`note-${note.note_id}`}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            {note.is_pinned && (
+                              <Pin className="w-4 h-4 text-amber-600" />
+                            )}
+                            <Badge variant="outline" className={getNoteCategoryColor(note.category)}>
+                              {NOTE_CATEGORIES.find(c => c.value === note.category)?.label || note.category}
+                            </Badge>
+                          </div>
+                          <h4 
+                            className="font-semibold text-slate-900 text-lg"
+                            style={{ fontFamily: 'Crimson Pro, serif' }}
+                          >
+                            {note.title}
+                          </h4>
+                          <p className="text-slate-600 mt-2 whitespace-pre-wrap leading-relaxed">
+                            {note.content}
+                          </p>
+                          <div className="flex items-center gap-4 mt-4 text-xs text-slate-500">
+                            <div className="flex items-center gap-1">
+                              <User className="w-3 h-3" />
+                              <span>{note.author_name}</span>
+                            </div>
+                            <span>{formatDateTime(note.created_at)}</span>
+                            {note.updated_at !== note.created_at && (
+                              <span className="italic">(edited)</span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleTogglePin(note.note_id)}
+                            className="text-slate-600 hover:text-amber-600"
+                            data-testid={`pin-note-${note.note_id}`}
+                          >
+                            {note.is_pinned ? <PinOff className="w-4 h-4" /> : <Pin className="w-4 h-4" />}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => openEditNote(note)}
+                            className="text-slate-600 hover:text-blue-600"
+                            data-testid={`edit-note-${note.note_id}`}
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeleteNote(note.note_id)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            data-testid={`delete-note-${note.note_id}`}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             )}
           </TabsContent>
 
@@ -639,6 +871,82 @@ const CaseDetail = ({ user }) => {
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Event
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add/Edit Note Dialog */}
+      <Dialog open={showNoteDialog} onOpenChange={(open) => {
+        setShowNoteDialog(open);
+        if (!open) {
+          setEditingNote(null);
+          setNewNote({ title: "", content: "", category: "general" });
+        }
+      }}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle style={{ fontFamily: 'Crimson Pro, serif' }} className="text-2xl">
+              {editingNote ? "Edit Note" : "Add Note"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <Label>Category</Label>
+              <Select 
+                value={newNote.category} 
+                onValueChange={(v) => setNewNote({ ...newNote, category: v })}
+              >
+                <SelectTrigger data-testid="note-category-select">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {NOTE_CATEGORIES.map(cat => (
+                    <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Title *</Label>
+              <Input
+                value={newNote.title}
+                onChange={(e) => setNewNote({ ...newNote, title: e.target.value })}
+                placeholder="Note title..."
+                data-testid="note-title"
+              />
+            </div>
+            <div>
+              <Label>Content *</Label>
+              <Textarea
+                value={newNote.content}
+                onChange={(e) => setNewNote({ ...newNote, content: e.target.value })}
+                placeholder="Write your note, comment, or legal opinion..."
+                rows={6}
+                data-testid="note-content"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowNoteDialog(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={editingNote ? handleUpdateNote : handleCreateNote}
+              className="bg-slate-900 text-white hover:bg-slate-800"
+              data-testid="note-submit"
+            >
+              {editingNote ? (
+                <>
+                  <Edit2 className="w-4 h-4 mr-2" />
+                  Update Note
+                </>
+              ) : (
+                <>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Note
+                </>
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
