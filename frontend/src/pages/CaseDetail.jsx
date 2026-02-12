@@ -1217,15 +1217,19 @@ const CaseDetail = ({ user }) => {
 
             <div className="grid gap-4">
               <Card 
-                className="card-hover cursor-pointer border-2 hover:border-blue-400"
-                onClick={() => !generatingReport && handleGenerateReport('quick_summary')}
+                className={`card-hover cursor-pointer border-2 transition-all ${generatingReport ? 'opacity-50 pointer-events-none' : 'hover:border-blue-400 hover:shadow-md'}`}
+                onClick={() => {
+                  if (!generatingReport) {
+                    handleGenerateReport('quick_summary');
+                  }
+                }}
                 data-testid="quick-summary-option"
               >
                 <CardContent className="p-4 flex items-start gap-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Scale className="w-6 h-6 text-blue-600" />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h4 className="font-semibold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>
                       Quick Summary
                     </h4>
@@ -1233,19 +1237,26 @@ const CaseDetail = ({ user }) => {
                       Brief 2-3 paragraph overview of the case, key evidence, and primary appeal considerations.
                     </p>
                   </div>
+                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+                    Generate
+                  </Button>
                 </CardContent>
               </Card>
 
               <Card 
-                className="card-hover cursor-pointer border-2 hover:border-amber-400"
-                onClick={() => !generatingReport && handleGenerateReport('full_detailed')}
+                className={`card-hover cursor-pointer border-2 transition-all ${generatingReport ? 'opacity-50 pointer-events-none' : 'hover:border-amber-400 hover:shadow-md'}`}
+                onClick={() => {
+                  if (!generatingReport) {
+                    handleGenerateReport('full_detailed');
+                  }
+                }}
                 data-testid="full-detailed-option"
               >
                 <CardContent className="p-4 flex items-start gap-4">
                   <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Scale className="w-6 h-6 text-amber-600" />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h4 className="font-semibold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>
                       Full Detailed Report
                     </h4>
@@ -1254,19 +1265,26 @@ const CaseDetail = ({ user }) => {
                       and strategic recommendations. Suitable for barrister presentation.
                     </p>
                   </div>
+                  <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white">
+                    Generate
+                  </Button>
                 </CardContent>
               </Card>
 
               <Card 
-                className="card-hover cursor-pointer border-2 hover:border-slate-400"
-                onClick={() => !generatingReport && handleGenerateReport('extensive_log')}
+                className={`card-hover cursor-pointer border-2 transition-all ${generatingReport ? 'opacity-50 pointer-events-none' : 'hover:border-slate-400 hover:shadow-md'}`}
+                onClick={() => {
+                  if (!generatingReport) {
+                    handleGenerateReport('extensive_log');
+                  }
+                }}
                 data-testid="extensive-log-option"
               >
                 <CardContent className="p-4 flex items-start gap-4">
                   <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Scale className="w-6 h-6 text-slate-600" />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h4 className="font-semibold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>
                       Extensive Log Report
                     </h4>
@@ -1275,6 +1293,9 @@ const CaseDetail = ({ user }) => {
                       analysis, all possible grounds, procedural review, and detailed legal framework.
                     </p>
                   </div>
+                  <Button size="sm" className="bg-slate-700 hover:bg-slate-800 text-white">
+                    Generate
+                  </Button>
                 </CardContent>
               </Card>
             </div>
