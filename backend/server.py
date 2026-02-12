@@ -130,6 +130,9 @@ class GroundOfMeritUpdate(BaseModel):
     status: Optional[str] = None
     supporting_evidence: Optional[List[str]] = None
 
+class ReportRequest(BaseModel):
+    report_type: str = "quick_summary"
+
 class Report(BaseModel):
     model_config = ConfigDict(extra="ignore")
     report_id: str = Field(default_factory=lambda: f"rpt_{uuid.uuid4().hex[:12]}")
