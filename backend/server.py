@@ -117,6 +117,36 @@ class Report(BaseModel):
     grounds_of_merit: List[dict] = []
     generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+class Note(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    note_id: str = Field(default_factory=lambda: f"note_{uuid.uuid4().hex[:12]}")
+    case_id: str
+    user_id: str
+    author_name: str
+    author_email: str
+    category: str = "general"  # general, legal_opinion, evidence_note, strategy, question, action_item
+    title: str
+    content: str
+    is_pinned: bool = False
+    document_id: Optional[str] = None  # Link to specific document
+    report_id: Optional[str] = None  # Link to specific report
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class NoteCreate(BaseModel):
+    category: str = "general"
+    title: str
+    content: str
+    is_pinned: bool = False
+    document_id: Optional[str] = None
+    report_id: Optional[str] = None
+
+class NoteUpdate(BaseModel):
+    category: Optional[str] = None
+    title: Optional[str] = None
+    content: Optional[str] = None
+    is_pinned: Optional[bool] = None
+
 # ============ AUTH HELPERS ============
 
 async def get_current_user(request: Request) -> User:
