@@ -501,6 +501,10 @@ const CaseDetail = ({ user }) => {
                 <Clock className="w-4 h-4 mr-2" />
                 Timeline ({timeline.length})
               </TabsTrigger>
+              <TabsTrigger value="grounds" data-testid="tab-grounds">
+                <Gavel className="w-4 h-4 mr-2" />
+                Grounds ({grounds.length})
+              </TabsTrigger>
               <TabsTrigger value="notes" data-testid="tab-notes">
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Notes ({notes.length})
