@@ -396,7 +396,9 @@ const CaseDetail = ({ user }) => {
   const handleAutoIdentifyGrounds = async () => {
     setAutoIdentifying(true);
     try {
-      const response = await axios.post(`${API}/cases/${caseId}/grounds/auto-identify`);
+      const response = await axios.post(`${API}/cases/${caseId}/grounds/auto-identify`, {}, {
+        timeout: 120000 // 2 minute timeout for AI analysis
+      });
       if (response.data.grounds && response.data.grounds.length > 0) {
         setGrounds([...response.data.grounds, ...grounds]);
         toast.success(`Identified ${response.data.identified_count} potential ground(s) of merit!`);
@@ -404,7 +406,12 @@ const CaseDetail = ({ user }) => {
         toast.info("No new grounds identified. Try adding more case documents.");
       }
     } catch (error) {
-      toast.error("Failed to auto-identify grounds");
+      console.error("Auto-identify error:", error);
+      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+        toast.error("Analysis is taking too long. Please try again.");
+      } else {
+        toast.error("Failed to auto-identify grounds. Please try again.");
+      }
     } finally {
       setAutoIdentifying(false);
     }
