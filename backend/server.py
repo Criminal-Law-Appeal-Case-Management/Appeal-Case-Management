@@ -698,6 +698,471 @@ async def toggle_pin_note(case_id: str, note_id: str, request: Request):
     
     return await db.notes.find_one({"note_id": note_id}, {"_id": 0})
 
+# ============ GROUNDS OF MERIT ENDPOINTS ============
+
+GROUND_TYPES = [
+    "procedural_error",
+    "fresh_evidence", 
+    "miscarriage_of_justice",
+    "sentencing_error",
+    "judicial_error",
+    "ineffective_counsel",
+    "prosecution_misconduct",
+    "jury_irregularity",
+    "constitutional_violation",
+    "other"
+]
+
+@api_router.get("/cases/{case_id}/grounds", response_model=List[dict])
+async def get_grounds_of_merit(case_id: str, request: Request):
+    """Get all grounds of merit for a case"""
+    user = await get_current_user(request)
+    
+    # Verify case ownership
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    grounds = await db.grounds_of_merit.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).sort([("strength", 1), ("created_at", -1)]).to_list(100)
+    
+    return grounds
+
+@api_router.post("/cases/{case_id}/grounds", response_model=dict)
+async def create_ground_of_merit(case_id: str, ground_data: GroundOfMeritCreate, request: Request):
+    """Create a new ground of merit"""
+    user = await get_current_user(request)
+    
+    # Verify case ownership
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    ground = GroundOfMerit(
+        case_id=case_id,
+        user_id=user.user_id,
+        **ground_data.model_dump()
+    )
+    
+    ground_dict = ground.model_dump()
+    ground_dict["created_at"] = ground_dict["created_at"].isoformat()
+    ground_dict["updated_at"] = ground_dict["updated_at"].isoformat()
+    
+    await db.grounds_of_merit.insert_one(ground_dict)
+    
+    # Update case
+    await db.cases.update_one(
+        {"case_id": case_id},
+        {"$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    created_ground = await db.grounds_of_merit.find_one({"ground_id": ground.ground_id}, {"_id": 0})
+    return created_ground
+
+@api_router.get("/cases/{case_id}/grounds/{ground_id}", response_model=dict)
+async def get_ground_of_merit(case_id: str, ground_id: str, request: Request):
+    """Get a specific ground of merit"""
+    user = await get_current_user(request)
+    
+    ground = await db.grounds_of_merit.find_one(
+        {"ground_id": ground_id, "case_id": case_id, "user_id": user.user_id},
+        {"_id": 0}
+    )
+    if not ground:
+        raise HTTPException(status_code=404, detail="Ground of merit not found")
+    
+    return ground
+
+@api_router.put("/cases/{case_id}/grounds/{ground_id}", response_model=dict)
+async def update_ground_of_merit(case_id: str, ground_id: str, ground_data: GroundOfMeritUpdate, request: Request):
+    """Update a ground of merit"""
+    user = await get_current_user(request)
+    
+    update_fields = {k: v for k, v in ground_data.model_dump().items() if v is not None}
+    update_fields["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    result = await db.grounds_of_merit.update_one(
+        {"ground_id": ground_id, "case_id": case_id, "user_id": user.user_id},
+        {"$set": update_fields}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Ground of merit not found")
+    
+    return await db.grounds_of_merit.find_one({"ground_id": ground_id}, {"_id": 0})
+
+@api_router.delete("/cases/{case_id}/grounds/{ground_id}")
+async def delete_ground_of_merit(case_id: str, ground_id: str, request: Request):
+    """Delete a ground of merit"""
+    user = await get_current_user(request)
+    
+    result = await db.grounds_of_merit.delete_one({
+        "ground_id": ground_id,
+        "case_id": case_id,
+        "user_id": user.user_id
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Ground of merit not found")
+    
+    return {"message": "Ground of merit deleted"}
+
+@api_router.post("/cases/{case_id}/grounds/{ground_id}/investigate", response_model=dict)
+async def investigate_ground_of_merit(case_id: str, ground_id: str, request: Request):
+    """Deep AI investigation of a specific ground of merit"""
+    from emergentintegrations.llm.chat import LlmChat, UserMessage
+    
+    user = await get_current_user(request)
+    
+    # Get the ground
+    ground = await db.grounds_of_merit.find_one(
+        {"ground_id": ground_id, "case_id": case_id, "user_id": user.user_id},
+        {"_id": 0}
+    )
+    if not ground:
+        raise HTTPException(status_code=404, detail="Ground of merit not found")
+    
+    # Get case data
+    case = await db.cases.find_one({"case_id": case_id}, {"_id": 0})
+    
+    # Get documents
+    documents = await db.documents.find(
+        {"case_id": case_id},
+        {"_id": 0, "file_data": 0}
+    ).to_list(500)
+    
+    # Get timeline
+    timeline = await db.timeline_events.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).sort("event_date", 1).to_list(500)
+    
+    # Build context
+    context = f"""
+CASE: {case.get('title', 'Unknown')}
+DEFENDANT: {case.get('defendant_name', 'Unknown')}
+CASE NUMBER: {case.get('case_number', 'N/A')}
+COURT: {case.get('court', 'N/A')}
+
+GROUND OF MERIT TO INVESTIGATE:
+Title: {ground.get('title')}
+Type: {ground.get('ground_type')}
+Description: {ground.get('description')}
+Current Strength Assessment: {ground.get('strength')}
+Supporting Evidence: {', '.join(ground.get('supporting_evidence', []))}
+
+CASE DOCUMENTS ({len(documents)}):
+"""
+    for doc in documents:
+        context += f"\n- [{doc.get('category')}] {doc.get('filename')}: {doc.get('description', 'No description')}"
+        if doc.get('content_text'):
+            context += f"\n  Content: {doc.get('content_text', '')[:300]}..."
+
+    context += f"\n\nTIMELINE ({len(timeline)} events):\n"
+    for event in timeline:
+        context += f"- {event.get('event_date', 'Unknown')}: {event.get('title')} - {event.get('description', '')[:100]}\n"
+
+    system_prompt = """You are an expert Australian criminal appeal barrister with deep knowledge of:
+- Crimes Act 1900 (NSW)
+- Criminal Appeal Act 1912 (NSW)  
+- Criminal Code Act 1995 (Cth)
+- Evidence Act 1995 (NSW & Cth)
+- Judiciary Act 1903 (Cth) - High Court Appeals
+- Common law principles for murder, manslaughter, and homicide offenses
+- Landmark Australian criminal appeal cases
+
+You specialize in identifying and analyzing grounds of merit for criminal appeals, particularly for:
+- Murder (sections 18, 19A, 19B Crimes Act NSW)
+- Manslaughter (section 18, 24 Crimes Act NSW)
+- High Court special leave appeals
+- Miscarriage of justice claims
+
+Provide thorough, legally precise analysis with specific section references."""
+
+    user_prompt = f"""Conduct a DEEP INVESTIGATION of this ground of merit for a criminal appeal:
+
+{context}
+
+Provide a comprehensive analysis including:
+
+1. **GROUND ASSESSMENT**
+   - Detailed evaluation of this ground's viability
+   - Strength rating (Strong/Moderate/Weak) with justification
+   - Likelihood of success on appeal
+
+2. **RELEVANT LAW SECTIONS**
+   For each relevant section provide:
+   - Jurisdiction (NSW State / Australian Federal / High Court)
+   - Act and Section number
+   - Section title
+   - How it applies to this ground
+   - Key elements that must be established
+
+   Consider sections from:
+   - Crimes Act 1900 (NSW) - especially ss 18, 19A, 19B, 23, 24
+   - Criminal Appeal Act 1912 (NSW) - especially ss 5, 6, 7
+   - Criminal Code Act 1995 (Cth) - Division 115
+   - Evidence Act 1995 - hearsay, tendency, admissibility
+   - Judiciary Act 1903 (Cth) - s 35A for High Court appeals
+
+3. **SIMILAR CASES**
+   Identify 3-5 relevant Australian cases with:
+   - Case name and citation
+   - Brief facts
+   - How it relates to this ground
+   - Outcome and what it established
+
+4. **EVIDENCE REQUIREMENTS**
+   - What evidence is needed to establish this ground
+   - Current evidence assessment
+   - Evidence gaps to address
+
+5. **STRATEGIC RECOMMENDATIONS**
+   - How to present this ground
+   - Potential counterarguments and rebuttals
+   - Priority level for the appeal
+
+6. **HIGH COURT CONSIDERATIONS**
+   If applicable, assess whether this ground could support:
+   - Special leave application to High Court
+   - Constitutional or significant legal questions
+
+Format your response as a detailed legal memorandum."""
+
+    api_key = os.environ.get('EMERGENT_LLM_KEY')
+    if not api_key:
+        raise HTTPException(status_code=500, detail="AI service not configured")
+    
+    chat = LlmChat(
+        api_key=api_key,
+        session_id=f"ground_investigation_{ground_id}_{uuid.uuid4().hex[:8]}",
+        system_message=system_prompt
+    ).with_model("openai", "gpt-5.2")
+    
+    response = await chat.send_message(UserMessage(text=user_prompt))
+    
+    # Parse response to extract structured data
+    law_sections = []
+    similar_cases = []
+    
+    # Simple extraction - look for section patterns
+    import re
+    section_patterns = re.findall(r'(?:section|s\.?)\s*(\d+[A-Za-z]?)\s+(?:of\s+)?(?:the\s+)?([A-Za-z\s]+(?:Act|Code))\s*(?:\d{4})?', response, re.IGNORECASE)
+    for section_num, act_name in section_patterns[:10]:
+        law_sections.append({
+            "section": section_num,
+            "act": act_name.strip(),
+            "jurisdiction": "NSW" if "NSW" in act_name or "1900" in response else "Federal"
+        })
+    
+    # Extract case citations
+    case_patterns = re.findall(r'([A-Z][a-z]+(?:\s+v\s+|\s+&\s+)[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s*\[?(\d{4})\]?\s*(?:(\d+)\s+([A-Z]+)\s+(\d+))?', response)
+    for case_match in case_patterns[:5]:
+        case_name = case_match[0]
+        year = case_match[1]
+        similar_cases.append({
+            "case_name": case_name,
+            "year": year,
+            "citation": f"[{year}]" + (f" {case_match[2]} {case_match[3]} {case_match[4]}" if case_match[2] else "")
+        })
+    
+    # Update the ground with investigation results
+    deep_analysis = {
+        "full_analysis": response,
+        "investigated_at": datetime.now(timezone.utc).isoformat(),
+        "law_sections_identified": len(law_sections),
+        "similar_cases_found": len(similar_cases)
+    }
+    
+    await db.grounds_of_merit.update_one(
+        {"ground_id": ground_id},
+        {"$set": {
+            "status": "investigating",
+            "analysis": response[:2000] + "..." if len(response) > 2000 else response,
+            "deep_analysis": deep_analysis,
+            "law_sections": law_sections if law_sections else ground.get("law_sections", []),
+            "similar_cases": similar_cases if similar_cases else ground.get("similar_cases", []),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return await db.grounds_of_merit.find_one({"ground_id": ground_id}, {"_id": 0})
+
+@api_router.post("/cases/{case_id}/grounds/auto-identify", response_model=dict)
+async def auto_identify_grounds(case_id: str, request: Request):
+    """AI automatically identifies potential grounds of merit from case materials"""
+    from emergentintegrations.llm.chat import LlmChat, UserMessage
+    
+    user = await get_current_user(request)
+    
+    # Verify case ownership
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id}, {"_id": 0})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    # Get all case materials
+    documents = await db.documents.find(
+        {"case_id": case_id},
+        {"_id": 0, "file_data": 0}
+    ).to_list(500)
+    
+    timeline = await db.timeline_events.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).sort("event_date", 1).to_list(500)
+    
+    notes = await db.notes.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).to_list(500)
+    
+    # Build comprehensive context
+    context = f"""
+CRIMINAL APPEAL CASE ANALYSIS
+
+CASE DETAILS:
+- Title: {case.get('title', 'Unknown')}
+- Defendant: {case.get('defendant_name', 'Unknown')}
+- Case Number: {case.get('case_number', 'N/A')}
+- Court: {case.get('court', 'N/A')}
+- Judge: {case.get('judge', 'N/A')}
+- Summary: {case.get('summary', 'No summary provided')}
+
+DOCUMENTS ({len(documents)} total):
+"""
+    for doc in documents:
+        context += f"\n[{doc.get('category', 'other')}] {doc.get('filename')}"
+        if doc.get('description'):
+            context += f": {doc.get('description')}"
+        if doc.get('content_text'):
+            context += f"\nContent excerpt: {doc.get('content_text', '')[:500]}"
+        context += "\n"
+
+    context += f"\nTIMELINE OF EVENTS ({len(timeline)} events):\n"
+    for event in timeline:
+        context += f"- [{event.get('event_date', 'Unknown')}] {event.get('event_type', 'event')}: {event.get('title')}\n"
+        if event.get('description'):
+            context += f"  {event.get('description')[:200]}\n"
+
+    if notes:
+        context += f"\nLEGAL NOTES ({len(notes)} notes):\n"
+        for note in notes[:10]:
+            context += f"- [{note.get('category')}] {note.get('title')}: {note.get('content', '')[:200]}\n"
+
+    system_prompt = """You are an expert Australian criminal appeal barrister. Your task is to analyze case materials and identify ALL potential grounds of merit for a criminal appeal.
+
+You have expertise in:
+- Murder appeals (Crimes Act 1900 NSW s.18, s.19A, s.19B)
+- Manslaughter appeals (s.18, s.24)
+- High Court special leave applications
+- Miscarriage of justice claims
+- Fresh evidence appeals
+- Procedural and judicial errors
+
+Be thorough - identify every possible ground, even if weak. The legal team will assess viability."""
+
+    user_prompt = f"""Analyze this criminal appeal case and identify ALL potential grounds of merit:
+
+{context}
+
+For EACH ground identified, provide in this EXACT JSON format:
+{{
+  "grounds": [
+    {{
+      "title": "Clear, concise title for the ground",
+      "ground_type": "One of: procedural_error, fresh_evidence, miscarriage_of_justice, sentencing_error, judicial_error, ineffective_counsel, prosecution_misconduct, jury_irregularity, constitutional_violation, other",
+      "description": "Detailed description of the ground and why it may be viable",
+      "strength": "strong, moderate, or weak",
+      "key_evidence": ["List of evidence supporting this ground"],
+      "relevant_law": ["List of relevant law sections e.g., 's.18 Crimes Act 1900 (NSW)'"]
+    }}
+  ],
+  "summary": "Brief overall assessment of appeal prospects"
+}}
+
+Identify at least 3-5 potential grounds if the materials support them. Consider:
+1. Trial procedural errors
+2. Evidentiary issues (admissibility, exclusion)
+3. Judicial directions to jury
+4. Prosecution conduct
+5. Defense representation quality
+6. Sentencing proportionality
+7. Fresh evidence possibilities
+8. Constitutional issues
+9. Miscarriage of justice indicators"""
+
+    api_key = os.environ.get('EMERGENT_LLM_KEY')
+    if not api_key:
+        raise HTTPException(status_code=500, detail="AI service not configured")
+    
+    chat = LlmChat(
+        api_key=api_key,
+        session_id=f"auto_identify_{case_id}_{uuid.uuid4().hex[:8]}",
+        system_message=system_prompt
+    ).with_model("openai", "gpt-5.2")
+    
+    response = await chat.send_message(UserMessage(text=user_prompt))
+    
+    # Try to parse JSON from response
+    identified_grounds = []
+    try:
+        import re
+        json_match = re.search(r'\{[\s\S]*"grounds"[\s\S]*\}', response)
+        if json_match:
+            parsed = json.loads(json_match.group())
+            grounds_data = parsed.get("grounds", [])
+            
+            for g in grounds_data:
+                ground = GroundOfMerit(
+                    case_id=case_id,
+                    user_id=user.user_id,
+                    title=g.get("title", "Identified Ground"),
+                    ground_type=g.get("ground_type", "other"),
+                    description=g.get("description", ""),
+                    strength=g.get("strength", "moderate"),
+                    supporting_evidence=g.get("key_evidence", []),
+                    status="identified"
+                )
+                
+                ground_dict = ground.model_dump()
+                ground_dict["created_at"] = ground_dict["created_at"].isoformat()
+                ground_dict["updated_at"] = ground_dict["updated_at"].isoformat()
+                
+                await db.grounds_of_merit.insert_one(ground_dict)
+                identified_grounds.append(ground_dict)
+    except Exception as e:
+        logger.error(f"Failed to parse AI response: {e}")
+        # Create a single ground with the raw analysis
+        ground = GroundOfMerit(
+            case_id=case_id,
+            user_id=user.user_id,
+            title="AI Analysis Results",
+            ground_type="other",
+            description="See analysis for identified grounds",
+            strength="moderate",
+            analysis=response,
+            status="identified"
+        )
+        ground_dict = ground.model_dump()
+        ground_dict["created_at"] = ground_dict["created_at"].isoformat()
+        ground_dict["updated_at"] = ground_dict["updated_at"].isoformat()
+        await db.grounds_of_merit.insert_one(ground_dict)
+        identified_grounds.append(ground_dict)
+    
+    # Update case
+    await db.cases.update_one(
+        {"case_id": case_id},
+        {"$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    return {
+        "identified_count": len(identified_grounds),
+        "grounds": identified_grounds,
+        "raw_analysis": response
+    }
+
 # ============ AI ANALYSIS & REPORTS ============
 
 async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str) -> dict:
