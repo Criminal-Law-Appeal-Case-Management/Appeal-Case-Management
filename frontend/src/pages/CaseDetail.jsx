@@ -743,6 +743,100 @@ const CaseDetail = ({ user }) => {
 
           {/* Documents Tab */}
           <TabsContent value="documents" className="space-y-4">
+            {/* Search Bar */}
+            {documents.length > 0 && (
+              <Card className="p-4">
+                <form onSubmit={handleSearchDocuments} className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <Input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search within all documents..."
+                      className="pl-10 pr-10"
+                      data-testid="doc-search-input"
+                    />
+                    {searchQuery && (
+                      <button
+                        type="button"
+                        onClick={clearSearch}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                  <Button 
+                    type="submit" 
+                    disabled={searching || !searchQuery.trim()}
+                    className="bg-slate-900 text-white hover:bg-slate-800"
+                    data-testid="doc-search-btn"
+                  >
+                    {searching ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        <Search className="w-4 h-4 mr-2" />
+                        Search
+                      </>
+                    )}
+                  </Button>
+                </form>
+                
+                {/* Search Results */}
+                {showSearchResults && searchResults && (
+                  <div className="mt-4 border-t pt-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-slate-900">
+                        Search Results for "{searchResults.query}"
+                      </h4>
+                      <span className="text-sm text-slate-500">
+                        {searchResults.total_matches} match{searchResults.total_matches !== 1 ? 'es' : ''} in {searchResults.documents_with_matches} document{searchResults.documents_with_matches !== 1 ? 's' : ''}
+                      </span>
+                    </div>
+                    
+                    {searchResults.results.length === 0 ? (
+                      <p className="text-slate-600 text-center py-4">No matches found in any documents.</p>
+                    ) : (
+                      <ScrollArea className="max-h-80">
+                        <div className="space-y-3">
+                          {searchResults.results.map((result) => (
+                            <div key={result.document_id} className="bg-slate-50 rounded-lg p-3 border border-slate-200">
+                              <div className="flex items-center gap-2 mb-2">
+                                <FileText className="w-4 h-4 text-slate-600" />
+                                <span className="font-medium text-slate-900">{result.filename}</span>
+                                <Badge variant="outline" className={getCategoryColor(result.category)}>
+                                  {DOCUMENT_CATEGORIES.find(c => c.value === result.category)?.label || result.category}
+                                </Badge>
+                                <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+                                  {result.match_count} match{result.match_count !== 1 ? 'es' : ''}
+                                </Badge>
+                              </div>
+                              <div className="space-y-2">
+                                {result.matches.slice(0, 3).map((match, idx) => (
+                                  <div key={idx} className="text-sm text-slate-700 bg-white p-2 rounded border border-slate-100">
+                                    <p className="line-clamp-2">
+                                      {highlightMatch(match.context, searchResults.query)}
+                                    </p>
+                                  </div>
+                                ))}
+                                {result.matches.length > 3 && (
+                                  <p className="text-xs text-slate-500">
+                                    +{result.matches.length - 3} more matches in this document
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
+                    )}
+                  </div>
+                )}
+              </Card>
+            )}
+            
             {documents.length === 0 ? (
               <Card className="p-12 text-center">
                 <FileUp className="w-12 h-12 text-slate-300 mx-auto mb-4" />
