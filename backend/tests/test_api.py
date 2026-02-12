@@ -352,6 +352,161 @@ class TestPDFExport:
         print("✓ PDF export with invalid report correctly returns 404")
 
 
+class TestDocumentSearch:
+    """Document search functionality tests"""
+    
+    def test_search_documents_basic(self, auth_headers, test_case_id_with_docs):
+        """Test basic document search"""
+        payload = {"query": "murder", "case_sensitive": False}
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{test_case_id_with_docs}/documents/search",
+            json=payload,
+            headers=auth_headers
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert "query" in data
+        assert "total_matches" in data
+        assert "documents_with_matches" in data
+        assert "total_documents_searched" in data
+        assert "results" in data
+        assert data["query"] == "murder"
+        assert data["total_matches"] >= 0
+        print(f"✓ Document search found {data['total_matches']} matches in {data['documents_with_matches']} documents")
+
+    def test_search_documents_with_matches(self, auth_headers, test_case_id_with_docs):
+        """Test search returns matches with context"""
+        payload = {"query": "defendant", "case_sensitive": False}
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{test_case_id_with_docs}/documents/search",
+            json=payload,
+            headers=auth_headers
+        )
+        assert response.status_code == 200
+        data = response.json()
+        if data["total_matches"] > 0:
+            assert len(data["results"]) > 0
+            result = data["results"][0]
+            assert "document_id" in result
+            assert "filename" in result
+            assert "category" in result
+            assert "matches" in result
+            assert "match_count" in result
+            # Check match structure
+            if result["matches"]:
+                match = result["matches"][0]
+                assert "context" in match
+                assert "position" in match
+                assert "matched_text" in match
+        print(f"✓ Search with matches returned proper structure")
+
+    def test_search_documents_case_sensitive(self, auth_headers, test_case_id_with_docs):
+        """Test case-sensitive search"""
+        # Case-insensitive search
+        payload_insensitive = {"query": "murder", "case_sensitive": False}
+        response_insensitive = requests.post(
+            f"{BASE_URL}/api/cases/{test_case_id_with_docs}/documents/search",
+            json=payload_insensitive,
+            headers=auth_headers
+        )
+        assert response_insensitive.status_code == 200
+        insensitive_matches = response_insensitive.json()["total_matches"]
+        
+        # Case-sensitive search for "Murder" (capital M)
+        payload_sensitive = {"query": "Murder", "case_sensitive": True}
+        response_sensitive = requests.post(
+            f"{BASE_URL}/api/cases/{test_case_id_with_docs}/documents/search",
+            json=payload_sensitive,
+            headers=auth_headers
+        )
+        assert response_sensitive.status_code == 200
+        sensitive_matches = response_sensitive.json()["total_matches"]
+        
+        # Case-sensitive should find fewer or equal matches
+        assert sensitive_matches <= insensitive_matches
+        print(f"✓ Case-sensitive search: {sensitive_matches} matches vs case-insensitive: {insensitive_matches}")
+
+    def test_search_documents_no_matches(self, auth_headers, test_case_id_with_docs):
+        """Test search with no matches"""
+        payload = {"query": "xyznonexistent123", "case_sensitive": False}
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{test_case_id_with_docs}/documents/search",
+            json=payload,
+            headers=auth_headers
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total_matches"] == 0
+        assert data["documents_with_matches"] == 0
+        assert len(data["results"]) == 0
+        print("✓ Search with no matches returns empty results")
+
+    def test_search_documents_empty_query(self, auth_headers, test_case_id_with_docs):
+        """Test search with empty query returns 400"""
+        payload = {"query": "", "case_sensitive": False}
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{test_case_id_with_docs}/documents/search",
+            json=payload,
+            headers=auth_headers
+        )
+        assert response.status_code == 400
+        data = response.json()
+        assert "detail" in data
+        print("✓ Empty query correctly returns 400")
+
+    def test_search_documents_short_query(self, auth_headers, test_case_id_with_docs):
+        """Test search with single character query returns 400"""
+        payload = {"query": "a", "case_sensitive": False}
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{test_case_id_with_docs}/documents/search",
+            json=payload,
+            headers=auth_headers
+        )
+        assert response.status_code == 400
+        data = response.json()
+        assert "detail" in data
+        assert "2 characters" in data["detail"]
+        print("✓ Short query correctly returns 400")
+
+    def test_search_documents_unauthorized(self, test_case_id_with_docs):
+        """Test search without authentication returns 401"""
+        payload = {"query": "murder", "case_sensitive": False}
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{test_case_id_with_docs}/documents/search",
+            json=payload
+        )
+        assert response.status_code == 401
+        print("✓ Unauthorized search correctly returns 401")
+
+    def test_search_documents_invalid_case(self, auth_headers):
+        """Test search on non-existent case returns 404"""
+        payload = {"query": "murder", "case_sensitive": False}
+        response = requests.post(
+            f"{BASE_URL}/api/cases/case_nonexistent/documents/search",
+            json=payload,
+            headers=auth_headers
+        )
+        assert response.status_code == 404
+        print("✓ Search on invalid case correctly returns 404")
+
+    def test_search_documents_sorted_by_match_count(self, auth_headers, test_case_id_with_docs):
+        """Test search results are sorted by match count (descending)"""
+        payload = {"query": "the", "case_sensitive": False}
+        response = requests.post(
+            f"{BASE_URL}/api/cases/{test_case_id_with_docs}/documents/search",
+            json=payload,
+            headers=auth_headers
+        )
+        assert response.status_code == 200
+        data = response.json()
+        if len(data["results"]) > 1:
+            match_counts = [r["match_count"] for r in data["results"]]
+            assert match_counts == sorted(match_counts, reverse=True)
+            print(f"✓ Results sorted by match count: {match_counts}")
+        else:
+            print("✓ Sorting test skipped (need multiple documents with matches)")
+
+
 class TestTimeline:
     """Timeline event tests"""
     
