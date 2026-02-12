@@ -268,7 +268,10 @@ async def create_case(case_data: CaseCreate, request: Request):
     case_dict["updated_at"] = case_dict["updated_at"].isoformat()
     
     await db.cases.insert_one(case_dict)
-    return case_dict
+    
+    # Return the case without MongoDB's _id field
+    created_case = await db.cases.find_one({"case_id": case.case_id}, {"_id": 0})
+    return created_case
 
 @api_router.get("/cases/{case_id}", response_model=dict)
 async def get_case(case_id: str, request: Request):
