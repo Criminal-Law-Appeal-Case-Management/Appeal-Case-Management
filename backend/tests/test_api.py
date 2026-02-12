@@ -108,6 +108,8 @@ class TestDocumentManagement:
     
     def test_upload_document_txt(self, auth_headers, test_case_id):
         """Test uploading a TXT document"""
+        # Remove Content-Type header for multipart form data
+        headers = {"Authorization": auth_headers["Authorization"]}
         files = {
             'file': ('test_document.txt', b'This is a test document content for text extraction testing.', 'text/plain')
         }
@@ -119,7 +121,7 @@ class TestDocumentManagement:
             f"{BASE_URL}/api/cases/{test_case_id}/documents",
             files=files,
             data=data,
-            headers=auth_headers
+            headers=headers
         )
         assert response.status_code == 200
         doc_data = response.json()
@@ -435,6 +437,7 @@ def test_case_id(auth_headers):
 @pytest.fixture
 def test_document_id(auth_headers, test_case_id):
     """Create a test document and return its ID"""
+    headers = {"Authorization": auth_headers["Authorization"]}
     files = {
         'file': ('test_doc.txt', b'Test document content', 'text/plain')
     }
@@ -443,7 +446,7 @@ def test_document_id(auth_headers, test_case_id):
         f"{BASE_URL}/api/cases/{test_case_id}/documents",
         files=files,
         data=data,
-        headers=auth_headers
+        headers=headers
     )
     doc_id = response.json()["document_id"]
     yield doc_id
