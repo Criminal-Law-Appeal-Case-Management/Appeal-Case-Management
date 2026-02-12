@@ -467,7 +467,7 @@ async def upload_document(
     if event_date:
         try:
             parsed_event_date = datetime.fromisoformat(event_date.replace('Z', '+00:00')).isoformat()
-        except:
+        except ValueError:
             pass
     
     doc = Document(
