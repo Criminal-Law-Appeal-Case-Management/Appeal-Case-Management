@@ -250,6 +250,65 @@ const CaseDetail = ({ user }) => {
     }
   };
 
+  const handleRunOcrAll = async () => {
+    const docsWithoutText = documents.filter(d => !d.content_text || d.content_text.length < 100);
+    if (docsWithoutText.length === 0) {
+      toast.info("All documents already have extracted text");
+      return;
+    }
+    
+    setRunningOcr(true);
+    toast.info(`Running OCR on ${docsWithoutText.length} document(s)... This may take a while.`);
+    
+    try {
+      const response = await axios.post(`${API}/cases/${caseId}/ocr-all`, {}, {
+        timeout: 300000 // 5 minute timeout for OCR
+      });
+      const { successful_extractions, total_documents, results } = response.data;
+      
+      // Refresh documents to get updated content_text
+      const docsRes = await axios.get(`${API}/cases/${caseId}/documents`);
+      setDocuments(docsRes.data);
+      
+      if (successful_extractions > 0) {
+        toast.success(`OCR complete! Extracted text from ${successful_extractions} document(s)`);
+      } else {
+        toast.info("OCR complete. No additional text could be extracted.");
+      }
+    } catch (error) {
+      console.error("OCR error:", error);
+      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+        toast.error("OCR timed out. Try running OCR on individual documents.");
+      } else {
+        toast.error("Failed to run OCR on documents");
+      }
+    } finally {
+      setRunningOcr(false);
+    }
+  };
+
+  const handleOcrDocument = async (docId) => {
+    toast.info("Running OCR... This may take a moment.");
+    
+    try {
+      const response = await axios.post(`${API}/cases/${caseId}/documents/${docId}/ocr`, {}, {
+        timeout: 120000 // 2 minute timeout
+      });
+      
+      if (response.data.success) {
+        // Refresh documents
+        const docsRes = await axios.get(`${API}/cases/${caseId}/documents`);
+        setDocuments(docsRes.data);
+        toast.success(`OCR complete! Extracted ${response.data.content_length} characters`);
+      } else {
+        toast.warning(response.data.message || "Could not extract text from this document");
+      }
+    } catch (error) {
+      console.error("OCR error:", error);
+      toast.error("Failed to run OCR on document");
+    }
+  };
+
   const handleSearchDocuments = async (e) => {
     e?.preventDefault();
     
