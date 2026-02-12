@@ -98,13 +98,37 @@ class TimelineEventCreate(BaseModel):
     document_ids: List[str] = []
 
 class GroundOfMerit(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     ground_id: str = Field(default_factory=lambda: f"gnd_{uuid.uuid4().hex[:12]}")
+    case_id: str
+    user_id: str
     title: str
+    ground_type: str  # procedural_error, fresh_evidence, miscarriage_of_justice, sentencing_error, judicial_error, ineffective_counsel, other
     description: str
+    strength: str = "moderate"  # strong, moderate, weak
+    status: str = "identified"  # identified, investigating, confirmed, rejected
     supporting_evidence: List[str] = []
-    law_sections: List[dict] = []  # {jurisdiction, section, title, relevance}
-    strength: str  # strong, moderate, weak
-    analysis: str
+    law_sections: List[dict] = []  # {jurisdiction, section, title, relevance, full_text}
+    similar_cases: List[dict] = []  # {case_name, citation, relevance, outcome}
+    analysis: Optional[str] = None
+    deep_analysis: Optional[dict] = None  # Detailed analysis content
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class GroundOfMeritCreate(BaseModel):
+    title: str
+    ground_type: str = "other"
+    description: str
+    strength: str = "moderate"
+    supporting_evidence: List[str] = []
+
+class GroundOfMeritUpdate(BaseModel):
+    title: Optional[str] = None
+    ground_type: Optional[str] = None
+    description: Optional[str] = None
+    strength: Optional[str] = None
+    status: Optional[str] = None
+    supporting_evidence: Optional[List[str]] = None
 
 class Report(BaseModel):
     model_config = ConfigDict(extra="ignore")
