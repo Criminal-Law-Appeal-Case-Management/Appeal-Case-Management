@@ -1151,7 +1151,9 @@ Identify at least 3-5 potential grounds if the materials support them. Consider:
         ground_dict["created_at"] = ground_dict["created_at"].isoformat()
         ground_dict["updated_at"] = ground_dict["updated_at"].isoformat()
         await db.grounds_of_merit.insert_one(ground_dict)
-        identified_grounds.append(ground_dict)
+        # Fetch the inserted ground without _id
+        created_ground = await db.grounds_of_merit.find_one({"ground_id": ground.ground_id}, {"_id": 0})
+        identified_grounds.append(created_ground)
     
     # Update case
     await db.cases.update_one(
