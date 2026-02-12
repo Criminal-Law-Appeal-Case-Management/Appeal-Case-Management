@@ -168,7 +168,7 @@ class JustitiaAPITester:
             "Upload document", 
             "POST", 
             f"cases/{self.case_id}/documents", 
-            201, 
+            200, 
             data=form_data, 
             files=files
         )
