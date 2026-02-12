@@ -674,6 +674,55 @@ const CaseDetail = ({ user }) => {
             )}
           </TabsContent>
 
+          {/* Grounds of Merit Tab */}
+          <TabsContent value="grounds" className="space-y-4">
+            {grounds.length === 0 ? (
+              <Card className="p-12 text-center">
+                <Gavel className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  No grounds of merit identified
+                </h3>
+                <p className="text-slate-600 mb-4 max-w-md mx-auto">
+                  Use AI to automatically analyze your case materials and identify potential grounds for appeal, 
+                  or add grounds manually.
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <Button 
+                    onClick={handleAutoIdentifyGrounds}
+                    disabled={autoIdentifying}
+                    className="bg-amber-600 text-white hover:bg-amber-700"
+                  >
+                    {autoIdentifying ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Sparkles className="w-4 h-4 mr-2" />
+                    )}
+                    AI Identify Grounds
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      setNewGround({ title: "", description: "", ground_type: "other", strength: "moderate", supporting_evidence: [] });
+                      setShowGroundDialog(true);
+                    }}
+                    variant="outline"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Manually
+                  </Button>
+                </div>
+              </Card>
+            ) : (
+              <GroundsOfMerit 
+                grounds={grounds}
+                onInvestigate={handleInvestigateGround}
+                onDelete={handleDeleteGround}
+                investigating={investigatingGround}
+                selectedGround={selectedGround}
+                setSelectedGround={setSelectedGround}
+              />
+            )}
+          </TabsContent>
+
           {/* Notes Tab */}
           <TabsContent value="notes" className="space-y-4">
             {notes.length === 0 ? (
