@@ -1617,10 +1617,10 @@ Identify at least 3-5 potential grounds if the materials support them. Consider:
     if not api_key:
         raise HTTPException(status_code=500, detail="AI service not configured")
     
-    # Try up to 2 times
+    # Try up to 4 times with exponential backoff
     response = None
     last_error = None
-    for attempt in range(2):
+    for attempt in range(4):
         try:
             chat = LlmChat(
                 api_key=api_key,
@@ -1633,9 +1633,10 @@ Identify at least 3-5 potential grounds if the materials support them. Consider:
         except Exception as e:
             last_error = e
             logger.warning(f"Auto-identify attempt {attempt + 1} failed: {e}")
-            if attempt < 1:
+            if attempt < 3:
                 import asyncio
-                await asyncio.sleep(2)
+                # Exponential backoff: 3, 6, 12 seconds
+                await asyncio.sleep(3 * (2 ** attempt))
     
     if response is None:
         logger.error(f"All auto-identify attempts failed: {last_error}")
