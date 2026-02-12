@@ -249,16 +249,26 @@ const CaseDetail = ({ user }) => {
 
   const handleGenerateReport = async (reportType) => {
     setGeneratingReport(true);
+    toast.info("Generating report... This may take 30-60 seconds.");
     try {
       const response = await axios.post(`${API}/cases/${caseId}/reports/generate`, {
         report_type: reportType
+      }, {
+        timeout: 180000 // 3 minute timeout for report generation
       });
       setReports([response.data, ...reports]);
       setShowReportDialog(false);
-      toast.success("Report generated successfully");
+      toast.success("Report generated successfully!");
       navigate(`/cases/${caseId}/reports/${response.data.report_id}`);
     } catch (error) {
-      toast.error("Failed to generate report");
+      console.error("Report generation error:", error);
+      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+        toast.error("Report generation timed out. Please try again.");
+      } else if (error.response?.data?.detail) {
+        toast.error(`Failed: ${error.response.data.detail}`);
+      } else {
+        toast.error("Failed to generate report. Please try again.");
+      }
     } finally {
       setGeneratingReport(false);
     }
