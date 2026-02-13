@@ -1772,10 +1772,11 @@ Summary: {case.get('summary', 'N/A')}
                 case_context += f"Description: {doc.get('description')}\n"
             content = doc.get('content_text', '')
             if content:
-                # Include up to 4000 chars per document for thorough analysis
-                case_context += f"FULL CONTENT:\n{content[:4000]}\n"
-                if len(content) > 4000:
-                    case_context += f"[... {len(content) - 4000} more characters ...]\n"
+                # Limit content per document based on report type to avoid timeouts
+                max_chars = 2000 if report_type == "quick_summary" else 3000
+                case_context += f"CONTENT:\n{content[:max_chars]}\n"
+                if len(content) > max_chars:
+                    case_context += f"[... {len(content) - max_chars} more characters ...]\n"
             else:
                 case_context += "CONTENT: [No text extracted]\n"
     else:
