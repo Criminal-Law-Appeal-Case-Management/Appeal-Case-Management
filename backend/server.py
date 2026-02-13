@@ -1828,19 +1828,17 @@ Include:
 Format as a legal brief for a barrister."""
 
     else:  # extensive_log
-        system_prompt = """You are an expert criminal appeal legal analyst. Provide exhaustive documentation with direct quotes from case materials."""
-        user_prompt = f"""Create an EXTENSIVE LOG REPORT with FULL cross-referencing of all materials.
+        system_prompt = """You are an expert criminal appeal legal analyst. Provide thorough documentation with document citations."""
+        user_prompt = f"""Create an EXTENSIVE LOG REPORT for this case.
 
 {case_context}
 
-REQUIRED SECTIONS:
-1. COMPLETE CASE CHRONOLOGY with document citations
-2. DOCUMENT-BY-DOCUMENT ANALYSIS - quote key passages from each
-3. COMPREHENSIVE EVIDENCE REVIEW with specific references
-4. EXHAUSTIVE GROUNDS OF MERIT - cite supporting evidence
-5. PROCEDURAL REVIEW
-6. COMPLETE LEGAL FRAMEWORK with section numbers
-7. DETAILED RECOMMENDATIONS"""
+Include:
+1. CASE CHRONOLOGY - with document citations
+2. EVIDENCE ANALYSIS - quote key passages
+3. ALL GROUNDS OF MERIT - with supporting evidence
+4. LEGAL FRAMEWORK - with section numbers
+5. DETAILED RECOMMENDATIONS"""
 
     # Call OpenAI via Emergent
     api_key = os.environ.get('EMERGENT_LLM_KEY')
