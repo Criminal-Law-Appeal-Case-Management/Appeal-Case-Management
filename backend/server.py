@@ -1814,40 +1814,18 @@ IMPORTANT: Cross-reference the actual document content provided below.
 {case_context}"""
 
     elif report_type == "full_detailed":
-        system_prompt = """You are an expert criminal appeal legal analyst specializing in NSW State and Australian Federal murder law.
-You have extensive knowledge of:
-- Crimes Act 1900 (NSW)
-- Criminal Appeal Act 1912 (NSW)
-- Criminal Code Act 1995 (Cth)
-- Evidence Act 1995 (NSW & Cth)
-- Sentencing Act 1995 (NSW)
-Provide detailed legal analysis with specific law references. ALWAYS cite specific document content as evidence."""
-        user_prompt = f"""Analyze this criminal appeal case and provide a FULL DETAILED REPORT.
-
-IMPORTANT: Cross-reference ALL document content below. Quote specific passages as evidence.
+        system_prompt = """You are an expert criminal appeal legal analyst for NSW and Australian Federal murder law. Cite specific documents and law sections."""
+        user_prompt = f"""Provide a FULL DETAILED REPORT on this appeal case.
 
 {case_context}
 
-YOUR REPORT MUST INCLUDE:
+Include:
+1. CASE OVERVIEW - cite specific documents
+2. GROUNDS OF MERIT - with evidence quotes and law sections (NSW Crimes Act, Criminal Appeal Act, Criminal Code Act)
+3. LEGAL FRAMEWORK - relevant law sections
+4. RECOMMENDATIONS
 
-1. CASE OVERVIEW: Comprehensive summary citing specific documents
-
-2. DOCUMENT ANALYSIS: For EACH document above, explain:
-   - Key information it contains
-   - How it supports/undermines the appeal
-   - Specific quotes from the document
-
-3. GROUNDS OF MERIT: Identify ALL potential grounds with:
-   - Ground name and description
-   - Specific evidence FROM THE DOCUMENTS (quote directly)
-   - Relevant law sections (NSW State and Australian Federal) with exact references
-   - How this ground serves justice
-
-4. LEGAL FRAMEWORK: Relevant sections of criminal law relating to this case
-
-5. STRATEGIC RECOMMENDATIONS: Recommended approach for the appeal
-
-Format as a structured legal brief suitable for a barrister."""
+Format as a legal brief for a barrister."""
 
     else:  # extensive_log
         system_prompt = """You are an expert criminal appeal legal analyst. Provide exhaustive documentation with direct quotes from case materials."""
