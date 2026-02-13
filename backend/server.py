@@ -1438,7 +1438,7 @@ REQUIRED ANALYSIS (search the documents above for evidence):
                 api_key=api_key,
                 session_id=f"ground_{ground_id}_{uuid.uuid4().hex[:8]}",
                 system_message=system_prompt
-            ).with_model("openai", "gpt-5.2")
+            ).with_model("openai", "gpt-4o")
             
             response = await chat.send_message(UserMessage(text=user_prompt))
             break
@@ -1638,7 +1638,7 @@ Identify at least 3-5 potential grounds if the materials support them. Consider:
                 api_key=api_key,
                 session_id=f"auto_identify_{case_id}_{uuid.uuid4().hex[:8]}",
                 system_message=system_prompt
-            ).with_model("openai", "gpt-5.2")
+            ).with_model("openai", "gpt-4o")
             
             response = await chat.send_message(UserMessage(text=user_prompt))
             break
@@ -1854,7 +1854,7 @@ Include:
                 api_key=api_key,
                 session_id=f"report_{case_id}_{uuid.uuid4().hex[:8]}",
                 system_message=system_prompt
-            ).with_model("openai", "gpt-5.2")
+            ).with_model("openai", "gpt-4o")
             
             response = await chat.send_message(UserMessage(text=user_prompt))
             break
