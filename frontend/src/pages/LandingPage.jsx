@@ -147,8 +147,14 @@ const LandingPage = () => {
               Criminal Appeal AI
             </span>
           </div>
-          <p className="text-sm text-slate-500">
-            Criminal Appeal Case Management for NSW State &amp; Australian Federal Law
+          <p className="text-sm font-medium text-slate-600 mb-1">
+            Deb King, Glenmore Park 2745
+          </p>
+          <p className="text-sm italic text-slate-500 mb-3">
+            One woman's fight for justice — seeking truth for Joshua Homann, failed by the system
+          </p>
+          <p className="text-xs text-slate-400">
+            NSW State &amp; Australian Federal Law Reference
           </p>
         </div>
       </footer>
