@@ -2069,6 +2069,7 @@ async def export_report_pdf(case_id: str, report_id: str, request: Request):
     # Header
     story.append(Paragraph("Criminal Appeal AI", styles['ReportSubtitle']))
     story.append(Paragraph("Prepared for: Deb King, Glenmore Park 2745", styles['ReportSubtitle']))
+    story.append(Paragraph("One woman's fight for justice — seeking truth for Joshua Homann, failed by the system", styles['ReportSubtitle']))
     story.append(Paragraph("Criminal Appeal Case Management", styles['ReportSubtitle']))
     story.append(Spacer(1, 10*mm))
     
@@ -2280,6 +2281,13 @@ async def export_report_docx(case_id: str, report_id: str, request: Request):
     sub_run = sub_header.add_run("Prepared for: Deb King, Glenmore Park 2745")
     sub_run.font.size = Pt(10)
     sub_run.font.color.rgb = RGBColor(100, 116, 139)
+    
+    motto_para = doc.add_paragraph()
+    motto_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    motto_run = motto_para.add_run("One woman's fight for justice — seeking truth for Joshua Homann, failed by the system")
+    motto_run.font.size = Pt(9)
+    motto_run.font.italic = True
+    motto_run.font.color.rgb = RGBColor(100, 116, 139)
     
     doc.add_paragraph()
     
