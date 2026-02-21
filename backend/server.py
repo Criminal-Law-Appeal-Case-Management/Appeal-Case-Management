@@ -1488,7 +1488,7 @@ REQUIRED ANALYSIS (search the documents above for evidence):
     await db.grounds_of_merit.update_one(
         {"ground_id": ground_id},
         {"$set": {
-            "status": "investigating",
+            "status": "investigated",
             "analysis": response[:2000] + "..." if len(response) > 2000 else response,
             "deep_analysis": deep_analysis,
             "law_sections": law_sections if law_sections else ground.get("law_sections", []),
