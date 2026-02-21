@@ -466,7 +466,7 @@ const BarristerView = ({ user }) => {
           <div className="mt-12 pt-4 border-t border-slate-100 text-center text-xs text-slate-400">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Scale className="w-4 h-4" />
-              <span style={{ fontFamily: 'Crimson Pro, serif' }}>Justitia AI</span>
+              <span style={{ fontFamily: 'Crimson Pro, serif' }}>Criminal Appeal AI</span>
             </div>
             <p>Criminal Appeal Case Management System</p>
             <p>NSW State & Australian Federal Law Reference</p>
