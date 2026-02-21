@@ -32,6 +32,12 @@ api_router = APIRouter(prefix="/api")
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# ============ ROOT HEALTH CHECK (for Kubernetes) ============
+@app.get("/health")
+async def root_health_check():
+    """Root-level health check for Kubernetes deployment"""
+    return {"status": "healthy", "timestamp": datetime.now(timezone.utc).isoformat()}
+
 # ============ MODELS ============
 
 class User(BaseModel):
