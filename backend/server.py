@@ -2271,13 +2271,13 @@ async def export_report_docx(case_id: str, report_id: str, request: Request):
     # Header
     header_para = doc.add_paragraph()
     header_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    header_run = header_para.add_run("JUSTITIA AI")
+    header_run = header_para.add_run("CRIMINAL APPEAL AI")
     header_run.font.size = Pt(12)
     header_run.font.color.rgb = RGBColor(100, 116, 139)
     
     sub_header = doc.add_paragraph()
     sub_header.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    sub_run = sub_header.add_run("Criminal Appeal Case Management")
+    sub_run = sub_header.add_run("Prepared for: Deb King, Glenmore Park 2745")
     sub_run.font.size = Pt(10)
     sub_run.font.color.rgb = RGBColor(100, 116, 139)
     
