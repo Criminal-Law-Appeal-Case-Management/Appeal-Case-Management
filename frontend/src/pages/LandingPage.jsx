@@ -16,7 +16,7 @@ const LandingPage = () => {
           <div className="flex items-center gap-3">
             <Scale className="w-8 h-8 text-slate-900" />
             <span className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Justitia AI
+              Criminal Appeal AI
             </span>
           </div>
           <Button 
@@ -144,7 +144,7 @@ const LandingPage = () => {
           <div className="flex items-center justify-center gap-2 mb-4">
             <Scale className="w-5 h-5 text-slate-600" />
             <span className="text-slate-600 font-medium" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Justitia AI
+              Criminal Appeal AI
             </span>
           </div>
           <p className="text-sm text-slate-500">

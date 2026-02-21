@@ -116,7 +116,7 @@ const Dashboard = ({ user }) => {
         <div className="flex items-center gap-3 mb-10">
           <Scale className="w-8 h-8 text-slate-900" />
           <span className="text-xl font-bold tracking-tight" style={{ fontFamily: 'Crimson Pro, serif' }}>
-            Justitia AI
+            Criminal Appeal AI
           </span>
         </div>
 
@@ -159,7 +159,7 @@ const Dashboard = ({ user }) => {
         <div className="lg:hidden flex items-center justify-between mb-8">
           <div className="flex items-center gap-2">
             <Scale className="w-6 h-6 text-slate-900" />
-            <span className="text-lg font-bold" style={{ fontFamily: 'Crimson Pro, serif' }}>Justitia AI</span>
+            <span className="text-lg font-bold" style={{ fontFamily: 'Crimson Pro, serif' }}>Criminal Appeal AI</span>
           </div>
           <Button onClick={handleLogout} variant="ghost" size="sm" data-testid="mobile-logout-btn">
             <LogOut className="w-4 h-4" />
