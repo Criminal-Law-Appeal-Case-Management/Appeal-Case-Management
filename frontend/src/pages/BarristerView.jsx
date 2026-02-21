@@ -468,8 +468,9 @@ const BarristerView = ({ user }) => {
               <Scale className="w-4 h-4" />
               <span style={{ fontFamily: 'Crimson Pro, serif' }}>Criminal Appeal AI</span>
             </div>
-            <p>Prepared for: Deb King, Glenmore Park 2745</p>
-            <p>NSW State & Australian Federal Law Reference</p>
+            <p className="font-medium">Prepared for: Deb King, Glenmore Park 2745</p>
+            <p className="italic">One woman's fight for justice — seeking truth for Joshua Homann, failed by the system</p>
+            <p className="mt-2">NSW State & Australian Federal Law Reference</p>
           </div>
         </div>
       </main>
