@@ -1,139 +1,99 @@
-# Justitia AI - Criminal Appeal Case Management
+# Criminal Appeal AI - Case Management
 
 ## Original Problem Statement
-Create an app that can sort, store and organise documents, briefs, case notes, public advertising of cases - everything that can be used as information in a criminal appeal. Sort and organise info into a timeline of events updating when new info is added. Need a full report option giving a detailed report on the information, how it can be used, what grounds of merit it supports, and what sections of criminal law NSW State and Australia Federal level in relation to murder only. Also need quick reporting option for summary and extensive log option reporting on entire case. Present info in a suitable manner to a barrister.
+Create an app to sort, store and organise documents, briefs, case notes, and public case information for criminal appeals. Features include timeline generation, AI-powered grounds of merit identification, cross-referencing with source material, multiple report types, notes/comments, barrister presentation view, and PDF/DOCX export.
+
+## Owner
+**Deb King, Glenmore Park 2745**
+*One woman's fight for justice — seeking truth for Joshua Homann, failed by the system*
 
 ## User Choices
-- AI Provider: OpenAI GPT-5.2 with Emergent LLM key
+- AI Provider: OpenAI GPT-4o with Emergent LLM key
 - Authentication: Google Social Login (Emergent Auth)
 - Multi-case support: Yes
-- Document formats: PDF, DOCX, TXT, Images
-- Export: PDF with Grounds of Merit and Legal References
-- Design: Professional, easy to follow
+- Document formats: PDF, DOCX, TXT, Images (with OCR)
+- Export: PDF and DOCX with Grounds of Merit and Legal References
 
 ## Architecture
 - **Backend**: FastAPI with MongoDB
 - **Frontend**: React with Tailwind CSS + Shadcn UI
-- **AI**: OpenAI GPT-5.2 via Emergent Integrations
+- **AI**: OpenAI GPT-4o via Emergent Integrations
 - **Auth**: Emergent Google OAuth
 - **PDF Generation**: ReportLab library
+- **DOCX Generation**: python-docx library
+- **OCR**: Tesseract OCR + pdf2image
 
-## User Personas
-1. **Legal Professionals**: Barristers, solicitors working on criminal appeals
-2. **Defendants/Families**: People building their appeal case
-3. **Legal Researchers**: Those analyzing case evidence
+## Features Implemented
 
-## Core Requirements
-- [x] Document upload and categorization
-- [x] **Multi-file upload** - Upload multiple documents at once
-- [x] **Document search** - Search for text across all case documents with context highlighting
-- [x] **OCR support** - Extract text from scanned PDFs and images using Tesseract OCR
+### Core Features ✅
+- [x] Google OAuth authentication
+- [x] Multi-case dashboard with search
+- [x] Case CRUD operations
+- [x] Multi-file document upload
+- [x] Document text extraction (PDF, DOCX, TXT)
+- [x] OCR for scanned documents and images
+- [x] Document search across case files
 - [x] Timeline event management
-- [x] AI-powered legal analysis
-- [x] Grounds of merit identification with deep investigation
-- [x] Law section references (NSW & Federal)
-- [x] Multiple report types (Quick/Full/Extensive)
-- [x] **Barrister presentation view** - Prominently displays Grounds of Merit with legal references
-- [x] **PDF export capability** - Downloads actual PDF files with grounds and legal references
-- [x] Google authentication
-- [x] Multi-case dashboard
-- [x] Notes & Comments system
 
-## What's Been Implemented (Feb 2026)
+### AI-Powered Features ✅
+- [x] Auto-identify Grounds of Merit from documents
+- [x] Deep investigation of individual grounds
+- [x] Law section extraction (NSW & Federal)
+- [x] Similar case identification
+- [x] Report generation (Quick Summary, Full Detailed, Extensive Log)
 
-### Core Features
-- Full authentication flow with Google OAuth
-- Case CRUD operations with dashboard overview
-- Document upload with text extraction (PDF, DOCX, TXT)
-- **Multi-file upload** - Select and upload multiple documents simultaneously
-- **Document search** - Search for specific text across all case documents
-  - Shows context (100 chars before/after match)
-  - Highlights matched text
-  - Sorted by match count
-  - Displays which documents contain matches
-- **OCR support** - Extract text from scanned documents and images
-  - Uses Tesseract OCR for text recognition
-  - Supports PNG, JPG, TIFF, BMP, GIF, WebP images
-  - Handles scanned PDFs (converts to images then OCR)
-  - Individual document OCR or batch OCR for all documents
-- Timeline builder with event types
-- AI report generation (3 types: Quick, Full, Extensive)
-- Report viewer with formatted sections
-- **PDF Export** - Backend generates proper PDF files using ReportLab with:
-  - Case information header
-  - Grounds of Merit section
-  - Legal References (NSW & Federal law)
-  - Full analysis content
-- **DOCX Export** - Export reports to Microsoft Word format
-  - Styled headings and case info table
-  - Grounds of Merit with legal references
-  - Editable in Word for customization
-- **Barrister presentation view** (A4 format) with:
-  - Prominent Grounds of Merit display
-  - Law sections for each ground
-  - Similar cases references
-  - Supporting evidence
-  - Professional legal brief formatting
-- Professional UI with Crimson Pro & Manrope fonts
+### Export & Presentation ✅
+- [x] PDF export with grounds and legal references
+- [x] DOCX/Word export for editing
+- [x] Barrister View (A4 professional format)
+- [x] Print-ready formatting
 
-### Notes & Comments System
-- Create/edit/delete notes
-- 6 note categories: General, Legal Opinion, Evidence Note, Strategy, Question, Action Item
-- Pin/unpin important notes
-- Author tracking and timestamps
+### Notes & Comments ✅
+- [x] Create/edit/delete notes
+- [x] 6 note categories
+- [x] Pin/unpin important notes
 
-### Grounds of Merit Feature
-- AI auto-identify potential grounds from case materials
-- Manually add grounds with type classification
-- 10 ground types: Procedural Error, Fresh Evidence, Miscarriage of Justice, Sentencing Error, Judicial Error, Ineffective Counsel, Prosecution Misconduct, Jury Irregularity, Constitutional Violation, Other
-- Deep AI investigation of individual grounds
-- Extracts relevant law sections (NSW Crimes Act, Criminal Appeal Act, Federal Criminal Code)
-- Identifies similar Australian cases
-- Strength assessment (Strong/Moderate/Weak)
-- Status tracking (Identified/Investigating/Confirmed/Rejected)
+## Key API Endpoints
+- `POST /api/auth/session`: OAuth session exchange
+- `POST /api/cases`: Create case
+- `POST /api/cases/{id}/documents`: Upload documents
+- `POST /api/cases/{id}/documents/search`: Search documents
+- `POST /api/cases/{id}/documents/{id}/ocr`: OCR single document
+- `POST /api/cases/{id}/ocr-all`: OCR all documents
+- `POST /api/cases/{id}/grounds/auto-identify`: AI identify grounds
+- `POST /api/cases/{id}/grounds/{id}/investigate`: Deep investigation
+- `POST /api/cases/{id}/reports/generate`: Generate report
+- `GET /api/cases/{id}/reports/{id}/export-pdf`: Export PDF
+- `GET /api/cases/{id}/reports/{id}/export-docx`: Export Word
 
-## Prioritized Backlog
+## Database Schema
+- **users**: user_id, email, name, google_id
+- **user_sessions**: session_token, user_id, expires_at
+- **cases**: case_id, user_id, title, defendant_name, case_number, court
+- **documents**: document_id, case_id, filename, content_text, ocr_extracted
+- **timeline_events**: event_id, case_id, title, event_date, event_type
+- **notes**: note_id, case_id, title, content, category, is_pinned
+- **grounds_of_merit**: ground_id, case_id, title, ground_type, status, strength, law_sections, similar_cases, analysis
+- **reports**: report_id, case_id, report_type, content, generated_at
 
-### P1 (High Priority) - Future
-- [ ] Report comparison view
+## 3rd Party Integrations
+- **OpenAI GPT-4o** via Emergent LLM Key
+- **Emergent Google OAuth** for authentication
+- **ReportLab** for PDF generation
+- **python-docx** for Word document generation
+- **Tesseract OCR** for image text extraction
+- **pdf2image** for scanned PDF processing
 
-### P2 (Medium Priority) - Future
+## Legal Framework Reference
+- Crimes Act 1900 (NSW)
+- Criminal Appeal Act 1912 (NSW)
+- Criminal Code Act 1995 (Cth)
+- Evidence Act 1995 (NSW & Cth)
+- Sentencing Act 1995 (NSW)
+
+## Future Enhancements
 - [ ] Case sharing with other users
 - [ ] Email notifications
+- [ ] Case law database integration
+- [ ] Report comparison view
 - [ ] Document version history
-- [ ] Integrate with case law database for verified citations
-
-## Key Technical Details
-
-### Database Schema
-- **users**: user_id, email, name, google_id
-- **cases**: case_id, user_id, name, description, status
-- **documents**: document_id, case_id, filename, file_type, content_text
-- **timeline_events**: event_id, case_id, title, event_date
-- **notes**: note_id, case_id, user_id, title, content, is_pinned
-- **grounds_of_merit**: ground_id, case_id, title, ground_type, status, strength, law_sections, similar_cases
-- **reports**: report_id, case_id, report_type, title, content
-
-### Key API Endpoints
-- `POST /api/auth/session`: Exchange OAuth session for token
-- `POST /api/cases`: Create new case
-- `POST /api/cases/{id}/documents`: Upload document(s)
-- `POST /api/cases/{id}/documents/search`: Search text across documents
-- `POST /api/cases/{id}/documents/{docId}/ocr`: OCR single document
-- `POST /api/cases/{id}/ocr-all`: OCR all documents without text
-- `POST /api/cases/{id}/grounds/auto-identify`: AI identifies grounds
-- `POST /api/cases/{id}/grounds/{id}/investigate`: Deep AI analysis
-- `POST /api/cases/{id}/reports/generate`: Generate AI report
-- `GET /api/cases/{id}/reports/{id}/export-pdf`: Download PDF
-- `GET /api/cases/{id}/reports/{id}/export-docx`: Download Word document
-
-### 3rd Party Integrations
-- **OpenAI GPT-5.2** via Emergent LLM Key - for AI analysis
-- **Emergent Google OAuth** - for authentication
-- **ReportLab** - for PDF generation
-- **python-docx** - for DOCX/Word generation
-- **Tesseract OCR** - for text extraction from images/scanned docs
-- **pdf2image** - for converting PDF pages to images for OCR
-
-## Next Tasks
-1. Create report comparison feature
