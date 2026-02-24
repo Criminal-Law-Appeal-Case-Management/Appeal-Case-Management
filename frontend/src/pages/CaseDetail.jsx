@@ -786,14 +786,30 @@ const CaseDetail = ({ user }) => {
                 </>
               )}
               {activeTab === "timeline" && (
-                <Button 
-                  onClick={() => setShowEventDialog(true)}
-                  className="bg-slate-900 text-white hover:bg-slate-800"
-                  data-testid="add-event-btn"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Event
-                </Button>
+                <>
+                  <Button 
+                    onClick={handleGenerateTimeline}
+                    disabled={generatingTimeline}
+                    variant="outline"
+                    className="bg-purple-50 border-purple-200 text-purple-700 hover:bg-purple-100"
+                    data-testid="generate-timeline-btn"
+                  >
+                    {generatingTimeline ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Sparkles className="w-4 h-4 mr-2" />
+                    )}
+                    AI Generate Timeline
+                  </Button>
+                  <Button 
+                    onClick={() => setShowEventDialog(true)}
+                    className="bg-slate-900 text-white hover:bg-slate-800"
+                    data-testid="add-event-btn"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Event
+                  </Button>
+                </>
               )}
               {activeTab === "notes" && (
                 <Button 
