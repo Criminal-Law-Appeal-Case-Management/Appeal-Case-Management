@@ -682,11 +682,21 @@ const CaseDetail = ({ user }) => {
               <ArrowLeft className="w-4 h-4 mr-1" />
               Back
             </Button>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-1">
               <Scale className="w-5 h-5 text-slate-600" />
               <span className="text-slate-400">/</span>
               <span className="font-medium text-slate-900">{caseData?.title}</span>
             </div>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => navigate("/help")}
+              className="text-slate-600 hover:text-slate-900"
+              data-testid="help-btn"
+            >
+              <HelpCircle className="w-4 h-4 mr-1" />
+              Help
+            </Button>
           </div>
         </div>
       </header>
