@@ -1241,7 +1241,8 @@ Return ONLY a valid JSON array of timeline events. No other text."""
         }
         
         await db.timeline_events.insert_one(timeline_event)
-        del timeline_event['_id'] if '_id' in timeline_event else None
+        if '_id' in timeline_event:
+            del timeline_event['_id']
         created_events.append(timeline_event)
     
     # Sort by date
