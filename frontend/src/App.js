@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import axios from "axios";
 import { Toaster } from "./components/ui/sonner";
+import InstallPrompt from "./components/InstallPrompt";
 
 // Pages
 import LandingPage from "./pages/LandingPage";
