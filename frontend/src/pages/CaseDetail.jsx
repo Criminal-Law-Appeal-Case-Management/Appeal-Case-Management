@@ -685,6 +685,34 @@ const CaseDetail = ({ user }) => {
     );
   }
 
+  if (loadError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="text-center max-w-md">
+          <AlertCircle className="w-12 h-12 text-red-500 mx-auto" />
+          <h2 className="mt-4 text-xl font-semibold text-slate-900">Error Loading Case</h2>
+          <p className="mt-2 text-slate-600">{loadError}</p>
+          <div className="mt-6 flex gap-3 justify-center">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate("/dashboard")}
+              data-testid="back-to-dashboard-btn"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Button>
+            <Button 
+              onClick={fetchCaseData}
+              data-testid="retry-load-btn"
+            >
+              Try Again
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
