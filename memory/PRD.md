@@ -63,6 +63,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - `POST /api/cases/{id}/ocr-all`: OCR all documents
 - `POST /api/cases/{id}/grounds/auto-identify`: AI identify grounds
 - `POST /api/cases/{id}/grounds/{id}/investigate`: Deep investigation
+- `POST /api/cases/{id}/timeline/auto-generate`: AI generate timeline from docs
 - `POST /api/cases/{id}/reports/generate`: Generate report
 - `GET /api/cases/{id}/reports/{id}/export-pdf`: Export PDF
 - `GET /api/cases/{id}/reports/{id}/export-docx`: Export Word
