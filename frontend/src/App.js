@@ -169,6 +169,7 @@ function App() {
       <BrowserRouter>
         <AppRouter />
         <Toaster position="top-right" richColors />
+        <InstallPrompt />
       </BrowserRouter>
     </div>
   );
