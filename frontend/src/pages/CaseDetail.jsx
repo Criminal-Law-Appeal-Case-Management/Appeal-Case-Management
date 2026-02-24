@@ -392,6 +392,39 @@ const CaseDetail = ({ user }) => {
     }
   };
 
+  const handleGenerateTimeline = async () => {
+    if (documents.filter(d => d.content_text).length === 0) {
+      toast.error("No documents with extracted text. Please upload documents and extract text first.");
+      return;
+    }
+    
+    setGeneratingTimeline(true);
+    toast.info("Analyzing documents to generate timeline... This may take 30-60 seconds.");
+    
+    try {
+      const response = await axios.post(`${API}/cases/${caseId}/timeline/auto-generate`, {}, {
+        timeout: 180000 // 3 minute timeout
+      });
+      
+      // Refresh timeline
+      const timelineRes = await axios.get(`${API}/cases/${caseId}/timeline`);
+      setTimeline(timelineRes.data);
+      
+      toast.success(`Generated ${response.data.events_created} timeline events from documents!`);
+    } catch (error) {
+      console.error("Timeline generation error:", error);
+      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+        toast.error("Timeline generation timed out. Please try again.");
+      } else if (error.response?.data?.detail) {
+        toast.error(`Failed: ${error.response.data.detail}`);
+      } else {
+        toast.error("Failed to generate timeline. Please try again.");
+      }
+    } finally {
+      setGeneratingTimeline(false);
+    }
+  };
+
   const handleGenerateReport = async (reportType) => {
     setGeneratingReport(true);
     toast.info("Generating report... This may take 30-60 seconds.");
