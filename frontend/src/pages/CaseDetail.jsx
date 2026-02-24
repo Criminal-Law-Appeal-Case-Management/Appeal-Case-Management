@@ -99,6 +99,7 @@ const CaseDetail = ({ user }) => {
   const [selectedGround, setSelectedGround] = useState(null);
   const [extractingText, setExtractingText] = useState(false);
   const [runningOcr, setRunningOcr] = useState(false);
+  const [generatingTimeline, setGeneratingTimeline] = useState(false);
 
   // Search states
   const [searchQuery, setSearchQuery] = useState("");
