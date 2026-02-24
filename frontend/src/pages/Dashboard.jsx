@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { 
   Scale, Plus, FileText, Clock, MoreVertical, 
-  LogOut, FolderOpen, Search, User
+  LogOut, FolderOpen, Search, User, HelpCircle
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
