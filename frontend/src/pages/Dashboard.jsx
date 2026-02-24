@@ -125,6 +125,14 @@ const Dashboard = ({ user }) => {
             <FolderOpen className="w-5 h-5" />
             <span className="font-medium">All Cases</span>
           </div>
+          <div 
+            className="sidebar-item cursor-pointer" 
+            onClick={() => navigate('/help')}
+            data-testid="nav-help"
+          >
+            <HelpCircle className="w-5 h-5" />
+            <span className="font-medium">User Guide</span>
+          </div>
         </nav>
 
         <div className="absolute bottom-6 left-6 right-6">
