@@ -141,22 +141,37 @@ const CaseDetail = ({ user }) => {
 
   const fetchCaseData = async () => {
     try {
-      const [caseRes, docsRes, timelineRes, reportsRes, notesRes, groundsRes] = await Promise.all([
-        axios.get(`${API}/cases/${caseId}`),
+      // Fetch case data first to verify access
+      const caseRes = await axios.get(`${API}/cases/${caseId}`);
+      setCaseData(caseRes.data);
+      
+      // Then fetch related data - use Promise.allSettled for resilience
+      const [docsRes, timelineRes, reportsRes, notesRes, groundsRes] = await Promise.allSettled([
         axios.get(`${API}/cases/${caseId}/documents`),
         axios.get(`${API}/cases/${caseId}/timeline`),
         axios.get(`${API}/cases/${caseId}/reports`),
         axios.get(`${API}/cases/${caseId}/notes`),
         axios.get(`${API}/cases/${caseId}/grounds`)
       ]);
-      setCaseData(caseRes.data);
-      setDocuments(docsRes.data);
-      setTimeline(timelineRes.data);
-      setReports(reportsRes.data);
-      setNotes(notesRes.data);
-      setGrounds(groundsRes.data);
+      
+      // Set data from successful responses, empty arrays for failed ones
+      setDocuments(docsRes.status === 'fulfilled' ? docsRes.value.data : []);
+      setTimeline(timelineRes.status === 'fulfilled' ? timelineRes.value.data : []);
+      setReports(reportsRes.status === 'fulfilled' ? reportsRes.value.data : []);
+      setNotes(notesRes.status === 'fulfilled' ? notesRes.value.data : []);
+      setGrounds(groundsRes.status === 'fulfilled' ? groundsRes.value.data : []);
+      
     } catch (error) {
-      toast.error("Failed to load case data");
+      console.error("Failed to load case:", error);
+      if (error.response?.status === 401) {
+        toast.error("Session expired. Please log in again.");
+      } else if (error.response?.status === 404) {
+        toast.error("Case not found");
+      } else if (error.code === 'ECONNABORTED') {
+        toast.error("Request timed out. Please try again.");
+      } else {
+        toast.error("Failed to load case data");
+      }
       navigate("/dashboard");
     } finally {
       setLoading(false);
