@@ -141,6 +141,8 @@ const CaseDetail = ({ user }) => {
   }, [caseId]);
 
   const fetchCaseData = async () => {
+    setLoadError(null);
+    setLoading(true);
     try {
       // Fetch case data first to verify access
       const caseRes = await axios.get(`${API}/cases/${caseId}`);
@@ -165,15 +167,15 @@ const CaseDetail = ({ user }) => {
     } catch (error) {
       console.error("Failed to load case:", error);
       if (error.response?.status === 401) {
-        toast.error("Session expired. Please log in again.");
+        setLoadError("Session expired. Please log in again.");
+        setTimeout(() => navigate("/"), 2000);
       } else if (error.response?.status === 404) {
-        toast.error("Case not found");
+        setLoadError("Case not found");
       } else if (error.code === 'ECONNABORTED') {
-        toast.error("Request timed out. Please try again.");
+        setLoadError("Request timed out. Please try again.");
       } else {
-        toast.error("Failed to load case data");
+        setLoadError("Failed to load case data. Please try again.");
       }
-      navigate("/dashboard");
     } finally {
       setLoading(false);
     }
