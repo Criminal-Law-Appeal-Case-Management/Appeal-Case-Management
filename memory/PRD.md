@@ -41,6 +41,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] Law section extraction (NSW & Federal)
 - [x] Similar case identification
 - [x] Report generation (Quick Summary, Full Detailed, Extensive Log)
+- [x] **Auto-generate Timeline from documents** - AI extracts dates and events
 
 ### Export & Presentation ✅
 - [x] PDF export with grounds and legal references
