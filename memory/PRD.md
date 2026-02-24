@@ -93,9 +93,20 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - Evidence Act 1995 (NSW & Cth)
 - Sentencing Act 1995 (NSW)
 
+## Bug Fixes (Feb 2026)
+- [x] **Case Loading Error** - Improved error handling with retry functionality
+  - Changed from `Promise.all` to `Promise.allSettled` for resilient data loading
+  - Added specific error messages for session expired, not found, timeout
+  - Added retry button instead of immediate redirect
+  - File: `frontend/src/pages/CaseDetail.jsx`
+
 ## Future Enhancements
 - [ ] Case sharing with other users
 - [ ] Email notifications
 - [ ] Case law database integration
 - [ ] Report comparison view
 - [ ] Document version history
+
+## Technical Debt (Priority)
+- [ ] **Refactor backend/server.py** - Split 2500+ line file into routers
+- [ ] **Refactor CaseDetail.jsx** - Split 1000+ line component into smaller pieces
