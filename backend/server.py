@@ -1100,6 +1100,159 @@ async def delete_timeline_event(case_id: str, event_id: str, request: Request):
     
     return {"message": "Event deleted"}
 
+@api_router.post("/cases/{case_id}/timeline/auto-generate", response_model=dict)
+async def auto_generate_timeline(case_id: str, request: Request):
+    """AI-powered timeline generation from uploaded documents"""
+    from emergentintegrations.llm.chat import LlmChat, UserMessage
+    
+    user = await get_current_user(request)
+    
+    # Verify case ownership
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id}, {"_id": 0})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    # Get documents with content
+    documents = await db.documents.find(
+        {"case_id": case_id, "content_text": {"$exists": True, "$ne": ""}},
+        {"_id": 0, "file_data": 0}
+    ).to_list(100)
+    
+    if not documents:
+        raise HTTPException(status_code=400, detail="No documents with extracted text found. Please upload documents and extract text first.")
+    
+    # Build context from documents
+    doc_context = f"CASE: {case.get('title', 'Unknown')}\nDEFENDANT: {case.get('defendant_name', 'Unknown')}\n\n"
+    doc_context += "=== DOCUMENTS ===\n\n"
+    
+    for doc in documents:
+        content = doc.get('content_text', '')[:3000]  # Limit per doc
+        doc_context += f"DOCUMENT: {doc.get('filename')}\n"
+        doc_context += f"CONTENT:\n{content}\n\n"
+    
+    system_prompt = """You are an expert legal analyst specializing in criminal cases. 
+Your task is to extract a chronological timeline of events from case documents.
+
+For each event, identify:
+1. The DATE (in YYYY-MM-DD format if possible, or approximate like "2020-01" or "Early 2020")
+2. A clear TITLE for the event (brief, descriptive)
+3. A DESCRIPTION with relevant details
+4. The EVENT TYPE: one of [incident, arrest, court_hearing, evidence, witness, legal_filing, verdict, appeal, other]
+
+Return your response as a JSON array of events, ordered chronologically. Example:
+[
+  {"date": "2019-05-15", "title": "Initial Incident", "description": "The alleged incident occurred at...", "event_type": "incident"},
+  {"date": "2019-05-16", "title": "Arrest of Defendant", "description": "Police arrested...", "event_type": "arrest"}
+]
+
+Only include events you can clearly identify from the documents. Be thorough - extract ALL dates and events mentioned."""
+
+    user_prompt = f"""Analyze these documents and extract a complete chronological timeline of all events.
+
+{doc_context}
+
+Return ONLY a valid JSON array of timeline events. No other text."""
+
+    api_key = os.environ.get('EMERGENT_LLM_KEY')
+    if not api_key:
+        raise HTTPException(status_code=500, detail="AI service not configured")
+    
+    # Try up to 4 times with exponential backoff
+    response = None
+    last_error = None
+    for attempt in range(4):
+        try:
+            chat = LlmChat(
+                api_key=api_key,
+                session_id=f"timeline_{case_id}_{uuid.uuid4().hex[:8]}",
+                system_message=system_prompt
+            ).with_model("openai", "gpt-4o")
+            
+            response = await chat.send_message(UserMessage(text=user_prompt))
+            break
+        except Exception as e:
+            last_error = e
+            logger.warning(f"Timeline generation attempt {attempt + 1} failed: {e}")
+            if attempt < 3:
+                import asyncio
+                await asyncio.sleep(3 * (2 ** attempt))
+    
+    if response is None:
+        logger.error(f"All timeline generation attempts failed: {last_error}")
+        raise HTTPException(status_code=500, detail=f"AI timeline generation failed after retries: {str(last_error)}")
+    
+    # Parse the JSON response
+    import json
+    import re
+    
+    # Extract JSON array from response
+    json_match = re.search(r'\[[\s\S]*\]', response)
+    if not json_match:
+        logger.warning(f"Could not parse timeline JSON from response: {response[:500]}")
+        raise HTTPException(status_code=500, detail="Failed to parse timeline from AI response")
+    
+    try:
+        events_data = json.loads(json_match.group())
+    except json.JSONDecodeError as e:
+        logger.warning(f"JSON decode error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to parse timeline JSON")
+    
+    # Create timeline events in database
+    created_events = []
+    for event in events_data:
+        event_date = event.get('date', '')
+        
+        # Try to parse and normalize the date
+        parsed_date = None
+        if event_date:
+            # Try various date formats
+            for fmt in ['%Y-%m-%d', '%Y-%m', '%Y', '%d/%m/%Y', '%d-%m-%Y']:
+                try:
+                    parsed_date = datetime.strptime(event_date, fmt)
+                    break
+                except ValueError:
+                    continue
+            
+            if not parsed_date:
+                # Try to extract year at minimum
+                year_match = re.search(r'(19|20)\d{2}', event_date)
+                if year_match:
+                    parsed_date = datetime.strptime(year_match.group(), '%Y')
+        
+        if not parsed_date:
+            parsed_date = datetime.now(timezone.utc)
+        
+        # Validate event type
+        valid_types = ['incident', 'arrest', 'court_hearing', 'evidence', 'witness', 'legal_filing', 'verdict', 'appeal', 'other']
+        event_type = event.get('event_type', 'other')
+        if event_type not in valid_types:
+            event_type = 'other'
+        
+        timeline_event = {
+            "event_id": f"evt_{uuid.uuid4().hex[:12]}",
+            "case_id": case_id,
+            "user_id": user.user_id,
+            "title": event.get('title', 'Unknown Event')[:200],
+            "description": event.get('description', '')[:2000],
+            "event_date": parsed_date.isoformat(),
+            "event_type": event_type,
+            "auto_generated": True,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.timeline_events.insert_one(timeline_event)
+        del timeline_event['_id'] if '_id' in timeline_event else None
+        created_events.append(timeline_event)
+    
+    # Sort by date
+    created_events.sort(key=lambda x: x.get('event_date', ''))
+    
+    return {
+        "message": f"Successfully generated {len(created_events)} timeline events",
+        "events_created": len(created_events),
+        "events": created_events
+    }
+
 # ============ NOTES & COMMENTS ENDPOINTS ============
 
 @api_router.get("/cases/{case_id}/notes", response_model=List[dict])
