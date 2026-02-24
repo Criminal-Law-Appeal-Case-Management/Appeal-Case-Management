@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import CaseDetail from "./pages/CaseDetail";
 import ReportView from "./pages/ReportView";
 import BarristerView from "./pages/BarristerView";
+import HelpPage from "./pages/HelpPage";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
