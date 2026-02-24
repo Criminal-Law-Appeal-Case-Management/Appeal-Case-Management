@@ -84,6 +84,7 @@ const CaseDetail = ({ user }) => {
   const [notes, setNotes] = useState([]);
   const [grounds, setGrounds] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
   const [activeTab, setActiveTab] = useState("documents");
 
   // Dialog states
