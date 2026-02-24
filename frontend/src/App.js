@@ -150,6 +150,14 @@ function AppRouter() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/help"
+        element={
+          <ProtectedRoute>
+            {({ user }) => <HelpPage user={user} />}
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
