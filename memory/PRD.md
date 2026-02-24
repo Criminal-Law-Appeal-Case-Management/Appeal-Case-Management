@@ -49,6 +49,15 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] Barrister View (A4 professional format)
 - [x] Print-ready formatting
 
+### Mobile App Support ✅ (Feb 2026)
+- [x] Progressive Web App (PWA) - installable from browser
+- [x] App icons for all platforms (72px to 512px)
+- [x] iOS "Add to Home Screen" support
+- [x] Android install prompt
+- [x] Service worker for offline caching
+- [x] Capacitor configured for App Store/Play Store submission
+- [x] Mobile-responsive design
+
 ### Notes & Comments ✅
 - [x] Create/edit/delete notes
 - [x] 6 note categories
