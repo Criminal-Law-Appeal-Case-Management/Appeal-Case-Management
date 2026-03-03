@@ -31,7 +31,8 @@ import { Textarea } from "../components/ui/textarea";
 import { Badge } from "../components/ui/badge";
 import { ScrollArea } from "../components/ui/scroll-area";
 import { API } from "../App";
-import Timeline from "../components/Timeline";
+import Timeline from "../components/TimelineEnhanced";
+import TimelineAnalysis from "../components/TimelineAnalysis";
 import GroundsOfMerit from "../components/GroundsOfMerit";
 
 const DOCUMENT_CATEGORIES = [
@@ -44,12 +45,60 @@ const DOCUMENT_CATEGORIES = [
 ];
 
 const EVENT_TYPES = [
-  { value: "arrest", label: "Arrest" },
-  { value: "court_hearing", label: "Court Hearing" },
-  { value: "evidence_discovery", label: "Evidence Discovery" },
-  { value: "appeal_filed", label: "Appeal Filed" },
-  { value: "verdict", label: "Verdict" },
-  { value: "other", label: "Other" }
+  // Pre-trial
+  { value: "arrest", label: "Arrest", category: "pre_trial" },
+  { value: "charge", label: "Charge", category: "pre_trial" },
+  { value: "bail_hearing", label: "Bail Hearing", category: "pre_trial" },
+  { value: "committal", label: "Committal", category: "pre_trial" },
+  { value: "indictment", label: "Indictment", category: "pre_trial" },
+  // Trial
+  { value: "jury_selection", label: "Jury Selection", category: "trial" },
+  { value: "opening_statements", label: "Opening Statements", category: "trial" },
+  { value: "witness_testimony", label: "Witness Testimony", category: "trial" },
+  { value: "cross_examination", label: "Cross Examination", category: "trial" },
+  { value: "closing_arguments", label: "Closing Arguments", category: "trial" },
+  { value: "jury_deliberation", label: "Jury Deliberation", category: "trial" },
+  { value: "verdict", label: "Verdict", category: "trial" },
+  // Evidence
+  { value: "evidence_discovery", label: "Evidence Discovery", category: "evidence" },
+  { value: "forensic_report", label: "Forensic Report", category: "evidence" },
+  { value: "expert_opinion", label: "Expert Opinion", category: "evidence" },
+  { value: "disclosure", label: "Disclosure", category: "evidence" },
+  // Post-conviction
+  { value: "sentencing", label: "Sentencing", category: "post_conviction" },
+  { value: "appeal_lodged", label: "Appeal Lodged", category: "post_conviction" },
+  { value: "leave_application", label: "Leave Application", category: "post_conviction" },
+  { value: "appeal_hearing", label: "Appeal Hearing", category: "post_conviction" },
+  // Investigation
+  { value: "police_interview", label: "Police Interview", category: "investigation" },
+  { value: "erisp_recording", label: "ERISP Recording", category: "investigation" },
+  { value: "crime_scene", label: "Crime Scene", category: "investigation" },
+  { value: "search_warrant", label: "Search Warrant", category: "investigation" },
+  // General
+  { value: "court_hearing", label: "Court Hearing", category: "general" },
+  { value: "other", label: "Other Event", category: "general" }
+];
+
+const EVENT_CATEGORIES = [
+  { value: "pre_trial", label: "Pre-Trial" },
+  { value: "trial", label: "Trial" },
+  { value: "evidence", label: "Evidence" },
+  { value: "post_conviction", label: "Post-Conviction" },
+  { value: "investigation", label: "Investigation" },
+  { value: "general", label: "General" }
+];
+
+const SIGNIFICANCE_LEVELS = [
+  { value: "critical", label: "Critical - Key to appeal" },
+  { value: "important", label: "Important - Significant event" },
+  { value: "normal", label: "Normal - Standard event" },
+  { value: "minor", label: "Minor - Background context" }
+];
+
+const PERSPECTIVES = [
+  { value: "neutral", label: "Neutral" },
+  { value: "prosecution", label: "Favors Prosecution" },
+  { value: "defence", label: "Favors Defence" }
 ];
 
 const NOTE_CATEGORIES = [
@@ -101,6 +150,8 @@ const CaseDetail = ({ user }) => {
   const [extractingText, setExtractingText] = useState(false);
   const [runningOcr, setRunningOcr] = useState(false);
   const [generatingTimeline, setGeneratingTimeline] = useState(false);
+  const [analyzingTimeline, setAnalyzingTimeline] = useState(false);
+  const [timelineAnalysis, setTimelineAnalysis] = useState(null);
 
   // Search states
   const [searchQuery, setSearchQuery] = useState("");
@@ -119,7 +170,17 @@ const CaseDetail = ({ user }) => {
     title: "",
     description: "",
     event_date: "",
-    event_type: "other"
+    event_type: "other",
+    event_category: "general",
+    significance: "normal",
+    perspective: "neutral",
+    source_citation: "",
+    is_contested: false,
+    contested_details: "",
+    linked_documents: [],
+    participants: [],
+    related_grounds: [],
+    inconsistency_notes: ""
   });
 
   const [newNote, setNewNote] = useState({
@@ -391,7 +452,22 @@ const CaseDetail = ({ user }) => {
         new Date(a.event_date) - new Date(b.event_date)
       ));
       setShowEventDialog(false);
-      setNewEvent({ title: "", description: "", event_date: "", event_type: "other" });
+      setNewEvent({ 
+        title: "", 
+        description: "", 
+        event_date: "", 
+        event_type: "other",
+        event_category: "general",
+        significance: "normal",
+        perspective: "neutral",
+        source_citation: "",
+        is_contested: false,
+        contested_details: "",
+        linked_documents: [],
+        participants: [],
+        related_grounds: [],
+        inconsistency_notes: ""
+      });
       toast.success("Event added to timeline");
     } catch (error) {
       toast.error("Failed to add event");
@@ -440,6 +516,51 @@ const CaseDetail = ({ user }) => {
       }
     } finally {
       setGeneratingTimeline(false);
+    }
+  };
+
+  const handleAnalyzeTimeline = async () => {
+    if (timeline.length < 2) {
+      toast.error("Need at least 2 timeline events for analysis");
+      return;
+    }
+    
+    setAnalyzingTimeline(true);
+    toast.info("Analyzing timeline for gaps, inconsistencies, and insights...");
+    
+    try {
+      const response = await axios.post(`${API}/cases/${caseId}/timeline/analyze`, {}, {
+        timeout: 120000
+      });
+      setTimelineAnalysis(response.data.analysis);
+      toast.success("Timeline analysis complete!");
+    } catch (error) {
+      console.error("Timeline analysis error:", error);
+      toast.error("Failed to analyze timeline. Please try again.");
+    } finally {
+      setAnalyzingTimeline(false);
+    }
+  };
+
+  const handleExportTimelinePDF = async () => {
+    try {
+      const response = await axios.get(`${API}/cases/${caseId}/timeline/export-pdf`, {
+        responseType: 'blob'
+      });
+      
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `timeline_${caseData?.title?.replace(/\s+/g, '_') || 'case'}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      toast.success("Timeline PDF exported!");
+    } catch (error) {
+      console.error("PDF export error:", error);
+      toast.error("Failed to export timeline PDF");
     }
   };
 
@@ -1126,7 +1247,23 @@ const CaseDetail = ({ user }) => {
                 </Button>
               </Card>
             ) : (
-              <Timeline events={timeline} onDeleteEvent={handleDeleteEvent} />
+              <div className="space-y-4">
+                {timelineAnalysis && (
+                  <TimelineAnalysis 
+                    analysis={timelineAnalysis} 
+                    onClose={() => setTimelineAnalysis(null)} 
+                  />
+                )}
+                <Timeline 
+                  events={timeline} 
+                  documents={documents}
+                  grounds={grounds}
+                  onDeleteEvent={handleDeleteEvent}
+                  onExportPDF={handleExportTimelinePDF}
+                  onAnalyze={handleAnalyzeTimeline}
+                  analyzing={analyzingTimeline}
+                />
+              </div>
             )}
           </TabsContent>
 
@@ -1472,22 +1609,24 @@ const CaseDetail = ({ user }) => {
 
       {/* Add Event Dialog */}
       <Dialog open={showEventDialog} onOpenChange={setShowEventDialog}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle style={{ fontFamily: 'Crimson Pro, serif' }} className="text-2xl">
               Add Timeline Event
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
+            {/* Basic Info */}
             <div>
               <Label>Event Title *</Label>
               <Input
                 value={newEvent.title}
                 onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
-                placeholder="e.g., Initial arrest"
+                placeholder="e.g., Police interview with accused"
                 data-testid="event-title"
               />
             </div>
+            
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label>Date *</Label>
@@ -1499,10 +1638,38 @@ const CaseDetail = ({ user }) => {
                 />
               </div>
               <div>
+                <Label>Category</Label>
+                <Select 
+                  value={newEvent.event_category} 
+                  onValueChange={(v) => {
+                    setNewEvent({ ...newEvent, event_category: v });
+                  }}
+                >
+                  <SelectTrigger data-testid="event-category-select">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {EVENT_CATEGORIES.map(cat => (
+                      <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
                 <Label>Event Type</Label>
                 <Select 
                   value={newEvent.event_type} 
-                  onValueChange={(v) => setNewEvent({ ...newEvent, event_type: v })}
+                  onValueChange={(v) => {
+                    const eventType = EVENT_TYPES.find(t => t.value === v);
+                    setNewEvent({ 
+                      ...newEvent, 
+                      event_type: v,
+                      event_category: eventType?.category || newEvent.event_category
+                    });
+                  }}
                 >
                   <SelectTrigger data-testid="event-type-select">
                     <SelectValue />
@@ -1514,15 +1681,177 @@ const CaseDetail = ({ user }) => {
                   </SelectContent>
                 </Select>
               </div>
+              <div>
+                <Label>Significance</Label>
+                <Select 
+                  value={newEvent.significance} 
+                  onValueChange={(v) => setNewEvent({ ...newEvent, significance: v })}
+                >
+                  <SelectTrigger data-testid="event-significance-select">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SIGNIFICANCE_LEVELS.map(level => (
+                      <SelectItem key={level.value} value={level.value}>{level.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
+
             <div>
               <Label>Description</Label>
               <Textarea
                 value={newEvent.description}
                 onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
-                placeholder="Details about this event..."
+                placeholder="Detailed description of this event..."
                 rows={3}
                 data-testid="event-description"
+              />
+            </div>
+
+            {/* Source & Perspective */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Source Citation</Label>
+                <Input
+                  value={newEvent.source_citation}
+                  onChange={(e) => setNewEvent({ ...newEvent, source_citation: e.target.value })}
+                  placeholder="e.g., Exhibit A, page 23"
+                  data-testid="event-source"
+                />
+              </div>
+              <div>
+                <Label>Perspective</Label>
+                <Select 
+                  value={newEvent.perspective} 
+                  onValueChange={(v) => setNewEvent({ ...newEvent, perspective: v })}
+                >
+                  <SelectTrigger data-testid="event-perspective-select">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PERSPECTIVES.map(p => (
+                      <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Link Documents */}
+            {documents.length > 0 && (
+              <div>
+                <Label>Link to Documents</Label>
+                <div className="flex flex-wrap gap-2 mt-2 p-3 bg-slate-50 rounded-lg max-h-32 overflow-y-auto">
+                  {documents.map(doc => (
+                    <label 
+                      key={doc.document_id}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm cursor-pointer transition-colors ${
+                        newEvent.linked_documents.includes(doc.document_id)
+                          ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                          : 'bg-white text-slate-600 border border-slate-200 hover:border-blue-300'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="hidden"
+                        checked={newEvent.linked_documents.includes(doc.document_id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setNewEvent({ 
+                              ...newEvent, 
+                              linked_documents: [...newEvent.linked_documents, doc.document_id] 
+                            });
+                          } else {
+                            setNewEvent({ 
+                              ...newEvent, 
+                              linked_documents: newEvent.linked_documents.filter(id => id !== doc.document_id) 
+                            });
+                          }
+                        }}
+                      />
+                      <FileText className="w-3 h-3" />
+                      {doc.filename.length > 25 ? doc.filename.substring(0, 25) + '...' : doc.filename}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Link Grounds */}
+            {grounds.length > 0 && (
+              <div>
+                <Label>Link to Grounds of Appeal</Label>
+                <div className="flex flex-wrap gap-2 mt-2 p-3 bg-slate-50 rounded-lg max-h-32 overflow-y-auto">
+                  {grounds.map(ground => (
+                    <label 
+                      key={ground.ground_id}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm cursor-pointer transition-colors ${
+                        newEvent.related_grounds.includes(ground.ground_id)
+                          ? 'bg-purple-100 text-purple-800 border border-purple-300'
+                          : 'bg-white text-slate-600 border border-slate-200 hover:border-purple-300'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="hidden"
+                        checked={newEvent.related_grounds.includes(ground.ground_id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setNewEvent({ 
+                              ...newEvent, 
+                              related_grounds: [...newEvent.related_grounds, ground.ground_id] 
+                            });
+                          } else {
+                            setNewEvent({ 
+                              ...newEvent, 
+                              related_grounds: newEvent.related_grounds.filter(id => id !== ground.ground_id) 
+                            });
+                          }
+                        }}
+                      />
+                      <Scale className="w-3 h-3" />
+                      {ground.title.length > 30 ? ground.title.substring(0, 30) + '...' : ground.title}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Contested Fact */}
+            <div className="border border-amber-200 rounded-lg p-4 bg-amber-50/50">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={newEvent.is_contested}
+                  onChange={(e) => setNewEvent({ ...newEvent, is_contested: e.target.checked })}
+                  className="w-4 h-4 rounded border-amber-300"
+                />
+                <span className="font-medium text-amber-800">This is a contested fact</span>
+              </label>
+              {newEvent.is_contested && (
+                <div className="mt-3">
+                  <Label className="text-amber-700">What is contested?</Label>
+                  <Textarea
+                    value={newEvent.contested_details}
+                    onChange={(e) => setNewEvent({ ...newEvent, contested_details: e.target.value })}
+                    placeholder="Explain what is disputed about this event..."
+                    rows={2}
+                    className="mt-1"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Inconsistency Notes */}
+            <div>
+              <Label>Inconsistency Notes (optional)</Label>
+              <Textarea
+                value={newEvent.inconsistency_notes}
+                onChange={(e) => setNewEvent({ ...newEvent, inconsistency_notes: e.target.value })}
+                placeholder="Note any inconsistencies with other evidence or testimony..."
+                rows={2}
               />
             </div>
           </div>

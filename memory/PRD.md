@@ -35,6 +35,28 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] Document search across case files
 - [x] Timeline event management
 
+### Enhanced Timeline System ✅ (Mar 2026)
+- [x] **Comprehensive Event Categories** - Pre-trial, Trial, Evidence, Post-conviction, Investigation
+- [x] **27 Event Types** - Arrest, Charge, Bail, Committal, Jury Selection, Witness Testimony, etc.
+- [x] **Event Details:**
+  - Significance levels (Critical, Important, Normal, Minor)
+  - Perspective tracking (Prosecution, Defence, Neutral)
+  - Source citations
+  - Participants with roles
+  - Document linking
+  - Ground of appeal linking
+- [x] **Contested Facts** - Mark disputed events with details
+- [x] **Inconsistency Notes** - Track contradictions
+- [x] **Timeline Analysis (AI):**
+  - Gap detection between events
+  - Inconsistency identification  
+  - Prosecution vs Defence balance
+  - Ground of appeal connections
+  - Key observations and recommendations
+- [x] **Timeline Filters** - By category, significance, perspective, contested status
+- [x] **Timeline Search** - Search across events, participants, sources
+- [x] **PDF Export** - Professional formatted timeline document
+
 ### AI-Powered Features ✅
 - [x] Auto-identify Grounds of Merit from documents
 - [x] Deep investigation of individual grounds
@@ -73,6 +95,8 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - `POST /api/cases/{id}/grounds/auto-identify`: AI identify grounds
 - `POST /api/cases/{id}/grounds/{id}/investigate`: Deep investigation
 - `POST /api/cases/{id}/timeline/auto-generate`: AI generate timeline from docs
+- `POST /api/cases/{id}/timeline/analyze`: AI timeline analysis (gaps, inconsistencies)
+- `GET /api/cases/{id}/timeline/export-pdf`: Export timeline as PDF
 - `POST /api/cases/{id}/reports/generate`: Generate report
 - `GET /api/cases/{id}/reports/{id}/export-pdf`: Export PDF
 - `GET /api/cases/{id}/reports/{id}/export-docx`: Export Word
@@ -82,7 +106,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - **user_sessions**: session_token, user_id, expires_at
 - **cases**: case_id, user_id, title, defendant_name, case_number, court
 - **documents**: document_id, case_id, filename, content_text, ocr_extracted
-- **timeline_events**: event_id, case_id, title, event_date, event_type
+- **timeline_events**: event_id, case_id, title, event_date, event_type, event_category, significance, perspective, is_contested, contested_details, linked_documents, participants, related_grounds, source_citation, inconsistency_notes
 - **notes**: note_id, case_id, title, content, category, is_pinned
 - **grounds_of_merit**: ground_id, case_id, title, ground_type, status, strength, law_sections, similar_cases, analysis
 - **reports**: report_id, case_id, report_type, content, generated_at

@@ -13,6 +13,7 @@ from datetime import datetime, timezone, timedelta
 import httpx
 import base64
 import json
+import asyncio
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -92,8 +93,20 @@ class TimelineEvent(BaseModel):
     title: str
     description: str
     event_date: datetime
-    event_type: str  # arrest, court_hearing, evidence_discovery, appeal_filed, verdict, other
-    document_ids: List[str] = []
+    event_type: str  # See EVENT_CATEGORIES below
+    event_category: str = "general"  # pre_trial, trial, evidence, post_conviction, investigation
+    
+    # Enhanced fields
+    linked_documents: List[str] = []  # Document IDs
+    participants: List[dict] = []  # [{name: str, role: str}]
+    significance: str = "normal"  # critical, important, normal, minor
+    source_citation: str = ""
+    perspective: str = "neutral"  # prosecution, defence, neutral
+    is_contested: bool = False
+    contested_details: str = ""
+    related_grounds: List[str] = []  # Ground IDs
+    inconsistency_notes: str = ""
+    
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class TimelineEventCreate(BaseModel):
@@ -101,7 +114,16 @@ class TimelineEventCreate(BaseModel):
     description: str
     event_date: datetime
     event_type: str
-    document_ids: List[str] = []
+    event_category: str = "general"
+    linked_documents: List[str] = []
+    participants: List[dict] = []
+    significance: str = "normal"
+    source_citation: str = ""
+    perspective: str = "neutral"
+    is_contested: bool = False
+    contested_details: str = ""
+    related_grounds: List[str] = []
+    inconsistency_notes: str = ""
 
 class GroundOfMerit(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -1253,6 +1275,253 @@ Return ONLY a valid JSON array of timeline events. No other text."""
         "events_created": len(created_events),
         "events": created_events
     }
+
+@api_router.post("/cases/{case_id}/timeline/analyze", response_model=dict)
+async def analyze_timeline(case_id: str, request: Request):
+    """AI-powered timeline analysis to find gaps, inconsistencies, and insights"""
+    user = await get_current_user(request)
+    
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    events = await db.timeline_events.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).sort("event_date", 1).to_list(500)
+    
+    if len(events) < 2:
+        raise HTTPException(status_code=400, detail="Need at least 2 timeline events for analysis")
+    
+    # Get grounds for context
+    grounds = await db.grounds_of_merit.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).to_list(100)
+    
+    from emergentintegrations.llm.chat import chat, LLMProvider
+    emergent_api_key = os.environ.get('EMERGENT_API_KEY')
+    
+    system_prompt = """You are an expert criminal appeals analyst specializing in NSW and Australian federal law.
+Analyze this timeline of events and provide detailed insights for an appeal case.
+
+Your analysis must include:
+1. TIMELINE GAPS: Identify any suspicious gaps or missing periods that should have documentation
+2. INCONSISTENCIES: Find contradictions between events or illogical sequences
+3. PROSECUTION VS DEFENCE: Identify which events favor prosecution vs defence
+4. CONTESTED FACTS: Flag events that appear disputed or have conflicting accounts
+5. APPEAL RELEVANCE: Link events to potential grounds of appeal
+6. KEY DATES: Highlight critical dates and any statute of limitation concerns
+7. WITNESS PATTERNS: Note patterns in witness involvement across events
+
+Return a JSON object with this structure:
+{
+    "gaps": [{"start_date": "...", "end_date": "...", "description": "...", "significance": "high/medium/low"}],
+    "inconsistencies": [{"event_ids": [...], "description": "...", "impact": "..."}],
+    "prosecution_events": [{"event_id": "...", "reason": "..."}],
+    "defence_events": [{"event_id": "...", "reason": "..."}],
+    "contested_facts": [{"event_id": "...", "issue": "...", "recommendation": "..."}],
+    "ground_connections": [{"event_id": "...", "ground_type": "...", "relevance": "..."}],
+    "key_observations": ["..."],
+    "recommended_actions": ["..."]
+}"""
+
+    events_text = json.dumps(events, indent=2, default=str)
+    grounds_text = json.dumps(grounds, indent=2, default=str) if grounds else "No grounds identified yet"
+    
+    user_prompt = f"""Analyze this criminal case timeline for an appeal:
+
+TIMELINE EVENTS:
+{events_text}
+
+IDENTIFIED GROUNDS OF APPEAL:
+{grounds_text}
+
+Provide a comprehensive analysis identifying gaps, inconsistencies, and appeal-relevant insights."""
+
+    last_error = None
+    for attempt in range(3):
+        try:
+            response = await chat(
+                api_key=emergent_api_key,
+                provider=LLMProvider.OPENAI,
+                model="gpt-4o",
+                system_prompt=system_prompt,
+                user_message=user_prompt,
+                session_id=f"timeline_analysis_{case_id}_{uuid.uuid4().hex[:8]}",
+            )
+            break
+        except Exception as e:
+            last_error = e
+            if attempt < 2:
+                await asyncio.sleep(2 ** attempt)
+    else:
+        raise HTTPException(status_code=500, detail=f"AI analysis failed: {str(last_error)}")
+    
+    # Parse JSON response
+    try:
+        json_match = response
+        if "```json" in response:
+            json_match = response.split("```json")[1].split("```")[0]
+        elif "```" in response:
+            json_match = response.split("```")[1].split("```")[0]
+        
+        analysis = json.loads(json_match.strip())
+    except json.JSONDecodeError:
+        # Return raw insights if JSON parsing fails
+        analysis = {
+            "gaps": [],
+            "inconsistencies": [],
+            "prosecution_events": [],
+            "defence_events": [],
+            "contested_facts": [],
+            "ground_connections": [],
+            "key_observations": [response[:2000]],
+            "recommended_actions": []
+        }
+    
+    return {
+        "analysis": analysis,
+        "event_count": len(events),
+        "analyzed_at": datetime.now(timezone.utc).isoformat()
+    }
+
+@api_router.get("/cases/{case_id}/timeline/export-pdf")
+async def export_timeline_pdf(case_id: str, request: Request):
+    """Export timeline as a formatted PDF"""
+    user = await get_current_user(request)
+    
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    events = await db.timeline_events.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).sort("event_date", 1).to_list(500)
+    
+    # Get linked documents for reference
+    documents = await db.documents.find(
+        {"case_id": case_id},
+        {"_id": 0, "document_id": 1, "filename": 1}
+    ).to_list(500)
+    doc_map = {d["document_id"]: d["filename"] for d in documents}
+    
+    # Get grounds for reference
+    grounds = await db.grounds_of_merit.find(
+        {"case_id": case_id},
+        {"_id": 0, "ground_id": 1, "title": 1}
+    ).to_list(100)
+    ground_map = {g["ground_id"]: g["title"] for g in grounds}
+    
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib.units import mm
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable
+    from io import BytesIO
+    
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=20*mm, bottomMargin=20*mm, leftMargin=15*mm, rightMargin=15*mm)
+    
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle('CustomTitle', parent=styles['Heading1'], fontSize=18, spaceAfter=12, textColor=colors.HexColor('#0f172a'))
+    subtitle_style = ParagraphStyle('Subtitle', parent=styles['Normal'], fontSize=10, textColor=colors.HexColor('#64748b'), spaceAfter=20)
+    event_title_style = ParagraphStyle('EventTitle', parent=styles['Heading3'], fontSize=12, textColor=colors.HexColor('#1e293b'), spaceBefore=8, spaceAfter=4)
+    event_body_style = ParagraphStyle('EventBody', parent=styles['Normal'], fontSize=10, textColor=colors.HexColor('#475569'), spaceAfter=4)
+    meta_style = ParagraphStyle('Meta', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#94a3b8'))
+    section_style = ParagraphStyle('Section', parent=styles['Heading2'], fontSize=14, textColor=colors.HexColor('#334155'), spaceBefore=16, spaceAfter=8)
+    
+    story = []
+    
+    # Header
+    story.append(Paragraph(f"Case Timeline: {case.get('title', 'Untitled Case')}", title_style))
+    story.append(Paragraph(f"Generated for {user.name} on {datetime.now().strftime('%d %B %Y')}", subtitle_style))
+    story.append(Paragraph("Criminal Appeal AI — Deb King, Glenmore Park 2745", meta_style))
+    story.append(Spacer(1, 10*mm))
+    
+    # Summary stats
+    critical_count = len([e for e in events if e.get('significance') == 'critical'])
+    contested_count = len([e for e in events if e.get('is_contested')])
+    story.append(Paragraph(f"Timeline Summary", section_style))
+    summary_data = [
+        ["Total Events", str(len(events))],
+        ["Critical Events", str(critical_count)],
+        ["Contested Facts", str(contested_count)],
+        ["Date Range", f"{events[0].get('event_date', 'N/A')[:10] if events else 'N/A'} to {events[-1].get('event_date', 'N/A')[:10] if events else 'N/A'}"]
+    ]
+    summary_table = Table(summary_data, colWidths=[80*mm, 80*mm])
+    summary_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#f1f5f9')),
+        ('TEXTCOLOR', (0, 0), (-1, -1), colors.HexColor('#334155')),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('PADDING', (0, 0), (-1, -1), 6),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#e2e8f0')),
+    ]))
+    story.append(summary_table)
+    story.append(Spacer(1, 8*mm))
+    
+    # Events
+    story.append(Paragraph("Chronological Events", section_style))
+    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#e2e8f0')))
+    
+    significance_colors = {
+        'critical': '#dc2626',
+        'important': '#ea580c', 
+        'normal': '#3b82f6',
+        'minor': '#9ca3af'
+    }
+    
+    for i, event in enumerate(events):
+        date_str = event.get('event_date', '')[:10] if event.get('event_date') else 'Unknown'
+        sig = event.get('significance', 'normal')
+        sig_color = significance_colors.get(sig, '#3b82f6')
+        
+        contested_marker = " [CONTESTED]" if event.get('is_contested') else ""
+        perspective = f" ({event.get('perspective', 'neutral').upper()})" if event.get('perspective') != 'neutral' else ""
+        
+        story.append(Paragraph(f"<font color='{sig_color}'>●</font> {date_str} — {event.get('title', 'Untitled')}{contested_marker}{perspective}", event_title_style))
+        story.append(Paragraph(event.get('description', 'No description'), event_body_style))
+        
+        # Metadata
+        meta_parts = []
+        if event.get('event_type'):
+            meta_parts.append(f"Type: {event['event_type'].replace('_', ' ').title()}")
+        if event.get('source_citation'):
+            meta_parts.append(f"Source: {event['source_citation'][:50]}")
+        if event.get('linked_documents'):
+            linked_names = [doc_map.get(d, d) for d in event['linked_documents'][:3]]
+            meta_parts.append(f"Docs: {', '.join(linked_names)}")
+        if event.get('related_grounds'):
+            linked_grounds = [ground_map.get(g, g) for g in event['related_grounds'][:2]]
+            meta_parts.append(f"Grounds: {', '.join(linked_grounds)}")
+        if event.get('participants'):
+            participants = [f"{p.get('name', 'Unknown')} ({p.get('role', 'Unknown')})" for p in event['participants'][:3]]
+            meta_parts.append(f"Participants: {', '.join(participants)}")
+        
+        if meta_parts:
+            story.append(Paragraph(" | ".join(meta_parts), meta_style))
+        
+        if event.get('contested_details'):
+            story.append(Paragraph(f"<i>Contested: {event['contested_details']}</i>", meta_style))
+        
+        story.append(Spacer(1, 4*mm))
+    
+    # Footer
+    story.append(Spacer(1, 10*mm))
+    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#e2e8f0')))
+    story.append(Paragraph("One woman's fight for justice — seeking truth for Joshua Homann, failed by the system", meta_style))
+    
+    doc.build(story)
+    buffer.seek(0)
+    
+    filename = f"timeline_{case.get('title', 'case')[:30].replace(' ', '_')}_{datetime.now().strftime('%Y%m%d')}.pdf"
+    
+    return Response(
+        content=buffer.getvalue(),
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
 
 # ============ NOTES & COMMENTS ENDPOINTS ============
 
