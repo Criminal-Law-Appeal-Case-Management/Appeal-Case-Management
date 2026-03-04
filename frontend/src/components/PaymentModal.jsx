@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from "axios";
 import { toast } from "sonner";
-import { Lock, CreditCard, Check, Loader2 } from "lucide-react";
+import { Lock, Check, Loader2, ExternalLink } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -17,17 +16,14 @@ const FEATURE_INFO = {
   grounds_of_merit: {
     title: "Unlock Grounds of Merit Details",
     description: "See full descriptions, supporting evidence, and detailed analysis of each potential ground for appeal.",
-    icon: "🔓"
   },
   full_report: {
     title: "Full Detailed Report",
     description: "Comprehensive legal analysis with all grounds, evidence citations, and recommendations.",
-    icon: "📋"
   },
   extensive_report: {
     title: "Extensive Log Report",
     description: "Complete case documentation including all evidence, timeline analysis, and full legal references.",
-    icon: "📚"
   }
 };
 
@@ -39,71 +35,63 @@ export default function PaymentModal({
   price,
   onPaymentSuccess 
 }) {
-  const [paypalClientId, setPaypalClientId] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [processingPayment, setProcessingPayment] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [paypalConfigured, setPaypalConfigured] = useState(false);
+  const [checkingConfig, setCheckingConfig] = useState(true);
 
   useEffect(() => {
-    const fetchPrices = async () => {
+    const checkConfig = async () => {
       try {
         const response = await axios.get(`${API}/payments/prices`);
-        setPaypalClientId(response.data.paypal_client_id);
+        setPaypalConfigured(response.data.paypal_configured || false);
       } catch (error) {
-        console.error("Failed to fetch payment config:", error);
+        console.error("Failed to check payment config:", error);
+        setPaypalConfigured(false);
       } finally {
-        setLoading(false);
+        setCheckingConfig(false);
       }
     };
-    fetchPrices();
-  }, []);
+    if (isOpen) {
+      checkConfig();
+    }
+  }, [isOpen]);
 
-  const featureInfo = FEATURE_INFO[featureType] || {};
+  const featureInfo = FEATURE_INFO[featureType] || { title: "Premium Feature", description: "" };
 
-  const createOrder = async () => {
+  const handlePayWithPayPal = async () => {
+    if (!caseId || !featureType) {
+      toast.error("Missing payment information");
+      return;
+    }
+
+    setLoading(true);
     try {
       const response = await axios.post(`${API}/cases/${caseId}/payments/create-order`, {
         feature_type: featureType
       });
       
-      // For PayPal redirect flow, open the approval URL
       if (response.data.approval_url) {
+        // Redirect to PayPal for payment
+        toast.info("Redirecting to PayPal...");
         window.location.href = response.data.approval_url;
-        return response.data.paypal_order_id;
-      }
-      
-      return response.data.paypal_order_id;
-    } catch (error) {
-      toast.error("Failed to create payment order");
-      throw error;
-    }
-  };
-
-  const onApprove = async (data) => {
-    setProcessingPayment(true);
-    try {
-      const response = await axios.post(`${API}/cases/${caseId}/payments/capture`, {
-        paypal_payment_id: data.paymentID || data.orderID,
-        payer_id: data.payerID
-      });
-      
-      if (response.data.success) {
-        toast.success("Payment successful! Feature unlocked.");
-        onPaymentSuccess && onPaymentSuccess(featureType);
-        onClose();
+      } else {
+        toast.error("Failed to get PayPal payment URL");
       }
     } catch (error) {
-      toast.error("Payment capture failed. Please try again.");
+      console.error("Payment error:", error);
+      if (error.response?.status === 400) {
+        toast.error(error.response.data.detail || "Payment error");
+      } else if (error.response?.status === 503) {
+        toast.error("Payment service not available");
+      } else {
+        toast.error("Failed to initiate payment. Please try again.");
+      }
     } finally {
-      setProcessingPayment(false);
+      setLoading(false);
     }
   };
 
-  const onError = (err) => {
-    console.error("PayPal error:", err);
-    toast.error("Payment failed. Please try again.");
-  };
-
-  if (loading) {
+  if (checkingConfig) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-md">
@@ -201,23 +189,29 @@ export default function PaymentModal({
           </div>
 
           {/* PayPal Button */}
-          {paypalClientId ? (
-            <PayPalScriptProvider options={{ 
-              clientId: paypalClientId,
-              currency: "AUD"
-            }}>
-              <PayPalButtons
-                style={{ layout: "vertical", color: "blue", shape: "rect", label: "pay" }}
-                createOrder={createOrder}
-                onApprove={onApprove}
-                onError={onError}
-                disabled={processingPayment}
-              />
-            </PayPalScriptProvider>
+          {paypalConfigured ? (
+            <Button
+              onClick={handlePayWithPayPal}
+              disabled={loading}
+              className="w-full bg-[#0070ba] hover:bg-[#005ea6] text-white py-6 text-lg"
+              data-testid="paypal-pay-btn"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <ExternalLink className="w-5 h-5 mr-2" />
+                  Pay with PayPal
+                </>
+              )}
+            </Button>
           ) : (
             <div className="text-center py-4">
               <p className="text-sm text-amber-600 mb-4">
-                PayPal is not configured. Please contact support.
+                Payment service is currently being configured. Please try again later.
               </p>
               <Button variant="outline" onClick={onClose}>
                 Close
@@ -225,15 +219,8 @@ export default function PaymentModal({
             </div>
           )}
 
-          {processingPayment && (
-            <div className="flex items-center justify-center gap-2 text-slate-600">
-              <Loader2 className="w-4 h-4 animate-spin" />
-              Processing payment...
-            </div>
-          )}
-
           <p className="text-xs text-slate-500 text-center">
-            Secure payment via PayPal. Your payment information is never stored on our servers.
+            You will be redirected to PayPal to complete your payment securely.
           </p>
         </div>
       </DialogContent>
