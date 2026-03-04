@@ -1930,7 +1930,7 @@ REQUIRED ANALYSIS (search the documents above for evidence):
 
 @api_router.post("/cases/{case_id}/grounds/auto-identify", response_model=dict)
 async def auto_identify_grounds(case_id: str, request: Request):
-    """AI automatically identifies potential grounds of merit from case materials"""
+    """AI automatically identifies potential grounds of merit from case materials - prevents duplicates"""
     from emergentintegrations.llm.chat import LlmChat, UserMessage
     
     user = await get_current_user(request)
@@ -1939,6 +1939,12 @@ async def auto_identify_grounds(case_id: str, request: Request):
     case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id}, {"_id": 0})
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")
+    
+    # Get existing grounds to avoid duplicates
+    existing_grounds = await db.grounds_of_merit.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).to_list(100)
     
     # Get all case materials - include content_text for analysis
     documents = await db.documents.find(
@@ -1969,6 +1975,15 @@ CASE DETAILS:
 - Summary: {case.get('summary', 'No summary provided')}
 
 """
+    
+    # Include existing grounds so AI doesn't duplicate them
+    if existing_grounds:
+        context += f"=== ALREADY IDENTIFIED GROUNDS ({len(existing_grounds)}) ===\n"
+        context += "DO NOT re-identify these grounds. Only identify NEW grounds not listed here:\n\n"
+        for g in existing_grounds:
+            context += f"- [{g.get('ground_type')}] {g.get('title')}\n"
+            context += f"  Status: {g.get('status')}, Strength: {g.get('strength')}\n"
+        context += "\n"
     
     # Include substantial document content for AI to analyze
     if documents:
@@ -2008,9 +2023,15 @@ CASE DETAILS:
 
     system_prompt = """You are an expert Australian criminal appeal barrister specializing in murder and manslaughter cases. 
 
-Your task is to THOROUGHLY analyze the provided case materials and identify ALL potential grounds of merit for a criminal appeal.
+Your task is to analyze the provided case materials and identify NEW potential grounds of merit for a criminal appeal.
 
-IMPORTANT: Carefully read and analyze ALL document content provided. Look for:
+CRITICAL: 
+- DO NOT identify grounds that are already listed in the "ALREADY IDENTIFIED GROUNDS" section
+- Only identify genuinely NEW and DIFFERENT grounds
+- Each ground must be distinct - do not create variations of the same issue
+- If you find additional evidence for an existing ground, DO NOT create a new ground for it
+
+Look for these types of grounds (only if not already identified):
 - Procedural irregularities at trial
 - Evidence that was wrongly admitted or excluded
 - Judicial errors in directions to jury
@@ -2020,15 +2041,15 @@ IMPORTANT: Carefully read and analyze ALL document content provided. Look for:
 - Prosecutorial misconduct
 - Jury issues
 
-Be thorough and identify every possible ground, even weak ones. The legal team will assess viability.
+If all major grounds have been identified, return an empty grounds array."""
 
-If no documents have been uploaded, suggest what documents would be needed to identify grounds."""
-
-    user_prompt = f"""Analyze this criminal appeal case and identify ALL potential grounds of merit:
+    user_prompt = f"""Analyze this criminal appeal case and identify ONLY NEW grounds of merit that are NOT already identified:
 
 {context}
 
-For EACH ground identified, provide in this EXACT JSON format:
+IMPORTANT: Check the "ALREADY IDENTIFIED GROUNDS" section carefully. Do NOT duplicate any existing grounds.
+
+For each genuinely NEW ground identified, provide in this EXACT JSON format:
 {{
   "grounds": [
     {{
@@ -2040,19 +2061,10 @@ For EACH ground identified, provide in this EXACT JSON format:
       "relevant_law": ["List of relevant law sections e.g., 's.18 Crimes Act 1900 (NSW)'"]
     }}
   ],
-  "summary": "Brief overall assessment of appeal prospects"
+  "summary": "Brief assessment - state if no new grounds found"
 }}
 
-Identify at least 3-5 potential grounds if the materials support them. Consider:
-1. Trial procedural errors
-2. Evidentiary issues (admissibility, exclusion)
-3. Judicial directions to jury
-4. Prosecution conduct
-5. Defense representation quality
-6. Sentencing proportionality
-7. Fresh evidence possibilities
-8. Constitutional issues
-9. Miscarriage of justice indicators"""
+If NO new grounds are found, return: {{"grounds": [], "summary": "All significant grounds have been identified."}}"""
 
     api_key = os.environ.get('EMERGENT_LLM_KEY')
     if not api_key:
@@ -2083,8 +2095,40 @@ Identify at least 3-5 potential grounds if the materials support them. Consider:
         logger.error(f"All auto-identify attempts failed: {last_error}")
         raise HTTPException(status_code=500, detail=f"AI analysis failed after retries: {str(last_error)}")
     
+    # Helper function to check if ground is a duplicate
+    def is_duplicate_ground(new_title, new_type, existing_grounds):
+        new_title_lower = new_title.lower().strip()
+        new_type_lower = new_type.lower().strip()
+        
+        for existing in existing_grounds:
+            existing_title = existing.get('title', '').lower().strip()
+            existing_type = existing.get('ground_type', '').lower().strip()
+            
+            # Same type and similar title = duplicate
+            if existing_type == new_type_lower:
+                # Check for significant title overlap
+                new_words = set(new_title_lower.split())
+                existing_words = set(existing_title.split())
+                common_words = new_words & existing_words
+                # Remove common legal words from comparison
+                stop_words = {'the', 'a', 'an', 'of', 'in', 'to', 'for', 'and', 'or', 'at', 'by', 'on', 'with'}
+                common_meaningful = common_words - stop_words
+                new_meaningful = new_words - stop_words
+                
+                if len(new_meaningful) > 0:
+                    overlap_ratio = len(common_meaningful) / len(new_meaningful)
+                    if overlap_ratio > 0.5:  # More than 50% overlap
+                        return True
+            
+            # Very similar titles regardless of type
+            if new_title_lower == existing_title:
+                return True
+        
+        return False
+    
     # Try to parse JSON from response
     identified_grounds = []
+    skipped_duplicates = 0
     try:
         import re
         json_match = re.search(r'\{[\s\S]*"grounds"[\s\S]*\}', response)
@@ -2093,11 +2137,20 @@ Identify at least 3-5 potential grounds if the materials support them. Consider:
             grounds_data = parsed.get("grounds", [])
             
             for g in grounds_data:
+                new_title = g.get("title", "Identified Ground")
+                new_type = g.get("ground_type", "other")
+                
+                # Skip if duplicate
+                if is_duplicate_ground(new_title, new_type, existing_grounds + identified_grounds):
+                    skipped_duplicates += 1
+                    logger.info(f"Skipping duplicate ground: {new_title}")
+                    continue
+                
                 ground = GroundOfMerit(
                     case_id=case_id,
                     user_id=user.user_id,
-                    title=g.get("title", "Identified Ground"),
-                    ground_type=g.get("ground_type", "other"),
+                    title=new_title,
+                    ground_type=new_type,
                     description=g.get("description", ""),
                     strength=g.get("strength", "moderate"),
                     supporting_evidence=g.get("key_evidence", []),
@@ -2114,24 +2167,25 @@ Identify at least 3-5 potential grounds if the materials support them. Consider:
                 identified_grounds.append(created_ground)
     except Exception as e:
         logger.error(f"Failed to parse AI response: {e}")
-        # Create a single ground with the raw analysis
-        ground = GroundOfMerit(
-            case_id=case_id,
-            user_id=user.user_id,
-            title="AI Analysis Results",
-            ground_type="other",
-            description="See analysis for identified grounds",
-            strength="moderate",
-            analysis=response,
-            status="identified"
-        )
-        ground_dict = ground.model_dump()
-        ground_dict["created_at"] = ground_dict["created_at"].isoformat()
-        ground_dict["updated_at"] = ground_dict["updated_at"].isoformat()
-        await db.grounds_of_merit.insert_one(ground_dict)
-        # Fetch the inserted ground without _id
-        created_ground = await db.grounds_of_merit.find_one({"ground_id": ground.ground_id}, {"_id": 0})
-        identified_grounds.append(created_ground)
+        # Only create fallback ground if no grounds were identified
+        if len(identified_grounds) == 0:
+            ground = GroundOfMerit(
+                case_id=case_id,
+                user_id=user.user_id,
+                title="AI Analysis Results",
+                ground_type="other",
+                description="See analysis for identified grounds",
+                strength="moderate",
+                analysis=response,
+                status="identified"
+            )
+            ground_dict = ground.model_dump()
+            ground_dict["created_at"] = ground_dict["created_at"].isoformat()
+            ground_dict["updated_at"] = ground_dict["updated_at"].isoformat()
+            await db.grounds_of_merit.insert_one(ground_dict)
+            # Fetch the inserted ground without _id
+            created_ground = await db.grounds_of_merit.find_one({"ground_id": ground.ground_id}, {"_id": 0})
+            identified_grounds.append(created_ground)
     
     # Update case
     await db.cases.update_one(
@@ -2141,8 +2195,10 @@ Identify at least 3-5 potential grounds if the materials support them. Consider:
     
     return {
         "identified_count": len(identified_grounds),
+        "skipped_duplicates": skipped_duplicates,
+        "existing_grounds": len(existing_grounds),
         "grounds": identified_grounds,
-        "raw_analysis": response
+        "message": f"Found {len(identified_grounds)} new grounds. Skipped {skipped_duplicates} duplicates." if skipped_duplicates > 0 else f"Found {len(identified_grounds)} new grounds."
     }
 
 # ============ AI ANALYSIS & REPORTS ============

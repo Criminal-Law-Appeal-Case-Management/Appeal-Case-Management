@@ -58,7 +58,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **PDF Export** - Professional formatted timeline document
 
 ### AI-Powered Features ✅
-- [x] Auto-identify Grounds of Merit from documents
+- [x] Auto-identify Grounds of Merit from documents **with duplicate prevention**
 - [x] Deep investigation of individual grounds
 - [x] Law section extraction (NSW & Federal)
 - [x] Similar case identification

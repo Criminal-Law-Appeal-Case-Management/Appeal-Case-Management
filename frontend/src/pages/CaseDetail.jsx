@@ -735,9 +735,19 @@ const CaseDetail = ({ user }) => {
       });
       if (response.data.grounds && response.data.grounds.length > 0) {
         setGrounds([...response.data.grounds, ...grounds]);
-        toast.success(`Identified ${response.data.identified_count} potential ground(s) of merit!`);
+        // Show appropriate message based on results
+        if (response.data.skipped_duplicates > 0) {
+          toast.success(`Found ${response.data.identified_count} new ground(s). ${response.data.skipped_duplicates} duplicate(s) skipped.`);
+        } else {
+          toast.success(`Identified ${response.data.identified_count} potential ground(s) of merit!`);
+        }
       } else {
-        toast.info("No new grounds identified. Try adding more case documents.");
+        // No new grounds found
+        if (response.data.existing_grounds > 0) {
+          toast.info("All significant grounds have already been identified for this case.");
+        } else {
+          toast.info("No grounds identified. Try adding more case documents with detailed content.");
+        }
       }
     } catch (error) {
       console.error("Auto-identify error:", error);
