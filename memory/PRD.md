@@ -13,6 +13,17 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - Multi-case support: Yes
 - Document formats: PDF, DOCX, TXT, Images (with OCR)
 - Export: PDF and DOCX with Grounds of Merit and Legal References
+- Payment: PayPal integration for premium features
+
+## Pricing Model (PayPal)
+| Feature | Price (AUD) |
+|---------|-------------|
+| Document Upload | FREE |
+| Grounds of Merit (count only) | FREE |
+| **Unlock Grounds of Merit Details** | **$50.00** |
+| Quick Summary Report | FREE |
+| **Full Detailed Report** | **$29.99** |
+| **Extensive Log Report** | **$50.00** |
 
 ## Architecture
 - **Backend**: FastAPI with MongoDB
@@ -64,6 +75,17 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] Similar case identification
 - [x] Report generation (Quick Summary, Full Detailed, Extensive Log)
 - [x] **Auto-generate Timeline from documents** - AI extracts dates and events
+
+### PayPal Paywall System ✅ (Mar 2026)
+- [x] **Grounds of Merit Paywall** - Shows count for free, $50 to unlock full details
+- [x] **Report Tiers:**
+  - Quick Summary: FREE
+  - Full Detailed Report: $29.99
+  - Extensive Log Report: $50.00
+- [x] PayPal payment integration
+- [x] Payment tracking per case
+- [x] Unlock state persistence
+- [x] Payment modal UI component
 
 ### Export & Presentation ✅
 - [x] PDF export with grounds and legal references

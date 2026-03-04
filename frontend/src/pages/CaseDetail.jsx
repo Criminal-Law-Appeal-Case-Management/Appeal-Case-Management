@@ -37,6 +37,7 @@ import GroundsOfMerit from "../components/GroundsOfMerit";
 import CaseStrengthMeter from "../components/CaseStrengthMeter";
 import DeadlineTracker from "../components/DeadlineTracker";
 import AppealChecklist from "../components/AppealChecklist";
+import PaymentModal from "../components/PaymentModal";
 
 const DOCUMENT_CATEGORIES = [
   { value: "brief", label: "Legal Brief" },
@@ -135,6 +136,9 @@ const CaseDetail = ({ user }) => {
   const [reports, setReports] = useState([]);
   const [notes, setNotes] = useState([]);
   const [grounds, setGrounds] = useState([]);
+  const [groundsCount, setGroundsCount] = useState(0);
+  const [groundsUnlocked, setGroundsUnlocked] = useState(false);
+  const [groundsUnlockPrice, setGroundsUnlockPrice] = useState(50.00);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [activeTab, setActiveTab] = useState("documents");
@@ -226,7 +230,18 @@ const CaseDetail = ({ user }) => {
       setTimeline(timelineRes.status === 'fulfilled' ? timelineRes.value.data : []);
       setReports(reportsRes.status === 'fulfilled' ? reportsRes.value.data : []);
       setNotes(notesRes.status === 'fulfilled' ? notesRes.value.data : []);
-      setGrounds(groundsRes.status === 'fulfilled' ? groundsRes.value.data : []);
+      
+      // Handle grounds response with paywall info
+      if (groundsRes.status === 'fulfilled') {
+        const groundsData = groundsRes.value.data;
+        setGrounds(groundsData.grounds || []);
+        setGroundsCount(groundsData.count || 0);
+        setGroundsUnlocked(groundsData.is_unlocked || false);
+        setGroundsUnlockPrice(groundsData.unlock_price || 50.00);
+      } else {
+        setGrounds([]);
+        setGroundsCount(0);
+      }
       
     } catch (error) {
       console.error("Failed to load case:", error);
@@ -567,6 +582,11 @@ const CaseDetail = ({ user }) => {
     }
   };
 
+  // Payment modal state
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [pendingFeatureType, setPendingFeatureType] = useState(null);
+  const [pendingFeaturePrice, setPendingFeaturePrice] = useState(null);
+
   const handleGenerateReport = async (reportType) => {
     setGeneratingReport(true);
     toast.info("Generating report... This may take 30-60 seconds.");
@@ -582,10 +602,18 @@ const CaseDetail = ({ user }) => {
       navigate(`/cases/${caseId}/reports/${response.data.report_id}`);
     } catch (error) {
       console.error("Report generation error:", error);
-      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+      if (error.response?.status === 402) {
+        // Payment required
+        const detail = error.response.data?.detail;
+        setShowReportDialog(false);
+        setPendingFeatureType(detail?.feature_type);
+        setPendingFeaturePrice(detail?.price);
+        setShowPaymentModal(true);
+        toast.info(`Payment required: $${detail?.price?.toFixed(2)} AUD`);
+      } else if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
         toast.error("Report generation timed out. Please try again.");
       } else if (error.response?.data?.detail) {
-        toast.error(`Failed: ${error.response.data.detail}`);
+        toast.error(`Failed: ${typeof error.response.data.detail === 'string' ? error.response.data.detail : 'Payment required'}`);
       } else {
         toast.error("Failed to generate report. Please try again.");
       }
@@ -1324,11 +1352,16 @@ const CaseDetail = ({ user }) => {
             ) : (
               <GroundsOfMerit 
                 grounds={grounds}
+                groundsCount={groundsCount}
+                isUnlocked={groundsUnlocked}
+                unlockPrice={groundsUnlockPrice}
+                caseId={caseId}
                 onInvestigate={handleInvestigateGround}
                 onDelete={handleDeleteGround}
                 investigating={investigatingGround}
                 selectedGround={selectedGround}
                 setSelectedGround={setSelectedGround}
+                onPaymentSuccess={() => fetchCaseData()}
               />
             )}
           </TabsContent>
@@ -2203,6 +2236,24 @@ const CaseDetail = ({ user }) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Payment Modal for Reports */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => {
+          setShowPaymentModal(false);
+          setPendingFeatureType(null);
+          setPendingFeaturePrice(null);
+        }}
+        caseId={caseId}
+        featureType={pendingFeatureType}
+        price={pendingFeaturePrice}
+        onPaymentSuccess={() => {
+          setShowPaymentModal(false);
+          fetchCaseData();
+          toast.success("Payment successful! You can now generate the report.");
+        }}
+      />
     </div>
   );
 };

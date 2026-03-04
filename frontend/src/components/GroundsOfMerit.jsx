@@ -2,7 +2,7 @@ import { useState } from "react";
 import { 
   Scale, Trash2, ChevronRight, Search, Loader2, 
   AlertTriangle, CheckCircle, XCircle, Sparkles,
-  BookOpen, Gavel, FileText
+  BookOpen, Gavel, FileText, Lock, CreditCard
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 import { ScrollArea } from "./ui/scroll-area";
+import PaymentModal from "./PaymentModal";
 
 const GROUND_TYPE_LABELS = {
   procedural_error: "Procedural Error",
@@ -56,14 +57,20 @@ const STATUS_CONFIG = {
 
 const GroundsOfMerit = ({ 
   grounds, 
+  groundsCount,
+  isUnlocked,
+  unlockPrice,
+  caseId,
   onInvestigate, 
   onDelete, 
   investigating,
   selectedGround,
-  setSelectedGround 
+  setSelectedGround,
+  onPaymentSuccess
 }) => {
   const [showDetailDialog, setShowDetailDialog] = useState(false);
   const [detailGround, setDetailGround] = useState(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const openGroundDetail = (ground) => {
     setDetailGround(ground);
@@ -121,6 +128,37 @@ const GroundsOfMerit = ({
 
   return (
     <div className="space-y-4" data-testid="grounds-container">
+      {/* Paywall Banner when not unlocked */}
+      {!isUnlocked && groundsCount > 0 && (
+        <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+                  <Lock className="w-6 h-6 text-amber-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900 text-lg" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                    {groundsCount} Grounds of Merit Found!
+                  </h3>
+                  <p className="text-slate-600">
+                    Unlock to see full details, evidence, and deep analysis for each ground.
+                  </p>
+                </div>
+              </div>
+              <Button 
+                onClick={() => setShowPaymentModal(true)}
+                className="bg-amber-600 hover:bg-amber-700 text-white"
+                data-testid="unlock-grounds-btn"
+              >
+                <CreditCard className="w-4 h-4 mr-2" />
+                Unlock for ${unlockPrice?.toFixed(2)}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {grounds.length === 0 ? (
         <Card className="p-12 text-center">
           <Scale className="w-12 h-12 text-slate-300 mx-auto mb-4" />
@@ -169,9 +207,19 @@ const GroundsOfMerit = ({
                         {ground.title}
                       </h4>
                       
-                      <p className="text-slate-600 mt-2 line-clamp-2">
-                        {ground.description}
-                      </p>
+                      {/* Show locked message or actual description */}
+                      {!isUnlocked && ground.description === "*** UNLOCK TO VIEW ***" ? (
+                        <div className="mt-2 p-3 bg-slate-100 rounded-lg border border-slate-200">
+                          <div className="flex items-center gap-2 text-slate-500">
+                            <Lock className="w-4 h-4" />
+                            <span className="text-sm">Unlock to view full details</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="text-slate-600 mt-2 line-clamp-2">
+                          {ground.description}
+                        </p>
+                      )}
                       
                       {/* Supporting Evidence Tags */}
                       {ground.supporting_evidence && ground.supporting_evidence.length > 0 && (
@@ -396,6 +444,16 @@ const GroundsOfMerit = ({
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        caseId={caseId}
+        featureType="grounds_of_merit"
+        price={unlockPrice}
+        onPaymentSuccess={onPaymentSuccess}
+      />
     </div>
   );
 };
