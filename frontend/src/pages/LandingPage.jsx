@@ -39,8 +39,8 @@ const LandingPage = () => {
             Criminal Appeal Case Management
           </h1>
           <p className="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            Organize documents, build timelines, and generate AI-powered legal analysis 
-            for murder appeal cases under NSW State and Australian Federal law.
+            A document-analysis and case-organisation tool designed to assist with identifying 
+            potential appeal issues in homicide cases under NSW State and Australian Federal law.
           </p>
           <div className="mt-10">
             <Button
@@ -131,29 +131,28 @@ const LandingPage = () => {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                  This App is the Solution
+                  How This Tool Helps
                 </h3>
                 <p className="text-slate-700 leading-relaxed mb-4">
-                  Criminal Appeal AI was built to <strong>break down these barriers</strong>. Using artificial 
-                  intelligence, this tool analyzes case documents and identifies potential grounds for appeal 
-                  that might otherwise be missed.
+                  This is a <strong>document-analysis and case-organisation tool</strong> designed to assist 
+                  with identifying potential appeal issues in homicide cases. It helps with:
                 </p>
-                <ul className="space-y-2 text-slate-700">
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                    <span>Upload your case documents and the AI will extract key information</span>
+                <ul className="space-y-3 text-slate-700">
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
+                    <span><strong>Organising trial transcripts</strong> — Upload and categorise all your case documents in one place</span>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                    <span>Automatically identify potential grounds of merit you may not have considered</span>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
+                    <span><strong>Extracting chronologies</strong> — Automatically build timelines of events from your documents</span>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                    <span>Get plain-English explanations with relevant law sections</span>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
+                    <span><strong>Identifying possible procedural issues</strong> — AI analysis highlights potential procedural errors that may warrant review</span>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                    <span>Generate professional reports to share with legal representatives</span>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
+                    <span><strong>Highlighting mens rea issues</strong> — Identify potential issues relating to intent, knowledge, and mental state in murder convictions</span>
                   </li>
                 </ul>
               </div>
