@@ -1,5 +1,6 @@
 import { Scale, FileText, Clock, Shield, AlertTriangle, Heart, Users, Lock } from "lucide-react";
 import { Button } from "../components/ui/button";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
@@ -26,6 +27,12 @@ const LandingPage = () => {
           >
             Sign In with Google
           </Button>
+          <Link to="/professional-summary">
+            <Button variant="outline" className="ml-3 hidden md:inline-flex">
+              <FileText className="w-4 h-4 mr-2" />
+              Professional Summary
+            </Button>
+          </Link>
         </div>
       </header>
 

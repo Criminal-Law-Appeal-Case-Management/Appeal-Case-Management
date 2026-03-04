@@ -12,6 +12,7 @@ import ReportView from "./pages/ReportView";
 import BarristerView from "./pages/BarristerView";
 import HelpPage from "./pages/HelpPage";
 import ResourcesPage from "./pages/ResourcesPage";
+import ProfessionalSummary from "./pages/ProfessionalSummary";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
@@ -167,6 +168,10 @@ function AppRouter() {
             {({ user }) => <ResourcesPage user={user} />}
           </ProtectedRoute>
         }
+      />
+      <Route
+        path="/professional-summary"
+        element={<ProfessionalSummary />}
       />
     </Routes>
   );
