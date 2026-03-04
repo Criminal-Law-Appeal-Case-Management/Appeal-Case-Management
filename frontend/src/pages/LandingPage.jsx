@@ -159,6 +159,42 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
+
+          {/* My Story */}
+          <div className="bg-slate-900 rounded-2xl shadow-lg p-8 mt-8">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center shrink-0">
+                <Heart className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  Why I Created This App — Deb King
+                </h3>
+                <div className="space-y-4 text-slate-300 leading-relaxed">
+                  <p>
+                    I created this app because I have <strong className="text-white">two best mates who are locked up</strong>, 
+                    and I refuse to stand by while the system fails them.
+                  </p>
+                  <p>
+                    <strong className="text-amber-400">Josh Homann</strong> has been incarcerated for over 10 years of a 
+                    30-year sentence. Straight after sentencing, he was told he had no grounds for an appeal. I knew I had 
+                    to step up and do something. I've become so knowledgeable on criminal law — NSW and Federal level — on 
+                    murder, manslaughter, and mens rea, that I could represent him in this appeal myself.
+                  </p>
+                  <p>
+                    <strong className="text-amber-400">Brad Fletcher</strong> is currently still on remand over a murder 
+                    charge that has been found to have occurred from a medical episode. Yet over 2 years on, he's still 
+                    locked up waiting for trial.
+                  </p>
+                  <p className="text-white font-medium">
+                    This app exists because too many people are failed by a system that's supposed to protect them. 
+                    If I can help identify grounds for appeal that might otherwise be missed, then maybe I can help 
+                    others like Josh and Brad.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -291,21 +327,22 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 bg-slate-50 border-t border-slate-200">
+      <footer className="py-8 px-6 bg-slate-900 border-t border-slate-800">
         <div className="max-w-6xl mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Scale className="w-5 h-5 text-slate-600" />
-            <span className="text-slate-600 font-medium" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <Scale className="w-5 h-5 text-amber-400" />
+            <span className="text-white font-medium" style={{ fontFamily: 'Crimson Pro, serif' }}>
               Criminal Appeal AI
             </span>
           </div>
-          <p className="text-sm font-medium text-slate-600 mb-1">
-            Deb King, Glenmore Park 2745
+          <p className="text-sm font-medium text-slate-300 mb-1">
+            Created by Deb King, Glenmore Park 2745
           </p>
-          <p className="text-sm italic text-slate-500 mb-3">
-            One woman's fight for justice — seeking truth for Joshua Homann, failed by the system
+          <p className="text-sm italic text-slate-400 mb-3 max-w-xl mx-auto">
+            Fighting for justice for Josh Homann & Brad Fletcher — because the system should protect everyone, 
+            not just those who can afford to navigate it.
           </p>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-500">
             NSW State &amp; Australian Federal Law Reference
           </p>
         </div>
