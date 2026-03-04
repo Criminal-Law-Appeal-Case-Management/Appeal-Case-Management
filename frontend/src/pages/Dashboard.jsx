@@ -183,7 +183,7 @@ const Dashboard = ({ user }) => {
         </div>
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <div>
             <h1 
               className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight"
@@ -201,6 +201,15 @@ const Dashboard = ({ user }) => {
             <Plus className="w-4 h-4 mr-2" />
             New Case
           </Button>
+        </div>
+
+        {/* Purpose Statement */}
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-8">
+          <p className="text-slate-700 text-sm leading-relaxed">
+            Designed specifically for analysing appeal issues in murder and manslaughter convictions, 
+            including questions relating to <strong>mens rea</strong>, <strong>procedural error</strong>, 
+            and <strong>fresh evidence</strong>.
+          </p>
         </div>
 
         {/* Search */}
