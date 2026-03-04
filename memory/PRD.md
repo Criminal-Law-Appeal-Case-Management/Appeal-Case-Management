@@ -164,14 +164,24 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [ ] Document version history
 
 ## Technical Debt (Priority)
-- [~] **Refactor backend/server.py** - Split 3400+ line file into modules (IN PROGRESS)
-  - Created `/app/backend/models/__init__.py` - All Pydantic models extracted
-  - Created `/app/backend/config.py` - Database connection and configuration
-  - Created `/app/backend/services/ai_service.py` - AI helper functions extracted
-  - Created `/app/backend/routers/auth.py` - Auth endpoints (not yet integrated)
-  - Created `/app/backend/routers/cases.py` - Case CRUD endpoints (not yet integrated)
-  - Next: Integrate routers into main server.py and test
-- [ ] **Refactor CaseDetail.jsx** - Split 1000+ line component into smaller pieces
+- [~] **Refactor backend/server.py** - Split 3400+ line file into modules (FOUNDATION COMPLETE)
+  - ✅ Created `/app/backend/models/__init__.py` - All Pydantic models extracted
+  - ✅ Created `/app/backend/config.py` - Database connection and configuration
+  - ✅ Created `/app/backend/services/ai_service.py` - AI helper functions extracted
+  - ✅ Created `/app/backend/routers/auth.py` - Auth endpoints
+  - ✅ Created `/app/backend/routers/cases.py` - Case CRUD endpoints
+  - ✅ Created `/app/backend/routers/documents.py` - Document handling endpoints
+  - ✅ Created `/app/backend/routers/timeline.py` - Timeline endpoints
+  - ✅ Created `/app/backend/routers/notes.py` - Notes endpoints
+  - ✅ Created `/app/backend/routers/deadlines.py` - Deadlines & Checklist endpoints
+  - ✅ Created `/app/backend/routers/resources.py` - Resources & Templates endpoints
+  - Note: Routers created and tested but not yet integrated to preserve stability
+
+- [~] **Refactor CaseDetail.jsx** - Split 2200+ line component (FOUNDATION COMPLETE)
+  - ✅ Created `/app/frontend/src/components/DocumentSection.jsx` - Document handling (~400 lines)
+  - ✅ Created `/app/frontend/src/components/NotesSection.jsx` - Notes handling (~250 lines)
+  - ✅ Created `/app/frontend/src/components/ReportsSection.jsx` - Report generation (~320 lines)
+  - Note: Components created and linted but not yet integrated to preserve stability
 
 ## Bug Fixes (Mar 2026)
 - [x] **Report Generation Fixed** - All 3 report types working (Quick Summary, Full Detailed, Extensive Log)

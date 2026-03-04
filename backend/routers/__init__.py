@@ -3,5 +3,19 @@ Criminal Appeal AI - Routers Package
 """
 from routers.auth import router as auth_router, get_current_user
 from routers.cases import router as cases_router
+from routers.documents import router as documents_router
+from routers.timeline import router as timeline_router
+from routers.notes import router as notes_router
+from routers.deadlines import router as deadlines_router
+from routers.resources import router as resources_router
 
-__all__ = ['auth_router', 'cases_router', 'get_current_user']
+__all__ = [
+    'auth_router',
+    'cases_router', 
+    'documents_router',
+    'timeline_router',
+    'notes_router',
+    'deadlines_router',
+    'resources_router',
+    'get_current_user'
+]
