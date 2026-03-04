@@ -1372,8 +1372,8 @@ async def analyze_timeline(case_id: str, request: Request):
         {"_id": 0}
     ).to_list(100)
     
-    from emergentintegrations.llm.chat import chat, LLMProvider
-    emergent_api_key = os.environ.get('EMERGENT_API_KEY')
+    from emergentintegrations.llm.chat import LlmChat, UserMessage
+    emergent_api_key = os.environ.get('EMERGENT_LLM_KEY')
     
     system_prompt = """You are an expert criminal appeals analyst specializing in NSW and Australian federal law.
 Analyze this timeline of events and provide detailed insights for an appeal case.
@@ -1415,14 +1415,13 @@ Provide a comprehensive analysis identifying gaps, inconsistencies, and appeal-r
     last_error = None
     for attempt in range(3):
         try:
-            response = await chat(
+            chat = LlmChat(
                 api_key=emergent_api_key,
-                provider=LLMProvider.OPENAI,
-                model="gpt-4o",
-                system_prompt=system_prompt,
-                user_message=user_prompt,
                 session_id=f"timeline_analysis_{case_id}_{uuid.uuid4().hex[:8]}",
-            )
+                system_message=system_prompt
+            ).with_model("openai", "gpt-4o")
+            
+            response = await chat.send_message(UserMessage(text=user_prompt))
             break
         except Exception as e:
             last_error = e
@@ -1856,7 +1855,7 @@ async def analyze_witness_contradictions(case_id: str, request: Request):
         content = doc.get('content_text', '')[:4000]
         doc_context += f"Content:\n{content}\n"
     
-    from emergentintegrations.llm.chat import chat, LLMProvider
+    from emergentintegrations.llm.chat import LlmChat, UserMessage
     emergent_api_key = os.environ.get('EMERGENT_LLM_KEY')
     
     system_prompt = """You are a legal analyst finding contradictions in witness statements. Find:
@@ -1876,14 +1875,13 @@ Return JSON:
     last_error = None
     for attempt in range(3):
         try:
-            response = await chat(
+            chat = LlmChat(
                 api_key=emergent_api_key,
-                provider=LLMProvider.OPENAI,
-                model="gpt-4o",
-                system_prompt=system_prompt,
-                user_message=f"Find contradictions in these documents:\n{doc_context}",
                 session_id=f"contradiction_{case_id}_{uuid.uuid4().hex[:8]}",
-            )
+                system_message=system_prompt
+            ).with_model("openai", "gpt-4o")
+            
+            response = await chat.send_message(UserMessage(text=f"Find contradictions in these documents:\n{doc_context}"))
             break
         except Exception as e:
             last_error = e
