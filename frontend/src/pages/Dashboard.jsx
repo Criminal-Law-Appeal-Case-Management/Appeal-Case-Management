@@ -204,11 +204,19 @@ const Dashboard = ({ user }) => {
         </div>
 
         {/* Purpose Statement */}
-        <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-8">
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4">
           <p className="text-slate-700 text-sm leading-relaxed">
             Designed specifically for analysing appeal issues in murder and manslaughter convictions, 
             including questions relating to <strong>mens rea</strong>, <strong>procedural error</strong>, 
             and <strong>fresh evidence</strong>.
+          </p>
+        </div>
+
+        {/* Privacy Warning */}
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8">
+          <p className="text-amber-800 text-sm leading-relaxed">
+            <strong>Privacy Warning:</strong> Users should ensure they have lawful authority to upload 
+            or share any court documents or personal information through this platform.
           </p>
         </div>
 
