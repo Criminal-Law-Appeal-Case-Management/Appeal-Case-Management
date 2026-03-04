@@ -2154,12 +2154,12 @@ async def paypal_webhook(request: Request):
 
 @api_router.get("/resources/directory", response_model=dict)
 async def get_resource_directory():
-    """Get directory of legal resources"""
+    """Get directory of support resources"""
     return {
-        "legal_aid": [
-            {"name": "Legal Aid NSW", "phone": "1300 888 529", "website": "https://www.legalaid.nsw.gov.au", "services": ["Criminal law", "Appeals"], "region": "NSW"},
+        "support_services": [
+            {"name": "Community Legal Centres NSW", "website": "https://www.clcnsw.org.au", "services": ["Legal advice", "Referrals"], "region": "NSW"},
             {"name": "Aboriginal Legal Service (NSW/ACT)", "phone": "1800 765 767", "website": "https://www.alsnswact.org.au", "services": ["Criminal law", "Family law"], "region": "NSW/ACT"},
-            {"name": "Community Legal Centres NSW", "website": "https://www.clcnsw.org.au", "services": ["Legal advice", "Referrals"], "region": "NSW"}
+            {"name": "LawAccess NSW", "phone": "1300 888 529", "website": "https://www.lawaccess.nsw.gov.au", "services": ["Legal information", "Referrals"], "region": "NSW"}
         ],
         "advocacy_groups": [
             {"name": "Innocence Project (Australia)", "website": "https://www.innocenceproject.org.au", "focus": "Wrongful convictions"},

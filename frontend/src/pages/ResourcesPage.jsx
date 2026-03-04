@@ -110,7 +110,7 @@ const ResourcesPage = () => {
             Support Services
           </h3>
           <div className="grid md:grid-cols-2 gap-4">
-            {resources?.legal_aid?.map((org, i) => (
+            {resources?.support_services?.map((org, i) => (
               <Card key={i} className="hover:shadow-md transition-shadow">
                 <CardContent className="p-4">
                   <h4 className="font-semibold text-slate-900 mb-2">{org.name}</h4>

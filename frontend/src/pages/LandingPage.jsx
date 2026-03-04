@@ -109,7 +109,7 @@ const LandingPage = () => {
                 <Users className="w-8 h-8 text-slate-400 mb-3" />
                 <h4 className="font-semibold text-slate-900 mb-2">Limited Access to Help</h4>
                 <p className="text-sm text-slate-600">
-                  Legal aid is stretched thin. Many inmates can't afford private lawyers to review their case.
+                  Support services are stretched thin. Many inmates can't afford private lawyers to review their case.
                 </p>
               </div>
               <div className="bg-slate-50 rounded-lg p-5 border border-slate-200">
@@ -283,7 +283,7 @@ const LandingPage = () => {
                 4. Generate Reports
               </h3>
               <p className="text-slate-600 leading-relaxed">
-                Create professional reports ready to share with barristers, solicitors, or legal aid services.
+                Create professional reports ready to share with barristers, solicitors, or support services.
               </p>
             </div>
           </div>

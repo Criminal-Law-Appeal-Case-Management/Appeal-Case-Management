@@ -13,8 +13,8 @@ router = APIRouter(tags=["resources"])
 
 # Resource Directory Data
 RESOURCE_DIRECTORY = {
-    "legal_aid": [
-        {"name": "Legal Aid NSW", "phone": "1300 888 529", "website": "https://www.legalaid.nsw.gov.au", "description": "Free legal help for eligible people"},
+    "support_services": [
+        {"name": "Community Legal Centres NSW", "website": "https://www.clcnsw.org.au", "description": "Free legal advice and referrals"},
         {"name": "Aboriginal Legal Service NSW/ACT", "phone": "1800 765 767", "website": "https://www.alsnswact.org.au", "description": "Legal services for Aboriginal and Torres Strait Islander people"},
     ],
     "advocacy_groups": [
