@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 
 from config import db
 from models import Case, CaseCreate, ChecklistItem, DEFAULT_CHECKLIST
-from routers.auth import get_current_user
+from auth_utils import get_current_user
 
 router = APIRouter(prefix="/api/cases", tags=["cases"])
 

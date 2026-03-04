@@ -8,20 +8,9 @@ from datetime import datetime, timezone
 
 from config import db
 from models import Deadline, DeadlineCreate, ChecklistItem, DEFAULT_CHECKLIST
+from auth_utils import get_current_user, verify_case_ownership
 
 router = APIRouter(tags=["deadlines-checklist"])
-
-
-async def get_current_user(request: Request):
-    from routers.auth import get_current_user as auth_get_user
-    return await auth_get_user(request)
-
-
-async def verify_case_ownership(case_id: str, user_id: str):
-    case = await db.cases.find_one({"case_id": case_id, "user_id": user_id})
-    if not case:
-        raise HTTPException(status_code=404, detail="Case not found")
-    return case
 
 
 # ============ DEADLINE ENDPOINTS ============
@@ -64,7 +53,7 @@ async def create_deadline(case_id: str, deadline_data: DeadlineCreate, request: 
 @router.patch("/api/cases/{case_id}/deadlines/{deadline_id}", response_model=dict)
 async def update_deadline(case_id: str, deadline_id: str, request: Request):
     """Update a deadline"""
-    user = await get_current_user(request)
+    await get_current_user(request)  # Verify authentication
     body = await request.json()
     
     deadline = await db.deadlines.find_one({
@@ -98,7 +87,7 @@ async def update_deadline(case_id: str, deadline_id: str, request: Request):
 @router.delete("/api/cases/{case_id}/deadlines/{deadline_id}")
 async def delete_deadline(case_id: str, deadline_id: str, request: Request):
     """Delete a deadline"""
-    user = await get_current_user(request)
+    await get_current_user(request)  # Verify authentication
     
     result = await db.deadlines.delete_one({
         "deadline_id": deadline_id,
@@ -147,7 +136,7 @@ async def get_checklist(case_id: str, request: Request):
 @router.patch("/api/cases/{case_id}/checklist/{item_id}", response_model=dict)
 async def update_checklist_item(case_id: str, item_id: str, request: Request):
     """Update a checklist item"""
-    user = await get_current_user(request)
+    await get_current_user(request)  # Verify authentication
     body = await request.json()
     
     item = await db.checklist_items.find_one({

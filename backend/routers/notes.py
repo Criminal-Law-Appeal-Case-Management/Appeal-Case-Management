@@ -8,20 +8,9 @@ from datetime import datetime, timezone
 
 from config import db
 from models import Note, NoteCreate, NoteUpdate
+from auth_utils import get_current_user, verify_case_ownership
 
 router = APIRouter(prefix="/api/cases/{case_id}/notes", tags=["notes"])
-
-
-async def get_current_user(request: Request):
-    from routers.auth import get_current_user as auth_get_user
-    return await auth_get_user(request)
-
-
-async def verify_case_ownership(case_id: str, user_id: str):
-    case = await db.cases.find_one({"case_id": case_id, "user_id": user_id})
-    if not case:
-        raise HTTPException(status_code=404, detail="Case not found")
-    return case
 
 
 @router.get("", response_model=List[dict])
