@@ -17,22 +17,24 @@ const LandingPage = () => {
           <div className="flex items-center gap-3">
             <Scale className="w-8 h-8 text-slate-900" />
             <span className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Criminal Appeal AI
+              Appeal Case Manager
             </span>
           </div>
-          <Button 
-            onClick={handleLogin}
-            data-testid="login-btn"
-            className="bg-slate-900 text-white hover:bg-slate-800 rounded-md px-6 py-2.5 font-medium transition-all shadow-sm hover:shadow-md"
-          >
-            Sign In with Google
-          </Button>
-          <Link to="/professional-summary">
-            <Button variant="outline" className="ml-3 hidden md:inline-flex">
-              <FileText className="w-4 h-4 mr-2" />
-              Professional Summary
+          <div className="flex items-center gap-3">
+            <Link to="/professional-summary">
+              <Button variant="outline" className="hidden md:inline-flex">
+                <FileText className="w-4 h-4 mr-2" />
+                For Legal Professionals
+              </Button>
+            </Link>
+            <Button 
+              onClick={handleLogin}
+              data-testid="login-btn"
+              className="bg-slate-900 text-white hover:bg-slate-800 rounded-md px-6 py-2.5 font-medium transition-all shadow-sm hover:shadow-md"
+            >
+              Sign In with Google
             </Button>
-          </Link>
+          </div>
         </div>
       </header>
 
@@ -43,7 +45,7 @@ const LandingPage = () => {
             className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-tight"
             style={{ fontFamily: 'Crimson Pro, serif' }}
           >
-            Criminal Appeal Case Management
+            Appeal Case Management Tool
           </h1>
           <p className="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
             A document-analysis and case-organisation tool designed to assist with identifying 
@@ -372,9 +374,20 @@ const LandingPage = () => {
           <div className="flex items-center justify-center gap-2 mb-6">
             <Scale className="w-6 h-6 text-amber-400" />
             <span className="text-xl text-white font-medium" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Criminal Appeal AI
+              Appeal Case Manager
             </span>
           </div>
+          
+          {/* Mobile link to Professional Summary */}
+          <div className="mb-6 md:hidden">
+            <Link to="/professional-summary">
+              <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800">
+                <FileText className="w-4 h-4 mr-2" />
+                For Legal Professionals
+              </Button>
+            </Link>
+          </div>
+          
           <p className="text-base font-medium text-slate-200 mb-4">
             Created by Debra King — Glenmore Park, NSW
           </p>
