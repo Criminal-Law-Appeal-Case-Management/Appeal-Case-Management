@@ -1605,7 +1605,7 @@ const CaseDetail = ({ user }) => {
                   onChange={(e) => setUploadFiles(Array.from(e.target.files || []))}
                   className="hidden"
                   id="file-upload"
-                  accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
+                  accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.heic,image/*,application/pdf"
                   multiple
                   data-testid="file-input"
                 />

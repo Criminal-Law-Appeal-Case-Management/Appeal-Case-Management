@@ -435,7 +435,7 @@ export default function DocumentSection({
               <Input
                 type="file"
                 multiple
-                accept=".pdf,.docx,.doc,.txt,.png,.jpg,.jpeg,.tiff,.bmp"
+                accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.heic,image/*,application/pdf"
                 onChange={(e) => setUploadFiles(Array.from(e.target.files || []))}
                 className="mt-1"
                 data-testid="file-input"
