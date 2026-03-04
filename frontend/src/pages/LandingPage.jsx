@@ -1,4 +1,4 @@
-import { Scale, FileText, Clock, Shield } from "lucide-react";
+import { Scale, FileText, Clock, Shield, AlertTriangle, Heart, Users, Lock } from "lucide-react";
 import { Button } from "../components/ui/button";
 
 const LandingPage = () => {
@@ -30,7 +30,7 @@ const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
+      <section className="pt-32 pb-16 px-6">
         <div className="max-w-5xl mx-auto text-center">
           <h1 
             className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-tight"
@@ -54,6 +54,114 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Why This App Exists - The Problem */}
+      <section className="py-16 px-6 bg-gradient-to-b from-slate-100 to-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 
+              className="text-3xl md:text-4xl font-semibold text-slate-900 mb-4"
+              style={{ fontFamily: 'Crimson Pro, serif' }}
+            >
+              Why This App Exists
+            </h2>
+            <p className="text-lg text-slate-600">
+              Breaking down the barriers that prevent justice
+            </p>
+          </div>
+
+          {/* The Problem Statement */}
+          <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 mb-8">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-6 h-6 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  The Problem
+                </h3>
+                <p className="text-slate-700 leading-relaxed">
+                  Too many people are sitting in prison with legitimate grounds for appeal but have 
+                  <strong> no idea how to identify them</strong>. The legal system is complex, expensive, 
+                  and filled with barriers that prevent ordinary people from getting straightforward 
+                  answers about their rights.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 mt-8">
+              <div className="bg-slate-50 rounded-lg p-5 border border-slate-200">
+                <Lock className="w-8 h-8 text-slate-400 mb-3" />
+                <h4 className="font-semibold text-slate-900 mb-2">Complex Legal Language</h4>
+                <p className="text-sm text-slate-600">
+                  Legal documents are written in language that's nearly impossible for non-lawyers to understand.
+                </p>
+              </div>
+              <div className="bg-slate-50 rounded-lg p-5 border border-slate-200">
+                <Users className="w-8 h-8 text-slate-400 mb-3" />
+                <h4 className="font-semibold text-slate-900 mb-2">Limited Access to Help</h4>
+                <p className="text-sm text-slate-600">
+                  Legal aid is stretched thin. Many inmates can't afford private lawyers to review their case.
+                </p>
+              </div>
+              <div className="bg-slate-50 rounded-lg p-5 border border-slate-200">
+                <Clock className="w-8 h-8 text-slate-400 mb-3" />
+                <h4 className="font-semibold text-slate-900 mb-2">Time-Limited Appeals</h4>
+                <p className="text-sm text-slate-600">
+                  Appeal deadlines are strict. Without help, valid grounds are missed and time runs out.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* The Reality */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8">
+            <p className="text-amber-900 text-lg leading-relaxed">
+              <strong>The reality is this:</strong> Many inmates have strong grounds for appeal — procedural errors, 
+              fresh evidence, judicial mistakes, ineffective legal representation — but they don't know it. 
+              They don't know what questions to ask or where to look. <strong>They're failed by a system 
+              that's supposed to protect them.</strong>
+            </p>
+          </div>
+
+          {/* The Solution */}
+          <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center shrink-0">
+                <Heart className="w-6 h-6 text-emerald-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  This App is the Solution
+                </h3>
+                <p className="text-slate-700 leading-relaxed mb-4">
+                  Criminal Appeal AI was built to <strong>break down these barriers</strong>. Using artificial 
+                  intelligence, this tool analyzes case documents and identifies potential grounds for appeal 
+                  that might otherwise be missed.
+                </p>
+                <ul className="space-y-2 text-slate-700">
+                  <li className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                    <span>Upload your case documents and the AI will extract key information</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                    <span>Automatically identify potential grounds of merit you may not have considered</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                    <span>Get plain-English explanations with relevant law sections</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                    <span>Generate professional reports to share with legal representatives</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -61,7 +169,7 @@ const LandingPage = () => {
             className="text-3xl md:text-4xl font-semibold text-slate-900 text-center mb-16"
             style={{ fontFamily: 'Crimson Pro, serif' }}
           >
-            Built for Legal Professionals
+            How It Works
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -70,10 +178,10 @@ const LandingPage = () => {
                 <FileText className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                Document Management
+                1. Upload Documents
               </h3>
               <p className="text-slate-600 leading-relaxed">
-                Upload and organize briefs, case notes, evidence, and court documents in one secure location.
+                Upload court transcripts, evidence briefs, witness statements, and any case documents. The AI reads and analyzes them.
               </p>
             </div>
 
@@ -82,10 +190,10 @@ const LandingPage = () => {
                 <Clock className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                Timeline Builder
+                2. Build Timeline
               </h3>
               <p className="text-slate-600 leading-relaxed">
-                Create chronological timelines of events that update automatically as you add new information.
+                Create a chronological timeline of events. AI automatically extracts dates and identifies gaps or inconsistencies.
               </p>
             </div>
 
@@ -94,10 +202,10 @@ const LandingPage = () => {
                 <Scale className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                AI Legal Analysis
+                3. Find Grounds
               </h3>
               <p className="text-slate-600 leading-relaxed">
-                Identify grounds of merit and relevant law sections with AI-powered analysis specific to murder appeals.
+                AI identifies potential grounds of merit — procedural errors, fresh evidence, judicial mistakes — with relevant law sections.
               </p>
             </div>
 
@@ -106,10 +214,42 @@ const LandingPage = () => {
                 <Shield className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                Barrister Reports
+                4. Generate Reports
               </h3>
               <p className="text-slate-600 leading-relaxed">
-                Generate professional reports ready for presentation, with clear grounds of merit and legal references.
+                Create professional reports ready to share with barristers, solicitors, or legal aid services.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Who Is This For */}
+      <section className="py-16 px-6 bg-slate-100">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 
+            className="text-3xl md:text-4xl font-semibold text-slate-900 mb-8"
+            style={{ fontFamily: 'Crimson Pro, serif' }}
+          >
+            Who Is This For?
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6 text-left">
+            <div className="bg-white rounded-lg p-6 border border-slate-200">
+              <h4 className="font-semibold text-slate-900 mb-2">Inmates & Their Families</h4>
+              <p className="text-sm text-slate-600">
+                Understand your case better. Identify potential grounds for appeal. Prepare documents to show legal representatives.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg p-6 border border-slate-200">
+              <h4 className="font-semibold text-slate-900 mb-2">Advocacy Groups</h4>
+              <p className="text-sm text-slate-600">
+                Help those who can't help themselves. Organize case materials and identify miscarriages of justice.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg p-6 border border-slate-200">
+              <h4 className="font-semibold text-slate-900 mb-2">Legal Professionals</h4>
+              <p className="text-sm text-slate-600">
+                Streamline appeal preparation. AI-assisted analysis to supplement your legal expertise.
               </p>
             </div>
           </div>
@@ -123,10 +263,11 @@ const LandingPage = () => {
             className="text-3xl md:text-4xl font-semibold text-white mb-6"
             style={{ fontFamily: 'Crimson Pro, serif' }}
           >
-            Start Building Your Case Today
+            Everyone Deserves a Fair Chance
           </h2>
           <p className="text-slate-300 text-lg mb-10 leading-relaxed">
-            Streamline your criminal appeal preparation with AI-assisted analysis and professional documentation.
+            Don't let complexity and barriers stand in the way of justice. 
+            Start analyzing your case today.
           </p>
           <Button
             onClick={handleLogin}
@@ -135,6 +276,17 @@ const LandingPage = () => {
           >
             Sign In with Google
           </Button>
+        </div>
+      </section>
+
+      {/* Disclaimer */}
+      <section className="py-8 px-6 bg-amber-50 border-t border-amber-200">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-sm text-amber-800">
+            <strong>Important:</strong> This app provides AI-assisted analysis to help identify potential 
+            grounds for appeal. It is not a substitute for qualified legal advice. Always consult with 
+            a licensed legal professional before taking any legal action.
+          </p>
         </div>
       </section>
 
