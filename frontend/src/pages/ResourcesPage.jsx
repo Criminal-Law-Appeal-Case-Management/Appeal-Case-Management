@@ -69,10 +69,10 @@ const ResourcesPage = () => {
         <Card className="mb-8 bg-gradient-to-r from-emerald-900 to-emerald-800 text-white">
           <CardContent className="p-6">
             <h2 className="text-2xl font-bold mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Legal Aid & Support Services
+              Support Services & Resources
             </h2>
             <p className="text-emerald-100">
-              Free and low-cost legal services, advocacy groups, and resources to help with your criminal appeal in NSW.
+              Free and low-cost support services, advocacy groups, and resources to help with your criminal appeal in NSW.
             </p>
           </CardContent>
         </Card>
@@ -103,11 +103,11 @@ const ResourcesPage = () => {
           </CardContent>
         </Card>
 
-        {/* Legal Aid Services */}
+        {/* Support Services */}
         <section className="mb-8">
           <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
             <Scale className="w-5 h-5 text-slate-600" />
-            Legal Aid Services
+            Support Services
           </h3>
           <div className="grid md:grid-cols-2 gap-4">
             {resources?.legal_aid?.map((org, i) => (
