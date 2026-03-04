@@ -133,6 +133,20 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Added retry button instead of immediate redirect
   - File: `frontend/src/pages/CaseDetail.jsx`
 
+### User Guide & Glossary ✅ (Mar 2026)
+- [x] Comprehensive "How to Use" guide with step-by-step instructions
+- [x] **Legal Glossary** with 40+ terms covering:
+  - Appeal Process (Appeal, Leave to Appeal, Ground of Appeal)
+  - Parties (Appellant, Respondent)
+  - Types of Grounds (Miscarriage of Justice, Procedural Error, etc.)
+  - Evidence Terms (Hearsay, ERISP, Brief of Evidence, Disclosure)
+  - Trial Process (Committal, Indictment, Verdict, Summing Up)
+  - Legal Standards (Beyond Reasonable Doubt, Onus of Proof)
+  - Offences & Defences (Murder, Manslaughter, Self-Defence)
+  - App-specific terms (Significance, Perspective, Contested Facts)
+- [x] Searchable glossary with category filtering
+- [x] Examples for each term
+
 ## Future Enhancements
 - [ ] Case sharing with other users
 - [ ] Email notifications
