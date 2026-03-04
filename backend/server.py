@@ -202,6 +202,79 @@ class NoteUpdate(BaseModel):
     content: Optional[str] = None
     is_pinned: Optional[bool] = None
 
+# ============ DEADLINE MODELS ============
+
+class Deadline(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    deadline_id: str = Field(default_factory=lambda: f"dl_{uuid.uuid4().hex[:12]}")
+    case_id: str
+    user_id: str
+    title: str
+    description: str = ""
+    deadline_type: str  # appeal_lodgement, leave_application, document_filing, hearing, other
+    due_date: datetime
+    reminder_days: List[int] = [7, 3, 1]  # Days before to remind
+    is_completed: bool = False
+    completed_at: Optional[datetime] = None
+    priority: str = "high"  # critical, high, medium, low
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class DeadlineCreate(BaseModel):
+    title: str
+    description: str = ""
+    deadline_type: str = "other"
+    due_date: datetime
+    reminder_days: List[int] = [7, 3, 1]
+    priority: str = "high"
+
+# ============ CHECKLIST MODELS ============
+
+class ChecklistItem(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    item_id: str = Field(default_factory=lambda: f"chk_{uuid.uuid4().hex[:12]}")
+    case_id: str
+    user_id: str
+    phase: str  # preparation, grounds_identification, investigation, documentation, lodgement, hearing
+    title: str
+    description: str = ""
+    is_completed: bool = False
+    completed_at: Optional[datetime] = None
+    order: int = 0
+    is_custom: bool = False  # True if user-added, False if default
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+# Default checklist items for new cases
+DEFAULT_CHECKLIST = [
+    # Phase 1: Preparation
+    {"phase": "preparation", "title": "Gather all case documents", "description": "Collect court transcripts, evidence briefs, witness statements, and any other relevant documents", "order": 1},
+    {"phase": "preparation", "title": "Upload documents to system", "description": "Upload all gathered documents and extract text for AI analysis", "order": 2},
+    {"phase": "preparation", "title": "Build case timeline", "description": "Create chronological timeline of events from arrest to conviction", "order": 3},
+    {"phase": "preparation", "title": "Review trial transcript", "description": "Read through the full trial transcript noting any issues", "order": 4},
+    # Phase 2: Grounds Identification
+    {"phase": "grounds_identification", "title": "Run AI grounds identification", "description": "Use AI to identify potential grounds of merit from your documents", "order": 5},
+    {"phase": "grounds_identification", "title": "Review identified grounds", "description": "Assess each ground identified by AI for viability", "order": 6},
+    {"phase": "grounds_identification", "title": "Check witness statement inconsistencies", "description": "Use contradiction finder to identify issues in witness testimony", "order": 7},
+    {"phase": "grounds_identification", "title": "Identify any fresh evidence", "description": "Document any new evidence not available at trial", "order": 8},
+    # Phase 3: Investigation
+    {"phase": "investigation", "title": "Deep investigate each ground", "description": "Use AI investigation feature on each viable ground", "order": 9},
+    {"phase": "investigation", "title": "Research relevant case law", "description": "Find similar appeal cases and their outcomes", "order": 10},
+    {"phase": "investigation", "title": "Identify relevant law sections", "description": "Document NSW and Federal law sections that apply", "order": 11},
+    {"phase": "investigation", "title": "Assess case strength", "description": "Review case strength meter and prioritize strongest grounds", "order": 12},
+    # Phase 4: Documentation
+    {"phase": "documentation", "title": "Generate detailed report", "description": "Create Full Detailed report with all grounds and analysis", "order": 13},
+    {"phase": "documentation", "title": "Prepare Notice of Appeal", "description": "Draft Notice of Appeal using template", "order": 14},
+    {"phase": "documentation", "title": "Prepare supporting affidavit", "description": "Draft affidavit if required for fresh evidence", "order": 15},
+    {"phase": "documentation", "title": "Review all documents", "description": "Final review of all appeal documents for accuracy", "order": 16},
+    # Phase 5: Lodgement
+    {"phase": "lodgement", "title": "Consult with legal professional", "description": "Have documents reviewed by solicitor or barrister", "order": 17},
+    {"phase": "lodgement", "title": "File Notice of Appeal", "description": "Lodge appeal within 28 days of conviction/sentence", "order": 18},
+    {"phase": "lodgement", "title": "File Leave application (if required)", "description": "Lodge application for leave to appeal if needed", "order": 19},
+    {"phase": "lodgement", "title": "Confirm lodgement receipt", "description": "Obtain confirmation that appeal has been filed", "order": 20},
+    # Phase 6: Hearing Preparation
+    {"phase": "hearing", "title": "Prepare for hearing", "description": "Review all materials before appeal hearing", "order": 21},
+    {"phase": "hearing", "title": "Generate Barrister View report", "description": "Create professional presentation for court", "order": 22},
+]
+
 # ============ AUTH HELPERS ============
 
 async def get_current_user(request: Request) -> User:
@@ -1522,6 +1595,395 @@ async def export_timeline_pdf(case_id: str, request: Request):
         media_type="application/pdf",
         headers={"Content-Disposition": f"attachment; filename={filename}"}
     )
+
+# ============ DEADLINE ENDPOINTS ============
+
+@api_router.get("/cases/{case_id}/deadlines", response_model=List[dict])
+async def get_deadlines(case_id: str, request: Request):
+    """Get all deadlines for a case"""
+    user = await get_current_user(request)
+    
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    deadlines = await db.deadlines.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).sort("due_date", 1).to_list(100)
+    
+    return deadlines
+
+@api_router.post("/cases/{case_id}/deadlines", response_model=dict)
+async def create_deadline(case_id: str, deadline_data: DeadlineCreate, request: Request):
+    """Create a new deadline"""
+    user = await get_current_user(request)
+    
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    deadline = Deadline(
+        case_id=case_id,
+        user_id=user.user_id,
+        **deadline_data.model_dump()
+    )
+    
+    deadline_dict = deadline.model_dump()
+    deadline_dict["due_date"] = deadline_dict["due_date"].isoformat()
+    deadline_dict["created_at"] = deadline_dict["created_at"].isoformat()
+    
+    await db.deadlines.insert_one(deadline_dict)
+    
+    return await db.deadlines.find_one({"deadline_id": deadline.deadline_id}, {"_id": 0})
+
+@api_router.patch("/cases/{case_id}/deadlines/{deadline_id}", response_model=dict)
+async def update_deadline(case_id: str, deadline_id: str, request: Request):
+    """Update a deadline (mark complete, etc.)"""
+    user = await get_current_user(request)
+    body = await request.json()
+    
+    deadline = await db.deadlines.find_one({
+        "deadline_id": deadline_id,
+        "case_id": case_id
+    })
+    if not deadline:
+        raise HTTPException(status_code=404, detail="Deadline not found")
+    
+    update_data = {}
+    if "is_completed" in body:
+        update_data["is_completed"] = body["is_completed"]
+        if body["is_completed"]:
+            update_data["completed_at"] = datetime.now(timezone.utc).isoformat()
+    if "title" in body:
+        update_data["title"] = body["title"]
+    if "due_date" in body:
+        update_data["due_date"] = body["due_date"]
+    if "priority" in body:
+        update_data["priority"] = body["priority"]
+    
+    if update_data:
+        await db.deadlines.update_one(
+            {"deadline_id": deadline_id},
+            {"$set": update_data}
+        )
+    
+    return await db.deadlines.find_one({"deadline_id": deadline_id}, {"_id": 0})
+
+@api_router.delete("/cases/{case_id}/deadlines/{deadline_id}")
+async def delete_deadline(case_id: str, deadline_id: str, request: Request):
+    """Delete a deadline"""
+    user = await get_current_user(request)
+    
+    result = await db.deadlines.delete_one({
+        "deadline_id": deadline_id,
+        "case_id": case_id
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Deadline not found")
+    
+    return {"message": "Deadline deleted"}
+
+# ============ CHECKLIST ENDPOINTS ============
+
+@api_router.get("/cases/{case_id}/checklist", response_model=List[dict])
+async def get_checklist(case_id: str, request: Request):
+    """Get checklist for a case, creating default items if none exist"""
+    user = await get_current_user(request)
+    
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    items = await db.checklist_items.find(
+        {"case_id": case_id},
+        {"_id": 0}
+    ).sort("order", 1).to_list(100)
+    
+    if not items:
+        for item_data in DEFAULT_CHECKLIST:
+            item = ChecklistItem(
+                case_id=case_id,
+                user_id=user.user_id,
+                **item_data
+            )
+            item_dict = item.model_dump()
+            item_dict["created_at"] = item_dict["created_at"].isoformat()
+            await db.checklist_items.insert_one(item_dict)
+        
+        items = await db.checklist_items.find(
+            {"case_id": case_id},
+            {"_id": 0}
+        ).sort("order", 1).to_list(100)
+    
+    return items
+
+@api_router.patch("/cases/{case_id}/checklist/{item_id}", response_model=dict)
+async def update_checklist_item(case_id: str, item_id: str, request: Request):
+    """Update a checklist item"""
+    user = await get_current_user(request)
+    body = await request.json()
+    
+    item = await db.checklist_items.find_one({
+        "item_id": item_id,
+        "case_id": case_id
+    })
+    if not item:
+        raise HTTPException(status_code=404, detail="Checklist item not found")
+    
+    update_data = {}
+    if "is_completed" in body:
+        update_data["is_completed"] = body["is_completed"]
+        if body["is_completed"]:
+            update_data["completed_at"] = datetime.now(timezone.utc).isoformat()
+        else:
+            update_data["completed_at"] = None
+    
+    if update_data:
+        await db.checklist_items.update_one(
+            {"item_id": item_id},
+            {"$set": update_data}
+        )
+    
+    return await db.checklist_items.find_one({"item_id": item_id}, {"_id": 0})
+
+# ============ CASE STRENGTH ENDPOINT ============
+
+@api_router.get("/cases/{case_id}/strength", response_model=dict)
+async def get_case_strength(case_id: str, request: Request):
+    """Calculate overall case strength"""
+    user = await get_current_user(request)
+    
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    grounds = await db.grounds_of_merit.find({"case_id": case_id}, {"_id": 0}).to_list(100)
+    documents = await db.documents.find({"case_id": case_id}, {"_id": 0}).to_list(500)
+    timeline = await db.timeline_events.find({"case_id": case_id}, {"_id": 0}).to_list(500)
+    checklist = await db.checklist_items.find({"case_id": case_id}, {"_id": 0}).to_list(100)
+    
+    strength_scores = {"strong": 3, "moderate": 2, "weak": 1}
+    
+    grounds_score = 0
+    ground_breakdown = {"strong": 0, "moderate": 0, "weak": 0}
+    if grounds:
+        for g in grounds:
+            strength = g.get("strength", "moderate")
+            ground_breakdown[strength] = ground_breakdown.get(strength, 0) + 1
+            grounds_score += strength_scores.get(strength, 1)
+        max_possible = len(grounds) * 3
+        grounds_score = min(100, int((grounds_score / max_possible) * 100) + (len(grounds) * 5))
+    
+    doc_score = 0
+    docs_with_text = len([d for d in documents if d.get("content_text")])
+    if documents:
+        doc_score = min(100, int((docs_with_text / len(documents)) * 50) + (len(documents) * 5))
+    
+    timeline_score = 0
+    if timeline:
+        timeline_score = min(100, len(timeline) * 5)
+        critical_events = len([t for t in timeline if t.get("significance") == "critical"])
+        timeline_score = min(100, timeline_score + (critical_events * 10))
+    
+    prep_score = 0
+    if checklist:
+        completed = len([c for c in checklist if c.get("is_completed")])
+        prep_score = int((completed / len(checklist)) * 100)
+    
+    overall_score = int(
+        (grounds_score * 0.40) +
+        (doc_score * 0.25) +
+        (timeline_score * 0.15) +
+        (prep_score * 0.20)
+    )
+    
+    if overall_score >= 75:
+        rating, rating_color = "Strong", "green"
+    elif overall_score >= 50:
+        rating, rating_color = "Moderate", "amber"
+    elif overall_score >= 25:
+        rating, rating_color = "Developing", "orange"
+    else:
+        rating, rating_color = "Early Stage", "red"
+    
+    recommendations = []
+    if not grounds:
+        recommendations.append("Run AI Grounds Identification to find potential appeal grounds")
+    if len(documents) < 3:
+        recommendations.append("Upload more case documents for better analysis")
+    if len(timeline) < 5:
+        recommendations.append("Build out your timeline with key case events")
+    if prep_score < 50:
+        recommendations.append("Work through the appeal checklist")
+    
+    return {
+        "overall_score": overall_score,
+        "rating": rating,
+        "rating_color": rating_color,
+        "breakdown": {
+            "grounds": {"score": grounds_score, "count": len(grounds), **ground_breakdown},
+            "documentation": {"score": doc_score, "total_docs": len(documents), "with_text": docs_with_text},
+            "timeline": {"score": timeline_score, "event_count": len(timeline)},
+            "preparation": {"score": prep_score, "completed": len([c for c in checklist if c.get("is_completed")]), "total": len(checklist)}
+        },
+        "recommendations": recommendations
+    }
+
+# ============ CONTRADICTION FINDER ============
+
+@api_router.post("/cases/{case_id}/analyze-contradictions", response_model=dict)
+async def analyze_witness_contradictions(case_id: str, request: Request):
+    """AI analysis to find contradictions in documents"""
+    user = await get_current_user(request)
+    
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    documents = await db.documents.find(
+        {"case_id": case_id, "content_text": {"$exists": True, "$ne": ""}},
+        {"_id": 0, "file_data": 0}
+    ).to_list(100)
+    
+    if len(documents) < 2:
+        raise HTTPException(status_code=400, detail="Need at least 2 documents with text to compare")
+    
+    doc_context = ""
+    for i, doc in enumerate(documents):
+        doc_context += f"\n=== DOCUMENT {i+1}: {doc.get('filename', 'Unknown')} ===\n"
+        content = doc.get('content_text', '')[:4000]
+        doc_context += f"Content:\n{content}\n"
+    
+    from emergentintegrations.llm.chat import chat, LLMProvider
+    emergent_api_key = os.environ.get('EMERGENT_LLM_KEY')
+    
+    system_prompt = """You are a legal analyst finding contradictions in witness statements. Find:
+1. DIRECT CONTRADICTIONS - witnesses contradict each other
+2. INTERNAL INCONSISTENCIES - witness contradicts themselves
+3. TIMELINE CONFLICTS - times/dates don't align
+4. FACTUAL DISCREPANCIES - differences in descriptions
+5. OMISSIONS - facts missing from one account
+
+Return JSON:
+{
+    "contradictions": [{"type": "...", "severity": "critical|significant|minor", "documents_involved": [], "description": "...", "appeal_relevance": "..."}],
+    "summary": "...",
+    "total_critical": 0, "total_significant": 0, "total_minor": 0
+}"""
+
+    last_error = None
+    for attempt in range(3):
+        try:
+            response = await chat(
+                api_key=emergent_api_key,
+                provider=LLMProvider.OPENAI,
+                model="gpt-4o",
+                system_prompt=system_prompt,
+                user_message=f"Find contradictions in these documents:\n{doc_context}",
+                session_id=f"contradiction_{case_id}_{uuid.uuid4().hex[:8]}",
+            )
+            break
+        except Exception as e:
+            last_error = e
+            if attempt < 2:
+                await asyncio.sleep(2 ** attempt)
+    else:
+        raise HTTPException(status_code=500, detail=f"AI analysis failed: {str(last_error)}")
+    
+    try:
+        json_match = response
+        if "```json" in response:
+            json_match = response.split("```json")[1].split("```")[0]
+        analysis = json.loads(json_match.strip())
+    except:
+        analysis = {"contradictions": [], "summary": response[:2000], "total_critical": 0, "total_significant": 0, "total_minor": 0}
+    
+    return {"analysis": analysis, "documents_analyzed": len(documents), "analyzed_at": datetime.now(timezone.utc).isoformat()}
+
+# ============ RESOURCE DIRECTORY ============
+
+@api_router.get("/resources/directory", response_model=dict)
+async def get_resource_directory():
+    """Get directory of legal resources"""
+    return {
+        "legal_aid": [
+            {"name": "Legal Aid NSW", "phone": "1300 888 529", "website": "https://www.legalaid.nsw.gov.au", "services": ["Criminal law", "Appeals"], "region": "NSW"},
+            {"name": "Aboriginal Legal Service (NSW/ACT)", "phone": "1800 765 767", "website": "https://www.alsnswact.org.au", "services": ["Criminal law", "Family law"], "region": "NSW/ACT"},
+            {"name": "Community Legal Centres NSW", "website": "https://www.clcnsw.org.au", "services": ["Legal advice", "Referrals"], "region": "NSW"}
+        ],
+        "advocacy_groups": [
+            {"name": "Innocence Project (Australia)", "website": "https://www.innocenceproject.org.au", "focus": "Wrongful convictions"},
+            {"name": "Justice Action", "phone": "(02) 9283 0123", "website": "https://www.justiceaction.org.au", "focus": "Prisoner rights"},
+            {"name": "Prisoners Aid Association NSW", "phone": "(02) 9288 8700", "website": "https://www.prisonersaid.org.au", "focus": "Family support"}
+        ],
+        "courts": [
+            {"name": "NSW Court of Criminal Appeal", "website": "https://www.supremecourt.justice.nsw.gov.au"},
+            {"name": "High Court of Australia", "website": "https://www.hcourt.gov.au", "note": "Special leave required"}
+        ],
+        "appeal_deadlines": {"notice_of_appeal": "28 days from conviction/sentence", "leave_to_appeal": "28 days", "extension": "Can apply if missed - must show good reason"}
+    }
+
+# ============ DOCUMENT TEMPLATES ============
+
+@api_router.get("/templates", response_model=List[dict])
+async def get_document_templates():
+    """Get available document templates"""
+    return [
+        {"template_id": "notice_of_appeal", "title": "Notice of Appeal", "description": "Form to lodge an appeal", "category": "lodgement"},
+        {"template_id": "leave_to_appeal", "title": "Application for Leave to Appeal", "description": "Application for permission to appeal sentence", "category": "lodgement"},
+        {"template_id": "affidavit_fresh_evidence", "title": "Affidavit - Fresh Evidence", "description": "Sworn statement for new evidence", "category": "evidence"},
+        {"template_id": "extension_of_time", "title": "Extension of Time Application", "description": "Apply to file after deadline", "category": "lodgement"},
+        {"template_id": "outline_of_submissions", "title": "Written Submissions", "description": "Legal arguments for hearing", "category": "hearing"}
+    ]
+
+@api_router.post("/templates/{template_id}/generate", response_model=dict)
+async def generate_document_from_template(template_id: str, request: Request):
+    """Generate a document from template"""
+    user = await get_current_user(request)
+    body = await request.json()
+    
+    if template_id == "notice_of_appeal":
+        content = f"""COURT OF CRIMINAL APPEAL - SUPREME COURT OF NSW
+NOTICE OF APPEAL
+
+Appellant: {body.get('appellant_name', '[NAME]')}
+Case Number: {body.get('case_number', '[NUMBER]')}
+
+TAKE NOTICE that the above-named appeals against: {body.get('appeal_type', '[CONVICTION/SENTENCE]')}
+
+Court of Trial: {body.get('court_of_trial', '[COURT]')}
+Date of Conviction: {body.get('date_of_conviction', '[DATE]')}
+Date of Sentence: {body.get('date_of_sentence', '[DATE]')}
+Offence: {body.get('offence', '[OFFENCE]')}
+Sentence: {body.get('sentence', '[SENTENCE]')}
+
+GROUNDS OF APPEAL:
+{body.get('grounds', '[GROUNDS]')}
+
+DATED: {datetime.now().strftime('%d %B %Y')}
+
+---
+Generated by Criminal Appeal AI - Deb King, Glenmore Park 2745"""
+    elif template_id == "leave_to_appeal":
+        content = f"""APPLICATION FOR LEAVE TO APPEAL AGAINST SENTENCE
+
+Appellant: {body.get('appellant_name', '[NAME]')}
+Case: {body.get('case_number', '[NUMBER]')}
+Sentence Date: {body.get('date_of_sentence', '[DATE]')}
+Sentence: {body.get('sentence', '[SENTENCE]')}
+
+GROUNDS: {body.get('grounds', '[GROUNDS]')}
+WHY LEAVE SHOULD BE GRANTED: {body.get('why_leave_granted', '[REASONS]')}
+
+DATED: {datetime.now().strftime('%d %B %Y')}
+---
+Generated by Criminal Appeal AI"""
+    else:
+        content = f"Template {template_id} - Please contact support for this template."
+    
+    return {"template_id": template_id, "content": content, "generated_at": datetime.now(timezone.utc).isoformat()}
 
 # ============ NOTES & COMMENTS ENDPOINTS ============
 

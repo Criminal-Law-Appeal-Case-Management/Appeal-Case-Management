@@ -147,6 +147,15 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] Searchable glossary with category filtering
 - [x] Examples for each term
 
+### New Features (Mar 2026) ✅
+- [x] **Appeal Deadline Tracker** - Track critical dates with countdown timers
+- [x] **Witness Statement Contradiction Finder** - AI compares documents to find inconsistencies
+- [x] **Case Strength Meter** - Visual dashboard showing appeal prospects (grounds, docs, timeline, preparation)
+- [x] **Appeal Checklist System** - 22-step checklist from Preparation to Hearing
+- [x] **Resource Directory** - Legal Aid offices, advocacy groups, courts, information services
+- [x] **Document Templates** - Notice of Appeal, Leave to Appeal, Fresh Evidence Affidavit, Extension of Time
+- [x] **Progress Tab** - New tab showing Case Strength, Deadlines, and Checklist
+
 ## Future Enhancements
 - [ ] Case sharing with other users
 - [ ] Email notifications

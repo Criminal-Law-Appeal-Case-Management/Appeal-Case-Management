@@ -6,7 +6,7 @@ import {
   Scale, ArrowLeft, FileText, Clock, Plus, Trash2, 
   Upload, Loader2, ChevronRight, FileUp, AlertCircle,
   MessageSquare, Pin, PinOff, Edit2, User, Sparkles, Gavel,
-  Search, X, ScanLine, HelpCircle
+  Search, X, ScanLine, HelpCircle, TrendingUp, CheckSquare, Users
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -34,6 +34,9 @@ import { API } from "../App";
 import Timeline from "../components/TimelineEnhanced";
 import TimelineAnalysis from "../components/TimelineAnalysis";
 import GroundsOfMerit from "../components/GroundsOfMerit";
+import CaseStrengthMeter from "../components/CaseStrengthMeter";
+import DeadlineTracker from "../components/DeadlineTracker";
+import AppealChecklist from "../components/AppealChecklist";
 
 const DOCUMENT_CATEGORIES = [
   { value: "brief", label: "Legal Brief" },
@@ -926,6 +929,10 @@ const CaseDetail = ({ user }) => {
                 <Scale className="w-4 h-4 mr-2" />
                 Reports ({reports.length})
               </TabsTrigger>
+              <TabsTrigger value="progress" data-testid="tab-progress">
+                <TrendingUp className="w-4 h-4 mr-2" />
+                Progress
+              </TabsTrigger>
             </TabsList>
 
             <div className="flex gap-2">
@@ -1499,6 +1506,44 @@ const CaseDetail = ({ user }) => {
                 ))}
               </div>
             )}
+          </TabsContent>
+
+          {/* Progress Tab */}
+          <TabsContent value="progress" className="space-y-6">
+            <div className="grid lg:grid-cols-2 gap-6">
+              {/* Case Strength Meter */}
+              <CaseStrengthMeter caseId={caseId} />
+              
+              {/* Deadline Tracker */}
+              <DeadlineTracker caseId={caseId} />
+            </div>
+            
+            {/* Appeal Checklist */}
+            <AppealChecklist caseId={caseId} />
+            
+            {/* Quick Links */}
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex flex-wrap gap-3">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => navigate('/resources')}
+                    className="flex items-center gap-2"
+                  >
+                    <Users className="w-4 h-4" />
+                    Resource Directory
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => navigate('/help')}
+                    className="flex items-center gap-2"
+                  >
+                    <HelpCircle className="w-4 h-4" />
+                    Help & Glossary
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </main>

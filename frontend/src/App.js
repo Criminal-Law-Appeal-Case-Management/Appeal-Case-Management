@@ -11,6 +11,7 @@ import CaseDetail from "./pages/CaseDetail";
 import ReportView from "./pages/ReportView";
 import BarristerView from "./pages/BarristerView";
 import HelpPage from "./pages/HelpPage";
+import ResourcesPage from "./pages/ResourcesPage";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
@@ -156,6 +157,14 @@ function AppRouter() {
         element={
           <ProtectedRoute>
             {({ user }) => <HelpPage user={user} />}
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/resources"
+        element={
+          <ProtectedRoute>
+            {({ user }) => <ResourcesPage user={user} />}
           </ProtectedRoute>
         }
       />

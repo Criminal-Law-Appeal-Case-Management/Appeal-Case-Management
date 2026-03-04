@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { 
   Scale, Plus, FileText, Clock, MoreVertical, 
-  LogOut, FolderOpen, Search, User, HelpCircle
+  LogOut, FolderOpen, Search, User, HelpCircle, Users, BookOpen
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -127,11 +127,19 @@ const Dashboard = ({ user }) => {
           </div>
           <div 
             className="sidebar-item cursor-pointer" 
+            onClick={() => navigate('/resources')}
+            data-testid="nav-resources"
+          >
+            <Users className="w-5 h-5" />
+            <span className="font-medium">Resources</span>
+          </div>
+          <div 
+            className="sidebar-item cursor-pointer" 
             onClick={() => navigate('/help')}
             data-testid="nav-help"
           >
             <HelpCircle className="w-5 h-5" />
-            <span className="font-medium">User Guide</span>
+            <span className="font-medium">Help & Glossary</span>
           </div>
         </nav>
 
