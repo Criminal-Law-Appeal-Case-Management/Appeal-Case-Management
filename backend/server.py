@@ -302,13 +302,22 @@ import paypalrestsdk
 PAYPAL_CLIENT_ID = os.environ.get('PAYPAL_CLIENT_ID', '')
 PAYPAL_CLIENT_SECRET = os.environ.get('PAYPAL_CLIENT_SECRET', '')
 PAYPAL_MODE = os.environ.get('PAYPAL_MODE', 'sandbox')  # sandbox or live
+PAYPAL_CONFIGURED = False
 
 if PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET:
-    paypalrestsdk.configure({
-        "mode": PAYPAL_MODE,
-        "client_id": PAYPAL_CLIENT_ID,
-        "client_secret": PAYPAL_CLIENT_SECRET
-    })
+    try:
+        paypalrestsdk.configure({
+            "mode": PAYPAL_MODE,
+            "client_id": PAYPAL_CLIENT_ID,
+            "client_secret": PAYPAL_CLIENT_SECRET
+        })
+        PAYPAL_CONFIGURED = True
+        logger.info(f"PayPal configured in {PAYPAL_MODE} mode")
+    except Exception as e:
+        logger.warning(f"PayPal configuration failed: {e}")
+        PAYPAL_CONFIGURED = False
+else:
+    logger.info("PayPal credentials not configured - payment features disabled")
 
 # ============ AUTH HELPERS ============
 
@@ -1962,7 +1971,8 @@ async def get_feature_prices():
     return {
         "prices": FEATURE_PRICES,
         "currency": "AUD",
-        "paypal_client_id": PAYPAL_CLIENT_ID
+        "paypal_client_id": PAYPAL_CLIENT_ID if PAYPAL_CONFIGURED else "",
+        "paypal_configured": PAYPAL_CONFIGURED
     }
 
 @api_router.get("/cases/{case_id}/payments")
@@ -1994,6 +2004,9 @@ async def get_case_payments(case_id: str, request: Request):
 @api_router.post("/cases/{case_id}/payments/create-order")
 async def create_payment_order(case_id: str, request: Request):
     """Create a PayPal order for a feature purchase"""
+    if not PAYPAL_CONFIGURED:
+        raise HTTPException(status_code=503, detail="Payment service not configured")
+    
     user = await get_current_user(request)
     body = await request.json()
     feature_type = body.get("feature_type")
