@@ -402,12 +402,31 @@ async def get_cases(request: Request):
     user = await get_current_user(request)
     cases = await db.cases.find({"user_id": user.user_id}, {"_id": 0}).sort("updated_at", -1).to_list(100)
     
-    # Add document and event counts
+    if not cases:
+        return cases
+    
+    # Optimize: Batch count queries using aggregation instead of N+1 pattern
+    case_ids = [case["case_id"] for case in cases]
+    
+    # Get document counts in a single aggregation query
+    doc_counts = await db.documents.aggregate([
+        {"$match": {"case_id": {"$in": case_ids}}},
+        {"$group": {"_id": "$case_id", "count": {"$sum": 1}}}
+    ]).to_list(100)
+    
+    # Get event counts in a single aggregation query
+    event_counts = await db.timeline_events.aggregate([
+        {"$match": {"case_id": {"$in": case_ids}}},
+        {"$group": {"_id": "$case_id", "count": {"$sum": 1}}}
+    ]).to_list(100)
+    
+    # Map counts back to cases
+    doc_map = {d["_id"]: d["count"] for d in doc_counts}
+    event_map = {e["_id"]: e["count"] for e in event_counts}
+    
     for case in cases:
-        doc_count = await db.documents.count_documents({"case_id": case["case_id"]})
-        event_count = await db.timeline_events.count_documents({"case_id": case["case_id"]})
-        case["document_count"] = doc_count
-        case["event_count"] = event_count
+        case["document_count"] = doc_map.get(case["case_id"], 0)
+        case["event_count"] = event_map.get(case["case_id"], 0)
     
     return cases
 
@@ -1515,7 +1534,7 @@ async def export_timeline_pdf(case_id: str, request: Request):
     # Summary stats
     critical_count = len([e for e in events if e.get('significance') == 'critical'])
     contested_count = len([e for e in events if e.get('is_contested')])
-    story.append(Paragraph(f"Timeline Summary", section_style))
+    story.append(Paragraph("Timeline Summary", section_style))
     summary_data = [
         ["Total Events", str(len(events))],
         ["Critical Events", str(critical_count)],
@@ -1639,7 +1658,7 @@ async def create_deadline(case_id: str, deadline_data: DeadlineCreate, request: 
 @api_router.patch("/cases/{case_id}/deadlines/{deadline_id}", response_model=dict)
 async def update_deadline(case_id: str, deadline_id: str, request: Request):
     """Update a deadline (mark complete, etc.)"""
-    user = await get_current_user(request)
+    await get_current_user(request)  # Verify authentication
     body = await request.json()
     
     deadline = await db.deadlines.find_one({
@@ -1672,7 +1691,7 @@ async def update_deadline(case_id: str, deadline_id: str, request: Request):
 @api_router.delete("/cases/{case_id}/deadlines/{deadline_id}")
 async def delete_deadline(case_id: str, deadline_id: str, request: Request):
     """Delete a deadline"""
-    user = await get_current_user(request)
+    await get_current_user(request)  # Verify authentication
     
     result = await db.deadlines.delete_one({
         "deadline_id": deadline_id,
@@ -1721,7 +1740,7 @@ async def get_checklist(case_id: str, request: Request):
 @api_router.patch("/cases/{case_id}/checklist/{item_id}", response_model=dict)
 async def update_checklist_item(case_id: str, item_id: str, request: Request):
     """Update a checklist item"""
-    user = await get_current_user(request)
+    await get_current_user(request)  # Verify authentication
     body = await request.json()
     
     item = await db.checklist_items.find_one({
@@ -1895,7 +1914,7 @@ Return JSON:
         if "```json" in response:
             json_match = response.split("```json")[1].split("```")[0]
         analysis = json.loads(json_match.strip())
-    except:
+    except (json.JSONDecodeError, IndexError, ValueError):
         analysis = {"contradictions": [], "summary": response[:2000], "total_critical": 0, "total_significant": 0, "total_minor": 0}
     
     return {"analysis": analysis, "documents_analyzed": len(documents), "analyzed_at": datetime.now(timezone.utc).isoformat()}
@@ -1939,7 +1958,7 @@ async def get_document_templates():
 @api_router.post("/templates/{template_id}/generate", response_model=dict)
 async def generate_document_from_template(template_id: str, request: Request):
     """Generate a document from template"""
-    user = await get_current_user(request)
+    await get_current_user(request)  # Verify authentication
     body = await request.json()
     
     if template_id == "notice_of_appeal":
