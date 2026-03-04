@@ -2454,12 +2454,12 @@ CASE DETAILS:
             if doc.get('description'):
                 context += f"Description: {doc.get('description')}\n"
             
-            # Include up to 3000 chars of content per document
+            # Include up to 5000 chars of content per document for thorough analysis
             content = doc.get('content_text', '')
             if content:
-                context += f"CONTENT:\n{content[:3000]}\n"
-                if len(content) > 3000:
-                    context += f"[... {len(content) - 3000} more characters ...]\n"
+                context += f"CONTENT:\n{content[:5000]}\n"
+                if len(content) > 5000:
+                    context += f"[... {len(content) - 5000} more characters ...]\n"
             else:
                 context += "CONTENT: [No text content extracted - may be image/scan]\n"
             context += "\n"
@@ -2481,50 +2481,74 @@ CASE DETAILS:
             context += f"  {note.get('content', '')[:500]}\n"
         context += "\n"
 
-    system_prompt = """You are an expert Australian criminal appeal barrister specializing in murder and manslaughter cases. 
+    system_prompt = """You are a senior Australian criminal appeal barrister with 30+ years experience in murder and serious criminal appeals in NSW. You have successfully overturned dozens of wrongful convictions.
 
-Your task is to analyze the provided case materials and identify NEW potential grounds of merit for a criminal appeal.
+YOUR TASK: Conduct an EXHAUSTIVE, METICULOUS analysis of ALL provided case documents to identify EVERY possible ground of appeal. Leave no stone unturned.
 
-CRITICAL: 
-- DO NOT identify grounds that are already listed in the "ALREADY IDENTIFIED GROUNDS" section
-- Only identify genuinely NEW and DIFFERENT grounds
-- Each ground must be distinct - do not create variations of the same issue
-- If you find additional evidence for an existing ground, DO NOT create a new ground for it
+ANALYSIS APPROACH - You MUST:
+1. READ EVERY DOCUMENT THOROUGHLY - Extract all relevant facts, dates, witness statements, and evidence
+2. CROSS-REFERENCE between documents - Look for contradictions, inconsistencies, and gaps
+3. IDENTIFY PROCEDURAL ISSUES - Did police/prosecution follow correct procedures?
+4. EXAMINE EVIDENCE HANDLING - Was evidence properly obtained, stored, disclosed?
+5. REVIEW WITNESS TESTIMONY - Look for unreliable identification, coached witnesses, inconsistent statements
+6. ASSESS LEGAL REPRESENTATION - Was the defence counsel competent? Did they call all witnesses? Cross-examine effectively?
+7. CHECK JUDICIAL CONDUCT - Were jury directions proper? Was the judge impartial?
+8. LOOK FOR FRESH EVIDENCE - Any new information that wasn't available at trial?
+9. EXAMINE EXPERT EVIDENCE - Was forensic/medical evidence properly challenged?
+10. CONSIDER DISCLOSURE FAILURES - Did prosecution disclose all relevant material?
 
-Look for these types of grounds (only if not already identified):
-- Procedural irregularities at trial
-- Evidence that was wrongly admitted or excluded
-- Judicial errors in directions to jury
-- Issues with legal representation
-- Fresh evidence that could change the outcome
-- Sentencing errors
-- Prosecutorial misconduct
-- Jury issues
+GROUND TYPES TO IDENTIFY:
+- PROCEDURAL ERROR: Police/court procedure violations, warrant issues, PACE breaches
+- FRESH EVIDENCE: New witnesses, DNA evidence, alibis, recanted testimony
+- MISCARRIAGE OF JUSTICE: Wrongful conviction indicators, unsafe verdict
+- JUDICIAL ERROR: Wrong directions to jury, biased conduct, evidentiary rulings
+- INEFFECTIVE COUNSEL: Failure to call witnesses, poor cross-examination, missed defences
+- PROSECUTION MISCONDUCT: Non-disclosure, improper statements, witness coaching
+- JURY IRREGULARITY: Misconduct, bias, improper deliberations
+- SENTENCING ERROR: Manifestly excessive, wrong principles applied
+- CONSTITUTIONAL/RIGHTS VIOLATIONS: Unfair trial, self-incrimination issues
 
-If all major grounds have been identified, return an empty grounds array."""
+BE THOROUGH - It is better to identify 10 potential grounds than miss 1 valid one. The appellant's liberty depends on this analysis.
 
-    user_prompt = f"""Analyze this criminal appeal case and identify ONLY NEW grounds of merit that are NOT already identified:
+IMPORTANT: If grounds are listed in "ALREADY IDENTIFIED GROUNDS", do NOT duplicate them. Only add NEW grounds."""
+
+    user_prompt = f"""CONDUCT A COMPREHENSIVE LEGAL ANALYSIS OF THIS CRIMINAL APPEAL CASE:
 
 {context}
 
-IMPORTANT: Check the "ALREADY IDENTIFIED GROUNDS" section carefully. Do NOT duplicate any existing grounds.
+INSTRUCTIONS:
+1. Analyze EVERY document provided - read the full content carefully
+2. Compare witness statements for inconsistencies
+3. Identify ANY procedural irregularities
+4. Look for evidence that may have been improperly handled or excluded
+5. Consider whether the defence was adequate
+6. Check for any fresh evidence possibilities
+7. Assess whether the verdict was safe
 
-For each genuinely NEW ground identified, provide in this EXACT JSON format:
+For EACH ground you identify, provide DETAILED analysis including:
+- Specific references to documents/evidence
+- Why this constitutes a valid ground of appeal
+- Relevant NSW and Federal law sections
+- Assessment of strength (strong/moderate/weak)
+- What evidence supports this ground
+
+Return your analysis in this JSON format:
 {{
   "grounds": [
     {{
-      "title": "Clear, concise title for the ground",
-      "ground_type": "One of: procedural_error, fresh_evidence, miscarriage_of_justice, sentencing_error, judicial_error, ineffective_counsel, prosecution_misconduct, jury_irregularity, constitutional_violation, other",
-      "description": "Detailed description of the ground and why it may be viable",
-      "strength": "strong, moderate, or weak",
-      "key_evidence": ["List of evidence supporting this ground"],
-      "relevant_law": ["List of relevant law sections e.g., 's.18 Crimes Act 1900 (NSW)'"]
+      "title": "Specific, descriptive title",
+      "ground_type": "procedural_error|fresh_evidence|miscarriage_of_justice|sentencing_error|judicial_error|ineffective_counsel|prosecution_misconduct|jury_irregularity|constitutional_violation|other",
+      "description": "DETAILED description (at least 3-4 sentences) explaining the ground, citing specific evidence from the documents",
+      "strength": "strong|moderate|weak",
+      "key_evidence": ["Specific document references and quotes that support this ground"],
+      "relevant_law": ["Specific law sections e.g., 's.18 Crimes Act 1900 (NSW)', 'Evidence Act 1995 s.137'"]
     }}
   ],
-  "summary": "Brief assessment - state if no new grounds found"
+  "summary": "Overall assessment of appeal prospects and most promising grounds",
+  "analysis_notes": "Any additional observations about the case"
 }}
 
-If NO new grounds are found, return: {{"grounds": [], "summary": "All significant grounds have been identified."}}"""
+BE THOROUGH. Identify ALL potential grounds. The appellant's freedom may depend on this analysis."""
 
     api_key = os.environ.get('EMERGENT_LLM_KEY')
     if not api_key:
