@@ -148,11 +148,33 @@ const LandingPage = () => {
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
-                    <span><strong>Identifying possible procedural issues</strong> — AI analysis highlights potential procedural errors that may warrant review</span>
+                    <span><strong>Identifying timeline inconsistencies</strong> — Detect contradictions and discrepancies in witness statements and evidence</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
-                    <span><strong>Highlighting mens rea issues</strong> — Identify potential issues relating to intent, knowledge, and mental state in murder convictions</span>
+                    <span><strong>Procedural irregularities</strong> — Flag potential issues with trial procedure that may warrant further review</span>
+                  </li>
+                </ul>
+                
+                <p className="text-slate-700 leading-relaxed mt-6 mb-4">
+                  The tool can also help analyse complex legal issues including:
+                </p>
+                <ul className="space-y-3 text-slate-700">
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                    <span><strong>Jury directions on intent</strong> — Review whether the jury was properly directed on the elements of murder, including intent to kill or cause grievous bodily harm</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                    <span><strong>Reckless indifference</strong> — Analyse whether reckless indifference to human life was properly explained to the jury</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                    <span><strong>Fresh evidence issues</strong> — Identify potential fresh evidence that was not available at trial and may support an appeal</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                    <span><strong>Mens rea analysis</strong> — Examine issues relating to mental state, intention, knowledge, and foreseeability in murder convictions</span>
                   </li>
                 </ul>
               </div>
