@@ -164,5 +164,17 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [ ] Document version history
 
 ## Technical Debt (Priority)
-- [ ] **Refactor backend/server.py** - Split 2500+ line file into routers
+- [~] **Refactor backend/server.py** - Split 3400+ line file into modules (IN PROGRESS)
+  - Created `/app/backend/models/__init__.py` - All Pydantic models extracted
+  - Created `/app/backend/config.py` - Database connection and configuration
+  - Created `/app/backend/services/ai_service.py` - AI helper functions extracted
+  - Created `/app/backend/routers/auth.py` - Auth endpoints (not yet integrated)
+  - Created `/app/backend/routers/cases.py` - Case CRUD endpoints (not yet integrated)
+  - Next: Integrate routers into main server.py and test
 - [ ] **Refactor CaseDetail.jsx** - Split 1000+ line component into smaller pieces
+
+## Bug Fixes (Mar 2026)
+- [x] **Report Generation Fixed** - All 3 report types working (Quick Summary, Full Detailed, Extensive Log)
+  - Verified with comprehensive backend testing (17/17 tests passed)
+  - AI calls use GPT-4o via Emergent LLM Key with retry logic (4 attempts, exponential backoff)
+  - Test report: `/app/test_reports/iteration_9.json`
