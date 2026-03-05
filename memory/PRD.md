@@ -515,11 +515,11 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] Reduces visual clutter - users only expand what they need
 
 ## Next Priority Tasks
-- [ ] Complete backend refactoring - remove duplicate routes from server.py
 - [ ] Finalize PayPal backend payment processing
+- [ ] Real-time collaboration/chat for Notes (WebSockets)
+- [ ] Continue backend refactoring — extract cases, documents, grounds, notes, reports, payments routes from server.py
 
 ## Backlog (Bottom)
-- [ ] Real-time collaboration/chat for Notes section (WebSockets)
 - [ ] Build and submit native mobile app (Capacitor ready)
 - [ ] Enhanced collaboration features (replies, threads, @mentions in notes)
 - [ ] Deadline Tracker with Calendar integration
@@ -537,7 +537,14 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **Legal Resources Page Scroll Anchors** - Tab buttons converted to smooth-scroll to sections
 - [x] **Fixed "Objects are not valid as React child" error** - ReportsSection renders `report.content.analysis` not raw object
 - [x] **Fixed LlmChat constructor error** in contradictions.py - was missing required args
-- [x] **Testing**: iteration_23 (24/24 pass), iteration_24 (all pass)
+- [x] **Testing**: iteration_23 (24/24 pass), iteration_24 (all pass), iteration_25 (18/18 pass)
+
+### Session 4 - Continued (Mar 2026) ✅
+- [x] **Legal Framework Page Tabs Removed** — All 4 sections (Criminal Law, Evidence Acts, Appeal Legislation, Human Rights) now shown on one scrollable page
+- [x] **Mobile Responsiveness Fixed** — Case detail page: header cleaned up, tabs are horizontally scrollable with compact text
+- [x] **Caselaw Search Added to Mobile Menu** — Now easily accessible from hamburger menu
+- [x] **Backend Refactoring Phase 1** — Removed 600 duplicate route lines from server.py (4381→3783 lines). Auth/admin/utility routes now exclusively in routers/
+- [x] **User Counter Active** — Analytics dashboard at /admin/dashboard shows 82 users, 761 visits, 58 cases, 113 documents
 
 ### Landing Page Reorganization (Dec 2025) ✅
 - [x] **Section Order Reorganized** - Per user request, Landing Page now follows this structure:
