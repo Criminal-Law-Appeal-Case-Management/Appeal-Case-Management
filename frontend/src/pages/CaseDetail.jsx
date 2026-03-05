@@ -3,10 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { 
-  Scale, ArrowLeft, FileText, Clock, Plus, Trash2, 
-  Upload, Loader2, ChevronRight, FileUp, AlertCircle,
-  MessageSquare, Pin, PinOff, Edit2, User, Sparkles, Gavel,
-  Search, X, ScanLine, HelpCircle, TrendingUp, CheckSquare, Users, BookOpen
+  Scale, ArrowLeft, FileText, Clock, Plus,
+  Loader2, AlertCircle, Sparkles, Gavel,
+  HelpCircle, TrendingUp, CheckSquare, BookOpen,
+  MessageSquare, Users
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -29,7 +29,6 @@ import {
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
 import { Badge } from "../components/ui/badge";
-import { ScrollArea } from "../components/ui/scroll-area";
 import { API } from "../App";
 import Timeline from "../components/TimelineEnhanced";
 import TimelineAnalysis from "../components/TimelineAnalysis";
@@ -39,15 +38,9 @@ import DeadlineTracker from "../components/DeadlineTracker";
 import AppealChecklist from "../components/AppealChecklist";
 import PaymentModal from "../components/PaymentModal";
 import LegalFrameworkViewer from "../components/LegalFrameworkViewer";
-
-const DOCUMENT_CATEGORIES = [
-  { value: "brief", label: "Legal Brief" },
-  { value: "case_note", label: "Case Note" },
-  { value: "evidence", label: "Evidence" },
-  { value: "court_document", label: "Court Document" },
-  { value: "public_advertising", label: "Public Record" },
-  { value: "other", label: "Other" }
-];
+import DocumentsSection from "../components/DocumentsSection";
+import NotesSection from "../components/NotesSection";
+import ReportsSection from "../components/ReportsSection";
 
 const EVENT_TYPES = [
   // Pre-trial
@@ -106,15 +99,6 @@ const PERSPECTIVES = [
   { value: "defence", label: "Favors Defence" }
 ];
 
-const NOTE_CATEGORIES = [
-  { value: "general", label: "General Note" },
-  { value: "legal_opinion", label: "Legal Opinion" },
-  { value: "evidence_note", label: "Evidence Note" },
-  { value: "strategy", label: "Strategy" },
-  { value: "question", label: "Question" },
-  { value: "action_item", label: "Action Item" }
-];
-
 const GROUND_TYPES = [
   { value: "procedural_error", label: "Procedural Error" },
   { value: "fresh_evidence", label: "Fresh Evidence" },
@@ -145,34 +129,14 @@ const CaseDetail = ({ user }) => {
   const [activeTab, setActiveTab] = useState("documents");
 
   // Dialog states
-  const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [showEventDialog, setShowEventDialog] = useState(false);
-  const [showReportDialog, setShowReportDialog] = useState(false);
-  const [showNoteDialog, setShowNoteDialog] = useState(false);
   const [showGroundDialog, setShowGroundDialog] = useState(false);
-  const [generatingReport, setGeneratingReport] = useState(false);
-  const [editingNote, setEditingNote] = useState(null);
   const [investigatingGround, setInvestigatingGround] = useState(null);
   const [autoIdentifying, setAutoIdentifying] = useState(false);
   const [selectedGround, setSelectedGround] = useState(null);
-  const [extractingText, setExtractingText] = useState(false);
-  const [runningOcr, setRunningOcr] = useState(false);
   const [generatingTimeline, setGeneratingTimeline] = useState(false);
   const [analyzingTimeline, setAnalyzingTimeline] = useState(false);
   const [timelineAnalysis, setTimelineAnalysis] = useState(null);
-
-  // Search states
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState(null);
-  const [searching, setSearching] = useState(false);
-  const [showSearchResults, setShowSearchResults] = useState(false);
-
-  // Form states
-  const [uploadFiles, setUploadFiles] = useState([]);
-  const [uploadCategory, setUploadCategory] = useState("other");
-  const [uploadDescription, setUploadDescription] = useState("");
-  const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0 });
 
   const [newEvent, setNewEvent] = useState({
     title: "",
@@ -189,12 +153,6 @@ const CaseDetail = ({ user }) => {
     participants: [],
     related_grounds: [],
     inconsistency_notes: ""
-  });
-
-  const [newNote, setNewNote] = useState({
-    title: "",
-    content: "",
-    category: "general"
   });
 
   const [newGround, setNewGround] = useState({
@@ -259,204 +217,6 @@ const CaseDetail = ({ user }) => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleUploadDocuments = async () => {
-    if (uploadFiles.length === 0) {
-      toast.error("Please select at least one file");
-      return;
-    }
-
-    setUploading(true);
-    setUploadProgress({ current: 0, total: uploadFiles.length });
-    
-    const uploadedDocs = [];
-    const failedFiles = [];
-
-    for (let i = 0; i < uploadFiles.length; i++) {
-      const file = uploadFiles[i];
-      setUploadProgress({ current: i + 1, total: uploadFiles.length });
-      
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("category", uploadCategory);
-      formData.append("description", uploadDescription);
-
-      try {
-        const response = await axios.post(`${API}/cases/${caseId}/documents`, formData, {
-          headers: { "Content-Type": "multipart/form-data" }
-        });
-        uploadedDocs.push(response.data);
-      } catch (error) {
-        console.error(`Failed to upload ${file.name}:`, error);
-        failedFiles.push(file.name);
-      }
-    }
-
-    if (uploadedDocs.length > 0) {
-      setDocuments([...uploadedDocs, ...documents]);
-    }
-
-    setShowUploadDialog(false);
-    setUploadFiles([]);
-    setUploadCategory("other");
-    setUploadDescription("");
-    setUploadProgress({ current: 0, total: 0 });
-
-    if (failedFiles.length === 0) {
-      toast.success(`Successfully uploaded ${uploadedDocs.length} document${uploadedDocs.length > 1 ? 's' : ''}`);
-    } else if (uploadedDocs.length > 0) {
-      toast.warning(`Uploaded ${uploadedDocs.length} files. Failed: ${failedFiles.join(', ')}`);
-    } else {
-      toast.error("Failed to upload documents");
-    }
-
-    setUploading(false);
-  };
-
-  const handleDeleteDocument = async (docId) => {
-    if (!window.confirm("Delete this document?")) return;
-    
-    try {
-      await axios.delete(`${API}/cases/${caseId}/documents/${docId}`);
-      setDocuments(documents.filter(d => d.document_id !== docId));
-      toast.success("Document deleted");
-    } catch (error) {
-      toast.error("Failed to delete document");
-    }
-  };
-
-  const handleExtractAllText = async () => {
-    if (documents.length === 0) {
-      toast.error("No documents to extract text from");
-      return;
-    }
-    
-    setExtractingText(true);
-    try {
-      const response = await axios.post(`${API}/cases/${caseId}/extract-all-text`);
-      const { successful_extractions, total_documents, results } = response.data;
-      
-      // Refresh documents to get updated content_text
-      const docsRes = await axios.get(`${API}/cases/${caseId}/documents`);
-      setDocuments(docsRes.data);
-      
-      toast.success(`Extracted text from ${successful_extractions}/${total_documents} documents`);
-    } catch (error) {
-      toast.error("Failed to extract text from documents");
-    } finally {
-      setExtractingText(false);
-    }
-  };
-
-  const handleRunOcrAll = async () => {
-    const docsWithoutText = documents.filter(d => !d.content_text || d.content_text.length < 100);
-    if (docsWithoutText.length === 0) {
-      toast.info("All documents already have extracted text");
-      return;
-    }
-    
-    setRunningOcr(true);
-    toast.info(`Running OCR on ${docsWithoutText.length} document(s)... This may take a while.`);
-    
-    try {
-      const response = await axios.post(`${API}/cases/${caseId}/ocr-all`, {}, {
-        timeout: 300000 // 5 minute timeout for OCR
-      });
-      const { successful_extractions, total_documents, results } = response.data;
-      
-      // Refresh documents to get updated content_text
-      const docsRes = await axios.get(`${API}/cases/${caseId}/documents`);
-      setDocuments(docsRes.data);
-      
-      if (successful_extractions > 0) {
-        toast.success(`OCR complete! Extracted text from ${successful_extractions} document(s)`);
-      } else {
-        toast.info("OCR complete. No additional text could be extracted.");
-      }
-    } catch (error) {
-      console.error("OCR error:", error);
-      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
-        toast.error("OCR timed out. Try running OCR on individual documents.");
-      } else {
-        toast.error("Failed to run OCR on documents");
-      }
-    } finally {
-      setRunningOcr(false);
-    }
-  };
-
-  const handleOcrDocument = async (docId) => {
-    toast.info("Running OCR... This may take a moment.");
-    
-    try {
-      const response = await axios.post(`${API}/cases/${caseId}/documents/${docId}/ocr`, {}, {
-        timeout: 120000 // 2 minute timeout
-      });
-      
-      if (response.data.success) {
-        // Refresh documents
-        const docsRes = await axios.get(`${API}/cases/${caseId}/documents`);
-        setDocuments(docsRes.data);
-        toast.success(`OCR complete! Extracted ${response.data.content_length} characters`);
-      } else {
-        toast.warning(response.data.message || "Could not extract text from this document");
-      }
-    } catch (error) {
-      console.error("OCR error:", error);
-      toast.error("Failed to run OCR on document");
-    }
-  };
-
-  const handleSearchDocuments = async (e) => {
-    e?.preventDefault();
-    
-    if (!searchQuery.trim()) {
-      toast.error("Please enter a search term");
-      return;
-    }
-    
-    if (searchQuery.trim().length < 2) {
-      toast.error("Search term must be at least 2 characters");
-      return;
-    }
-    
-    setSearching(true);
-    try {
-      const response = await axios.post(`${API}/cases/${caseId}/documents/search`, {
-        query: searchQuery.trim(),
-        case_sensitive: false
-      });
-      setSearchResults(response.data);
-      setShowSearchResults(true);
-      
-      if (response.data.total_matches === 0) {
-        toast.info("No matches found in documents");
-      } else {
-        toast.success(`Found ${response.data.total_matches} matches in ${response.data.documents_with_matches} documents`);
-      }
-    } catch (error) {
-      console.error("Search error:", error);
-      toast.error("Failed to search documents");
-    } finally {
-      setSearching(false);
-    }
-  };
-
-  const clearSearch = () => {
-    setSearchQuery("");
-    setSearchResults(null);
-    setShowSearchResults(false);
-  };
-
-  const highlightMatch = (text, query) => {
-    if (!query) return text;
-    const parts = text.split(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
-    return parts.map((part, i) => 
-      part.toLowerCase() === query.toLowerCase() 
-        ? <mark key={i} className="bg-amber-200 px-0.5 rounded">{part}</mark>
-        : part
-    );
   };
 
   const handleCreateEvent = async () => {
@@ -588,127 +348,6 @@ const CaseDetail = ({ user }) => {
   const [pendingFeatureType, setPendingFeatureType] = useState(null);
   const [pendingFeaturePrice, setPendingFeaturePrice] = useState(null);
 
-  const handleGenerateReport = async (reportType) => {
-    setGeneratingReport(true);
-    toast.info("Generating report... This may take 30-60 seconds.");
-    try {
-      const response = await axios.post(`${API}/cases/${caseId}/reports/generate`, {
-        report_type: reportType
-      }, {
-        timeout: 180000 // 3 minute timeout for report generation
-      });
-      setReports([response.data, ...reports]);
-      setShowReportDialog(false);
-      toast.success("Report generated successfully!");
-      navigate(`/cases/${caseId}/reports/${response.data.report_id}`);
-    } catch (error) {
-      console.error("Report generation error:", error);
-      if (error.response?.status === 402) {
-        // Payment required
-        const detail = error.response.data?.detail;
-        setShowReportDialog(false);
-        setPendingFeatureType(detail?.feature_type);
-        setPendingFeaturePrice(detail?.price);
-        setShowPaymentModal(true);
-        toast.info(`Payment required: $${detail?.price?.toFixed(2)} AUD`);
-      } else if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
-        toast.error("Report generation timed out. Please try again.");
-      } else if (error.response?.data?.detail) {
-        toast.error(`Failed: ${typeof error.response.data.detail === 'string' ? error.response.data.detail : 'Payment required'}`);
-      } else {
-        toast.error("Failed to generate report. Please try again.");
-      }
-    } finally {
-      setGeneratingReport(false);
-    }
-  };
-
-  const handleDeleteReport = async (reportId) => {
-    if (!window.confirm("Delete this report?")) return;
-    
-    try {
-      await axios.delete(`${API}/cases/${caseId}/reports/${reportId}`);
-      setReports(reports.filter(r => r.report_id !== reportId));
-      toast.success("Report deleted");
-    } catch (error) {
-      toast.error("Failed to delete report");
-    }
-  };
-
-  // Notes handlers
-  const handleCreateNote = async () => {
-    if (!newNote.title || !newNote.content) {
-      toast.error("Title and content are required");
-      return;
-    }
-
-    try {
-      const response = await axios.post(`${API}/cases/${caseId}/notes`, newNote);
-      setNotes([response.data, ...notes]);
-      setShowNoteDialog(false);
-      setNewNote({ title: "", content: "", category: "general" });
-      toast.success("Note added successfully");
-    } catch (error) {
-      toast.error("Failed to add note");
-    }
-  };
-
-  const handleUpdateNote = async () => {
-    if (!editingNote || !newNote.title || !newNote.content) {
-      toast.error("Title and content are required");
-      return;
-    }
-
-    try {
-      const response = await axios.put(`${API}/cases/${caseId}/notes/${editingNote.note_id}`, newNote);
-      setNotes(notes.map(n => n.note_id === editingNote.note_id ? response.data : n));
-      setShowNoteDialog(false);
-      setEditingNote(null);
-      setNewNote({ title: "", content: "", category: "general" });
-      toast.success("Note updated successfully");
-    } catch (error) {
-      toast.error("Failed to update note");
-    }
-  };
-
-  const handleDeleteNote = async (noteId) => {
-    if (!window.confirm("Delete this note?")) return;
-    
-    try {
-      await axios.delete(`${API}/cases/${caseId}/notes/${noteId}`);
-      setNotes(notes.filter(n => n.note_id !== noteId));
-      toast.success("Note deleted");
-    } catch (error) {
-      toast.error("Failed to delete note");
-    }
-  };
-
-  const handleTogglePin = async (noteId) => {
-    try {
-      const response = await axios.patch(`${API}/cases/${caseId}/notes/${noteId}/pin`);
-      setNotes(notes.map(n => n.note_id === noteId ? response.data : n)
-        .sort((a, b) => {
-          if (a.is_pinned === b.is_pinned) {
-            return new Date(b.created_at) - new Date(a.created_at);
-          }
-          return b.is_pinned ? 1 : -1;
-        }));
-      toast.success(response.data.is_pinned ? "Note pinned" : "Note unpinned");
-    } catch (error) {
-      toast.error("Failed to update note");
-    }
-  };
-
-  const openEditNote = (note) => {
-    setEditingNote(note);
-    setNewNote({
-      title: note.title,
-      content: note.content,
-      category: note.category
-    });
-    setShowNoteDialog(true);
-  };
-
   // Grounds of Merit handlers
   const handleCreateGround = async () => {
     if (!newGround.title || !newGround.description) {
@@ -811,30 +450,6 @@ const CaseDetail = ({ user }) => {
       hour: "2-digit",
       minute: "2-digit"
     });
-  };
-
-  const getCategoryColor = (category) => {
-    const colors = {
-      brief: "bg-blue-50 text-blue-700 border-blue-200",
-      case_note: "bg-amber-50 text-amber-700 border-amber-200",
-      evidence: "bg-emerald-50 text-emerald-700 border-emerald-200",
-      court_document: "bg-slate-50 text-slate-700 border-slate-200",
-      public_advertising: "bg-purple-50 text-purple-700 border-purple-200",
-      other: "bg-slate-50 text-slate-600 border-slate-200"
-    };
-    return colors[category] || colors.other;
-  };
-
-  const getNoteCategoryColor = (category) => {
-    const colors = {
-      general: "bg-slate-50 text-slate-700 border-slate-200",
-      legal_opinion: "bg-blue-50 text-blue-700 border-blue-200",
-      evidence_note: "bg-emerald-50 text-emerald-700 border-emerald-200",
-      strategy: "bg-purple-50 text-purple-700 border-purple-200",
-      question: "bg-amber-50 text-amber-700 border-amber-200",
-      action_item: "bg-red-50 text-red-700 border-red-200"
-    };
-    return colors[category] || colors.general;
   };
 
   if (loading) {
@@ -987,49 +602,6 @@ const CaseDetail = ({ user }) => {
             </TabsList>
 
             <div className="flex gap-2">
-              {activeTab === "documents" && (
-                <>
-                  {documents.length > 0 && (
-                    <>
-                      <Button 
-                        onClick={handleExtractAllText}
-                        disabled={extractingText || runningOcr}
-                        variant="outline"
-                        data-testid="extract-text-btn"
-                      >
-                        {extractingText ? (
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        ) : (
-                          <FileText className="w-4 h-4 mr-2" />
-                        )}
-                        Extract Text
-                      </Button>
-                      <Button 
-                        onClick={handleRunOcrAll}
-                        disabled={runningOcr || extractingText}
-                        variant="outline"
-                        className="bg-purple-50 border-purple-200 text-purple-700 hover:bg-purple-100"
-                        data-testid="ocr-all-btn"
-                      >
-                        {runningOcr ? (
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        ) : (
-                          <ScanLine className="w-4 h-4 mr-2" />
-                        )}
-                        OCR Scan
-                      </Button>
-                    </>
-                  )}
-                  <Button 
-                    onClick={() => setShowUploadDialog(true)}
-                    className="bg-slate-900 text-white hover:bg-slate-800"
-                    data-testid="upload-doc-btn"
-                  >
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload Document
-                  </Button>
-                </>
-              )}
               {activeTab === "timeline" && (
                 <>
                   <Button 
@@ -1055,20 +627,6 @@ const CaseDetail = ({ user }) => {
                     Add Event
                   </Button>
                 </>
-              )}
-              {activeTab === "notes" && (
-                <Button 
-                  onClick={() => {
-                    setEditingNote(null);
-                    setNewNote({ title: "", content: "", category: "general" });
-                    setShowNoteDialog(true);
-                  }}
-                  className="bg-slate-900 text-white hover:bg-slate-800"
-                  data-testid="add-note-btn"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Note
-                </Button>
               )}
               {activeTab === "grounds" && (
                 <>
@@ -1098,203 +656,17 @@ const CaseDetail = ({ user }) => {
                   </Button>
                 </>
               )}
-              {activeTab === "reports" && (
-                <Button 
-                  onClick={() => setShowReportDialog(true)}
-                  className="bg-amber-600 text-white hover:bg-amber-700"
-                  data-testid="generate-report-btn"
-                >
-                  <Scale className="w-4 h-4 mr-2" />
-                  Generate Report
-                </Button>
-              )}
             </div>
           </div>
 
           {/* Documents Tab */}
           <TabsContent value="documents" className="space-y-4">
-            {/* Search Bar */}
-            {documents.length > 0 && (
-              <Card className="p-4">
-                <form onSubmit={handleSearchDocuments} className="flex gap-2">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                    <Input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Search within all documents..."
-                      className="pl-10 pr-10"
-                      data-testid="doc-search-input"
-                    />
-                    {searchQuery && (
-                      <button
-                        type="button"
-                        onClick={clearSearch}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-                  <Button 
-                    type="submit" 
-                    disabled={searching || !searchQuery.trim()}
-                    className="bg-slate-900 text-white hover:bg-slate-800"
-                    data-testid="doc-search-btn"
-                  >
-                    {searching ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <>
-                        <Search className="w-4 h-4 mr-2" />
-                        Search
-                      </>
-                    )}
-                  </Button>
-                </form>
-                
-                {/* Search Results */}
-                {showSearchResults && searchResults && (
-                  <div className="mt-4 border-t pt-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="font-semibold text-slate-900">
-                        Search Results for "{searchResults.query}"
-                      </h4>
-                      <span className="text-sm text-slate-500">
-                        {searchResults.total_matches} match{searchResults.total_matches !== 1 ? 'es' : ''} in {searchResults.documents_with_matches} document{searchResults.documents_with_matches !== 1 ? 's' : ''}
-                      </span>
-                    </div>
-                    
-                    {searchResults.results.length === 0 ? (
-                      <p className="text-slate-600 text-center py-4">No matches found in any documents.</p>
-                    ) : (
-                      <ScrollArea className="max-h-80">
-                        <div className="space-y-3">
-                          {searchResults.results.map((result) => (
-                            <div key={result.document_id} className="bg-slate-50 rounded-lg p-3 border border-slate-200">
-                              <div className="flex items-center gap-2 mb-2">
-                                <FileText className="w-4 h-4 text-slate-600" />
-                                <span className="font-medium text-slate-900">{result.filename}</span>
-                                <Badge variant="outline" className={getCategoryColor(result.category)}>
-                                  {DOCUMENT_CATEGORIES.find(c => c.value === result.category)?.label || result.category}
-                                </Badge>
-                                <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-                                  {result.match_count} match{result.match_count !== 1 ? 'es' : ''}
-                                </Badge>
-                              </div>
-                              <div className="space-y-2">
-                                {result.matches.slice(0, 3).map((match, idx) => (
-                                  <div key={idx} className="text-sm text-slate-700 bg-white p-2 rounded border border-slate-100">
-                                    <p className="line-clamp-2">
-                                      {highlightMatch(match.context, searchResults.query)}
-                                    </p>
-                                  </div>
-                                ))}
-                                {result.matches.length > 3 && (
-                                  <p className="text-xs text-slate-500">
-                                    +{result.matches.length - 3} more matches in this document
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </ScrollArea>
-                    )}
-                  </div>
-                )}
-              </Card>
-            )}
-            
-            {documents.length === 0 ? (
-              <Card className="p-12 text-center">
-                <FileUp className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                  No documents yet
-                </h3>
-                <p className="text-slate-600 mb-4">Upload briefs, case notes, and evidence to build your case.</p>
-                <Button 
-                  onClick={() => setShowUploadDialog(true)}
-                  className="bg-slate-900 text-white hover:bg-slate-800"
-                >
-                  <Upload className="w-4 h-4 mr-2" />
-                  Upload First Document
-                </Button>
-              </Card>
-            ) : (
-              <div className="grid gap-4">
-                {documents.map((doc) => (
-                  <Card 
-                    key={doc.document_id} 
-                    className="card-hover group"
-                    data-testid={`doc-${doc.document_id}`}
-                  >
-                    <CardContent className="p-4 flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${doc.content_text ? 'bg-emerald-100' : 'bg-slate-100'}`}>
-                          <FileText className={`w-6 h-6 ${doc.content_text ? 'text-emerald-600' : 'text-slate-600'}`} />
-                        </div>
-                        <div>
-                          <h4 className="font-medium text-slate-900">{doc.filename}</h4>
-                          <div className="flex items-center gap-2 mt-1 flex-wrap">
-                            <Badge variant="outline" className={getCategoryColor(doc.category)}>
-                              {DOCUMENT_CATEGORIES.find(c => c.value === doc.category)?.label || doc.category}
-                            </Badge>
-                            {doc.content_text ? (
-                              <>
-                                <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
-                                  Text Extracted ({Math.round(doc.content_text.length / 1000)}k chars)
-                                </Badge>
-                                {doc.ocr_extracted && (
-                                  <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
-                                    <ScanLine className="w-3 h-3 mr-1" />
-                                    OCR
-                                  </Badge>
-                                )}
-                              </>
-                            ) : (
-                              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-                                No Text
-                              </Badge>
-                            )}
-                            <span className="text-xs text-slate-500">
-                              Uploaded {formatDate(doc.uploaded_at)}
-                            </span>
-                          </div>
-                          {doc.description && (
-                            <p className="text-sm text-slate-600 mt-1">{doc.description}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        {!doc.content_text && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleOcrDocument(doc.document_id)}
-                            className="text-purple-700 border-purple-200 hover:bg-purple-50"
-                            data-testid={`ocr-doc-${doc.document_id}`}
-                          >
-                            <ScanLine className="w-4 h-4 mr-1" />
-                            OCR
-                          </Button>
-                        )}
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDeleteDocument(doc.document_id)}
-                          className="opacity-0 group-hover:opacity-100 text-red-600 hover:text-red-700 hover:bg-red-50"
-                          data-testid={`delete-doc-${doc.document_id}`}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
+            <DocumentsSection
+              caseId={caseId}
+              documents={documents}
+              setDocuments={setDocuments}
+              onDocumentsChange={fetchCaseData}
+            />
           </TabsContent>
 
           {/* Timeline Tab */}
@@ -1390,178 +762,26 @@ const CaseDetail = ({ user }) => {
           </TabsContent>
 
           {/* Notes Tab */}
+          {/* Notes Tab */}
           <TabsContent value="notes" className="space-y-4">
-            {notes.length === 0 ? (
-              <Card className="p-12 text-center">
-                <MessageSquare className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                  No notes yet
-                </h3>
-                <p className="text-slate-600 mb-4">Add notes, comments, and legal opinions to the case.</p>
-                <Button 
-                  onClick={() => {
-                    setEditingNote(null);
-                    setNewNote({ title: "", content: "", category: "general" });
-                    setShowNoteDialog(true);
-                  }}
-                  className="bg-slate-900 text-white hover:bg-slate-800"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add First Note
-                </Button>
-              </Card>
-            ) : (
-              <div className="grid gap-4">
-                {notes.map((note) => (
-                  <Card 
-                    key={note.note_id} 
-                    className={`card-hover group ${note.is_pinned ? 'border-amber-300 bg-amber-50/30' : ''}`}
-                    data-testid={`note-${note.note_id}`}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            {note.is_pinned && (
-                              <Pin className="w-4 h-4 text-amber-600" />
-                            )}
-                            <Badge variant="outline" className={getNoteCategoryColor(note.category)}>
-                              {NOTE_CATEGORIES.find(c => c.value === note.category)?.label || note.category}
-                            </Badge>
-                          </div>
-                          <h4 
-                            className="font-semibold text-slate-900 text-lg"
-                            style={{ fontFamily: 'Crimson Pro, serif' }}
-                          >
-                            {note.title}
-                          </h4>
-                          <p className="text-slate-600 mt-2 whitespace-pre-wrap leading-relaxed">
-                            {note.content}
-                          </p>
-                          <div className="flex items-center gap-4 mt-4 text-xs text-slate-500">
-                            <div className="flex items-center gap-1">
-                              <User className="w-3 h-3" />
-                              <span>{note.author_name}</span>
-                            </div>
-                            <span>{formatDateTime(note.created_at)}</span>
-                            {note.updated_at !== note.created_at && (
-                              <span className="italic">(edited)</span>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleTogglePin(note.note_id)}
-                            className="text-slate-600 hover:text-amber-600"
-                            data-testid={`pin-note-${note.note_id}`}
-                          >
-                            {note.is_pinned ? <PinOff className="w-4 h-4" /> : <Pin className="w-4 h-4" />}
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => openEditNote(note)}
-                            className="text-slate-600 hover:text-blue-600"
-                            data-testid={`edit-note-${note.note_id}`}
-                          >
-                            <Edit2 className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteNote(note.note_id)}
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                            data-testid={`delete-note-${note.note_id}`}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
+            <NotesSection
+              caseId={caseId}
+              notes={notes}
+              setNotes={setNotes}
+              onNotesChange={fetchCaseData}
+            />
           </TabsContent>
 
           {/* Reports Tab */}
           <TabsContent value="reports" className="space-y-4">
-            {reports.length === 0 ? (
-              <Card className="p-12 text-center">
-                <Scale className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                  No reports generated
-                </h3>
-                <p className="text-slate-600 mb-4">Generate AI-powered legal analysis reports for your case.</p>
-                <Button 
-                  onClick={() => setShowReportDialog(true)}
-                  className="bg-amber-600 text-white hover:bg-amber-700"
-                >
-                  <Scale className="w-4 h-4 mr-2" />
-                  Generate First Report
-                </Button>
-              </Card>
-            ) : (
-              <div className="grid gap-4">
-                {reports.map((report) => (
-                  <Card 
-                    key={report.report_id} 
-                    className="card-hover group cursor-pointer"
-                    onClick={() => navigate(`/cases/${caseId}/reports/${report.report_id}`)}
-                    data-testid={`report-${report.report_id}`}
-                  >
-                    <CardContent className="p-4 flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
-                          report.report_type === 'quick_summary' ? 'bg-blue-100' :
-                          report.report_type === 'full_detailed' ? 'bg-amber-100' :
-                          'bg-slate-100'
-                        }`}>
-                          <Scale className={`w-6 h-6 ${
-                            report.report_type === 'quick_summary' ? 'text-blue-600' :
-                            report.report_type === 'full_detailed' ? 'text-amber-600' :
-                            'text-slate-600'
-                          }`} />
-                        </div>
-                        <div>
-                          <h4 className="font-medium text-slate-900">{report.title}</h4>
-                          <div className="flex items-center gap-2 mt-1">
-                            <Badge variant="outline" className={
-                              report.report_type === 'quick_summary' ? 'bg-blue-50 text-blue-700 border-blue-200' :
-                              report.report_type === 'full_detailed' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                              'bg-slate-50 text-slate-700 border-slate-200'
-                            }>
-                              {report.report_type === 'quick_summary' ? 'Quick Summary' :
-                               report.report_type === 'full_detailed' ? 'Full Analysis' :
-                               'Extensive Log'}
-                            </Badge>
-                            <span className="text-xs text-slate-500">
-                              Generated {formatDate(report.generated_at)}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteReport(report.report_id);
-                          }}
-                          className="opacity-0 group-hover:opacity-100 text-red-600 hover:text-red-700 hover:bg-red-50"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                        <ChevronRight className="w-5 h-5 text-slate-400" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
+            <ReportsSection
+              caseId={caseId}
+              reports={reports}
+              setReports={setReports}
+              onReportsChange={fetchCaseData}
+              documents={documents}
+              navigate={navigate}
+            />
           </TabsContent>
 
           {/* Legal Framework Tab */}
@@ -1612,120 +832,6 @@ const CaseDetail = ({ user }) => {
           </TabsContent>
         </Tabs>
       </main>
-
-      {/* Upload Document Dialog */}
-      <Dialog open={showUploadDialog} onOpenChange={(open) => {
-        setShowUploadDialog(open);
-        if (!open) {
-          setUploadFiles([]);
-          setUploadCategory("other");
-          setUploadDescription("");
-        }
-      }}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle style={{ fontFamily: 'Crimson Pro, serif' }} className="text-2xl">
-              Upload Documents
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div>
-              <Label>Files (select multiple)</Label>
-              <div className="mt-2 border-2 border-dashed border-slate-200 rounded-lg p-6 text-center hover:border-slate-400 transition-colors">
-                <input
-                  type="file"
-                  onChange={(e) => setUploadFiles(Array.from(e.target.files || []))}
-                  className="hidden"
-                  id="file-upload"
-                  accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.heic,image/*,application/pdf"
-                  multiple
-                  data-testid="file-input"
-                />
-                <label htmlFor="file-upload" className="cursor-pointer">
-                  <FileUp className="w-10 h-10 text-slate-400 mx-auto mb-2" />
-                  {uploadFiles.length > 0 ? (
-                    <div>
-                      <p className="text-sm font-medium text-slate-900">
-                        {uploadFiles.length} file{uploadFiles.length > 1 ? 's' : ''} selected
-                      </p>
-                      <div className="mt-2 max-h-24 overflow-y-auto text-xs text-slate-600">
-                        {uploadFiles.map((f, i) => (
-                          <div key={i} className="truncate">{f.name}</div>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      <p className="text-sm font-medium text-slate-900">Click to select files</p>
-                      <p className="text-xs text-slate-500 mt-1">PDF, DOCX, TXT, or images • Select multiple files</p>
-                    </>
-                  )}
-                </label>
-              </div>
-            </div>
-            <div>
-              <Label>Category (applies to all files)</Label>
-              <Select value={uploadCategory} onValueChange={setUploadCategory}>
-                <SelectTrigger data-testid="category-select">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {DOCUMENT_CATEGORIES.map(cat => (
-                    <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label>Description (optional, applies to all)</Label>
-              <Textarea
-                value={uploadDescription}
-                onChange={(e) => setUploadDescription(e.target.value)}
-                placeholder="Brief description of the documents..."
-                rows={2}
-                data-testid="doc-description"
-              />
-            </div>
-            {uploading && uploadProgress.total > 0 && (
-              <div className="bg-slate-50 rounded-lg p-3">
-                <div className="flex items-center justify-between text-sm mb-2">
-                  <span className="text-slate-600">Uploading...</span>
-                  <span className="font-medium">{uploadProgress.current} / {uploadProgress.total}</span>
-                </div>
-                <div className="w-full bg-slate-200 rounded-full h-2">
-                  <div 
-                    className="bg-slate-900 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${(uploadProgress.current / uploadProgress.total) * 100}%` }}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowUploadDialog(false)} disabled={uploading}>
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleUploadDocuments}
-              className="bg-slate-900 text-white hover:bg-slate-800"
-              disabled={uploading || uploadFiles.length === 0}
-              data-testid="upload-submit"
-            >
-              {uploading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Uploading {uploadProgress.current}/{uploadProgress.total}
-                </>
-              ) : (
-                <>
-                  <Upload className="w-4 h-4 mr-2" />
-                  Upload {uploadFiles.length > 0 ? `${uploadFiles.length} File${uploadFiles.length > 1 ? 's' : ''}` : ''}
-                </>
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
       {/* Add Event Dialog */}
       <Dialog open={showEventDialog} onOpenChange={setShowEventDialog}>
@@ -1988,195 +1094,6 @@ const CaseDetail = ({ user }) => {
               Add Event
             </Button>
           </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Add/Edit Note Dialog */}
-      <Dialog open={showNoteDialog} onOpenChange={(open) => {
-        setShowNoteDialog(open);
-        if (!open) {
-          setEditingNote(null);
-          setNewNote({ title: "", content: "", category: "general" });
-        }
-      }}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle style={{ fontFamily: 'Crimson Pro, serif' }} className="text-2xl">
-              {editingNote ? "Edit Note" : "Add Note"}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div>
-              <Label>Category</Label>
-              <Select 
-                value={newNote.category} 
-                onValueChange={(v) => setNewNote({ ...newNote, category: v })}
-              >
-                <SelectTrigger data-testid="note-category-select">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {NOTE_CATEGORIES.map(cat => (
-                    <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label>Title *</Label>
-              <Input
-                value={newNote.title}
-                onChange={(e) => setNewNote({ ...newNote, title: e.target.value })}
-                placeholder="Note title..."
-                data-testid="note-title"
-              />
-            </div>
-            <div>
-              <Label>Content *</Label>
-              <Textarea
-                value={newNote.content}
-                onChange={(e) => setNewNote({ ...newNote, content: e.target.value })}
-                placeholder="Write your note, comment, or legal opinion..."
-                rows={6}
-                data-testid="note-content"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowNoteDialog(false)}>
-              Cancel
-            </Button>
-            <Button 
-              onClick={editingNote ? handleUpdateNote : handleCreateNote}
-              className="bg-slate-900 text-white hover:bg-slate-800"
-              data-testid="note-submit"
-            >
-              {editingNote ? (
-                <>
-                  <Edit2 className="w-4 h-4 mr-2" />
-                  Update Note
-                </>
-              ) : (
-                <>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Note
-                </>
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Generate Report Dialog */}
-      <Dialog open={showReportDialog} onOpenChange={setShowReportDialog}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle style={{ fontFamily: 'Crimson Pro, serif' }} className="text-2xl">
-              Generate Legal Analysis Report
-            </DialogTitle>
-          </DialogHeader>
-          <div className="py-4">
-            <div className="flex items-start gap-3 mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
-              <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-amber-800">
-                <p className="font-medium">AI-Powered Analysis</p>
-                <p className="mt-1">Reports are generated using AI analysis of your uploaded documents and timeline. 
-                They reference Australian State and Federal criminal law relevant to your selected offence type.</p>
-              </div>
-            </div>
-
-            <div className="grid gap-4">
-              <Card 
-                className={`card-hover cursor-pointer border-2 transition-all ${generatingReport ? 'opacity-50 pointer-events-none' : 'hover:border-blue-400 hover:shadow-md'}`}
-                onClick={() => {
-                  if (!generatingReport) {
-                    handleGenerateReport('quick_summary');
-                  }
-                }}
-                data-testid="quick-summary-option"
-              >
-                <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Scale className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                      Quick Summary
-                    </h4>
-                    <p className="text-sm text-slate-600 mt-1">
-                      Brief 2-3 paragraph overview of the case, key evidence, and primary appeal considerations.
-                    </p>
-                  </div>
-                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
-                    Generate
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card 
-                className={`card-hover cursor-pointer border-2 transition-all ${generatingReport ? 'opacity-50 pointer-events-none' : 'hover:border-amber-400 hover:shadow-md'}`}
-                onClick={() => {
-                  if (!generatingReport) {
-                    handleGenerateReport('full_detailed');
-                  }
-                }}
-                data-testid="full-detailed-option"
-              >
-                <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Scale className="w-6 h-6 text-amber-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                      Full Detailed Report
-                    </h4>
-                    <p className="text-sm text-slate-600 mt-1">
-                      Comprehensive analysis with grounds of merit, evidence assessment, specific law references, 
-                      and strategic recommendations. Suitable for barrister presentation.
-                    </p>
-                  </div>
-                  <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white">
-                    Generate
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card 
-                className={`card-hover cursor-pointer border-2 transition-all ${generatingReport ? 'opacity-50 pointer-events-none' : 'hover:border-slate-400 hover:shadow-md'}`}
-                onClick={() => {
-                  if (!generatingReport) {
-                    handleGenerateReport('extensive_log');
-                  }
-                }}
-                data-testid="extensive-log-option"
-              >
-                <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Scale className="w-6 h-6 text-slate-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                      Extensive Log Report
-                    </h4>
-                    <p className="text-sm text-slate-600 mt-1">
-                      Exhaustive documentation covering every aspect: complete chronology, document-by-document 
-                      analysis, all possible grounds, procedural review, and detailed legal framework.
-                    </p>
-                  </div>
-                  <Button size="sm" className="bg-slate-700 hover:bg-slate-800 text-white">
-                    Generate
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-
-            {generatingReport && (
-              <div className="mt-6 flex items-center justify-center gap-3 p-4 bg-slate-50 rounded-lg">
-                <Loader2 className="w-5 h-5 animate-spin text-slate-600" />
-                <span className="text-slate-600">Generating report with AI analysis...</span>
-              </div>
-            )}
-          </div>
         </DialogContent>
       </Dialog>
 

@@ -52,7 +52,8 @@ const ReportsSection = ({
   reports, 
   setReports, 
   onReportsChange,
-  documents 
+  documents,
+  navigate
 }) => {
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [selectedReportType, setSelectedReportType] = useState(null);
