@@ -4325,6 +4325,9 @@ app.include_router(api_router)
 from routers.auth import router as auth_router
 app.include_router(auth_router)
 
+from routers.password_reset import router as password_reset_router
+app.include_router(password_reset_router)
+
 from routers.admin import router as admin_router
 app.include_router(admin_router)
 

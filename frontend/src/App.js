@@ -31,6 +31,8 @@ import AppealStatisticsPage from "./pages/AppealStatisticsPage";
 import CaselawSearchPage from "./pages/CaselawSearchPage";
 import LegalFrameworkPage from "./pages/LegalFrameworkPage";
 import ContactsPage from "./pages/ContactsPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -282,6 +284,14 @@ function AppRouter() {
       <Route
         path="/contacts"
         element={<ContactsPage />}
+      />
+      <Route
+        path="/forgot-password"
+        element={<ForgotPasswordPage />}
+      />
+      <Route
+        path="/reset-password"
+        element={<ResetPasswordPage />}
       />
     </Routes>
   );
