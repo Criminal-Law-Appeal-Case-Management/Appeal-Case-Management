@@ -175,7 +175,7 @@ const LegalResourcesPage = () => {
         )}
 
         {/* Legal Aid Tab */}
-        <!-- LEGAL AID SECTION -->
+        
           <div className="space-y-6">
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -257,7 +257,7 @@ const LegalResourcesPage = () => {
         )}
 
         {/* Law Societies Tab */}
-        <!-- LAW SOCIETIES SECTION -->
+        
           <div className="space-y-6">
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -372,7 +372,7 @@ const LegalResourcesPage = () => {
         )}
 
         {/* Complaints & OLCR Tab */}
-        <!-- COMPLAINTS SECTION -->
+        
           <div className="space-y-6">
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -464,7 +464,7 @@ const LegalResourcesPage = () => {
         )}
 
         {/* Courts Tab */}
-        <!-- COURTS SECTION -->
+        
           <div className="space-y-6">
             <div className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -596,7 +596,7 @@ const LegalResourcesPage = () => {
         )}
 
         {/* Community Legal Tab */}
-        <!-- COMMUNITY SECTION -->
+        
           <div className="space-y-6">
             <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -688,7 +688,7 @@ const LegalResourcesPage = () => {
         )}
 
         {/* Pro Bono Tab */}
-        <!-- PRO BONO SECTION -->
+        
           <div className="space-y-6">
             <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
