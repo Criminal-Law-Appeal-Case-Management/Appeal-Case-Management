@@ -762,8 +762,8 @@ const LandingPage = () => {
                 </li>
               </ul>
               <div className="bg-white rounded-lg p-3 text-center text-sm text-slate-600 mb-4">
-                <p><strong className="text-slate-900">Compare:</strong> A lawyer consultation costs $300-$500+</p>
-                <p className="text-xs text-slate-500 mt-1">This gives you a starting point for a fraction of the cost</p>
+                <p><strong className="text-slate-900">Compare:</strong> A junior lawyer charges $1,000+ just to review a case</p>
+                <p className="text-xs text-slate-500 mt-1">Barristers charge triple that. A full legal report? Thousands.</p>
               </div>
               <p className="text-xs text-slate-500 text-center">
                 Secure payment via PayPal
