@@ -229,6 +229,124 @@ const AppealStatisticsPage = () => {
             <strong>Important:</strong> Only about 0.012% of all criminal cases are appealed. Of those that proceed to hearing, 
             approximately 1 in 4 succeed. Success rates vary significantly by jurisdiction and type of appeal.
           </div>
+
+          {/* ACCESS TO JUSTICE ANALYSIS */}
+          <div className="mt-8 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 border-2 border-red-300 dark:border-red-700 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-red-900 dark:text-red-200 mb-3 flex items-center gap-2">
+              <AlertTriangle className="w-6 h-6" />
+              The Appeal Access Crisis: Why So Few People Exercise Their Rights
+            </h3>
+            
+            <div className="space-y-4 text-sm text-red-900 dark:text-red-100">
+              <div className="bg-white/60 dark:bg-slate-900/30 rounded-lg p-4 border border-red-200 dark:border-red-800">
+                <p className="font-bold text-base mb-2">📊 The Shocking Reality: Less than 0.02% Appeal Rate</p>
+                <p>
+                  Of the <strong>515,460 defendants</strong> finalised in Australian criminal courts in 2023-24, 
+                  only approximately <strong>1,250 appeals</strong> were filed. That's a <strong className="text-red-700 dark:text-red-400">0.012% appeal rate</strong> — 
+                  meaning 99.988% of convicted defendants never pursue an appeal, even though many likely have legitimate grounds.
+                </p>
+              </div>
+
+              <div className="bg-white/60 dark:bg-slate-900/30 rounded-lg p-4 border border-red-200 dark:border-red-800">
+                <p className="font-bold text-base mb-2">⚠️ Data Limitations</p>
+                <p>
+                  <strong className="text-red-700 dark:text-red-400">Critical Note:</strong> Some statistics cited are from <strong>2007-2008</strong> and earlier — 
+                  nearly <strong>18+ years old</strong>. This reflects a systemic problem: 
+                  <span className="italic"> there is inadequate current, comprehensive data on criminal appeals in Australia</span>. 
+                  The lack of transparent, up-to-date statistics itself points to how overlooked this area of justice is.
+                </p>
+              </div>
+
+              <div className="bg-white/60 dark:bg-slate-900/30 rounded-lg p-4 border border-red-200 dark:border-red-800">
+                <p className="font-bold text-base mb-2">🚫 Why Are Appeal Rates So Low?</p>
+                <p className="mb-3">This extraordinarily low rate doesn't mean most convictions are fair and error-free. Instead, it reveals major systemic barriers:</p>
+                
+                <div className="space-y-3 ml-4">
+                  <div>
+                    <p className="font-semibold text-red-800 dark:text-red-300">1. Failed Counsel & Inadequate Representation</p>
+                    <ul className="list-disc ml-6 mt-1 space-y-1">
+                      <li>Many defendants had <strong>legal aid lawyers</strong> who were overworked, under-resourced, or inexperienced</li>
+                      <li>Trial counsel may have <strong>failed to preserve objections</strong> or identify appealable errors during trial</li>
+                      <li>Poor legal advice post-conviction: defendants not informed they <em>have</em> grounds for appeal</li>
+                      <li>Ineffective assistance of counsel is itself an appeal ground, but requires new representation to argue</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <p className="font-semibold text-red-800 dark:text-red-300">2. Lack of Legal Knowledge & Rights Awareness</p>
+                    <ul className="list-disc ml-6 mt-1 space-y-1">
+                      <li>Most people in prison have <strong>no legal training</strong> and don't understand appeal rights</li>
+                      <li>Complex legal system with strict <strong>28-day time limits</strong> in most states</li>
+                      <li>Don't know what constitutes "grounds for appeal" (errors of law, unreasonable verdict, fresh evidence, etc.)</li>
+                      <li>Intimidated by legal jargon, court processes, and fear of "making things worse"</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <p className="font-semibold text-red-800 dark:text-red-300">3. Financial Barriers & Resource Constraints</p>
+                    <ul className="list-disc ml-6 mt-1 space-y-1">
+                      <li><strong>Cost of appeals:</strong> Private barristers charge $5,000-$50,000+ for a criminal appeal</li>
+                      <li><strong>Legal aid limitations:</strong> Strict means tests, limited grants, often only covers summary advice</li>
+                      <li>Defendants in custody have <strong>no income</strong> and families already financially devastated</li>
+                      <li>Can't afford case transcripts (often $2,000+), expert reports, or legal research</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <p className="font-semibold text-red-800 dark:text-red-300">4. Practical & Psychological Obstacles</p>
+                    <ul className="list-disc ml-6 mt-1 space-y-1">
+                      <li><strong>In custody:</strong> Limited library access, no internet, hard to prepare appeals from prison</li>
+                      <li><strong>Mental health & trauma:</strong> Depression, PTSD, hopelessness after conviction</li>
+                      <li><strong>Family pressure:</strong> "Just accept it and serve your time" to avoid prolonging pain</li>
+                      <li><strong>Fear of "rocking the boat":</strong> Worry that appealing might anger parole boards or judges</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <p className="font-semibold text-red-800 dark:text-red-300">5. Systemic Discouragement</p>
+                    <ul className="list-disc ml-6 mt-1 space-y-1">
+                      <li>Courts and corrections don't actively inform defendants of appeal rights</li>
+                      <li>Leave to appeal requirements in some states act as gatekeepers</li>
+                      <li>Long delays (11+ months average) discourage appeals, especially for shorter sentences</li>
+                      <li>By the time appeal is heard, defendant may have already served significant portion of sentence</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white/60 dark:bg-slate-900/30 rounded-lg p-4 border border-red-200 dark:border-red-800">
+                <p className="font-bold text-base mb-2">💔 The Hidden Tragedy</p>
+                <p>
+                  Given that <strong>25% of appeals that proceed succeed</strong>, it's statistically certain that 
+                  <strong className="text-red-700 dark:text-red-400"> thousands of Australians are serving sentences for wrongful convictions or manifestly excessive sentences</strong>, 
+                  simply because they lack the knowledge, resources, or support to appeal.
+                </p>
+                <p className="mt-2">
+                  Many have <strong>legitimate grounds of merit</strong>:
+                </p>
+                <ul className="list-disc ml-6 mt-2 space-y-1">
+                  <li>Jury misdirections that tainted the verdict</li>
+                  <li>Improperly admitted evidence</li>
+                  <li>Procedural errors during trial</li>
+                  <li>Fresh evidence that came to light post-conviction</li>
+                  <li>Sentencing errors or manifest excessiveness</li>
+                </ul>
+                <p className="mt-3 italic">
+                  But without capacity, resources, or legal representation, these grounds remain unargued and these injustices go uncorrected.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/40 dark:to-orange-900/40 rounded-lg p-4 border-2 border-amber-400 dark:border-amber-600">
+                <p className="font-bold text-base mb-2 text-amber-900 dark:text-amber-200">🎯 This Tool's Purpose</p>
+                <p className="text-amber-900 dark:text-amber-100">
+                  <strong>This application exists to bridge that gap.</strong> By making appeal research, document organization, 
+                  and AI-powered analysis accessible and affordable, we aim to help those who have grounds for appeal 
+                  but lack the resources to pursue justice through traditional means. Everyone deserves a fair chance to have 
+                  errors in their case reviewed — not just those who can afford $20,000+ in legal fees.
+                </p>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* State by State */}
