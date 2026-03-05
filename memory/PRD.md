@@ -178,6 +178,40 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **Document Templates** - Notice of Appeal, Leave to Appeal, Fresh Evidence Affidavit, Extension of Time
 - [x] **Progress Tab** - New tab showing Case Strength, Deadlines, and Checklist
 
+### Complete UI/UX Redesign (Dec 2025) ✅
+- [x] **New Color Scheme** - "Hope in Darkness" theme
+  - Deep Indigo (#1E1B4B) primary color
+  - Burnished Amber (#B45309) accent color
+  - Professional dark mode support
+- [x] **Typography Update**
+  - Crimson Pro for headings (serif, legal feel)
+  - Manrope for body text (clean, modern)
+- [x] **Landing Page Redesign**
+  - Asymmetric hero section with Lady Justice image
+  - Cleaner feature cards in bento grid layout
+  - Quick links bar for easy navigation
+  - Condensed About section with personal story
+  - Legal Resources section
+- [x] **Dashboard Redesign**
+  - New sidebar navigation (collapsible)
+  - Stat cards showing Total Cases, Documents, Timeline Events
+  - Dark/Light mode toggle in sidebar
+  - User profile section at bottom
+- [x] **Case Detail Styling Update**
+  - Glass header with breadcrumb navigation
+  - Updated tab styling with rounded corners
+  - Consistent card styling throughout
+- [x] **All Pages Updated**
+  - Forms & Templates page
+  - FAQ page with accordion
+  - Lawyer Directory page
+  - Statistics page
+  - All pages use new design tokens
+- [x] **Glass Morphism Effects** - Backdrop blur on headers and modals
+- [x] **Legal-themed Graphics** - Scales of justice, gavel imagery throughout
+
+
+
 ## Future Enhancements
 - [ ] Case sharing with other users
 - [ ] Email notifications
