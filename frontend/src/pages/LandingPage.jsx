@@ -51,9 +51,6 @@ const LandingPage = () => {
             </span>
           </div>
           <div className="hidden md:flex items-center gap-4">
-            <Link to="/how-to-use" className="text-slate-400 hover:text-white text-sm transition-colors">
-              How It Works
-            </Link>
             <Link to="/appeal-statistics" className="text-slate-400 hover:text-white text-sm transition-colors">
               Statistics
             </Link>
@@ -63,17 +60,14 @@ const LandingPage = () => {
             <Link to="/glossary" className="text-slate-400 hover:text-white text-sm transition-colors">
               Legal Terms
             </Link>
-            <Link to="/faq" className="text-slate-400 hover:text-white text-sm transition-colors">
-              FAQ
-            </Link>
-            <Link to="/forms" className="text-slate-400 hover:text-white text-sm transition-colors">
-              Forms
-            </Link>
             <Link to="/legal-resources" className="text-slate-400 hover:text-white text-sm transition-colors">
               Resources
             </Link>
-            <Link to="/contact" className="text-slate-400 hover:text-white text-sm transition-colors">
-              Contact
+            <Link to="/faq" className="text-slate-400 hover:text-white text-sm transition-colors">
+              FAQ
+            </Link>
+            <Link to="/how-to-use" className="text-amber-400 hover:text-amber-300 text-sm transition-colors font-medium">
+              How To Use
             </Link>
             <button
               onClick={toggleTheme}
@@ -100,14 +94,18 @@ const LandingPage = () => {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden bg-slate-800 border-t border-slate-700 px-6 py-4 space-y-3">
-            <Link to="/how-to-use" className="block py-2 text-slate-300 hover:text-white">How It Works</Link>
             <Link to="/appeal-statistics" className="block py-2 text-slate-300 hover:text-white">Statistics</Link>
             <Link to="/success-stories" className="block py-2 text-slate-300 hover:text-white">Success Stories</Link>
             <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
-            <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
-            <Link to="/forms" className="block py-2 text-slate-300 hover:text-white">Forms</Link>
             <Link to="/legal-resources" className="block py-2 text-slate-300 hover:text-white">Legal Resources</Link>
+            <Link to="/forms" className="block py-2 text-slate-300 hover:text-white">Forms</Link>
+            <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
+            <Link to="/about" className="block py-2 text-slate-300 hover:text-white">About</Link>
             <Link to="/contact" className="block py-2 text-slate-300 hover:text-white">Contact</Link>
+            <Link to="/terms" className="block py-2 text-slate-300 hover:text-white">Terms & Privacy</Link>
+            <div className="border-t border-slate-700 pt-3 mt-3">
+              <Link to="/how-to-use" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">How To Use The App</Link>
+            </div>
             <div className="flex items-center gap-3 pt-2">
               <button onClick={toggleTheme} className="p-2 text-slate-300 hover:text-white">
                 {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
