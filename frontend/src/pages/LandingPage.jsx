@@ -165,7 +165,13 @@ const LandingPage = () => {
           <p className="text-amber-500 text-xs uppercase tracking-widest mb-4">About</p>
           <p className="text-white text-lg leading-relaxed mb-4">
             Created by <strong>Debra King</strong> — not a lawyer, but someone who spent years 
-            researching criminal law to help mates wrongly convicted.
+            researching criminal law after seeing mates failed by a system that offers little support 
+            once sentenced.
+          </p>
+          <p className="text-slate-400 text-sm leading-relaxed mb-4">
+            From inadequate legal aid to poor communication of appeal rights, too many people face 
+            unjust handling at every stage of the appellate process. This tool exists to help 
+            identify potential grounds that might otherwise go unnoticed.
           </p>
           <p className="text-slate-400 text-sm italic">
             "I just wanted to create something that could help others without them spending years working it out themselves."
