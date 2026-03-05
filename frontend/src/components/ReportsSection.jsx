@@ -249,7 +249,9 @@ const ReportsSection = ({
                     <ScrollArea className="max-h-[500px]">
                       <div className="prose prose-sm max-w-none">
                         <div className="whitespace-pre-wrap text-slate-700 text-sm leading-relaxed">
-                          {report.content}
+                          {typeof report.content === 'string' 
+                            ? report.content 
+                            : report.content?.analysis || 'No analysis available'}
                         </div>
                       </div>
                     </ScrollArea>
