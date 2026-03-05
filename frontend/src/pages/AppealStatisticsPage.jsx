@@ -3,6 +3,7 @@ import { Scale, ArrowLeft, Moon, Sun, Menu, X, BarChart3, TrendingUp, TrendingDo
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
+import PageCTA from "../components/PageCTA";
 
 const AppealStatisticsPage = () => {
   const { theme, toggleTheme } = useTheme();
@@ -555,6 +556,9 @@ const AppealStatisticsPage = () => {
             Always consult official court statistics for the most current information.
           </p>
         </section>
+
+        {/* CTA Section */}
+        <PageCTA variant="inline" className="mt-12" />
 
       </main>
 

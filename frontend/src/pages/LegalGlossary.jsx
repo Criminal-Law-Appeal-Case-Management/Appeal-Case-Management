@@ -1,4 +1,5 @@
 import { Scale, ArrowLeft, Search, BookOpen, Gavel, Shield, FileText, Users, AlertTriangle, Clock, ChevronDown, ChevronRight, Moon, Sun } from "lucide-react";
+import PageCTA from "../components/PageCTA";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Link } from "react-router-dom";

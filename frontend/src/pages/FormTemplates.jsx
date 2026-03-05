@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { Badge } from "../components/ui/badge";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
+import PageCTA from "../components/PageCTA";
 import {
   Accordion,
   AccordionContent,
@@ -1131,6 +1132,10 @@ const FormTemplates = () => {
             </div>
           </div>
         </div>
+
+        {/* CTA Section */}
+        <PageCTA variant="inline" className="mt-12" />
+
       </main>
     </div>
   );
