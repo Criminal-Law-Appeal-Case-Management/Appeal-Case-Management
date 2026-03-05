@@ -37,6 +37,9 @@ const LandingPage = () => {
             </span>
           </div>
           <div className="flex items-center gap-3">
+            <Link to="/success-stories" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
+              Success Stories
+            </Link>
             <Link to="/glossary" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
               Legal Terms
             </Link>
@@ -824,10 +827,10 @@ const LandingPage = () => {
             <span className="text-slate-600 text-sm">Appeal Case Manager</span>
           </div>
           <div className="flex items-center gap-6 text-sm text-slate-500">
+            <Link to="/success-stories" className="hover:text-slate-900">Success Stories</Link>
             <Link to="/glossary" className="hover:text-slate-900">Legal Terms</Link>
             <Link to="/contact" className="hover:text-slate-900">Contact</Link>
             <Link to="/terms" className="hover:text-slate-900">Terms & Privacy</Link>
-            <Link to="/professional-summary" className="hover:text-slate-900">For Lawyers</Link>
           </div>
           <p className="text-xs text-red-600 font-medium">
             Not legal advice • Creator not a lawyer

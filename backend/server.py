@@ -538,6 +538,48 @@ async def mark_message_read(message_id: str, request: Request):
     )
     return {"success": True}
 
+# ============ SUCCESS STORIES ============
+
+class SuccessStorySubmission(BaseModel):
+    name: str
+    email: str
+    relationship: Optional[str] = ""
+    story: str
+    outcome: Optional[str] = ""
+    consent: bool
+
+@api_router.post("/success-stories")
+async def submit_success_story(submission: SuccessStorySubmission):
+    """Submit a success story"""
+    if not submission.consent:
+        raise HTTPException(status_code=400, detail="Consent is required")
+    
+    story_doc = {
+        "story_id": f"story_{uuid.uuid4().hex[:12]}",
+        "name": submission.name,
+        "email": submission.email,
+        "relationship": submission.relationship,
+        "story": submission.story,
+        "outcome": submission.outcome,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "approved": False,
+        "featured": False
+    }
+    await db.success_stories.insert_one(story_doc)
+    
+    return {"success": True, "message": "Story submitted for review"}
+
+@api_router.get("/admin/success-stories")
+async def get_submitted_stories(request: Request):
+    """Get all submitted stories (admin only)"""
+    user = await get_current_user(request)
+    admin_emails = ["kikakuntalong@gmail.com"]
+    if user.email not in admin_emails:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    stories = await db.success_stories.find({}, {"_id": 0}).sort("timestamp", -1).to_list(100)
+    return {"stories": stories}
+
 # ============ AUTH ENDPOINTS ============
 
 @api_router.post("/auth/session")
