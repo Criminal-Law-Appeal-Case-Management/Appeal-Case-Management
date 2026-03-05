@@ -22,6 +22,7 @@ import SuccessStories from "./pages/SuccessStories";
 import Statistics from "./pages/Statistics";
 import FAQPage from "./pages/FAQPage";
 import LawyerDirectory from "./pages/LawyerDirectory";
+import FormTemplates from "./pages/FormTemplates";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -233,6 +234,10 @@ function AppRouter() {
       <Route
         path="/lawyers"
         element={<LawyerDirectory />}
+      />
+      <Route
+        path="/forms"
+        element={<FormTemplates />}
       />
     </Routes>
   );

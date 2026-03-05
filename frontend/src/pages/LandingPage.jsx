@@ -57,6 +57,9 @@ const LandingPage = () => {
             <Link to="/statistics" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
               Statistics
             </Link>
+            <Link to="/forms" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
+              Forms
+            </Link>
             <Link to="/success-stories" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
               Success Stories
             </Link>
@@ -1458,6 +1461,7 @@ const LandingPage = () => {
           </div>
           <div className="flex items-center gap-6 text-sm text-slate-500">
             <Link to="/statistics" className="hover:text-slate-900">Statistics</Link>
+            <Link to="/forms" className="hover:text-slate-900">Forms</Link>
             <Link to="/success-stories" className="hover:text-slate-900">Success Stories</Link>
             <Link to="/faq" className="hover:text-slate-900">FAQ</Link>
             <Link to="/lawyers" className="hover:text-slate-900">Find Lawyers</Link>
