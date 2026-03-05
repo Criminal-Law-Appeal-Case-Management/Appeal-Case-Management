@@ -705,9 +705,22 @@ const LandingPage = () => {
             </p>
 
             <p className="text-slate-300 text-sm leading-relaxed mb-4">
-              <strong className="text-white">I couldn't have done this without my best mates, Josh and Brad.</strong> They 
-              inspired me greatly to pursue this project. Their unwavering support and belief in me — even when I doubted 
-              myself — gave me the strength to keep going. Best mates for life.
+              <strong className="text-white">This app exists because of Josh and Brad.</strong> Josh has served 10 years 
+              of a 30-year sentence for murder. He was severely let down by the system — and for years, believed he had 
+              no options. Using this very app, we identified his rights to a fair trial and uncovered extensive errors 
+              in his case. <strong className="text-amber-400">He now has an appeal on all grounds currently being actioned.</strong>
+            </p>
+
+            <p className="text-slate-300 text-sm leading-relaxed mb-4">
+              Brad Fletcher has been on remand for over two years, still waiting for his matter to be finalised. 
+              Even at this early stage, we've already identified multiple issues with his case. Once his matter concludes, 
+              this app will be there to help him too.
+            </p>
+
+            <p className="text-slate-300 text-sm leading-relaxed mb-4">
+              <strong className="text-white">Josh and Brad inspired me to build this.</strong> Watching them — and so many 
+              others — struggle through a system that offers little help once you're sentenced, I knew something had to change. 
+              Best mates for life, and the reason this app exists.
             </p>
 
             <p className="text-slate-300 text-sm leading-relaxed mb-4">
