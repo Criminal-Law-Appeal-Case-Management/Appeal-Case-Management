@@ -1,4 +1,4 @@
-import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown } from "lucide-react";
+import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -705,6 +705,12 @@ const LandingPage = () => {
             </p>
 
             <p className="text-slate-300 text-sm leading-relaxed mb-4">
+              <strong className="text-white">I couldn't have done this without my best mates, Josh and Brad.</strong> They 
+              inspired me greatly to pursue this project. Their unwavering support and belief in me — even when I doubted 
+              myself — gave me the strength to keep going. Best mates for life.
+            </p>
+
+            <p className="text-slate-300 text-sm leading-relaxed mb-4">
               The reality is: from manifest injustice to denial of procedural fairness, from critical elements missed 
               at sentencing, to failures by defence counsel, errors by the judge, or simply unsafe verdicts — there are 
               <em> many</em> potential grounds that can arise in criminal matters. Unless you're a legal expert or have 
@@ -724,6 +730,104 @@ const LandingPage = () => {
             <Link to="/terms" className="inline-block mt-6 text-amber-500 hover:text-amber-400 text-sm underline">
               Read the full story & terms
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Legal Options Section */}
+      <section className="py-16 px-6 bg-slate-50 border-t border-slate-200">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-amber-700 font-semibold text-xs uppercase tracking-widest mb-3">You Have Options</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Legal Help You May Not Know About
+            </h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">
+              For most people, Legal Aid is the only affordable option — but private firms are often out of reach. 
+              What many don't realise is that there are other avenues for help. <strong>When you think you have no options, 
+              there definitely are options.</strong>
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Legal Aid */}
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                <Scale className="w-5 h-5 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Legal Aid</h3>
+              <p className="text-slate-600 text-sm mb-3">
+                Government-funded legal assistance available in every state. While overburdened, they can provide 
+                representation for serious criminal matters and appeals if you meet the eligibility criteria.
+              </p>
+              <ul className="text-xs text-slate-500 space-y-1">
+                <li>• <a href="https://www.legalaid.nsw.gov.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Legal Aid NSW</a></li>
+                <li>• <a href="https://www.legalaid.vic.gov.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Victoria Legal Aid</a></li>
+                <li>• <a href="https://www.legalaid.qld.gov.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Legal Aid Queensland</a></li>
+                <li>• Search "Legal Aid" + your state for other jurisdictions</li>
+              </ul>
+            </div>
+
+            {/* Pro Bono */}
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
+              <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
+                <Users className="w-5 h-5 text-emerald-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Pro Bono Legal Services</h3>
+              <p className="text-slate-600 text-sm mb-3">
+                Many law firms and barristers provide free legal services (pro bono) for those who cannot afford representation. 
+                This is not widely advertised but is a genuine option.
+              </p>
+              <ul className="text-xs text-slate-500 space-y-1">
+                <li>• <a href="https://www.probonocentre.org.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Australian Pro Bono Centre</a></li>
+                <li>• <a href="https://www.justiceconnect.org.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Justice Connect</a></li>
+                <li>• Contact your state's Law Society for pro bono referrals</li>
+                <li>• Many barristers accept pro bono criminal appeal cases</li>
+              </ul>
+            </div>
+
+            {/* Community Legal Centres */}
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
+              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                <MapPin className="w-5 h-5 text-purple-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Community Legal Centres</h3>
+              <p className="text-slate-600 text-sm mb-3">
+                Independent, non-profit organisations providing free legal advice and assistance. They often help with 
+                matters Legal Aid cannot cover and can refer you to specialist services.
+              </p>
+              <ul className="text-xs text-slate-500 space-y-1">
+                <li>• <a href="https://clcs.org.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Community Legal Centres Australia</a></li>
+                <li>• <a href="https://www.clcnsw.org.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">CLC NSW</a></li>
+                <li>• Aboriginal Legal Services in every state</li>
+                <li>• Specialist centres for women, youth, and prisoners</li>
+              </ul>
+            </div>
+
+            {/* Grants & Funding */}
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
+              <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
+                <FileText className="w-5 h-5 text-amber-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Grants & Special Funding</h3>
+              <p className="text-slate-600 text-sm mb-3">
+                Various grants and funding programs exist specifically to support criminal appeals and wrongful conviction cases. 
+                These are rarely advertised but can cover legal costs.
+              </p>
+              <ul className="text-xs text-slate-500 space-y-1">
+                <li>• <a href="https://www.lawfoundation.net.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Law Foundation grants</a></li>
+                <li>• Public Purpose Fund (managed by Law Societies)</li>
+                <li>• Innocence projects at universities</li>
+                <li>• Crowdfunding for legal defence (GoFundMe, etc.)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-8 bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <p className="text-amber-800 text-sm text-center">
+              <strong>Don't give up.</strong> Even if you've been knocked back before, circumstances change and new options emerge. 
+              This tool can help you identify potential grounds — then use these resources to find someone to review your case.
+            </p>
           </div>
         </div>
       </section>
