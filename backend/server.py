@@ -351,6 +351,81 @@ async def get_current_user(request: Request) -> User:
     
     return User(**user_doc)
 
+# ============ VISITOR TRACKING ============
+
+@api_router.post("/track/visit")
+async def track_visit(request: Request):
+    """Track a site visit"""
+    try:
+        # Get visitor info
+        forwarded_for = request.headers.get("X-Forwarded-For", "")
+        ip = forwarded_for.split(",")[0].strip() if forwarded_for else request.client.host if request.client else "unknown"
+        user_agent = request.headers.get("User-Agent", "unknown")
+        referer = request.headers.get("Referer", "direct")
+        
+        # Store visit
+        visit = {
+            "ip_hash": hash(ip) % 10000000,  # Hash IP for privacy
+            "user_agent": user_agent[:200],  # Truncate
+            "referer": referer[:500],
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "page": "landing"
+        }
+        await db.visits.insert_one(visit)
+        
+        # Update daily counter
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        await db.visit_stats.update_one(
+            {"date": today},
+            {"$inc": {"count": 1}},
+            upsert=True
+        )
+        
+        # Get total count
+        total = await db.visits.count_documents({})
+        
+        return {"tracked": True, "total_visits": total}
+    except Exception as e:
+        logger.error(f"Visit tracking error: {e}")
+        return {"tracked": False}
+
+@api_router.get("/stats/visits")
+async def get_visit_stats(request: Request):
+    """Get visit statistics (admin only - requires auth)"""
+    try:
+        user = await get_current_user(request)
+        
+        # Only allow specific admin emails
+        admin_emails = ["kikakuntalong@gmail.com"]  # Deb's admin email
+        if user.email not in admin_emails:
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        total_visits = await db.visits.count_documents({})
+        total_users = await db.users.count_documents({})
+        total_cases = await db.cases.count_documents({})
+        
+        # Get last 7 days stats
+        daily_stats = []
+        for i in range(7):
+            date = (datetime.now(timezone.utc) - timedelta(days=i)).strftime("%Y-%m-%d")
+            stat = await db.visit_stats.find_one({"date": date}, {"_id": 0})
+            daily_stats.append({
+                "date": date,
+                "count": stat["count"] if stat else 0
+            })
+        
+        return {
+            "total_visits": total_visits,
+            "total_users": total_users,
+            "total_cases": total_cases,
+            "daily_stats": daily_stats
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Stats error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get stats")
+
 # ============ AUTH ENDPOINTS ============
 
 @api_router.post("/auth/session")

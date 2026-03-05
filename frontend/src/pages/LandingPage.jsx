@@ -1,10 +1,24 @@
 import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { API } from "../App";
 
 const LandingPage = () => {
   const [showLegalFramework, setShowLegalFramework] = useState(false);
+
+  // Track visit on page load
+  useEffect(() => {
+    const trackVisit = async () => {
+      try {
+        await axios.post(`${API}/track/visit`);
+      } catch (e) {
+        // Silent fail - don't affect user experience
+      }
+    };
+    trackVisit();
+  }, []);
 
   const handleLogin = () => {
     const redirectUrl = window.location.origin + "/dashboard";

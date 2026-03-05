@@ -15,6 +15,7 @@ import HelpPage from "./pages/HelpPage";
 import ResourcesPage from "./pages/ResourcesPage";
 import ProfessionalSummary from "./pages/ProfessionalSummary";
 import TermsOfService from "./pages/TermsOfService";
+import AdminStats from "./pages/AdminStats";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
@@ -193,6 +194,14 @@ function AppRouter() {
       <Route
         path="/terms"
         element={<TermsOfService />}
+      />
+      <Route
+        path="/admin/stats"
+        element={
+          <ProtectedRoute>
+            {({ user }) => <AdminStats user={user} />}
+          </ProtectedRoute>
+        }
       />
     </Routes>
   );
