@@ -16,6 +16,8 @@ import ResourcesPage from "./pages/ResourcesPage";
 import ProfessionalSummary from "./pages/ProfessionalSummary";
 import TermsOfService from "./pages/TermsOfService";
 import AdminStats from "./pages/AdminStats";
+import ContactPage from "./pages/ContactPage";
+import LegalGlossary from "./pages/LegalGlossary";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
@@ -202,6 +204,14 @@ function AppRouter() {
             {({ user }) => <AdminStats user={user} />}
           </ProtectedRoute>
         }
+      />
+      <Route
+        path="/contact"
+        element={<ContactPage />}
+      />
+      <Route
+        path="/glossary"
+        element={<LegalGlossary />}
       />
     </Routes>
   );

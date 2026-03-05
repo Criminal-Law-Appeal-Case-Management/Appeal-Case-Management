@@ -6,7 +6,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone, timedelta
@@ -14,6 +14,7 @@ import httpx
 import base64
 import json
 import asyncio
+import resend
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -425,6 +426,117 @@ async def get_visit_stats(request: Request):
     except Exception as e:
         logger.error(f"Stats error: {e}")
         raise HTTPException(status_code=500, detail="Failed to get stats")
+
+# ============ CONTACT FORM ============
+
+# Resend configuration
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "djkingy79@gmail.com")
+
+if RESEND_API_KEY:
+    resend.api_key = RESEND_API_KEY
+    logger.info("Resend email configured")
+else:
+    logger.warning("Resend API key not configured - contact form will store messages only")
+
+class ContactMessage(BaseModel):
+    name: str
+    email: str
+    subject: str
+    message: str
+
+@api_router.post("/contact")
+async def submit_contact_form(contact: ContactMessage):
+    """Submit a contact form message"""
+    try:
+        # Store message in database
+        message_doc = {
+            "message_id": f"msg_{uuid.uuid4().hex[:12]}",
+            "name": contact.name,
+            "email": contact.email,
+            "subject": contact.subject,
+            "message": contact.message,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "read": False
+        }
+        await db.contact_messages.insert_one(message_doc)
+        
+        # Try to send email notification
+        email_sent = False
+        if RESEND_API_KEY:
+            try:
+                html_content = f"""
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #1e293b; border-bottom: 2px solid #f59e0b; padding-bottom: 10px;">
+                        New Contact Form Message
+                    </h2>
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                        <p><strong>From:</strong> {contact.name}</p>
+                        <p><strong>Email:</strong> {contact.email}</p>
+                        <p><strong>Subject:</strong> {contact.subject}</p>
+                    </div>
+                    <div style="background: #fff; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                        <p><strong>Message:</strong></p>
+                        <p style="white-space: pre-wrap;">{contact.message}</p>
+                    </div>
+                    <p style="color: #64748b; font-size: 12px; margin-top: 20px;">
+                        Sent from Appeal Case Manager contact form
+                    </p>
+                </div>
+                """
+                
+                params = {
+                    "from": "Appeal Case Manager <onboarding@resend.dev>",
+                    "to": [CONTACT_EMAIL],
+                    "subject": f"Contact Form: {contact.subject}",
+                    "html": html_content,
+                    "reply_to": contact.email
+                }
+                
+                await asyncio.to_thread(resend.Emails.send, params)
+                email_sent = True
+                logger.info(f"Contact form email sent to {CONTACT_EMAIL}")
+            except Exception as e:
+                logger.error(f"Failed to send contact email: {e}")
+        
+        return {
+            "success": True,
+            "message": "Your message has been sent. We'll get back to you soon!",
+            "email_sent": email_sent
+        }
+    except Exception as e:
+        logger.error(f"Contact form error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to send message")
+
+@api_router.get("/admin/messages")
+async def get_contact_messages(request: Request):
+    """Get all contact messages (admin only)"""
+    user = await get_current_user(request)
+    admin_emails = ["kikakuntalong@gmail.com"]
+    if user.email not in admin_emails:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    messages = await db.contact_messages.find({}, {"_id": 0}).sort("timestamp", -1).to_list(100)
+    unread_count = await db.contact_messages.count_documents({"read": False})
+    
+    return {
+        "messages": messages,
+        "unread_count": unread_count
+    }
+
+@api_router.post("/admin/messages/{message_id}/read")
+async def mark_message_read(message_id: str, request: Request):
+    """Mark a message as read"""
+    user = await get_current_user(request)
+    admin_emails = ["kikakuntalong@gmail.com"]
+    if user.email not in admin_emails:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    await db.contact_messages.update_one(
+        {"message_id": message_id},
+        {"$set": {"read": True}}
+    )
+    return {"success": True}
 
 # ============ AUTH ENDPOINTS ============
 
