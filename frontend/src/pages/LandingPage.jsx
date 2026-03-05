@@ -1,4 +1,4 @@
-import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, Users, ChevronRight, AlertTriangle } from "lucide-react";
+import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, Users, ChevronRight, AlertTriangle, Presentation, ListChecks } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -126,7 +126,7 @@ const LandingPage = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Feature 1 */}
             <div className="bg-white border border-slate-200 rounded-lg p-6 hover:shadow-md transition-shadow">
               <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
@@ -202,6 +202,32 @@ const LandingPage = () => {
               </h3>
               <p className="text-slate-600 text-sm leading-relaxed">
                 Case data stored securely with user authentication. You control your documents and can request deletion at any time.
+              </p>
+            </div>
+
+            {/* Feature 7 - Barrister View */}
+            <div className="bg-white border border-slate-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
+                <Presentation className="w-6 h-6 text-amber-700" />
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Barrister Presentation View
+              </h3>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                A clean, professional presentation mode designed for barristers and legal counsel to review and present case information in court or consultations.
+              </p>
+            </div>
+
+            {/* Feature 8 - Appeal Progress Tracker */}
+            <div className="bg-white border border-slate-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
+                <ListChecks className="w-6 h-6 text-amber-700" />
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Appeal Progress Checklist
+              </h3>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                Track your progress through the appeal process with a structured checklist. Know exactly what steps need to be completed and what comes next in your appeal journey.
               </p>
             </div>
           </div>
