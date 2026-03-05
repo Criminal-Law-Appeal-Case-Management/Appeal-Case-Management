@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Scale, ArrowLeft, Download, FileText, Search, Filter, ChevronDown, ChevronRight, Building2, Gavel, Shield, Users, Heart, Lock } from "lucide-react";
+import { Scale, ArrowLeft, Download, FileText, Search, Filter, ChevronDown, ChevronRight, Building2, Gavel, Shield, Users, Heart, Lock, Moon, Sun } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Link } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
 import {
   Accordion,
   AccordionContent,
@@ -100,6 +101,7 @@ const FORM_CATEGORIES = [
 ];
 
 const FormTemplates = () => {
+  const { theme, toggleTheme } = useTheme();
   const [selectedState, setSelectedState] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedCategories, setExpandedCategories] = useState(["appeal", "authority"]);
@@ -527,50 +529,74 @@ const FormTemplates = () => {
   const displayStates = selectedState === "all" ? STATES : STATES.filter(s => s.code === selectedState);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-slate-900 px-6 py-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+      <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Scale className="w-7 h-7 text-amber-500" />
-            <span className="text-lg font-semibold text-white" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
+              <Scale className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-lg font-semibold text-white tracking-tight" style={{ fontFamily: 'Crimson Pro, serif' }}>
               Appeal Case Manager
             </span>
           </div>
-          <Link to="/">
-            <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
-            </Button>
-          </Link>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            >
+              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            <Link to="/">
+              <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800 rounded-lg">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+            </Link>
+          </div>
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="bg-slate-900 px-6 py-12 border-b border-slate-800">
-        <div className="max-w-4xl mx-auto text-center">
-          <FileText className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+      {/* Hero with Image */}
+      <section className="relative py-16 px-6 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1568667256549-094345857637?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920" 
+            alt="Legal Documents"
+            className="w-full h-full object-cover opacity-10 dark:opacity-5"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+        </div>
+        
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-amber-500/30">
+            <FileText className="w-10 h-10 text-white" />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Legal Form Templates
           </h1>
-          <p className="text-slate-400 max-w-2xl mx-auto mb-8">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-2">
             Download legal form templates for criminal appeals. Select your state for jurisdiction-specific forms.
           </p>
+          <p className="text-sm text-muted-foreground">
+            <strong>{FORM_CATEGORIES.reduce((sum, cat) => sum + cat.forms.length, 0)} templates</strong> across {FORM_CATEGORIES.length} categories
+          </p>
           
-          {/* Filters */}
-          <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+          {/* Search */}
+          <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto mt-8">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 type="text"
                 placeholder="Search forms..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                className="pl-12 py-6 text-base rounded-xl border-2 focus:border-amber-500"
               />
             </div>
             <Select value={selectedState} onValueChange={setSelectedState}>
-              <SelectTrigger className="w-full sm:w-48 bg-slate-800 border-slate-700 text-white">
+              <SelectTrigger className="w-full sm:w-48 h-14 rounded-xl border-2">
                 <SelectValue placeholder="Select State" />
               </SelectTrigger>
               <SelectContent>
@@ -585,29 +611,29 @@ const FormTemplates = () => {
       </section>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-6 py-12">
+      <main className="max-w-6xl mx-auto px-6 pb-16">
         {/* Disclaimer */}
-        <Card className="mb-8 bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800">
-          <CardContent className="p-4">
-            <div className="flex items-start gap-3">
-              <Gavel className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-amber-800 dark:text-amber-200">
-                <strong>Important:</strong> These templates are provided for general guidance only. 
-                Legal requirements vary by jurisdiction and may change. Always verify current requirements 
-                with the relevant court and consider seeking legal advice before lodging any documents.
-              </div>
+        <div className="mb-8 p-5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center flex-shrink-0">
+              <Gavel className="w-5 h-5 text-amber-600" />
             </div>
-          </CardContent>
-        </Card>
+            <div className="text-sm text-amber-800 dark:text-amber-200">
+              <strong>Important:</strong> These templates are provided for general guidance only. 
+              Legal requirements vary by jurisdiction and may change. Always verify current requirements 
+              with the relevant court and consider seeking legal advice before lodging any documents.
+            </div>
+          </div>
+        </div>
 
         {/* State Selection Pills */}
         <div className="flex flex-wrap gap-2 mb-8">
           <button
             onClick={() => setSelectedState("all")}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+            className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
               selectedState === "all" 
-                ? "bg-amber-600 text-white" 
-                : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+                ? "bg-amber-600 text-white shadow-lg" 
+                : "bg-card text-muted-foreground hover:bg-muted border border-border"
             }`}
           >
             All States
@@ -616,10 +642,10 @@ const FormTemplates = () => {
             <button
               key={state.code}
               onClick={() => setSelectedState(state.code)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 selectedState === state.code
-                  ? `${state.color} text-white`
-                  : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+                  ? `${state.color} text-white shadow-lg`
+                  : "bg-card text-muted-foreground hover:bg-muted border border-border"
               }`}
             >
               {state.code.toUpperCase()}
@@ -627,46 +653,81 @@ const FormTemplates = () => {
           ))}
         </div>
 
+        {/* Category Images Banner */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+          {FORM_CATEGORIES.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setExpandedCategories(prev => 
+                prev.includes(cat.id) ? prev : [...prev, cat.id]
+              )}
+              className={`p-4 rounded-xl border-2 transition-all hover:shadow-lg ${
+                expandedCategories.includes(cat.id)
+                  ? "border-amber-500 bg-amber-50 dark:bg-amber-900/20"
+                  : "border-border hover:border-amber-500/50"
+              }`}
+            >
+              <cat.icon className={`w-8 h-8 mx-auto mb-2 ${cat.color}`} />
+              <p className="text-sm font-medium text-foreground text-center">{cat.name}</p>
+              <p className="text-xs text-muted-foreground text-center">{cat.forms.length} forms</p>
+            </button>
+          ))}
+        </div>
+
         {/* Form Categories */}
         {filteredCategories.length === 0 ? (
-          <Card className="p-8 text-center">
-            <p className="text-slate-500">No forms found matching your search.</p>
+          <Card className="p-12 text-center">
+            <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-foreground font-semibold">No forms found matching your search.</p>
+            <p className="text-muted-foreground text-sm mt-2">Try a different search term</p>
           </Card>
         ) : (
           <div className="space-y-6">
             {filteredCategories.map(category => (
-              <Card key={category.id} className="overflow-hidden">
-                <CardHeader 
-                  className="cursor-pointer hover:bg-slate-50 transition-colors"
+              <div key={category.id} className="bg-card border border-border rounded-2xl overflow-hidden">
+                <button 
+                  className="w-full px-6 py-5 flex items-center justify-between hover:bg-muted/50 transition-colors"
                   onClick={() => setExpandedCategories(prev => 
                     prev.includes(category.id) 
                       ? prev.filter(c => c !== category.id)
                       : [...prev, category.id]
                   )}
                 >
-                  <CardTitle className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <category.icon className={`w-5 h-5 ${category.color}`} />
-                      <span>{category.name}</span>
-                      <Badge variant="outline" className="ml-2">{category.forms.length} forms</Badge>
+                  <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                      category.color.includes('amber') ? 'bg-amber-100 dark:bg-amber-900/30' :
+                      category.color.includes('blue') ? 'bg-blue-100 dark:bg-blue-900/30' :
+                      category.color.includes('emerald') ? 'bg-emerald-100 dark:bg-emerald-900/30' :
+                      category.color.includes('purple') ? 'bg-purple-100 dark:bg-purple-900/30' :
+                      'bg-slate-100 dark:bg-slate-800'
+                    }`}>
+                      <category.icon className={`w-6 h-6 ${category.color}`} />
                     </div>
+                    <div className="text-left">
+                      <h3 className="font-semibold text-foreground text-lg" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                        {category.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">{category.forms.length} templates available</p>
+                    </div>
+                  </div>
+                  <div className={`p-2 rounded-lg transition-colors ${expandedCategories.includes(category.id) ? 'bg-amber-100 dark:bg-amber-900/30' : 'bg-muted'}`}>
                     {expandedCategories.includes(category.id) ? (
-                      <ChevronDown className="w-5 h-5 text-slate-400" />
+                      <ChevronDown className="w-5 h-5 text-amber-600" />
                     ) : (
-                      <ChevronRight className="w-5 h-5 text-slate-400" />
+                      <ChevronRight className="w-5 h-5 text-muted-foreground" />
                     )}
-                  </CardTitle>
-                </CardHeader>
+                  </div>
+                </button>
                 
                 {expandedCategories.includes(category.id) && (
-                  <CardContent className="pt-0">
-                    <div className="divide-y divide-slate-100">
+                  <div className="px-6 pb-6">
+                    <div className="space-y-3">
                       {category.forms.map(form => (
-                        <div key={form.id} className="py-4">
+                        <div key={form.id} className="p-4 bg-muted/30 rounded-xl hover:bg-muted/50 transition-colors">
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex-1">
-                              <h4 className="font-medium text-slate-900">{form.name}</h4>
-                              <p className="text-sm text-slate-500 mt-1">{form.description}</p>
+                              <h4 className="font-medium text-foreground">{form.name}</h4>
+                              <p className="text-sm text-muted-foreground mt-1">{form.description}</p>
                             </div>
                             <div className="flex flex-wrap gap-2">
                               {displayStates.map(state => (
@@ -675,7 +736,7 @@ const FormTemplates = () => {
                                   size="sm"
                                   variant="outline"
                                   onClick={() => handleDownload(form.id, state.name)}
-                                  className="text-xs"
+                                  className="text-xs rounded-lg hover:bg-amber-50 hover:border-amber-500 hover:text-amber-700 dark:hover:bg-amber-900/20"
                                 >
                                   <Download className="w-3 h-3 mr-1" />
                                   {state.code.toUpperCase()}
@@ -686,37 +747,45 @@ const FormTemplates = () => {
                         </div>
                       ))}
                     </div>
-                  </CardContent>
+                  </div>
                 )}
-              </Card>
+              </div>
             ))}
           </div>
         )}
 
-        {/* Help Section */}
-        <Card className="mt-10 bg-gradient-to-r from-slate-900 to-slate-800 border-0">
-          <CardContent className="p-8 text-center">
-            <h3 className="text-xl font-bold text-white mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Need Help With Your Forms?
-            </h3>
-            <p className="text-slate-400 mb-4">
-              Our FAQ section has guides on filling out these forms, and our Lawyer Directory 
-              can help you find legal assistance in your state.
-            </p>
-            <div className="flex justify-center gap-4">
-              <Link to="/faq">
-                <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700">
-                  View FAQ
-                </Button>
-              </Link>
-              <Link to="/lawyers">
-                <Button className="bg-amber-600 text-white hover:bg-amber-700">
-                  Find a Lawyer
-                </Button>
-              </Link>
+        {/* Help Section with Image */}
+        <div className="mt-12 rounded-2xl overflow-hidden relative">
+          <img 
+            src="https://images.unsplash.com/photo-1521791055366-0d553872125f?crop=entropy&cs=srgb&fm=jpg&q=85&w=800&h=200&fit=crop"
+            alt="Legal Help"
+            className="w-full h-48 object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 to-slate-900/80 flex items-center justify-center">
+            <div className="text-center px-6">
+              <Gavel className="w-12 h-12 text-amber-500 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Need Help With Your Forms?
+              </h3>
+              <p className="text-slate-300 mb-6 max-w-md mx-auto">
+                Our FAQ section has guides on filling out these forms, and our Lawyer Directory 
+                can help you find legal assistance.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Link to="/faq">
+                  <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-xl px-6">
+                    View FAQ
+                  </Button>
+                </Link>
+                <Link to="/lawyers">
+                  <Button className="bg-amber-600 text-white hover:bg-amber-700 rounded-xl px-6">
+                    Find a Lawyer
+                  </Button>
+                </Link>
+              </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </main>
     </div>
   );
