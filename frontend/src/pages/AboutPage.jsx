@@ -208,7 +208,16 @@ const AboutPage = () => {
             <p>
               <strong className="text-foreground">Josh is my best mate.</strong> He was convicted in 2018 and sentenced to 
               30 years imprisonment with a non-parole period of 22 years and 6 months. For 10 years, he was told he had 
-              no appellant rights. No grounds of merit. No options. He believed it.
+              no appellant rights. No grounds of merit. No options. He believed it — and so did I, at first.
+            </p>
+
+            <p>
+              I've dedicated the last <strong className="text-foreground">five years</strong> to researching, analysing, and 
+              reporting on Josh's case. Five years of reading transcripts, studying legislation, examining evidence, and 
+              learning criminal law from the ground up. Blood, sweat, and tears went into understanding every aspect of 
+              what happened to him. I've become so knowledgeable on Murder, Manslaughter, and Mens Rea that I'm confident 
+              I could represent Josh myself and succeed. That's not arrogance — that's the result of years of relentless 
+              dedication to finding the truth.
             </p>
 
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6">
@@ -223,23 +232,21 @@ const AboutPage = () => {
             </div>
 
             <p>
-              <strong className="text-foreground">The grounds we identified are severe and deny him natural justice:</strong>
+              The grounds we identified are severe and deny him natural justice. He was denied a judge alone trial — his 
+              right to elect trial by judge alone was not properly afforded to him. There were multiple failures in 
+              procedural fairness throughout the trial process. Fundamental rights that every accused person is entitled 
+              to were simply not upheld. These aren't minor technicalities — these are serious breaches that go to the 
+              heart of whether he received a fair trial.
             </p>
 
-            <ul className="space-y-3 ml-4">
-              <li className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-red-500 mt-2 shrink-0"></div>
-                <span><strong className="text-foreground">Denied a Judge Alone Trial</strong> — His right to elect trial by judge alone was not properly afforded to him</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-red-500 mt-2 shrink-0"></div>
-                <span><strong className="text-foreground">Failures in Procedural Fairness</strong> — Multiple breaches of proper procedure throughout the trial process</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-red-500 mt-2 shrink-0"></div>
-                <span><strong className="text-foreground">Denial of Natural Justice</strong> — Fundamental rights that every accused person is entitled to were not upheld</span>
-              </li>
-            </ul>
+            <p>
+              This app was born from that journey. But it's not just for people like Josh — it's designed to be a powerful 
+              tool for <strong className="text-foreground">lawyers and legal professionals</strong> too. When solicitors and 
+              barristers are overloaded with cases, when Legal Aid is stretched beyond capacity, when there simply aren't 
+              enough hours in the day to give every case the attention it deserves — this app can help. It organises, 
+              analyses, and identifies issues that might otherwise be missed. What took me five years to learn, this app 
+              can help accomplish in a fraction of the time.
+            </p>
 
             <div className="bg-emerald-50 dark:bg-emerald-900/20 border-2 border-emerald-400 dark:border-emerald-600 rounded-xl p-6 mt-8">
               <p className="text-emerald-800 dark:text-emerald-200 font-bold text-lg mb-2">
@@ -248,7 +255,9 @@ const AboutPage = () => {
               </p>
               <p className="text-emerald-700 dark:text-emerald-300">
                 After 10 years of being told he had no options, Josh is currently in the process of a <strong>full case appeal 
-                for both conviction and sentence</strong>. This app made it possible to identify what the legal system failed to tell him.
+                for both conviction and sentence</strong>. From being denied a judge alone trial to failures in procedural 
+                fairness — the grounds identified are severe and deny him natural justice. This app made it possible to 
+                identify what the legal system failed to tell him for a decade.
               </p>
             </div>
           </div>
