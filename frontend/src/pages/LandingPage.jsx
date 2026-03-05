@@ -119,72 +119,131 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Hero - Clean & Direct */}
-      <section className="py-16 md:py-24 px-6 bg-background">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-4">
-            All Australian States & Territories • All Criminal Offences
-          </p>
-          <h1 
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground tracking-tight leading-tight mb-6"
-            style={{ fontFamily: 'Crimson Pro, serif' }}
-          >
-            Criminal Appeal Research Tool
-          </h1>
-          <p className="text-lg text-muted-foreground mb-4 max-w-2xl mx-auto">
-            Organise case documents, generate timelines, and identify potential appeal issues across all Australian jurisdictions.
-          </p>
-          <div className="flex flex-wrap justify-center gap-2 mb-4">
-            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">NSW</span>
-            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">VIC</span>
-            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">QLD</span>
-            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">SA</span>
-            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">WA</span>
-            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">TAS</span>
-            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">NT</span>
-            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">ACT</span>
-            <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded font-medium">Federal</span>
-          </div>
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
-            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Homicide</span>
-            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Assault</span>
-            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Sexual Offences</span>
-            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Drug Offences</span>
-            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Robbery</span>
-            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Fraud</span>
-            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Firearms</span>
-            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">DV</span>
-            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Driving</span>
-            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">+ More</span>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              onClick={() => setShowAuthModal(true)}
-              data-testid="hero-login-btn"
-              className="bg-slate-900 text-white hover:bg-slate-800 rounded px-8 py-3 text-base font-medium inline-flex items-center justify-center gap-2"
-            >
-              Get Started
-              <ChevronRight className="w-4 h-4" />
-            </Button>
-            <Link to="/professional-summary">
-              <Button
-                variant="outline"
-                className="border-slate-300 text-slate-600 hover:bg-slate-50 rounded px-8 py-3 text-base font-medium"
+      {/* Hero Section with Legal Graphics */}
+      <section className="relative py-20 md:py-28 px-6 overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1589578527966-fdac0f44566c?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920" 
+            alt="Lady Justice"
+            className="w-full h-full object-cover opacity-10 dark:opacity-5"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+        </div>
+        
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div className="text-center lg:text-left">
+              <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-4">
+                All Australian States & Territories • All Criminal Offences
+              </p>
+              <h1 
+                className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground tracking-tight leading-tight mb-6"
+                style={{ fontFamily: 'Crimson Pro, serif' }}
               >
-                For Legal Professionals
-              </Button>
-            </Link>
+                Criminal Appeal Research Tool
+              </h1>
+              <p className="text-lg text-muted-foreground mb-6 max-w-xl">
+                Organise case documents, generate timelines, and identify potential appeal issues across all Australian jurisdictions.
+              </p>
+              
+              {/* State Badges */}
+              <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-4">
+                <span className="text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-lg font-semibold">NSW</span>
+                <span className="text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-lg font-semibold">VIC</span>
+                <span className="text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-lg font-semibold">QLD</span>
+                <span className="text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-lg font-semibold">SA</span>
+                <span className="text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-lg font-semibold">WA</span>
+                <span className="text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-lg font-semibold">TAS</span>
+                <span className="text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-lg font-semibold">NT</span>
+                <span className="text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-lg font-semibold">ACT</span>
+                <span className="text-xs bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 px-3 py-1.5 rounded-lg font-semibold">Federal</span>
+              </div>
+              
+              {/* Offence Types */}
+              <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-8">
+                <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-1 rounded">Homicide</span>
+                <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-1 rounded">Assault</span>
+                <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-1 rounded">Sexual Offences</span>
+                <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-1 rounded">Drug Offences</span>
+                <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-1 rounded">Robbery</span>
+                <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-1 rounded">Fraud</span>
+                <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-1 rounded">+ More</span>
+              </div>
+              
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <Button
+                  onClick={() => setShowAuthModal(true)}
+                  data-testid="hero-login-btn"
+                  className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-8 py-4 text-base font-semibold inline-flex items-center justify-center gap-2 shadow-xl shadow-amber-600/30 transition-all hover:scale-105"
+                >
+                  Get Started Free
+                  <ChevronRight className="w-5 h-5" />
+                </Button>
+                <Link to="/professional-summary">
+                  <Button
+                    variant="outline"
+                    className="border-2 border-slate-300 dark:border-slate-600 text-foreground hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl px-8 py-4 text-base font-medium w-full sm:w-auto"
+                  >
+                    For Legal Professionals
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            
+            {/* Right - Hero Image */}
+            <div className="hidden lg:block relative">
+              <div className="relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1772096168169-1b69984d2cfc?crop=entropy&cs=srgb&fm=jpg&q=85&w=600" 
+                  alt="Lady Justice with Gavel"
+                  className="rounded-3xl shadow-2xl w-full object-cover h-[450px] border-4 border-white/20"
+                />
+                {/* Floating Card */}
+                <div className="absolute -bottom-6 -left-6 bg-card p-5 rounded-2xl shadow-xl border border-border">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
+                      <BarChart3 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground text-sm">3 Grounds Found</p>
+                      <p className="text-xs text-muted-foreground">Strong appeal potential</p>
+                    </div>
+                  </div>
+                </div>
+                {/* Floating Badge */}
+                <div className="absolute -top-4 -right-4 bg-amber-600 text-white px-4 py-2 rounded-xl shadow-lg text-sm font-semibold">
+                  AI-Powered
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Features - Grid */}
-      <section className="py-16 px-6 bg-muted/50 dark:bg-muted/20">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-foreground text-center mb-12" style={{ fontFamily: 'Crimson Pro, serif' }}>
-            What You Can Do
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Features - Grid with Graphics */}
+      <section className="py-20 px-6 bg-muted/50 dark:bg-muted/20 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <img 
+            src="https://images.unsplash.com/photo-1769092992534-f2d0210162b9?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920" 
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-12">
+            <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Features</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              What You Can Do
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Powerful tools to organize your case, identify appeal grounds, and track your progress.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <FeatureCard icon={Upload} title="Upload Documents" desc="Organise case files in one place" />
             <FeatureCard icon={Clock} title="Build Timelines" desc="AI-generated event chronology" />
             <FeatureCard icon={BarChart3} title="Find Issues" desc="Flag potential appeal grounds" />
@@ -198,11 +257,20 @@ const LandingPage = () => {
       </section>
 
       {/* See It In Action - Sample Screenshots */}
-      <section className="py-16 px-6 bg-background border-t border-border">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
+      <section className="py-20 px-6 bg-background relative">
+        {/* Decorative Elements */}
+        <div className="absolute top-0 left-0 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl" />
+        
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/30">
+                <Scale className="w-8 h-8 text-white" />
+              </div>
+            </div>
             <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">See It In Action</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
               How The Process Works
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -1499,12 +1567,14 @@ const LandingPage = () => {
   );
 };
 
-// Simple Feature Card Component
+// Simple Feature Card Component - Enhanced
 const FeatureCard = ({ icon: Icon, title, desc }) => (
-  <div className="bg-card border border-border rounded-lg p-4 hover:shadow-md hover:border-amber-500/30 transition-all">
-    <Icon className="w-5 h-5 text-amber-600 dark:text-amber-500 mb-2" />
-    <h3 className="font-semibold text-foreground text-sm mb-1">{title}</h3>
-    <p className="text-muted-foreground text-xs">{desc}</p>
+  <div className="bg-card border border-border rounded-2xl p-6 hover:shadow-xl hover:border-amber-500/30 hover:-translate-y-1 transition-all duration-300 group">
+    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/20 dark:from-amber-500/10 dark:to-amber-600/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+      <Icon className="w-6 h-6 text-amber-600 dark:text-amber-500" />
+    </div>
+    <h3 className="font-semibold text-foreground text-base mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>{title}</h3>
+    <p className="text-muted-foreground text-sm">{desc}</p>
   </div>
 );
 
