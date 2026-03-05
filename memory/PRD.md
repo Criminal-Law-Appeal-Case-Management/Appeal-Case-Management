@@ -515,43 +515,29 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] Reduces visual clutter - users only expand what they need
 
 ## Next Priority Tasks
-- [ ] Convert tabbed pages (LegalResourcesPage, ContactsPage) to scrollable single-page view
 - [ ] Complete backend refactoring - remove duplicate routes from server.py
 - [ ] Finalize PayPal backend payment processing
 
-## Backlog
+## Backlog (Bottom)
+- [ ] Real-time collaboration/chat for Notes section (WebSockets)
 - [ ] Build and submit native mobile app (Capacitor ready)
 - [ ] Enhanced collaboration features (replies, threads, @mentions in notes)
-- [ ] Backend refactoring - continue modularizing server.py
 - [ ] Deadline Tracker with Calendar integration
-- [ ] Real-time collaboration/chat
 
 ### Bug Fixes & Improvements (Mar 2026 - Session 4) ✅
 - [x] **Google Sign-in Button Restored** - Added "Sign in with Google" button to AuthModal
-  - Uses Emergent Auth at `auth.emergentagent.com`
-  - Proper redirect URL derived dynamically from `window.location.origin`
-  - OR divider between Google and email/password login
-  - data-testid="google-signin-btn" for testing
-  - File: `frontend/src/components/AuthModal.jsx`
-
-- [x] **How To Use Page Updated with Real Screenshots** - Complete rewrite with actual app photos
-  - 8 real screenshots taken of: Sign-in modal, Dashboard, Case Detail, Timeline, Grounds, Contradictions, Progress, Reports
-  - Screenshots stored in `/app/frontend/public/images/howto/`
-  - Step-by-step instructions with tips for each step
-  - Added Legal Framework link to page header nav
-  - File: `frontend/src/pages/HowToUsePage.jsx`
-
-- [x] **Landing Page Navigation Improved** - All content cards now clickable
-  - Linked 9 previously unlinked cards: Forms, Contacts, Glossary, Statistics, Success Stories, Lawyers, How To Use, FAQ, Legal Research Hub
-  - Mobile menu: Added highlighted amber links for "How To Use" and "Legal Framework"
-  - File: `frontend/src/pages/LandingPage.jsx`
-
-- [x] **Testing**: All 24 tests passed (`/app/test_reports/iteration_23.json`)
-  - Google Sign-in: Button visible, correct redirect URL
-  - How To Use: All 8 screenshots loaded, 10 steps visible
-  - Legal Framework: All 4 tabs working, all states covered
-  - Landing page: 9 clickable card links verified
-  - Mobile menu: Highlighted links verified
+- [x] **How To Use Page Updated with Real Screenshots** - 8 real app screenshots
+- [x] **Landing Page Navigation Improved** - All 9 content cards now clickable links
+- [x] **Admin Bypass for Payments** - Admin users (djkingy79@gmail.com) get all features unlocked
+  - `/api/auth/me` returns `is_admin: true` for admin emails
+  - `/api/cases/{id}/payments` returns all features unlocked for admins
+  - Grounds of merit always unlocked for admins
+  - ReportsSection skips payment modal for admins
+- [x] **Contacts Page Converted to Scrollable View** - Removed tab navigation, all 6 sections visible on scroll
+- [x] **Legal Resources Page Scroll Anchors** - Tab buttons converted to smooth-scroll to sections
+- [x] **Fixed "Objects are not valid as React child" error** - ReportsSection renders `report.content.analysis` not raw object
+- [x] **Fixed LlmChat constructor error** in contradictions.py - was missing required args
+- [x] **Testing**: iteration_23 (24/24 pass), iteration_24 (all pass)
 
 ### Landing Page Reorganization (Dec 2025) ✅
 - [x] **Section Order Reorganized** - Per user request, Landing Page now follows this structure:
