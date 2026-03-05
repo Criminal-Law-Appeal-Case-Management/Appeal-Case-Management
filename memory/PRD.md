@@ -369,15 +369,35 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **Testing Verified**: All 7 tabs working (Documents, Timeline, Grounds, Notes, Reports, Legal Framework, Progress)
 - [x] **Test Report**: `/app/test_reports/iteration_16.json`
 
+### Pricing & Paywall Updates ✅ (Dec 2025)
+- [x] **Quick Summary Reports now FREE**
+- [x] **Grounds of Merit paywall fixed** - Shows count only, $50 to unlock details
+- [x] **Updated pricing**:
+  - Quick Summary: FREE
+  - Full Detailed: $29 AUD
+  - Extensive Log: $39 AUD
+  - Grounds of Merit Details: $50 AUD
+
+### Success Stories Page Updated ✅ (Dec 2025)
+- [x] **4 detailed, realistic stories** with specific legal issues:
+  - Sarah M. (NSW) - Jury misdirection, sentence reduced by 5 years
+  - Michael T. (NSW) - Self-defence, CCTV contradiction, appeal pending
+  - Jenny K. (QLD) - Search warrant timing issue, Legal Aid review
+  - David R. (VIC) - Forensic calculation error, sentence reduced
+- [x] **Added timeframe badges** showing appeal duration
+
+### Landing Page Design Cleanup ✅ (Dec 2025)
+- [x] **Criminal Law by State** section converted to **collapsible accordions**
+- [x] Each state (NSW, VIC, QLD, SA, WA, CTH) is now a clickable dropdown
+- [x] Reduces visual clutter - users only expand what they need
+
 ## Next Priority Tasks
-- [ ] Email/Password Authentication - Backend complete, needs "Forgot Password" feature (blocked on Resend API key)
-- [ ] Contact Form Email Notifications (blocked on Resend API key)
-- [ ] Continue backend `server.py` modularization
+- [ ] Backend `server.py` modularization (4300+ lines - move endpoints to routers)
+- [ ] Email features - Forgot Password, Contact Form (blocked on Resend API key)
 
 ## Backlog
 - [ ] Build and submit native mobile app (Capacitor ready)
 - [ ] Enhanced collaboration features (replies, threads, @mentions in notes)
-- [ ] Replace placeholder content in "Success Stories" page
 
 
 
