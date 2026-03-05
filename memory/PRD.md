@@ -413,8 +413,20 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] Reduces visual clutter - users only expand what they need
 
 ## Next Priority Tasks
-- [ ] Backend `server.py` modularization (4300+ lines - move endpoints to routers)
+- [ ] Continue backend modularization (server.py still 4338 lines - target: move more to routers)
 - [ ] Email features - Forgot Password, Contact Form (blocked on Resend API key)
+
+## Backend Modularization Progress
+- **server.py**: Reduced from 4614 → 4338 lines
+- **New Router**: `/app/backend/routers/statistics.py` (statistics + case comparison)
+- **Existing Routers** (not yet integrated, contain duplicate code):
+  - `auth.py` - Google OAuth
+  - `cases.py` - Case CRUD
+  - `documents.py` - Document management
+  - `notes.py` - Notes management
+  - `timeline.py` - Timeline events
+  - `deadlines.py` - Deadline tracking
+  - `resources.py` - Legal resources
 
 ## Backlog
 - [ ] Build and submit native mobile app (Capacitor ready)

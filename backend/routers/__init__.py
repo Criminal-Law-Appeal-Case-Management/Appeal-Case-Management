@@ -8,6 +8,7 @@ from routers.timeline import router as timeline_router
 from routers.notes import router as notes_router
 from routers.deadlines import router as deadlines_router
 from routers.resources import router as resources_router
+from routers.statistics import router as statistics_router
 
 __all__ = [
     'auth_router',
@@ -16,5 +17,6 @@ __all__ = [
     'timeline_router',
     'notes_router',
     'deadlines_router',
-    'resources_router'
+    'resources_router',
+    'statistics_router'
 ]
