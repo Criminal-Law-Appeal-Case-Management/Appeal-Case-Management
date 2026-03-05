@@ -21,9 +21,9 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 | Document Upload | FREE |
 | Grounds of Merit (count only) | FREE |
 | **Unlock Grounds of Merit Details** | **$50.00** |
-| Quick Summary Report | FREE |
-| **Full Detailed Report** | **$29.99** |
-| **Extensive Log Report** | **$50.00** |
+| **Quick Summary Report** | **FREE** |
+| **Full Detailed Report** | **$29.00** |
+| **Extensive Log Report** | **$39.00** |
 
 ## Architecture
 - **Backend**: FastAPI with MongoDB

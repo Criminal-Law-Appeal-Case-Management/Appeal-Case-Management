@@ -28,22 +28,25 @@ const REPORT_TYPES = [
     value: "quick_summary", 
     label: "Quick Summary", 
     description: "A brief overview of key points (2-3 paragraphs)",
-    price: 29.00,
-    priceId: "full_report"
+    price: 0,
+    priceId: null,
+    isFree: true
   },
   { 
     value: "full_detailed", 
     label: "Full Detailed Report", 
     description: "Comprehensive analysis with case citations and legal framework",
     price: 29.00,
-    priceId: "full_report"
+    priceId: "full_report",
+    isFree: false
   },
   { 
     value: "extensive_log", 
     label: "Extensive Log Report", 
     description: "Complete documentation with chronology and all evidence analysis",
     price: 39.00,
-    priceId: "extensive_report"
+    priceId: "extensive_report",
+    isFree: false
   }
 ];
 
@@ -68,6 +71,14 @@ const ReportsSection = ({
       return;
     }
     
+    // Check if this report type is free
+    const reportTypeInfo = REPORT_TYPES.find(t => t.value === reportType);
+    if (reportTypeInfo?.isFree) {
+      // Free report - generate directly without payment
+      generateReport(reportType);
+      return;
+    }
+    
     // Check if user has already paid for this report type
     const existingReport = reports.find(r => r.report_type === reportType);
     if (existingReport) {
@@ -76,7 +87,7 @@ const ReportsSection = ({
       return;
     }
     
-    // Need to pay first
+    // Need to pay first for premium reports
     setPendingReportType(reportType);
     setShowPaymentModal(true);
   };
@@ -277,9 +288,15 @@ const ReportsSection = ({
                     <h4 className="font-medium text-slate-900">{type.label}</h4>
                     <p className="text-sm text-slate-600 mt-1">{type.description}</p>
                   </div>
-                  <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-                    ${type.price.toFixed(2)} AUD
-                  </Badge>
+                  {type.isFree ? (
+                    <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
+                      FREE
+                    </Badge>
+                  ) : (
+                    <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+                      ${type.price.toFixed(2)} AUD
+                    </Badge>
+                  )}
                 </div>
               </div>
             ))}
