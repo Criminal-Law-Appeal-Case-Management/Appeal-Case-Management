@@ -94,7 +94,7 @@ const PageCTA = ({
             )}
           </Button>
           <p className="text-indigo-200 text-xs mt-3">
-            {isAuthenticated ? "Organize documents • AI analysis • Generate reports" : "No credit card required • Free to start"}
+            {isAuthenticated ? "Organise documents • AI analysis • Generate reports" : "No credit card required • Free to start"}
           </p>
         </div>
       </div>

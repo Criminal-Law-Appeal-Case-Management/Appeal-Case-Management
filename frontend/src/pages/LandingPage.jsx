@@ -312,7 +312,7 @@ const LandingPage = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 mb-12">
-            {/* Organize */}
+            {/* Organise */}
             <div className="bg-card border border-border rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
               <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Upload className="w-7 h-7 text-blue-600 dark:text-blue-400" />

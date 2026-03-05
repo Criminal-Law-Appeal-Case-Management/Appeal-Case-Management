@@ -526,8 +526,8 @@ const LawyerDirectory = () => {
                 Prepare Before You Meet a Lawyer
               </h3>
               <p className="text-slate-300 mb-6 max-w-md mx-auto">
-                Use our tool to organize your case documents and identify potential grounds for appeal. 
-                Having organized information can save time and money.
+                Use our tool to organise your case documents and identify potential grounds for appeal. 
+                Having organised information can save time and money.
               </p>
               <Link to="/">
                 <Button className="bg-amber-600 text-white hover:bg-amber-700 rounded-xl px-8 shadow-lg">

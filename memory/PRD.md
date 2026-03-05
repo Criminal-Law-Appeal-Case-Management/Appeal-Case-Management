@@ -597,6 +597,20 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Instructions for how to verify against bank statement
 - [x] **Testing**: iteration_30 (100% backend + frontend pass)
 
+### Session 7 - Australian English & Legal Images (Mar 2026) ✅
+- [x] **Australian English Throughout** — Fixed ~20 American English spellings:
+  - "organize" → "organise" (LandingPage, FAQPage, LawyerDirectory, SuccessStories, PageCTA)
+  - "analyze" → "analyse" (LandingPage, ReportsSection, BarristerView, Statistics, CaseDetail, FAQPage, HelpPage, ContradictionFinder)
+  - "favor" → "favour" (TimelineAnalysis)
+  - "analyzed" → "analysed" (ReportView, BarristerView, CompareCasesPage, ContradictionFinder)
+- [x] **Legal-Themed Background Images** — 4 AI-generated images added:
+  - Courtroom interior (hero section background)
+  - Gavel and law books with barrister wig (hero right side)
+  - Handcuffs with scales of justice (features section)
+  - Prison bars with light (about section)
+- [x] **Landing Page Accuracy Verified** — Deadline tracker with calendar view confirmed to exist
+- [x] **Testing**: iteration_31 (95% pass - all major features verified)
+
 ## Next Priority Tasks
 - [ ] Real-time collaboration/chat for Notes (WebSockets)
 - [ ] Continue backend refactoring — extract remaining routes from server.py (cases, documents, timeline, reports)

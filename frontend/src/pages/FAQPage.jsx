@@ -15,7 +15,7 @@ const faqs = [
     questions: [
       {
         q: "What is the Appeal Case Manager?",
-        a: "The Appeal Case Manager is an AI-powered tool designed to help families and supporters of convicted individuals identify potential grounds for criminal appeal. It helps organize case documents, generate timelines, and create professional reports that can be shared with legal professionals."
+        a: "The Appeal Case Manager is an AI-powered tool designed to help families and supporters of convicted individuals identify potential grounds for criminal appeal. It helps organise case documents, generate timelines, and create professional reports that can be shared with legal professionals."
       },
       {
         q: "Who is this tool for?",
@@ -191,7 +191,7 @@ const faqs = [
       },
       {
         q: "Can this tool replace a lawyer?",
-        a: "No. This tool helps you organize information and identify potential issues, but it cannot replace qualified legal advice. Criminal appeals are complex and the consequences of errors are serious. Always consult a lawyer before taking any legal action."
+        a: "No. This tool helps you organise information and identify potential issues, but it cannot replace qualified legal advice. Criminal appeals are complex and the consequences of errors are serious. Always consult a lawyer before taking any legal action."
       }
     ]
   }

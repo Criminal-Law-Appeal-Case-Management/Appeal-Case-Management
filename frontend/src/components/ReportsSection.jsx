@@ -220,7 +220,7 @@ const ReportsSection = ({
             No reports yet
           </h3>
           <p className="text-slate-600 mb-4">
-            Generate AI-powered reports to analyze your case documents.
+            Generate AI-powered reports to analyse your case documents.
           </p>
           <Button 
             onClick={() => setShowReportDialog(true)}
