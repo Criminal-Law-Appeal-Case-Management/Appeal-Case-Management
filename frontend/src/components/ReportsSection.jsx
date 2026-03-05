@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { 
-  FileText, Loader2, Clock, ChevronDown, ChevronRight, Trash2
+  FileText, Loader2, Clock, ChevronDown, ChevronRight, Trash2, Download, Gavel, Presentation
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
@@ -65,6 +66,39 @@ const ReportsSection = ({
   const [expandedReports, setExpandedReports] = useState({});
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [pendingReportType, setPendingReportType] = useState(null);
+  const nav = useNavigate();
+
+  const handleExportPDF = async (reportId) => {
+    try {
+      toast.info("Generating PDF...");
+      const response = await axios.get(
+        `${API}/cases/${caseId}/reports/${reportId}/export-pdf`,
+        { responseType: 'blob' }
+      );
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      
+      // iOS Safari doesn't support programmatic downloads well
+      // Open in new tab instead
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      if (isIOS) {
+        window.open(url, '_blank');
+      } else {
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `report_${reportId}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
+      
+      setTimeout(() => window.URL.revokeObjectURL(url), 5000);
+      toast.success("PDF ready!");
+    } catch (error) {
+      console.error("PDF export error:", error);
+      toast.error("Failed to export PDF");
+    }
+  };
 
   const handleGenerateReport = async (reportType) => {
     if (documents.length === 0) {
@@ -262,6 +296,29 @@ const ReportsSection = ({
                         </div>
                       </div>
                     </ScrollArea>
+                    {/* Action Buttons */}
+                    <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-slate-100">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => nav(`/cases/${caseId}/reports/${report.report_id}/barrister`)}
+                        className="text-slate-700"
+                        data-testid={`barrister-view-btn-${report.report_id}`}
+                      >
+                        <Presentation className="w-4 h-4 mr-1.5" />
+                        Barrister View
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleExportPDF(report.report_id)}
+                        className="text-slate-700"
+                        data-testid={`export-pdf-btn-${report.report_id}`}
+                      >
+                        <Download className="w-4 h-4 mr-1.5" />
+                        Export PDF
+                      </Button>
+                    </div>
                   </div>
                 </CollapsibleContent>
               </Collapsible>

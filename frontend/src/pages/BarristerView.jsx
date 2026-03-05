@@ -50,7 +50,7 @@ const BarristerView = ({ user }) => {
       ]);
       setReport(reportRes.data);
       setCaseData(caseRes.data);
-      setGrounds(groundsRes.data || []);
+      setGrounds(groundsRes.data?.grounds || []);
     } catch (error) {
       toast.error("Failed to load report");
       navigate(`/cases/${caseId}`);
@@ -71,20 +71,27 @@ const BarristerView = ({ user }) => {
         { responseType: 'blob' }
       );
       
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${caseData?.title || 'Report'}_barrister_brief.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
       
+      // iOS Safari doesn't support programmatic downloads
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      if (isIOS) {
+        window.open(url, '_blank');
+      } else {
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${caseData?.title || 'Report'}_barrister_brief.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
+      
+      setTimeout(() => window.URL.revokeObjectURL(url), 5000);
       toast.success("PDF downloaded successfully!");
     } catch (error) {
       console.error("PDF export error:", error);
-      toast.error("Failed to export PDF. Using print fallback.");
-      window.print();
+      toast.error("Failed to export PDF.");
     }
   };
 
@@ -96,15 +103,22 @@ const BarristerView = ({ user }) => {
         { responseType: 'blob' }
       );
       
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${caseData?.title || 'Report'}_barrister_brief.docx`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
+      const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+      const url = window.URL.createObjectURL(blob);
       
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      if (isIOS) {
+        window.open(url, '_blank');
+      } else {
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${caseData?.title || 'Report'}_barrister_brief.docx`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
+      
+      setTimeout(() => window.URL.revokeObjectURL(url), 5000);
       toast.success("Word document downloaded successfully!");
     } catch (error) {
       console.error("DOCX export error:", error);
@@ -235,31 +249,32 @@ const BarristerView = ({ user }) => {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={handlePrint}
-                className="border-white text-white hover:bg-slate-800"
-                data-testid="print-btn"
+                onClick={handleExportPDF}
+                className="bg-white text-slate-900 hover:bg-slate-100"
+                data-testid="export-btn"
               >
-                <Printer className="w-4 h-4 mr-2" />
-                Print
+                <Download className="w-4 h-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Export</span> PDF
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleExportDOCX}
-                className="border-blue-300 text-blue-100 hover:bg-slate-800"
+                className="border-blue-300 text-blue-100 hover:bg-slate-800 hidden sm:flex"
                 data-testid="export-docx-btn"
               >
                 <FileText className="w-4 h-4 mr-2" />
                 Word
               </Button>
               <Button
+                variant="outline"
                 size="sm"
-                onClick={handleExportPDF}
-                className="bg-white text-slate-900 hover:bg-slate-100"
-                data-testid="export-btn"
+                onClick={handlePrint}
+                className="border-white text-white hover:bg-slate-800 hidden sm:flex"
+                data-testid="print-btn"
               >
-                <Download className="w-4 h-4 mr-2" />
-                Export PDF
+                <Printer className="w-4 h-4 mr-2" />
+                Print
               </Button>
             </div>
           </div>
