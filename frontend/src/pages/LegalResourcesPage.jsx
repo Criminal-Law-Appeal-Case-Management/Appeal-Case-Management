@@ -8,7 +8,10 @@ import { useTheme } from "../contexts/ThemeContext";
 const LegalResourcesPage = () => {
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("options");
+
+  const scrollToSection = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const tabs = [
     { id: "options", label: "You Have Options", icon: Lightbulb },
@@ -102,7 +105,7 @@ const LegalResourcesPage = () => {
                   representation for serious criminal matters and appeals if you meet the eligibility criteria.
                 </p>
                 <button 
-                  onClick={() => setActiveTab("legal-aid")}
+                  onClick={() => scrollToSection("legal-aid")}
                   className="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium"
                 >
                   View all Legal Aid services →
@@ -120,7 +123,7 @@ const LegalResourcesPage = () => {
                   This is not widely advertised but is a genuine option.
                 </p>
                 <button 
-                  onClick={() => setActiveTab("pro-bono")}
+                  onClick={() => scrollToSection("pro-bono")}
                   className="text-emerald-600 dark:text-emerald-400 hover:underline text-sm font-medium"
                 >
                   Find pro bono services →
@@ -138,7 +141,7 @@ const LegalResourcesPage = () => {
                   matters Legal Aid cannot cover and can refer you to specialist services.
                 </p>
                 <button 
-                  onClick={() => setActiveTab("community")}
+                  onClick={() => scrollToSection("community")}
                   className="text-purple-600 dark:text-purple-400 hover:underline text-sm font-medium"
                 >
                   Find community legal centres →
@@ -173,11 +176,10 @@ const LegalResourcesPage = () => {
               </p>
             </div>
           </div>
-        )}
 
         {/* Legal Aid Tab */}
         
-          <div className="space-y-6">
+          <div id="legal-aid" className="space-y-6">
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Legal Aid Services
@@ -255,11 +257,10 @@ const LegalResourcesPage = () => {
               />
             </div>
           </div>
-        )}
 
         {/* Law Societies Tab */}
         
-          <div className="space-y-6">
+          <div id="law-societies" className="space-y-6">
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Law Societies
@@ -370,11 +371,10 @@ const LegalResourcesPage = () => {
               </div>
             </div>
           </div>
-        )}
 
         {/* Complaints & OLCR Tab */}
         
-          <div className="space-y-6">
+          <div id="complaints" className="space-y-6">
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Complaints Bodies & Legal Services Commissioners
@@ -462,11 +462,10 @@ const LegalResourcesPage = () => {
               </div>
             </div>
           </div>
-        )}
 
         {/* Courts Tab */}
         
-          <div className="space-y-6">
+          <div id="courts" className="space-y-6">
             <div className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Courts of Australia
@@ -594,11 +593,10 @@ const LegalResourcesPage = () => {
               </div>
             </div>
           </div>
-        )}
 
         {/* Community Legal Tab */}
         
-          <div className="space-y-6">
+          <div id="community" className="space-y-6">
             <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Community Legal Centres
@@ -686,11 +684,10 @@ const LegalResourcesPage = () => {
               </div>
             </div>
           </div>
-        )}
 
         {/* Pro Bono Tab */}
         
-          <div className="space-y-6">
+          <div id="pro-bono" className="space-y-6">
             <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Pro Bono Legal Services
@@ -764,7 +761,6 @@ const LegalResourcesPage = () => {
               </div>
             </div>
           </div>
-        )}
 
       </main>
 

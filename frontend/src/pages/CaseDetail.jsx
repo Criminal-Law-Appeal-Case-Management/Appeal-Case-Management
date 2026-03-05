@@ -806,6 +806,7 @@ const CaseDetail = ({ user }) => {
               onReportsChange={fetchCaseData}
               documents={documents}
               navigate={navigate}
+              isAdmin={user?.is_admin}
             />
           </TabsContent>
 

@@ -56,7 +56,8 @@ const ReportsSection = ({
   setReports, 
   onReportsChange,
   documents,
-  navigate
+  navigate,
+  isAdmin
 }) => {
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [selectedReportType, setSelectedReportType] = useState(null);
@@ -68,6 +69,12 @@ const ReportsSection = ({
   const handleGenerateReport = async (reportType) => {
     if (documents.length === 0) {
       toast.error("Please upload documents before generating a report");
+      return;
+    }
+    
+    // Admin bypasses all payment
+    if (isAdmin) {
+      generateReport(reportType);
       return;
     }
     

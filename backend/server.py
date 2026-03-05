@@ -941,6 +941,7 @@ async def get_me(request: Request):
     user_doc = await db.users.find_one({"user_id": user.user_id}, {"_id": 0})
     user_dict["terms_accepted"] = user_doc.get("terms_accepted", False)
     user_dict["terms_accepted_at"] = user_doc.get("terms_accepted_at")
+    user_dict["is_admin"] = user.email in ADMIN_EMAILS
     return user_dict
 
 @api_router.post("/auth/accept-terms")
@@ -2508,6 +2509,17 @@ async def get_case_payments(case_id: str, request: Request):
     """Get all payments for a case"""
     user = await get_current_user(request)
     
+    # Admin users get everything unlocked
+    if user.email in ADMIN_EMAILS:
+        return {
+            "payments": [],
+            "unlocked_features": {
+                "grounds_of_merit": True,
+                "full_report": True,
+                "extensive_report": True
+            }
+        }
+    
     payments = await db.payments.find(
         {"case_id": case_id, "user_id": user.user_id, "status": "completed"},
         {"_id": 0}
@@ -2924,7 +2936,7 @@ async def get_grounds_of_merit(case_id: str, request: Request):
         "status": "completed"
     })
     
-    is_unlocked = payment is not None
+    is_unlocked = payment is not None or user.email in ADMIN_EMAILS
     
     if is_unlocked:
         # Return full grounds data

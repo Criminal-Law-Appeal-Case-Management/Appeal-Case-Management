@@ -8,7 +8,6 @@ import { useTheme } from "../contexts/ThemeContext";
 const ContactsPage = () => {
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("legal-aid");
 
   return (
     <div className="min-h-screen bg-background" style={{ fontFamily: 'Manrope, sans-serif' }}>
@@ -66,40 +65,10 @@ const ContactsPage = () => {
         </div>
       </section>
 
-      {/* Dropdown Sections Navigation */}
-      <div className="bg-background border-b border-border sticky top-16 z-40">
-        <div className="max-w-5xl mx-auto px-6 py-4">
-          <div className="flex overflow-x-auto gap-2 scrollbar-hide">
-            {[
-              { id: "legal-aid", label: "Legal Aid", icon: Users },
-              { id: "law-societies", label: "Law Societies & Bars", icon: Scale },
-              { id: "complaints", label: "Complaints & OLCR", icon: AlertTriangle },
-              { id: "courts", label: "Courts", icon: Gavel },
-              { id: "community", label: "Community Legal", icon: Building },
-              { id: "pro-bono", label: "Pro Bono", icon: Shield },
-            ].map((section) => (
-              <button
-                key={section.id}
-                onClick={() => setActiveSection(section.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                  activeSection === section.id
-                    ? "bg-amber-600 text-white"
-                    : "bg-muted hover:bg-muted/80 text-muted-foreground"
-                }`}
-              >
-                <section.icon className="w-4 h-4" />
-                {section.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <main className="max-w-5xl mx-auto px-6 py-8">
+      <main className="max-w-5xl mx-auto px-6 py-8 space-y-12">
 
         {/* Legal Aid Section */}
-        {activeSection === "legal-aid" && (
-          <div className="space-y-6">
+          <div id="legal-aid" className="space-y-6">
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Legal Aid Services
@@ -176,11 +145,9 @@ const ContactsPage = () => {
               />
             </div>
           </div>
-        )}
 
         {/* Law Societies Section */}
-        {activeSection === "law-societies" && (
-          <div className="space-y-6">
+          <div id="law-societies" className="space-y-6">
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Law Societies & Bar Associations
@@ -296,11 +263,9 @@ const ContactsPage = () => {
               </div>
             </div>
           </div>
-        )}
 
         {/* Complaints Section */}
-        {activeSection === "complaints" && (
-          <div className="space-y-6">
+          <div id="complaints" className="space-y-6">
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Complaints Bodies & Legal Services Commissioners
@@ -362,11 +327,9 @@ const ContactsPage = () => {
               />
             </div>
           </div>
-        )}
 
         {/* Courts Section */}
-        {activeSection === "courts" && (
-          <div className="space-y-6">
+          <div id="courts" className="space-y-6">
             <div className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Courts of Australia
@@ -451,11 +414,9 @@ const ContactsPage = () => {
               </div>
             </div>
           </div>
-        )}
 
         {/* Community Legal Section */}
-        {activeSection === "community" && (
-          <div className="space-y-6">
+          <div id="community" className="space-y-6">
             <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Community Legal Centres
@@ -542,11 +503,9 @@ const ContactsPage = () => {
               </div>
             </div>
           </div>
-        )}
 
         {/* Pro Bono Section */}
-        {activeSection === "pro-bono" && (
-          <div className="space-y-6">
+          <div id="pro-bono" className="space-y-6">
             <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Pro Bono Legal Services
@@ -592,7 +551,6 @@ const ContactsPage = () => {
               />
             </div>
           </div>
-        )}
 
       </main>
 
