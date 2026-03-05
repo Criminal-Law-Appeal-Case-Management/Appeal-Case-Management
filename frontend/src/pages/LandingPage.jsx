@@ -212,9 +212,8 @@ const LandingPage = () => {
                     murder, manslaughter, and mens rea, that I could represent him in this appeal myself.
                   </p>
                   <p>
-                    <strong className="text-amber-400">Brad Fletcher</strong> is currently still on remand over a murder 
-                    charge that has been found to have occurred from a medical episode. Yet over 2 years on, he's still 
-                    locked up waiting for trial.
+                    <strong className="text-amber-400">Brad Fletcher</strong> has been on remand for over 2 years, 
+                    still awaiting trial.
                   </p>
                   <p className="text-white font-medium">
                     This app exists because too many people are failed by a system that's supposed to protect them. 
