@@ -51,6 +51,12 @@ const LandingPage = () => {
             </span>
           </div>
           <div className="hidden md:flex items-center gap-4">
+            <Link to="/how-to-use" className="text-slate-400 hover:text-white text-sm transition-colors">
+              How It Works
+            </Link>
+            <Link to="/appeal-statistics" className="text-slate-400 hover:text-white text-sm transition-colors">
+              Statistics
+            </Link>
             <Link to="/success-stories" className="text-slate-400 hover:text-white text-sm transition-colors">
               Success Stories
             </Link>
@@ -94,6 +100,8 @@ const LandingPage = () => {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden bg-slate-800 border-t border-slate-700 px-6 py-4 space-y-3">
+            <Link to="/how-to-use" className="block py-2 text-slate-300 hover:text-white">How It Works</Link>
+            <Link to="/appeal-statistics" className="block py-2 text-slate-300 hover:text-white">Statistics</Link>
             <Link to="/success-stories" className="block py-2 text-slate-300 hover:text-white">Success Stories</Link>
             <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
             <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
