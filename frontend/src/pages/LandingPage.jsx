@@ -1,4 +1,4 @@
-import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, ChevronDown, Moon, Sun, Menu, X, Check } from "lucide-react";
+import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Moon, Sun, Menu, X, Check, Eye, Sparkles, MessageSquare, Download } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -24,6 +24,7 @@ const LandingPage = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedState, setSelectedState] = useState(null);
+  const [activePreview, setActivePreview] = useState("documents");
 
   useEffect(() => {
     const trackVisit = async () => {
@@ -115,7 +116,7 @@ const LandingPage = () => {
       </div>
 
       {/* Hero Section - State Selection */}
-      <section className="pt-36 pb-16 px-6">
+      <section className="pt-36 pb-12 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 
             className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight leading-[1.1] mb-6"
@@ -152,7 +153,6 @@ const LandingPage = () => {
             </div>
           ) : (
             <div className="space-y-6">
-              {/* Selected State Confirmation */}
               <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200">
                 <Check className="w-5 h-5" />
                 <span className="font-semibold">{selectedState.name}</span>
@@ -187,59 +187,60 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* App Preview Section - Always visible */}
+      <section className="py-12 px-6 bg-muted/30 border-y border-border">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8">
+            <p className="text-amber-600 dark:text-amber-500 font-semibold text-sm uppercase tracking-widest mb-2">See It In Action</p>
+            <h2 
+              className="text-2xl sm:text-3xl font-bold text-foreground"
+              style={{ fontFamily: 'Crimson Pro, serif' }}
+            >
+              What You'll Get
+            </h2>
+          </div>
+
+          {/* Preview Tabs */}
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
+            <PreviewTab 
+              active={activePreview === "documents"} 
+              onClick={() => setActivePreview("documents")}
+              icon={Upload}
+              label="Documents"
+            />
+            <PreviewTab 
+              active={activePreview === "timeline"} 
+              onClick={() => setActivePreview("timeline")}
+              icon={Clock}
+              label="Timeline"
+            />
+            <PreviewTab 
+              active={activePreview === "grounds"} 
+              onClick={() => setActivePreview("grounds")}
+              icon={Scale}
+              label="Grounds"
+            />
+            <PreviewTab 
+              active={activePreview === "reports"} 
+              onClick={() => setActivePreview("reports")}
+              icon={FileText}
+              label="Reports"
+            />
+          </div>
+
+          {/* Preview Content */}
+          <div className="bg-card rounded-2xl border border-border shadow-xl overflow-hidden">
+            {activePreview === "documents" && <DocumentsPreview />}
+            {activePreview === "timeline" && <TimelinePreview />}
+            {activePreview === "grounds" && <GroundsPreview state={selectedState?.abbr || "NSW"} />}
+            {activePreview === "reports" && <ReportsPreview />}
+          </div>
+        </div>
+      </section>
+
       {/* Features Section - Only show after state selection */}
       {selectedState && (
         <>
-          {/* What You Can Do */}
-          <section className="py-16 px-6 bg-muted/30 border-y border-border">
-            <div className="max-w-5xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 
-                  className="text-2xl sm:text-3xl font-bold text-foreground mb-3"
-                  style={{ fontFamily: 'Crimson Pro, serif' }}
-                >
-                  What You Can Do
-                </h2>
-                <p className="text-muted-foreground">
-                  Powerful tools for {selectedState.name} criminal appeals
-                </p>
-              </div>
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <FeatureCard 
-                  icon={Upload} 
-                  title="Upload Documents" 
-                  desc="Store transcripts, evidence, and court records with OCR text extraction."
-                />
-                <FeatureCard 
-                  icon={Clock} 
-                  title="AI Timeline" 
-                  desc="Automatically build chronological timelines from your documents."
-                />
-                <FeatureCard 
-                  icon={BarChart3} 
-                  title="Find Appeal Grounds" 
-                  desc={`AI identifies potential grounds under ${selectedState.abbr} and Federal law.`}
-                />
-                <FeatureCard 
-                  icon={FileCheck} 
-                  title="Generate Reports" 
-                  desc="Quick Summary (free), Full Analysis, or Extensive Documentation."
-                />
-                <FeatureCard 
-                  icon={Scale} 
-                  title="Case Comparison" 
-                  desc="Compare your case against similar successful appeals."
-                />
-                <FeatureCard 
-                  icon={Shield} 
-                  title="Secure & Private" 
-                  desc="Your documents are encrypted. Your data, your control."
-                />
-              </div>
-            </div>
-          </section>
-
           {/* How It Works */}
           <section className="py-16 px-6">
             <div className="max-w-4xl mx-auto">
@@ -409,16 +410,283 @@ const LandingPage = () => {
   );
 };
 
-// Feature Card
-const FeatureCard = ({ icon: Icon, title, desc }) => (
-  <div className="card-elevated p-6 space-y-3">
-    <div className="w-11 h-11 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-      <Icon className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+// Preview Tab Button
+const PreviewTab = ({ active, onClick, icon: Icon, label }) => (
+  <button
+    onClick={onClick}
+    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all ${
+      active 
+        ? "bg-primary text-primary-foreground shadow-lg" 
+        : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-amber-500"
+    }`}
+  >
+    <Icon className="w-4 h-4" />
+    {label}
+  </button>
+);
+
+// Documents Preview Mockup
+const DocumentsPreview = () => (
+  <div className="p-6">
+    <div className="flex items-center justify-between mb-6">
+      <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+        Case Documents
+      </h3>
+      <div className="flex items-center gap-2">
+        <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">12 files</span>
+        <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+          <Upload className="w-4 h-4 text-amber-600" />
+        </div>
+      </div>
     </div>
-    <h3 className="font-semibold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
-      {title}
-    </h3>
-    <p className="text-sm text-muted-foreground">{desc}</p>
+    
+    <div className="grid gap-3">
+      <DocumentRow name="Trial_Transcript_Day1.pdf" size="2.4 MB" status="OCR Complete" type="Transcript" />
+      <DocumentRow name="Police_Statement_Witness1.pdf" size="890 KB" status="OCR Complete" type="Statement" />
+      <DocumentRow name="ERISP_Interview.pdf" size="1.2 MB" status="Processing..." type="Evidence" />
+      <DocumentRow name="Sentencing_Remarks.docx" size="456 KB" status="Extracted" type="Judgment" />
+      <DocumentRow name="Appeal_Grounds_Draft.pdf" size="234 KB" status="Uploaded" type="Appeal" />
+    </div>
+    
+    <div className="mt-6 p-4 rounded-xl border-2 border-dashed border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/10 text-center">
+      <Upload className="w-8 h-8 text-amber-500 mx-auto mb-2" />
+      <p className="text-sm text-amber-700 dark:text-amber-400 font-medium">Drag & drop files here</p>
+      <p className="text-xs text-amber-600 dark:text-amber-500">PDF, DOCX, TXT, Images supported</p>
+    </div>
+  </div>
+);
+
+const DocumentRow = ({ name, size, status, type }) => (
+  <div className="flex items-center justify-between p-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
+    <div className="flex items-center gap-3">
+      <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+        <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+      </div>
+      <div>
+        <p className="text-sm font-medium text-foreground">{name}</p>
+        <p className="text-xs text-muted-foreground">{size} • {type}</p>
+      </div>
+    </div>
+    <span className={`text-xs px-2 py-1 rounded-lg ${
+      status === "OCR Complete" ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" :
+      status === "Processing..." ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400" :
+      "bg-muted text-muted-foreground"
+    }`}>
+      {status}
+    </span>
+  </div>
+);
+
+// Timeline Preview Mockup
+const TimelinePreview = () => (
+  <div className="p-6">
+    <div className="flex items-center justify-between mb-6">
+      <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+        Case Timeline
+      </h3>
+      <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-sm font-medium">
+        <Sparkles className="w-4 h-4" />
+        AI Generate
+      </button>
+    </div>
+    
+    <div className="space-y-4">
+      <TimelineEvent 
+        date="15 Mar 2023" 
+        title="Arrest" 
+        desc="Defendant arrested at residence"
+        category="Pre-Trial"
+        significance="critical"
+      />
+      <TimelineEvent 
+        date="16 Mar 2023" 
+        title="Charge Laid" 
+        desc="Charged with Murder under s18 Crimes Act"
+        category="Pre-Trial"
+        significance="critical"
+      />
+      <TimelineEvent 
+        date="20 Mar 2023" 
+        title="Bail Refused" 
+        desc="Bail application refused - flight risk"
+        category="Pre-Trial"
+        significance="important"
+      />
+      <TimelineEvent 
+        date="12 Jun 2023" 
+        title="Committal Hearing" 
+        desc="Committed to stand trial in Supreme Court"
+        category="Pre-Trial"
+        significance="important"
+      />
+      <TimelineEvent 
+        date="4 Sep 2023" 
+        title="Trial Commenced" 
+        desc="Jury empanelled, opening statements"
+        category="Trial"
+        significance="critical"
+      />
+    </div>
+  </div>
+);
+
+const TimelineEvent = ({ date, title, desc, category, significance }) => (
+  <div className="flex gap-4">
+    <div className="flex flex-col items-center">
+      <div className={`w-3 h-3 rounded-full ${
+        significance === "critical" ? "bg-red-500" :
+        significance === "important" ? "bg-amber-500" : "bg-slate-400"
+      }`} />
+      <div className="w-0.5 h-full bg-border" />
+    </div>
+    <div className="flex-1 pb-4">
+      <div className="flex items-center gap-2 mb-1">
+        <span className="text-xs font-mono text-muted-foreground">{date}</span>
+        <span className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground">{category}</span>
+      </div>
+      <p className="font-medium text-foreground">{title}</p>
+      <p className="text-sm text-muted-foreground">{desc}</p>
+    </div>
+  </div>
+);
+
+// Grounds Preview Mockup
+const GroundsPreview = ({ state }) => (
+  <div className="p-6">
+    <div className="flex items-center justify-between mb-6">
+      <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+        Grounds of Appeal
+      </h3>
+      <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-sm font-medium">
+        <Sparkles className="w-4 h-4" />
+        AI Identify Grounds
+      </button>
+    </div>
+    
+    <div className="space-y-4">
+      <GroundCard 
+        title="Miscarriage of Justice - Jury Directions"
+        type="Procedural Error"
+        strength="Strong"
+        law={`Criminal Appeal Act 1912 (${state}) s6(1)`}
+        desc="Trial judge failed to adequately direct jury on standard of proof for circumstantial evidence."
+      />
+      <GroundCard 
+        title="Fresh Evidence - Alibi Witness"
+        type="Fresh Evidence"
+        strength="Moderate"
+        law={`Criminal Appeal Act 1912 (${state}) s6(3)`}
+        desc="New witness statement provides alibi for critical timeframe not available at trial."
+      />
+      <GroundCard 
+        title="Sentence Manifestly Excessive"
+        type="Sentencing Error"
+        strength="Moderate"
+        law={`Crimes (Sentencing Procedure) Act 1999 (${state})`}
+        desc="Non-parole period exceeds comparable sentences for similar offences."
+      />
+    </div>
+  </div>
+);
+
+const GroundCard = ({ title, type, strength, law, desc }) => (
+  <div className="p-4 rounded-xl border border-border bg-card hover:border-amber-500/50 transition-colors">
+    <div className="flex items-start justify-between mb-2">
+      <div>
+        <p className="font-semibold text-foreground">{title}</p>
+        <div className="flex items-center gap-2 mt-1">
+          <span className="text-xs px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400">
+            {type}
+          </span>
+          <span className={`text-xs px-2 py-0.5 rounded ${
+            strength === "Strong" ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" :
+            "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
+          }`}>
+            {strength}
+          </span>
+        </div>
+      </div>
+      <Scale className="w-5 h-5 text-amber-500" />
+    </div>
+    <p className="text-sm text-muted-foreground mb-2">{desc}</p>
+    <p className="text-xs font-mono text-blue-600 dark:text-blue-400">{law}</p>
+  </div>
+);
+
+// Reports Preview Mockup
+const ReportsPreview = () => (
+  <div className="p-6">
+    <div className="flex items-center justify-between mb-6">
+      <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+        Generate Reports
+      </h3>
+    </div>
+    
+    <div className="grid md:grid-cols-3 gap-4">
+      <ReportCard 
+        title="Quick Summary"
+        price="FREE"
+        desc="Overview of case, key dates, and identified grounds count."
+        features={["Case overview", "Timeline summary", "Grounds count"]}
+        highlight={false}
+      />
+      <ReportCard 
+        title="Full Detailed"
+        price="$29"
+        desc="Comprehensive analysis with legal references and case law."
+        features={["Everything in Quick", "Full grounds analysis", "Legal citations", "Similar cases"]}
+        highlight={true}
+      />
+      <ReportCard 
+        title="Extensive Log"
+        price="$39"
+        desc="Complete documentation package for legal professionals."
+        features={["Everything in Full", "Document index", "Evidence matrix", "Expert format"]}
+        highlight={false}
+      />
+    </div>
+    
+    <div className="mt-6 p-4 rounded-xl bg-muted/50 flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <FileText className="w-5 h-5 text-emerald-600" />
+        <div>
+          <p className="text-sm font-medium text-foreground">Quick Summary - R v Smith</p>
+          <p className="text-xs text-muted-foreground">Generated 2 hours ago</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <button className="p-2 rounded-lg hover:bg-muted">
+          <Eye className="w-4 h-4 text-muted-foreground" />
+        </button>
+        <button className="p-2 rounded-lg hover:bg-muted">
+          <Download className="w-4 h-4 text-muted-foreground" />
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
+const ReportCard = ({ title, price, desc, features, highlight }) => (
+  <div className={`p-5 rounded-xl border-2 ${
+    highlight 
+      ? "border-amber-500 bg-amber-50 dark:bg-amber-900/10" 
+      : "border-border bg-card"
+  }`}>
+    <div className="flex items-center justify-between mb-3">
+      <h4 className="font-semibold text-foreground">{title}</h4>
+      <span className={`text-lg font-bold ${highlight ? "text-amber-600" : "text-foreground"}`}>
+        {price}
+      </span>
+    </div>
+    <p className="text-sm text-muted-foreground mb-4">{desc}</p>
+    <ul className="space-y-2">
+      {features.map((f, i) => (
+        <li key={i} className="flex items-center gap-2 text-sm">
+          <Check className={`w-4 h-4 ${highlight ? "text-amber-500" : "text-emerald-500"}`} />
+          <span className="text-muted-foreground">{f}</span>
+        </li>
+      ))}
+    </ul>
   </div>
 );
 
