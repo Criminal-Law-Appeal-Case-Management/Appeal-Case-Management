@@ -757,398 +757,65 @@ const LandingPage = () => {
       </section>
 
       {/* ============================================ */}
-      {/* SECTION 3: RELEVANT LEGISLATION (merged) */}
+      {/* SECTION 3: LEGAL RESOURCES & RESEARCH */}
       {/* ============================================ */}
       <section className="py-16 px-6 bg-muted/50 dark:bg-muted/20 border-t border-border">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
-            <p className="text-blue-700 dark:text-blue-400 font-semibold text-xs uppercase tracking-widest mb-3">Legislation & Rights</p>
+            <p className="text-blue-700 dark:text-blue-400 font-semibold text-xs uppercase tracking-widest mb-3">Legal Resources & Research</p>
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Criminal Law by State
+              Everything You Need to Research Your Appeal
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Direct links to the primary criminal legislation for each Australian jurisdiction. 
-              Know your rights and understand the law that applies to your case.
+              Access legislation, case law, legal frameworks, and help resources all in one place.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {/* NSW */}
-            <div className="bg-card border border-border rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  NSW
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Legal Frameworks Card */}
+            <Link to="/legal-framework" className="group">
+              <div className="bg-card border-2 border-border hover:border-blue-600 dark:hover:border-blue-400 rounded-xl p-8 h-full transition-all hover:shadow-lg">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Scale className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                    Legal Frameworks
+                  </h3>
                 </div>
-                <h3 className="font-bold text-foreground">New South Wales</h3>
+                <p className="text-muted-foreground mb-4">
+                  Complete overview of Australian criminal law by state — Crimes Acts, Criminal Codes, Evidence Acts, 
+                  Human Rights legislation, and the specific legal framework that applies to your case.
+                </p>
+                <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium">
+                  <span>View Legal Frameworks</span>
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1900-040" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Crimes Act 1900</a></li>
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1912-016" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Appeal Act 1912</a></li>
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1995-025" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Evidence Act 1995</a></li>
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1986-209" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Drug Misuse and Trafficking Act 1985</a></li>
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-2007-080" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Crimes (Domestic Violence) Act 2007</a></li>
-              </ul>
-            </div>
+            </Link>
 
-            {/* Victoria */}
-            <div className="bg-card border border-border rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  VIC
+            {/* Live Caselaw Search Card */}
+            <Link to="/caselaw-search" className="group">
+              <div className="bg-card border-2 border-border hover:border-amber-600 dark:hover:border-amber-400 rounded-xl p-8 h-full transition-all hover:shadow-lg">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 bg-amber-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <FileText className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                    Live Caselaw Search
+                  </h3>
                 </div>
-                <h3 className="font-bold text-foreground">Victoria</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/crimes-act-1958" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Crimes Act 1958</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/criminal-procedure-act-2009" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Procedure Act 2009</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/evidence-act-2008" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Evidence Act 2008</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/drugs-poisons-and-controlled-substances-act-1981" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Drugs, Poisons Act 1981</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/family-violence-protection-act-2008" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Family Violence Protection Act 2008</a></li>
-              </ul>
-            </div>
-
-            {/* Queensland */}
-            <div className="bg-card border border-border rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  QLD
+                <p className="text-muted-foreground mb-4">
+                  Direct access to official court databases across all Australian jurisdictions. Search real judgments 
+                  from the High Court, Federal Court, and every state and territory Supreme Court.
+                </p>
+                <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-medium">
+                  <span>Search Case Law</span>
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </div>
-                <h3 className="font-bold text-foreground">Queensland</h3>
               </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1899-009" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Code Act 1899</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1977-026" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Practice Rules 1999</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1977-047" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Evidence Act 1977</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1986-023" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Drugs Misuse Act 1986</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-2012-005" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Domestic Violence Act 2012</a></li>
-              </ul>
-            </div>
-
-            {/* South Australia */}
-            <div className="bg-card border border-border rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  SA
-                </div>
-                <h3 className="font-bold text-foreground">South Australia</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/criminal%20law%20consolidation%20act%201935" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Law Consolidation Act 1935</a></li>
-                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/evidence%20act%201929" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Evidence Act 1929</a></li>
-                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/controlled%20substances%20act%201984" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Controlled Substances Act 1984</a></li>
-                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/intervention%20orders%20(prevention%20of%20abuse)%20act%202009" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Intervention Orders Act 2009</a></li>
-              </ul>
-            </div>
-
-            {/* Western Australia */}
-            <div className="bg-card border border-border rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  WA
-                </div>
-                <h3 className="font-bold text-foreground">Western Australia</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_218_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Code Act 1913</a></li>
-                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_221_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Appeals Act 2004</a></li>
-                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_327_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Evidence Act 1906</a></li>
-                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_599_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Misuse of Drugs Act 1981</a></li>
-              </ul>
-            </div>
-
-            {/* Commonwealth */}
-            <div className="bg-card border border-border rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  CTH
-                </div>
-                <h3 className="font-bold text-foreground">Commonwealth</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.gov.au/C2004A04868/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Code Act 1995</a></li>
-                <li><a href="https://www.legislation.gov.au/C2004A04858/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Evidence Act 1995</a></li>
-                <li><a href="https://www.legislation.gov.au/C2004A01586/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Judiciary Act 1903</a></li>
-                <li><a href="https://www.legislation.gov.au/C2004A03712/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Crimes Act 1914</a></li>
-              </ul>
-            </div>
+            </Link>
           </div>
-
-          {/* Legal Framework - Collapsible */}
-          <button 
-            onClick={() => setShowLegalFramework(!showLegalFramework)}
-            className="w-full flex items-center justify-between p-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors mt-8"
-          >
-            <div className="flex items-center gap-3">
-              <Scale className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-              <span className="font-semibold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                View Applicable Legal Framework
-              </span>
-              <span className="text-xs text-muted-foreground hidden sm:inline">
-                NSW Crimes Act 1900 • Criminal Code Act 1995 (Cth) • Human Rights
-              </span>
-            </div>
-            <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform ${showLegalFramework ? 'rotate-180' : ''}`} />
-          </button>
-          
-          {showLegalFramework && (
-            <div className="mt-4 p-6 bg-slate-900 rounded-lg text-sm">
-              <div className="grid md:grid-cols-4 gap-6">
-                <div>
-                  <h4 className="text-amber-500 font-semibold text-xs uppercase tracking-wider mb-3">Homicide & Violence</h4>
-                  <ul className="text-slate-400 space-y-1 text-xs">
-                    <li className="text-white font-medium">Crimes Act 1900 (NSW)</li>
-                    <li>s.18 — Murder & manslaughter</li>
-                    <li>s.33-35 — GBH offences</li>
-                    <li>s.59-61 — Assault offences</li>
-                    <li>s.94-98 — Robbery offences</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="text-amber-500 font-semibold text-xs uppercase tracking-wider mb-3">Drugs & Weapons</h4>
-                  <ul className="text-slate-400 space-y-1 text-xs">
-                    <li className="text-white font-medium">Drug Misuse & Trafficking Act 1985</li>
-                    <li>s.25 — Supply</li>
-                    <li>s.33 — Commercial supply</li>
-                    <li className="text-white font-medium mt-2">Firearms Act 1996</li>
-                    <li>s.7 — Unauthorised possession</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="text-amber-500 font-semibold text-xs uppercase tracking-wider mb-3">Federal Offences</h4>
-                  <ul className="text-slate-400 space-y-1 text-xs">
-                    <li className="text-white font-medium">Criminal Code Act 1995 (Cth)</li>
-                    <li>Div 5 — Fault elements</li>
-                    <li>Div 302-308 — Drug trafficking</li>
-                    <li>Div 400 — Money laundering</li>
-                    <li>Div 101-103 — Terrorism</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="text-amber-500 font-semibold text-xs uppercase tracking-wider mb-3">Appeals & Rights</h4>
-                  <ul className="text-slate-400 space-y-1 text-xs">
-                    <li>Criminal Appeal Act 1912 (NSW)</li>
-                    <li>Crimes (Appeal & Review) Act 2001</li>
-                    <li>Human Rights Commission Act 1986</li>
-                    <li>ICCPR • Evidence Act 1995</li>
-                  </ul>
-                </div>
-              </div>
-              <p className="text-slate-500 text-xs text-center mt-4">
-                Full framework includes: Sexual offences, Fraud, DV, Driving offences, Public order & more
-              </p>
-            </div>
-          )}
-
-          {/* Human Rights Section */}
-          <div className="mt-12 grid md:grid-cols-2 gap-6">
-            {/* International Human Rights */}
-            <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Shield className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
-                <h3 className="font-bold text-foreground text-lg">International Human Rights</h3>
-              </div>
-              <p className="text-muted-foreground text-sm mb-4">
-                Australia has signed international treaties that protect your rights. While not always directly enforceable, 
-                courts must consider these when interpreting Australian law.
-              </p>
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-start gap-2">
-                  <a href="https://www.ohchr.org/en/instruments-mechanisms/instruments/international-covenant-civil-and-political-rights" target="_blank" rel="noopener noreferrer" className="text-emerald-700 dark:text-emerald-400 hover:underline font-medium">
-                    International Covenant on Civil and Political Rights (ICCPR)
-                  </a>
-                </li>
-                <li className="pl-4 text-muted-foreground text-xs">
-                  • Art 14: Right to fair and public hearing<br/>
-                  • Art 14(2): Presumption of innocence<br/>
-                  • Art 14(3): Right to legal assistance<br/>
-                  • Art 9: Right to liberty and security<br/>
-                  • Art 7: Freedom from torture/cruel treatment
-                </li>
-                <li className="flex items-start gap-2">
-                  <a href="https://www.un.org/en/about-us/universal-declaration-of-human-rights" target="_blank" rel="noopener noreferrer" className="text-emerald-700 dark:text-emerald-400 hover:underline font-medium">
-                    Universal Declaration of Human Rights (UDHR)
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Australian Human Rights Acts */}
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Scale className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                <h3 className="font-bold text-foreground text-lg">Australian Human Rights Laws</h3>
-              </div>
-              <p className="text-muted-foreground text-sm mb-4">
-                Australian legislation that protects your rights in criminal proceedings. These laws 
-                ensure fair treatment and proper process throughout the justice system.
-              </p>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.gov.au/C2004A03366/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Australian Human Rights Commission Act 1986</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/charter-human-rights-and-responsibilities-act-2006" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Charter of Human Rights (VIC)</a></li>
-                <li><a href="https://www.legislation.act.gov.au/a/2004-5/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Human Rights Act 2004 (ACT)</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-2019-005" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Human Rights Act 2019 (QLD)</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================ */}
-      {/* SECTION 4: LIVE CASELAW SEARCH */}
-      {/* ============================================ */}
-      <section className="py-16 px-6 bg-slate-900">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Research</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Search Real Court Decisions
-            </h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">
-              Access official court databases to find cases similar to yours. These free resources contain real judgments 
-              that may support your appeal grounds.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <a 
-              href="https://www.caselaw.nsw.gov.au/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
-            >
-              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
-                NSW
-              </div>
-              <span className="text-white text-sm font-medium">NSW Caselaw</span>
-              <span className="text-slate-400 text-xs">caselaw.nsw.gov.au</span>
-            </a>
-
-            <a 
-              href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/vic/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
-            >
-              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
-                VIC
-              </div>
-              <span className="text-white text-sm font-medium">Victorian Cases</span>
-              <span className="text-slate-400 text-xs">AustLII Victoria</span>
-            </a>
-
-            <a 
-              href="https://www.sclqld.org.au/caselaw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
-            >
-              <div className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold">
-                QLD
-              </div>
-              <span className="text-white text-sm font-medium">QLD Caselaw</span>
-              <span className="text-slate-400 text-xs">sclqld.org.au</span>
-            </a>
-
-            <a 
-              href="https://www.courts.sa.gov.au/judgments"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
-            >
-              <div className="w-12 h-12 bg-amber-600 rounded-lg flex items-center justify-center text-white font-bold">
-                SA
-              </div>
-              <span className="text-white text-sm font-medium">SA Judgments</span>
-              <span className="text-slate-400 text-xs">courts.sa.gov.au</span>
-            </a>
-
-            <a 
-              href="https://ecourts.justice.wa.gov.au/eCourtsPortal/Decisions"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
-            >
-              <div className="w-12 h-12 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold">
-                WA
-              </div>
-              <span className="text-white text-sm font-medium">WA eCourts</span>
-              <span className="text-slate-400 text-xs">ecourts.justice.wa.gov.au</span>
-            </a>
-
-            <a 
-              href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/tas/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
-            >
-              <div className="w-12 h-12 bg-teal-600 rounded-lg flex items-center justify-center text-white font-bold">
-                TAS
-              </div>
-              <span className="text-white text-sm font-medium">Tasmanian Cases</span>
-              <span className="text-slate-400 text-xs">AustLII Tasmania</span>
-            </a>
-
-            <a 
-              href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/nt/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
-            >
-              <div className="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center text-white font-bold">
-                NT
-              </div>
-              <span className="text-white text-sm font-medium">NT Cases</span>
-              <span className="text-slate-400 text-xs">AustLII NT</span>
-            </a>
-
-            <a 
-              href="https://www.courts.act.gov.au/supreme/judgments"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
-            >
-              <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">
-                ACT
-              </div>
-              <span className="text-white text-sm font-medium">ACT Judgments</span>
-              <span className="text-slate-400 text-xs">courts.act.gov.au</span>
-            </a>
-          </div>
-
-          {/* Federal Courts & AustLII */}
-          <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <a 
-              href="https://www.hcourt.gov.au/cases/cases-heard"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-3 px-6 py-3 bg-slate-800 border border-slate-600 rounded-lg hover:bg-slate-700 transition-colors"
-            >
-              <Scale className="w-5 h-5 text-amber-500" />
-              <span className="text-white font-medium">High Court of Australia</span>
-            </a>
-            <a 
-              href="https://www.fedcourt.gov.au/judgments"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-3 px-6 py-3 bg-slate-800 border border-slate-600 rounded-lg hover:bg-slate-700 transition-colors"
-            >
-              <Scale className="w-5 h-5 text-amber-500" />
-              <span className="text-white font-medium">Federal Court</span>
-            </a>
-            <a 
-              href="https://www.austlii.edu.au/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-3 px-6 py-3 bg-amber-600 hover:bg-amber-700 rounded-lg transition-colors"
-            >
-              <FileText className="w-5 h-5 text-white" />
-              <span className="text-white font-medium">Search All on AustLII</span>
-            </a>
-          </div>
-
-          <p className="text-slate-500 text-xs text-center mt-6">
-            All resources are free and publicly accessible. AustLII is the Australasian Legal Information Institute.
-          </p>
         </div>
       </section>
 
