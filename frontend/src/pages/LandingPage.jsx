@@ -161,24 +161,42 @@ const LandingPage = () => {
 
       {/* About - Brief */}
       <section className="py-16 px-6 bg-slate-900">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-amber-500 text-xs uppercase tracking-widest mb-4">About</p>
-          <p className="text-white text-lg leading-relaxed mb-4">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-amber-500 text-xs uppercase tracking-widest mb-4 text-center">About</p>
+          <p className="text-white text-lg leading-relaxed mb-6 text-center">
             Created by <strong>Debra King</strong> — not a lawyer, but someone who spent years 
             researching criminal law after seeing mates failed by a system that offers little support 
             once sentenced.
           </p>
-          <p className="text-slate-400 text-sm leading-relaxed mb-4">
-            From inadequate legal aid to poor communication of appeal rights, too many people face 
-            unjust handling at every stage of the appellate process. This tool exists to help 
-            identify potential grounds that might otherwise go unnoticed.
-          </p>
-          <p className="text-slate-400 text-sm italic">
+          
+          <div className="bg-slate-800 rounded-lg p-6 mb-6">
+            <p className="text-slate-300 text-sm leading-relaxed mb-4">
+              <strong className="text-white">The reality is:</strong> from manifest injustice to denial of procedural fairness, 
+              from critical elements missed or incorrectly applied at sentencing, to failures by defence counsel, 
+              errors by the judge, or simply unsafe and unsatisfactory verdicts — there are <em>many</em> potential 
+              grounds that can occur in criminal matters.
+            </p>
+            <p className="text-slate-300 text-sm leading-relaxed mb-4">
+              Unless you're a legal expert or have thousands of dollars to seek advice from lawyers and barristers, 
+              these issues often go unnoticed. And even legal professionals — usually overcommitted with heavy 
+              caseloads — don't always have the time or capacity for the kind of outside-the-box thinking needed 
+              to catch every potential issue.
+            </p>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              <strong className="text-amber-400">That's where this tool comes in.</strong> It provides a fast, 
+              potential overview of issues that may warrant further investigation — giving families, support networks, 
+              and even legal professionals a starting point they might not otherwise have.
+            </p>
+          </div>
+
+          <p className="text-slate-400 text-sm italic text-center">
             "I just wanted to create something that could help others without them spending years working it out themselves."
           </p>
-          <Link to="/terms" className="inline-block mt-6 text-amber-500 hover:text-amber-400 text-sm underline">
-            Read the full story & terms
-          </Link>
+          <div className="text-center">
+            <Link to="/terms" className="inline-block mt-6 text-amber-500 hover:text-amber-400 text-sm underline">
+              Read the full story & terms
+            </Link>
+          </div>
         </div>
       </section>
 
