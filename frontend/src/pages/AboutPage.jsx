@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Scale, ArrowLeft, Heart, Users, Shield, Award, Moon, Sun, Menu, X, Quote, CheckCircle } from "lucide-react";
+import { Scale, ArrowLeft, Heart, Users, Shield, Award, Moon, Sun, Menu, X, Quote, CheckCircle, AlertTriangle, Gavel } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
@@ -56,7 +56,7 @@ const AboutPage = () => {
       <section className="relative py-16 px-6 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920" 
+            src="https://images.unsplash.com/photo-1589578527966-fdac0f44566c?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920" 
             alt=""
             className="w-full h-full object-cover opacity-5 dark:opacity-[0.02]"
           />
@@ -69,20 +69,20 @@ const AboutPage = () => {
               <Heart className="w-8 h-8 text-white" />
             </div>
           </div>
-          <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Our Story</p>
+          <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">My Story</p>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
-            About Appeal Case Manager
+            Why I Built This App
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Built from lived experience, driven by the belief that everyone deserves to understand their legal rights.
+            One woman's fight for justice — built from lived experience, driven by the belief that everyone deserves to know their rights.
           </p>
         </div>
       </section>
 
       {/* Business Info */}
-      <section className="py-12 px-6">
+      <section className="py-8 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-gradient-to-r from-slate-900 to-indigo-950 rounded-2xl p-8 text-center mb-12">
+          <div className="bg-gradient-to-r from-slate-900 to-indigo-950 rounded-2xl p-8 text-center">
             <h2 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
               Criminal Law Appeal Case Management
             </h2>
@@ -98,7 +98,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Deb's Story */}
+      {/* My Story */}
       <section className="py-12 px-6 bg-muted/50 dark:bg-muted/20">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-3 mb-8">
@@ -106,7 +106,7 @@ const AboutPage = () => {
               <Quote className="w-6 h-6 text-amber-600 dark:text-amber-400" />
             </div>
             <h2 className="text-2xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Why I Built This
+              My Journey
             </h2>
           </div>
 
@@ -134,106 +134,225 @@ const AboutPage = () => {
                 to ensure others don't have to go through what I went through.
               </p>
             </div>
+
+            <p>
+              The reality is: from manifest injustice to denial of procedural fairness, from critical elements missed 
+              at sentencing, to failures by defence counsel, errors by the judge, or simply unsafe verdicts — there are 
+              <em> many</em> potential grounds that can arise in criminal matters. Unless you're a legal expert or have 
+              thousands of dollars for advice, these issues often go unnoticed.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Josh and Brad's Story */}
+      {/* Joshua Homann's Story */}
       <section className="py-12 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+              <Gavel className="w-6 h-6 text-red-600 dark:text-red-400" />
+            </div>
+            <h2 className="text-2xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Joshua Homann — The Reason This App Exists
+            </h2>
+          </div>
+
+          {/* Case Details Card */}
+          <div className="bg-slate-900 dark:bg-slate-950 rounded-2xl p-6 mb-8">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+              <div>
+                <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  R v Joshua Homann
+                </h3>
+                <p className="text-slate-400 text-sm">Supreme Court of New South Wales</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <span className="px-3 py-1 bg-blue-600/20 text-blue-400 rounded-lg text-xs font-medium">Trial 2018</span>
+                <span className="px-3 py-1 bg-red-600/20 text-red-400 rounded-lg text-xs font-medium">Murder</span>
+              </div>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-6 text-sm">
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Sentence:</span>
+                  <span className="text-white font-semibold">30 years imprisonment</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Non-Parole Period:</span>
+                  <span className="text-white font-semibold">22 years 6 months</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Time Served:</span>
+                  <span className="text-amber-400 font-semibold">10+ years</span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Initial Advice:</span>
+                  <span className="text-red-400 font-semibold">"No appellant rights"</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Grounds Identified:</span>
+                  <span className="text-red-400 font-semibold">"No grounds of merit"</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Current Status:</span>
+                  <span className="text-emerald-400 font-semibold">APPEAL IN PROGRESS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-6 text-muted-foreground leading-relaxed">
+            <p>
+              <strong className="text-foreground">Josh is my best mate.</strong> He was convicted in 2018 and sentenced to 
+              30 years imprisonment with a non-parole period of 22 years and 6 months. For 10 years, he was told he had 
+              no appellant rights. No grounds of merit. No options. He believed it.
+            </p>
+
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6">
+              <p className="text-amber-800 dark:text-amber-200 font-medium mb-3">
+                <AlertTriangle className="w-5 h-5 inline mr-2 -mt-0.5" />
+                <strong>Then I built this app.</strong>
+              </p>
+              <p className="text-amber-700 dark:text-amber-300 text-sm">
+                Using this very application, we analysed every document, every transcript, every piece of evidence. 
+                What we found was shocking — Josh had been severely let down by the system.
+              </p>
+            </div>
+
+            <p>
+              <strong className="text-foreground">The grounds we identified are severe and deny him natural justice:</strong>
+            </p>
+
+            <ul className="space-y-3 ml-4">
+              <li className="flex items-start gap-3">
+                <div className="w-2 h-2 rounded-full bg-red-500 mt-2 shrink-0"></div>
+                <span><strong className="text-foreground">Denied a Judge Alone Trial</strong> — His right to elect trial by judge alone was not properly afforded to him</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="w-2 h-2 rounded-full bg-red-500 mt-2 shrink-0"></div>
+                <span><strong className="text-foreground">Failures in Procedural Fairness</strong> — Multiple breaches of proper procedure throughout the trial process</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="w-2 h-2 rounded-full bg-red-500 mt-2 shrink-0"></div>
+                <span><strong className="text-foreground">Denial of Natural Justice</strong> — Fundamental rights that every accused person is entitled to were not upheld</span>
+              </li>
+            </ul>
+
+            <div className="bg-emerald-50 dark:bg-emerald-900/20 border-2 border-emerald-400 dark:border-emerald-600 rounded-xl p-6 mt-8">
+              <p className="text-emerald-800 dark:text-emerald-200 font-bold text-lg mb-2">
+                <CheckCircle className="w-6 h-6 inline mr-2 -mt-0.5" />
+                Josh now has a full appeal in progress
+              </p>
+              <p className="text-emerald-700 dark:text-emerald-300">
+                After 10 years of being told he had no options, Josh is currently in the process of a <strong>full case appeal 
+                for both conviction and sentence</strong>. This app made it possible to identify what the legal system failed to tell him.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Brad Fletcher's Story */}
+      <section className="py-12 px-6 bg-muted/50 dark:bg-muted/20">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
               <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <h2 className="text-2xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              The People Behind This App
+              Brad Fletcher — Best Mate for Life
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            {/* Josh's Card */}
-            <div className="bg-card border border-border rounded-2xl p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                  <span className="text-xl font-bold text-amber-600 dark:text-amber-400">J</span>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground">Josh</h3>
-                  <p className="text-sm text-muted-foreground">Best mate for life</p>
-                </div>
+          {/* Case Details Card */}
+          <div className="bg-card border border-border rounded-2xl p-6 mb-8">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+              <div>
+                <h3 className="text-xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  Brad Fletcher
+                </h3>
+                <p className="text-muted-foreground text-sm">Matter Pending</p>
               </div>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                Josh has served 10 years of a 30-year sentence for murder. He was severely let down by the system — 
-                and for years, believed he had no options.
-              </p>
-              <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
-                <p className="text-amber-800 dark:text-amber-200 text-sm font-medium">
-                  Using this very app, we identified his rights to a fair trial and uncovered extensive errors in his case.
-                  <strong className="text-amber-600 dark:text-amber-400"> He now has an appeal on all grounds currently being actioned.</strong>
-                </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-lg text-xs font-medium">On Remand</span>
+                <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg text-xs font-medium">2+ Years</span>
               </div>
             </div>
-
-            {/* Brad's Card */}
-            <div className="bg-card border border-border rounded-2xl p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                  <span className="text-xl font-bold text-blue-600 dark:text-blue-400">B</span>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground">Brad Fletcher</h3>
-                  <p className="text-sm text-muted-foreground">Best mate for life</p>
-                </div>
+            
+            <div className="grid md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="text-muted-foreground">Charge:</span>
+                <span className="text-foreground font-semibold ml-2">Murder</span>
               </div>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                Brad has been on remand for over two years, still waiting for his matter to be finalised.
-              </p>
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
-                <p className="text-blue-800 dark:text-blue-200 text-sm font-medium">
-                  Even at this early stage, we've already identified multiple issues with his case. 
-                  Once his matter concludes, this app will be there to help him too.
-                </p>
+              <div>
+                <span className="text-muted-foreground">Status:</span>
+                <span className="text-amber-600 dark:text-amber-400 font-semibold ml-2">Awaiting Trial</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-muted/50 rounded-2xl p-6 text-center">
-            <p className="text-foreground font-medium mb-2">
-              Josh and Brad inspired me to build this.
+          <div className="space-y-6 text-muted-foreground leading-relaxed">
+            <p>
+              <strong className="text-foreground">Brad is my best mate for life.</strong> He's been on remand for over 
+              two years now, still waiting for his matter to be finalised. Two years of his life in limbo.
             </p>
-            <p className="text-muted-foreground text-sm">
-              Watching them — and so many others — struggle through a system that offers little help once you're sentenced, 
-              I knew something had to change. Best mates for life, and the reason this app exists.
+
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
+              <p className="text-blue-800 dark:text-blue-200 font-medium mb-2">
+                <AlertTriangle className="w-5 h-5 inline mr-2 -mt-0.5" />
+                <strong>Even before trial, we've already identified strong issues.</strong>
+              </p>
+              <p className="text-blue-700 dark:text-blue-300 text-sm">
+                During the proceedings, using this app to analyse the available materials, we've already found significant 
+                issues that are apparent. Problems that need to be documented and tracked from day one.
+              </p>
+            </div>
+
+            <p>
+              Once Brad's matter is finalised, this app will be there to help him too — just like it helped Josh. 
+              Every document, every inconsistency, every potential ground will be captured and analysed.
             </p>
           </div>
         </div>
       </section>
 
-      {/* The Reality */}
-      <section className="py-12 px-6 bg-muted/50 dark:bg-muted/20">
+      {/* The Mission */}
+      <section className="py-12 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
               <Shield className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <h2 className="text-2xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              The Reality
+              Why This Matters
             </h2>
           </div>
 
-          <p className="text-muted-foreground leading-relaxed mb-6">
-            The reality is: from manifest injustice to denial of procedural fairness, from critical elements missed 
-            at sentencing, to failures by defence counsel, errors by the judge, or simply unsafe verdicts — there are 
-            <em> many</em> potential grounds that can arise in criminal matters.
-          </p>
-          
-          <p className="text-muted-foreground leading-relaxed mb-8">
-            Unless you're a legal expert or have thousands of dollars for advice, these issues often go unnoticed.
-          </p>
+          <div className="space-y-6 text-muted-foreground leading-relaxed">
+            <p>
+              <strong className="text-foreground">Josh and Brad inspired me to build this.</strong> Watching them — and 
+              so many others — struggle through a system that offers little help once you're sentenced or charged, 
+              I knew something had to change.
+            </p>
 
-          <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl p-8 text-center">
+            <p>
+              The legal system is complex. Appeals are complicated. And unless you have money for lawyers or get lucky 
+              with Legal Aid, you're on your own. That's not justice. That's a lottery.
+            </p>
+
+            <p>
+              This app exists because <strong className="text-foreground">everyone deserves to know their rights</strong>. 
+              Everyone deserves the chance to identify if something went wrong in their case. Everyone deserves access 
+              to the same tools that expensive law firms use.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl p-8 text-center mt-8">
             <Award className="w-12 h-12 text-white mx-auto mb-4" />
-            <p className="text-white text-lg font-semibold mb-2">
+            <p className="text-white text-xl font-semibold mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
               "If this tool helps even one person discover grounds they didn't know existed, my goal is accomplished."
             </p>
             <p className="text-amber-100 text-sm">
@@ -244,14 +363,16 @@ const AboutPage = () => {
       </section>
 
       {/* Quote */}
-      <section className="py-16 px-6">
+      <section className="py-16 px-6 bg-muted/50 dark:bg-muted/20">
         <div className="max-w-3xl mx-auto text-center">
           <Quote className="w-12 h-12 text-amber-500/30 mx-auto mb-4" />
           <blockquote className="text-xl text-muted-foreground italic leading-relaxed">
-            "I just wanted to create something that could possibly assist others without them having to spend years 
-            working this out themselves. I'm sure this will help lawyers at all levels too."
+            "I just wanted to create something that could help others without them spending years working it out themselves. 
+            Josh spent 10 years being told he had no options. Ten years. This app found multiple severe grounds in weeks. 
+            That's why this exists."
           </blockquote>
           <p className="text-foreground font-semibold mt-4">— Debra King</p>
+          <p className="text-muted-foreground text-sm mt-1">Founder, Appeal Case Manager</p>
         </div>
       </section>
 
@@ -287,6 +408,9 @@ const AboutPage = () => {
           </p>
           <p className="text-slate-500 text-xs mt-2">
             Created by Debra King — Glenmore Park, NSW
+          </p>
+          <p className="text-red-500 text-xs mt-2 font-medium">
+            Australian Law Only • Not Legal Advice • Always consult a qualified legal professional
           </p>
         </div>
       </footer>
