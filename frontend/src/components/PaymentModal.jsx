@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { 
   Lock, Check, Loader2, CreditCard, Building2, Copy, CheckCircle,
-  ArrowRight, Shield, Clock, AlertCircle, X
+  Shield, Clock, AlertCircle, X, Smartphone
 } from "lucide-react";
 import { Button } from "./ui/button";
 import {
@@ -14,7 +14,6 @@ import {
   DialogDescription,
 } from "./ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { Badge } from "./ui/badge";
 import { API } from "../App";
 
 const FEATURE_INFO = {
@@ -54,6 +53,12 @@ const FEATURE_INFO = {
   }
 };
 
+// PayID details - shown to all users
+const PAYID_INFO = {
+  payid: "djkingy79@gmail.com",
+  account_name: "Deb King - Appeal Case Manager"
+};
+
 export default function PaymentModal({ 
   isOpen, 
   onClose, 
@@ -63,7 +68,7 @@ export default function PaymentModal({
   onPaymentSuccess 
 }) {
   const [loading, setLoading] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("paypal");
+  const [paymentMethod, setPaymentMethod] = useState("payid"); // Default to PayID for Australians
   const [payidReference, setPayidReference] = useState(null);
   const [payidDetails, setPayidDetails] = useState(null);
   const [verifying, setVerifying] = useState(false);
@@ -175,106 +180,103 @@ export default function PaymentModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto" data-testid="payment-modal">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-            <Lock className="w-5 h-5 text-amber-500" />
-            {featureInfo.title}
+      <DialogContent className="w-[95vw] max-w-lg max-h-[90vh] overflow-y-auto p-4 sm:p-6" data-testid="payment-modal">
+        <DialogHeader className="space-y-2">
+          <DialogTitle className="flex items-center gap-2 text-lg" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <Lock className="w-5 h-5 text-amber-500 shrink-0" />
+            <span className="line-clamp-1">{featureInfo.title}</span>
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-sm">
             {featureInfo.description}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
-          {/* Price Display */}
+          {/* Price Display - Made larger for mobile */}
           <div className="bg-gradient-to-r from-slate-50 to-amber-50 dark:from-slate-800 dark:to-amber-900/20 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
             <p className="text-sm text-muted-foreground mb-1">One-time payment</p>
-            <p className="text-3xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              ${price?.toFixed(2)} <span className="text-lg font-normal text-muted-foreground">AUD</span>
+            <p className="text-3xl sm:text-4xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              ${price?.toFixed(2)} <span className="text-base font-normal text-muted-foreground">AUD</span>
             </p>
           </div>
 
-          {/* What you get */}
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-foreground">What you get:</p>
-            <ul className="space-y-1">
-              {featureInfo.benefits.slice(0, 5).map((benefit, i) => (
+          {/* What you get - Collapsed on mobile */}
+          <details className="group">
+            <summary className="flex items-center justify-between cursor-pointer text-sm font-medium text-foreground py-2">
+              <span>What you get ({featureInfo.benefits.length} features)</span>
+              <span className="text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <ul className="space-y-1 pt-2">
+              {featureInfo.benefits.map((benefit, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                   <Check className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
-                  {benefit}
+                  <span className="text-xs sm:text-sm">{benefit}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </details>
 
-          {/* Payment Method Tabs */}
+          {/* Payment Method Tabs - Larger touch targets */}
           <Tabs value={paymentMethod} onValueChange={setPaymentMethod} className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="paypal" className="flex items-center gap-2">
-                <CreditCard className="w-4 h-4" />
-                PayPal / Card
-              </TabsTrigger>
-              <TabsTrigger value="payid" className="flex items-center gap-2">
+            <TabsList className="grid w-full grid-cols-2 h-12">
+              <TabsTrigger value="payid" className="flex items-center justify-center gap-2 text-sm h-full">
                 <Building2 className="w-4 h-4" />
-                PayID / Bank
+                <span>PayID</span>
+              </TabsTrigger>
+              <TabsTrigger value="paypal" className="flex items-center justify-center gap-2 text-sm h-full">
+                <CreditCard className="w-4 h-4" />
+                <span>PayPal</span>
               </TabsTrigger>
             </TabsList>
-
-            {/* PayPal Tab */}
-            <TabsContent value="paypal" className="space-y-4 mt-4">
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
-                <div className="flex items-start gap-2">
-                  <Shield className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-                  <div className="text-sm">
-                    <p className="font-semibold text-blue-800 dark:text-blue-200">Secure Payment</p>
-                    <p className="text-blue-700 dark:text-blue-300 text-xs">
-                      Pay with PayPal, credit card, or debit card. Your payment details are never stored on our servers.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <Button
-                onClick={handlePayPal}
-                disabled={loading}
-                className="w-full bg-[#0070ba] hover:bg-[#003087] text-white py-6 text-base rounded-xl"
-                data-testid="paypal-pay-btn"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Connecting to PayPal...
-                  </>
-                ) : (
-                  <>
-                    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" 
-                         alt="PayPal" className="h-5 mr-2 rounded" />
-                    Pay with PayPal
-                  </>
-                )}
-              </Button>
-
-              <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-                <span>Credit Card</span>
-                <span>•</span>
-                <span>Debit Card</span>
-                <span>•</span>
-                <span>PayPal Balance</span>
-              </div>
-            </TabsContent>
 
             {/* PayID Tab */}
             <TabsContent value="payid" className="space-y-4 mt-4">
               {!payidDetails ? (
                 <>
-                  <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-3">
-                    <div className="flex items-start gap-2">
-                      <Clock className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                      <div className="text-sm">
-                        <p className="font-semibold text-emerald-800 dark:text-emerald-200">Instant Australian Bank Transfer</p>
-                        <p className="text-emerald-700 dark:text-emerald-300 text-xs">
-                          Use PayID for instant transfer from any Australian bank account. Available 24/7.
+                  {/* Show PayID destination info BEFORE they click */}
+                  <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4">
+                    <div className="flex items-start gap-3">
+                      <Smartphone className="w-6 h-6 text-emerald-600 shrink-0 mt-0.5" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-emerald-800 dark:text-emerald-200 text-sm">
+                          Pay via your banking app
+                        </p>
+                        <p className="text-emerald-700 dark:text-emerald-300 text-xs mt-1">
+                          Open your bank app, select "Pay Anyone" → "PayID" and enter:
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* PayID Details shown upfront */}
+                    <div className="mt-4 space-y-2">
+                      <div className="flex items-center justify-between bg-white dark:bg-slate-800 rounded-lg p-3">
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs text-muted-foreground">PayID (Email)</p>
+                          <p className="font-mono font-bold text-emerald-700 dark:text-emerald-300 text-sm truncate">
+                            {PAYID_INFO.payid}
+                          </p>
+                        </div>
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => copyToClipboard(PAYID_INFO.payid, "payid-preview")}
+                          className="shrink-0 ml-2 h-10 px-3"
+                        >
+                          {copied === "payid-preview" ? <CheckCircle className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                        </Button>
+                      </div>
+                      
+                      <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                        <p className="text-xs text-muted-foreground">Account Name (verify this matches)</p>
+                        <p className="font-semibold text-emerald-700 dark:text-emerald-300 text-sm">
+                          {PAYID_INFO.account_name}
+                        </p>
+                      </div>
+                      
+                      <div className="bg-amber-100 dark:bg-amber-900/30 rounded-lg p-3">
+                        <p className="text-xs text-amber-700 dark:text-amber-300">Amount to transfer</p>
+                        <p className="font-bold text-amber-800 dark:text-amber-200 text-xl">
+                          ${price?.toFixed(2)} AUD
                         </p>
                       </div>
                     </div>
@@ -283,108 +285,98 @@ export default function PaymentModal({
                   <Button
                     onClick={handlePayIDStart}
                     disabled={loading}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 text-base rounded-xl"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 text-base rounded-xl min-h-[56px]"
                     data-testid="payid-start-btn"
                   >
                     {loading ? (
                       <>
                         <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                        Generating Reference...
+                        Getting Reference...
                       </>
                     ) : (
                       <>
                         <Building2 className="w-5 h-5 mr-2" />
-                        Pay with PayID
+                        Get My Payment Reference
                       </>
                     )}
                   </Button>
+                  
+                  <p className="text-xs text-center text-muted-foreground">
+                    Click above to get your unique reference code to include in the transfer
+                  </p>
                 </>
               ) : (
                 <div className="space-y-4">
-                  {/* PayID Details */}
-                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
-                    <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                      <Building2 className="w-5 h-5 text-emerald-600" />
-                      Bank Transfer Details
+                  {/* PayID Details with Reference */}
+                  <div className="bg-white dark:bg-slate-800 border-2 border-emerald-500 rounded-xl p-4">
+                    <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2 text-base">
+                      <CheckCircle className="w-5 h-5 text-emerald-600" />
+                      Transfer These Details
                     </h4>
                     
                     <div className="space-y-3">
                       {/* PayID */}
-                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                        <div>
+                      <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                        <div className="min-w-0 flex-1">
                           <p className="text-xs text-muted-foreground">PayID (Email)</p>
-                          <p className="font-mono font-semibold text-foreground">{payidDetails.payid}</p>
+                          <p className="font-mono font-semibold text-foreground text-sm truncate">{payidDetails.payid}</p>
                         </div>
                         <Button 
                           size="sm" 
                           variant="ghost" 
                           onClick={() => copyToClipboard(payidDetails.payid, "payid")}
-                          className="shrink-0"
+                          className="shrink-0 ml-2 h-10 w-10 p-0"
                         >
-                          {copied === "payid" ? <CheckCircle className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                        </Button>
-                      </div>
-
-                      {/* Account Name */}
-                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                        <div>
-                          <p className="text-xs text-muted-foreground">Account Name</p>
-                          <p className="font-semibold text-foreground">{payidDetails.account_name}</p>
-                        </div>
-                        <Button 
-                          size="sm" 
-                          variant="ghost" 
-                          onClick={() => copyToClipboard(payidDetails.account_name, "name")}
-                          className="shrink-0"
-                        >
-                          {copied === "name" ? <CheckCircle className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                          {copied === "payid" ? <CheckCircle className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
                         </Button>
                       </div>
 
                       {/* Amount */}
-                      <div className="flex items-center justify-between p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
+                      <div className="flex items-center justify-between p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
                         <div>
                           <p className="text-xs text-amber-700 dark:text-amber-300">Amount</p>
-                          <p className="font-bold text-amber-800 dark:text-amber-200 text-lg">${payidDetails.amount.toFixed(2)} AUD</p>
+                          <p className="font-bold text-amber-800 dark:text-amber-200 text-xl">${payidDetails.amount.toFixed(2)} AUD</p>
                         </div>
                         <Button 
                           size="sm" 
                           variant="ghost" 
                           onClick={() => copyToClipboard(payidDetails.amount.toFixed(2), "amount")}
-                          className="shrink-0"
+                          className="shrink-0 h-10 w-10 p-0"
                         >
-                          {copied === "amount" ? <CheckCircle className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                          {copied === "amount" ? <CheckCircle className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
                         </Button>
                       </div>
 
-                      {/* Reference */}
-                      <div className="flex items-center justify-between p-2 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
-                        <div>
-                          <p className="text-xs text-red-700 dark:text-red-300">Reference (IMPORTANT)</p>
-                          <p className="font-mono font-bold text-red-800 dark:text-red-200">{payidDetails.reference}</p>
+                      {/* Reference - Most Important */}
+                      <div className="flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border-2 border-red-400 dark:border-red-600">
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs text-red-700 dark:text-red-300 font-semibold">⚠️ REFERENCE (Required)</p>
+                          <p className="font-mono font-bold text-red-800 dark:text-red-200 text-lg">{payidDetails.reference}</p>
                         </div>
                         <Button 
                           size="sm" 
                           variant="ghost" 
                           onClick={() => copyToClipboard(payidDetails.reference, "ref")}
-                          className="shrink-0"
+                          className="shrink-0 ml-2 h-10 w-10 p-0"
                         >
-                          {copied === "ref" ? <CheckCircle className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                          {copied === "ref" ? <CheckCircle className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
                         </Button>
                       </div>
                     </div>
                   </div>
 
-                  {/* Instructions */}
-                  <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-3 text-xs text-muted-foreground">
-                    <p className="font-semibold text-foreground mb-2">Instructions:</p>
-                    <ol className="list-decimal list-inside space-y-1">
-                      <li>Open your banking app</li>
-                      <li>Select "Pay Anyone" or "Transfer"</li>
-                      <li>Choose PayID and enter: <strong>{payidDetails.payid}</strong></li>
-                      <li>Enter amount: <strong>${payidDetails.amount.toFixed(2)}</strong></li>
-                      <li>Add reference: <strong>{payidDetails.reference}</strong></li>
-                      <li>Complete the transfer</li>
+                  {/* Simple Instructions */}
+                  <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 text-sm">
+                    <p className="font-semibold text-blue-800 dark:text-blue-200 mb-2 flex items-center gap-2">
+                      <Smartphone className="w-4 h-4" />
+                      In Your Banking App:
+                    </p>
+                    <ol className="list-decimal list-inside space-y-1 text-blue-700 dark:text-blue-300 text-xs">
+                      <li>Pay Anyone → PayID</li>
+                      <li>Enter: <strong>{payidDetails.payid}</strong></li>
+                      <li>Amount: <strong>${payidDetails.amount.toFixed(2)}</strong></li>
+                      <li>Description: <strong>{payidDetails.reference}</strong></li>
+                      <li>Send payment</li>
                     </ol>
                   </div>
 
@@ -402,13 +394,13 @@ export default function PaymentModal({
                   <Button
                     onClick={handlePayIDVerify}
                     disabled={verifying}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-5 rounded-xl"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-xl min-h-[56px] text-base"
                     data-testid="payid-verify-btn"
                   >
                     {verifying ? (
                       <>
                         <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                        Verifying Payment...
+                        Checking...
                       </>
                     ) : (
                       <>
@@ -424,17 +416,60 @@ export default function PaymentModal({
                       setPayidDetails(null);
                       setPayidReference(null);
                     }}
-                    className="w-full text-sm"
+                    className="w-full text-sm h-10"
                   >
-                    <X className="w-4 h-4 mr-1" /> Cancel and choose different method
+                    <X className="w-4 h-4 mr-1" /> Start Over
                   </Button>
                 </div>
               )}
             </TabsContent>
+
+            {/* PayPal Tab */}
+            <TabsContent value="paypal" className="space-y-4 mt-4">
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <Shield className="w-6 h-6 text-blue-600 shrink-0" />
+                  <div className="text-sm">
+                    <p className="font-semibold text-blue-800 dark:text-blue-200">Secure Payment</p>
+                    <p className="text-blue-700 dark:text-blue-300 text-xs mt-1">
+                      Pay with PayPal, credit card, or debit card. Your payment details are never stored on our servers.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                onClick={handlePayPal}
+                disabled={loading}
+                className="w-full bg-[#0070ba] hover:bg-[#003087] text-white py-6 text-base rounded-xl min-h-[56px]"
+                data-testid="paypal-pay-btn"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    Connecting...
+                  </>
+                ) : (
+                  <>
+                    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" 
+                         alt="PayPal" className="h-5 mr-2 rounded" />
+                    Pay with PayPal
+                  </>
+                )}
+              </Button>
+
+              <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
+                <span>Credit Card</span>
+                <span>•</span>
+                <span>Debit Card</span>
+                <span>•</span>
+                <span>PayPal Balance</span>
+              </div>
+            </TabsContent>
           </Tabs>
 
           <p className="text-xs text-muted-foreground text-center pt-2">
-            Questions? Contact <a href="mailto:djkingy79@gmail.com" className="text-amber-600 hover:underline">djkingy79@gmail.com</a>
+            Questions? <a href="mailto:djkingy79@gmail.com" className="text-amber-600 hover:underline">djkingy79@gmail.com</a>
           </p>
         </div>
       </DialogContent>

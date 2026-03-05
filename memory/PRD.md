@@ -640,6 +640,20 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - `badge` — Tiny inline badge
 - [x] **Placement**: Below hero section with "Join thousands of Australians researching their appeals"
 
+### Session 10 - PayID UX & Mobile Improvements (Mar 2026) ✅
+- [x] **PayID Details Shown Upfront** — Users now see where to send money BEFORE clicking:
+  - PayID: djkingy79@gmail.com
+  - Account Name: Deb King - Appeal Case Manager
+  - Amount displayed prominently
+- [x] **PayID as Default Tab** — More relevant for Australian users
+- [x] **Mobile-Optimised Payment Modal**:
+  - 95% viewport width on mobile
+  - Minimum 56px touch targets for all buttons
+  - Collapsible "What you get" section
+  - Larger copy buttons
+  - Step-by-step banking app instructions
+- [x] **Improved Reference Display** — Red border + warning icon for the payment reference
+
 ## Next Priority Tasks
 - [ ] Real-time collaboration/chat for Notes (WebSockets)
 - [ ] Continue backend refactoring — extract remaining routes from server.py (cases, documents, timeline, reports)
