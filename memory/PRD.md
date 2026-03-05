@@ -126,7 +126,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 ## Database Schema
 - **users**: user_id, email, name, google_id
 - **user_sessions**: session_token, user_id, expires_at
-- **cases**: case_id, user_id, title, defendant_name, case_number, court, offence_category, offence_type
+- **cases**: case_id, user_id, title, defendant_name, case_number, court, state, offence_category, offence_type
 - **documents**: document_id, case_id, filename, content_text, ocr_extracted
 - **timeline_events**: event_id, case_id, title, event_date, event_type, event_category, significance, perspective, is_contested, contested_details, linked_documents, participants, related_grounds, source_citation, inconsistency_notes
 - **notes**: note_id, case_id, title, content, category, is_pinned
@@ -253,12 +253,55 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 ### Legal Framework Viewer ✅ (Mar 2026)
 - [x] **New Tab in Case Detail** - "Legal Framework" tab shows applicable legislation for the case
 - [x] **Collapsible Sections**:
-  - NSW Legislation with section references
+  - State-specific Legislation with section references (dynamically loads based on state)
   - Commonwealth/Federal Legislation
   - Key Elements to Prove (numbered list)
   - Available Defences (badge tags)
+  - Appeal Procedure (state-specific court, time limits, forms)
   - Common Appeal Grounds
-- [x] **Dynamic Content** - Automatically loads based on case's offence category
+- [x] **State Selector** - Dropdown to switch between Australian states and view their specific legislation
 - [x] **AustLII Link** - Quick link to view full legislation on AustLII.edu.au
 - [x] **Component**: `/app/frontend/src/components/LegalFrameworkViewer.jsx`
+
+### All Australian States Expansion ✅ (Mar 2026)
+- [x] **Full National Coverage** - Now supports ALL Australian jurisdictions:
+  - New South Wales (NSW)
+  - Victoria (VIC)
+  - Queensland (QLD)
+  - South Australia (SA)
+  - Western Australia (WA)
+  - Tasmania (TAS)
+  - Northern Territory (NT)
+  - Australian Capital Territory (ACT)
+  - Commonwealth/Federal law
+
+- [x] **State-Specific Legislation** - Each state has its own legislation mapped:
+  - NSW: Crimes Act 1900 (NSW)
+  - VIC: Crimes Act 1958 (Vic)
+  - QLD: Criminal Code Act 1899 (Qld)
+  - SA: Criminal Law Consolidation Act 1935 (SA)
+  - WA: Criminal Code Act Compilation Act 1913 (WA)
+  - TAS: Criminal Code Act 1924 (Tas)
+  - NT: Criminal Code Act 1983 (NT)
+  - ACT: Crimes Act 1900 (ACT)
+
+- [x] **State-Specific Appeal Procedures** - Each state has mapped:
+  - Governing legislation (e.g., Criminal Appeal Act 1912 NSW, Criminal Procedure Act 2009 Vic)
+  - Appeal court name
+  - Time limits for lodging appeals
+  - Required forms
+
+- [x] **UI Enhancements**:
+  - Landing page shows all 8 state badges + Federal
+  - Dashboard: State selector when creating new case
+  - Case Detail: State badge displayed in blue
+  - Legal Framework Viewer: State dropdown to switch jurisdictions
+
+- [x] **API Endpoints**:
+  - `GET /api/states` - Returns all 8 Australian states/territories
+  - `GET /api/offence-framework/{category}?state={state}` - Returns state-specific legislation
+
+- [x] **Testing**: All 35 tests passed (`/app/test_reports/iteration_14.json`)
+  - Verified all states return correct legislation
+  - Verified appeal framework returns state-specific procedures
 
