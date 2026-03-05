@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Scale, ArrowLeft, Download, FileText, Search, Filter, ChevronDown, ChevronRight, Building2, Gavel, Shield, Users, Heart, Lock, Moon, Sun } from "lucide-react";
+import { Scale, ArrowLeft, Download, FileText, Search, Filter, ChevronDown, ChevronRight, Building2, Gavel, Shield, Users, Heart, Lock, Moon, Sun, AlertTriangle, Clock } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
@@ -38,11 +38,15 @@ const FORM_CATEGORIES = [
     icon: Gavel,
     color: "text-amber-600",
     forms: [
+      { id: "notice-of-intention", name: "Notice of Intention to Appeal", description: "First step - notify the court you intend to appeal (must be filed within time limits)" },
       { id: "notice-of-appeal", name: "Notice of Appeal", description: "Formal document to lodge an appeal against conviction or sentence" },
       { id: "appeal-grounds", name: "Grounds of Appeal", description: "Document setting out the legal grounds for your appeal" },
       { id: "leave-to-appeal", name: "Application for Leave to Appeal", description: "Request permission to appeal to a higher court" },
-      { id: "extension-of-time", name: "Extension of Time Application", description: "Request to extend the deadline for lodging an appeal" },
+      { id: "extension-of-time", name: "Extension of Time Application", description: "Request to extend the deadline for lodging an appeal (CRITICAL if 28 days have passed)" },
       { id: "appeal-book-index", name: "Appeal Book Index", description: "Index template for organizing appeal documents" },
+      { id: "transcript-request", name: "Request for Court Transcripts", description: "Formal request for trial transcripts (essential for appeal preparation)" },
+      { id: "exhibit-request", name: "Request for Exhibits", description: "Request access to trial exhibits and evidence" },
+      { id: "appeal-case-stated", name: "Case Stated Application", description: "Request a question of law be referred to higher court" },
     ]
   },
   {
@@ -421,6 +425,208 @@ const FormTemplates = () => {
           <p>Justice of the Peace / Solicitor / Other Authorised Person</p>
         </div>
       `,
+      "notice-of-intention": `
+        <div class="section">
+          <h2>NOTICE OF INTENTION TO APPEAL</h2>
+          <p class="instructions"><strong>⚠️ TIME CRITICAL:</strong> This form must be filed within 28 days of conviction or sentence in most jurisdictions. Check your specific state requirements.</p>
+        </div>
+        
+        <div class="section">
+          <h2>APPELLANT DETAILS</h2>
+          <p><strong>Full Name:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Date of Birth:</strong> <span class="field">____/____/________</span></p>
+          <p><strong>Current Address/Location:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Master Index Number (MIN):</strong> <span class="field">________________</span></p>
+        </div>
+        
+        <div class="section">
+          <h2>CONVICTION DETAILS</h2>
+          <p><strong>Court:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Case Number:</strong> <span class="field">________________</span></p>
+          <p><strong>Presiding Judge/Magistrate:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Date of Conviction:</strong> <span class="field">____/____/________</span></p>
+          <p><strong>Date of Sentence:</strong> <span class="field">____/____/________</span></p>
+          <p><strong>Offence(s):</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Sentence Imposed:</strong> <span class="field field-long">________________________________</span></p>
+        </div>
+        
+        <div class="section">
+          <h2>INTENTION TO APPEAL</h2>
+          <p>I, the above-named appellant, give notice of my intention to appeal against:</p>
+          <p>☐ Conviction only</p>
+          <p>☐ Sentence only</p>
+          <p>☐ Both conviction and sentence</p>
+        </div>
+        
+        <div class="section">
+          <h2>PRELIMINARY GROUNDS (TO BE REFINED IN NOTICE OF APPEAL)</h2>
+          <p>The proposed grounds for appeal include:</p>
+          <p>1. <span class="field field-long">________________________________</span></p>
+          <p>2. <span class="field field-long">________________________________</span></p>
+          <p>3. <span class="field field-long">________________________________</span></p>
+        </div>
+        
+        <div class="section">
+          <p><strong>Date:</strong> <span class="field">____/____/________</span></p>
+          <p><strong>Signature:</strong> ___________________________________</p>
+          <p><strong>Print Name:</strong> <span class="field field-long">________________________________</span></p>
+        </div>
+      `,
+      "transcript-request": `
+        <div class="section">
+          <h2>REQUEST FOR COURT TRANSCRIPTS</h2>
+          <p class="instructions"><strong>Important:</strong> Transcripts are essential for appeal preparation. Request these as soon as possible as they can take weeks or months to prepare.</p>
+        </div>
+        
+        <div class="section">
+          <h2>TO: ${stateName} Court Reporting Services</h2>
+          <p>Court Transcript Department</p>
+        </div>
+        
+        <div class="section">
+          <h2>APPLICANT DETAILS</h2>
+          <p><strong>Full Name:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Capacity:</strong> ☐ Appellant ☐ Legal Representative ☐ Other: <span class="field">_______</span></p>
+          <p><strong>Contact Phone:</strong> <span class="field">________________</span></p>
+          <p><strong>Email:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Postal Address:</strong> <span class="field field-long">________________________________</span></p>
+        </div>
+        
+        <div class="section">
+          <h2>MATTER DETAILS</h2>
+          <p><strong>Court:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Case Number:</strong> <span class="field">________________</span></p>
+          <p><strong>Judge/Magistrate:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Defendant Name:</strong> <span class="field field-long">________________________________</span></p>
+        </div>
+        
+        <div class="section">
+          <h2>TRANSCRIPTS REQUESTED</h2>
+          <p>☐ Full Trial Transcript (all days)</p>
+          <p>☐ Sentencing Hearing Transcript</p>
+          <p>☐ Judge's Summing Up / Directions to Jury</p>
+          <p>☐ Opening Addresses (Prosecution and Defence)</p>
+          <p>☐ Closing Addresses (Prosecution and Defence)</p>
+          <p>☐ Judge's Reasons for Verdict/Sentence</p>
+          <p>☐ Specific Witness Testimony: <span class="field field-long">________________________</span></p>
+          <p>☐ Specific Dates: <span class="field field-long">________________________________</span></p>
+          <p>☐ Other: <span class="field field-long">________________________________</span></p>
+        </div>
+        
+        <div class="section">
+          <h2>PURPOSE OF REQUEST</h2>
+          <p>☐ Lodging Notice of Appeal (urgent)</p>
+          <p>☐ Preparing Grounds of Appeal</p>
+          <p>☐ Legal advice</p>
+          <p>☐ Other: <span class="field field-long">________________________________</span></p>
+        </div>
+        
+        <div class="section">
+          <h2>DELIVERY METHOD</h2>
+          <p>☐ Certified Hard Copy (mail)</p>
+          <p>☐ Electronic Copy (email)</p>
+          <p>☐ Both</p>
+        </div>
+        
+        <div class="section">
+          <h2>PAYMENT</h2>
+          <p class="instructions">Note: Transcript fees apply. Check with the court for current rates. Impecunious persons may apply for fee waiver.</p>
+          <p>☐ Payment enclosed: $<span class="field">________________</span></p>
+          <p>☐ Application for fee waiver attached (financial hardship)</p>
+          <p>☐ Payment on invoice</p>
+        </div>
+        
+        <div class="section">
+          <p><strong>Date:</strong> <span class="field">____/____/________</span></p>
+          <p><strong>Signature:</strong> ___________________________________</p>
+          <p><strong>Print Name:</strong> <span class="field field-long">________________________________</span></p>
+        </div>
+      `,
+      "exhibit-request": `
+        <div class="section">
+          <h2>REQUEST FOR ACCESS TO EXHIBITS</h2>
+        </div>
+        
+        <div class="section">
+          <h2>TO: ${stateName} Court Registry</h2>
+          <p>Exhibits Officer</p>
+        </div>
+        
+        <div class="section">
+          <h2>MATTER DETAILS</h2>
+          <p><strong>Court:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Case Number:</strong> <span class="field">________________</span></p>
+          <p><strong>Defendant:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Verdict Date:</strong> <span class="field">____/____/________</span></p>
+        </div>
+        
+        <div class="section">
+          <h2>EXHIBITS REQUESTED</h2>
+          <p><strong>Exhibit Number:</strong> <span class="field">______</span> <strong>Description:</strong> <span class="field field-long">___________________</span></p>
+          <p><strong>Exhibit Number:</strong> <span class="field">______</span> <strong>Description:</strong> <span class="field field-long">___________________</span></p>
+          <p><strong>Exhibit Number:</strong> <span class="field">______</span> <strong>Description:</strong> <span class="field field-long">___________________</span></p>
+          <p>☐ All exhibits tendered at trial</p>
+        </div>
+        
+        <div class="section">
+          <h2>PURPOSE</h2>
+          <p>☐ Inspection only</p>
+          <p>☐ Copying/Photographing</p>
+          <p>☐ Expert examination (specify): <span class="field field-long">________________________________</span></p>
+          <p>☐ Appeal preparation</p>
+        </div>
+        
+        <div class="section">
+          <h2>APPLICANT DETAILS</h2>
+          <p><strong>Name:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Capacity:</strong> ☐ Appellant ☐ Legal Representative ☐ Expert Witness</p>
+          <p><strong>Contact:</strong> <span class="field field-long">________________________________</span></p>
+        </div>
+        
+        <div class="section">
+          <p class="instructions">Exhibits are court property and may only be accessed under supervision. Some exhibits may have been destroyed after retention periods.</p>
+        </div>
+      `,
+      "appeal-case-stated": `
+        <div class="section">
+          <h2>APPLICATION FOR CASE STATED</h2>
+          <p class="instructions">A Case Stated refers a specific question of law to a higher court for determination.</p>
+        </div>
+        
+        <div class="section">
+          <h2>IN THE [HIGHER COURT] OF ${stateName.toUpperCase()}</h2>
+        </div>
+        
+        <div class="section">
+          <h2>APPELLANT DETAILS</h2>
+          <p><strong>Name:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Lower Court Case Number:</strong> <span class="field">________________</span></p>
+        </div>
+        
+        <div class="section">
+          <h2>LOWER COURT DETAILS</h2>
+          <p><strong>Court:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Magistrate/Judge:</strong> <span class="field field-long">________________________________</span></p>
+          <p><strong>Date of Decision:</strong> <span class="field">____/____/________</span></p>
+        </div>
+        
+        <div class="section">
+          <h2>QUESTION(S) OF LAW FOR DETERMINATION</h2>
+          <p>The Applicant requests the Court state a case on the following question(s) of law:</p>
+          <p>1. <span class="field field-long">________________________________</span></p>
+          <p><span class="field field-long">________________________________</span></p>
+          <br>
+          <p>2. <span class="field field-long">________________________________</span></p>
+          <p><span class="field field-long">________________________________</span></p>
+        </div>
+        
+        <div class="section">
+          <h2>GROUNDS</h2>
+          <p>The question(s) arises because:</p>
+          <p><span class="field field-long">________________________________</span></p>
+          <p><span class="field field-long">________________________________</span></p>
+        </div>
+      `,
       "extension-of-time": `
         <div class="section">
           <h2>APPLICATION FOR EXTENSION OF TIME</h2>
@@ -622,6 +828,145 @@ const FormTemplates = () => {
               <strong>Important:</strong> These templates are provided for general guidance only. 
               Legal requirements vary by jurisdiction and may change. Always verify current requirements 
               with the relevant court and consider seeking legal advice before lodging any documents.
+            </div>
+          </div>
+        </div>
+
+        {/* KEY PROCEDURAL REQUIREMENTS - CRITICAL INFORMATION */}
+        <div className="mb-8 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 border-2 border-red-400 dark:border-red-600 rounded-xl p-6">
+          <h2 className="text-2xl font-bold text-red-900 dark:text-red-200 mb-4 flex items-center gap-2">
+            <AlertTriangle className="w-7 h-7" />
+            Key Procedural Requirements - READ FIRST
+          </h2>
+          
+          <div className="space-y-6">
+            {/* Time Limits */}
+            <div className="bg-white/70 dark:bg-slate-900/40 rounded-lg p-5 border-l-4 border-red-600">
+              <h3 className="text-lg font-bold text-red-900 dark:text-red-200 mb-3 flex items-center gap-2">
+                <Clock className="w-5 h-5" />
+                ⏰ Time Limits - CRITICAL
+              </h3>
+              <div className="space-y-2 text-sm text-red-900 dark:text-red-100">
+                <p className="font-bold text-base">
+                  You typically have <strong className="text-red-700 dark:text-red-400 text-lg">28 DAYS</strong> from conviction or sentence to file a <strong>Notice of Intention to Appeal</strong>.
+                </p>
+                <div className="ml-4 space-y-1 text-sm mt-3">
+                  <p>• <strong>NSW:</strong> 28 days (Criminal Appeal Act 1912, s 11)</p>
+                  <p>• <strong>VIC:</strong> 28 days (Criminal Procedure Act 2009, s 274)</p>
+                  <p>• <strong>QLD:</strong> 28 days (Criminal Code Act 1899, s 669)</p>
+                  <p>• <strong>SA:</strong> 21 days for summary appeals, 21 days for indictable (Supreme Court Act 1935, s 53)</p>
+                  <p>• <strong>WA:</strong> 21 days (Criminal Appeals Act 2004, s 22)</p>
+                  <p>• <strong>TAS:</strong> 21 days (Criminal Code Act 1924, s 402)</p>
+                  <p>• <strong>NT:</strong> 28 days (Criminal Code Act 1983, s 411)</p>
+                  <p>• <strong>ACT:</strong> 28 days (Crimes (Sentencing) Act 2005, s 140)</p>
+                </div>
+                <p className="mt-3 bg-red-100 dark:bg-red-900/40 p-3 rounded border border-red-300 dark:border-red-700">
+                  <strong>⚠️ WARNING:</strong> Missing the 28-day deadline doesn't mean you lose your right to appeal, but you <strong>MUST file an Extension of Time application</strong> explaining the delay. Courts are strict about time limits.
+                </p>
+              </div>
+            </div>
+
+            {/* Extensions of Time */}
+            <div className="bg-white/70 dark:bg-slate-900/40 rounded-lg p-5 border-l-4 border-orange-500">
+              <h3 className="text-lg font-bold text-orange-900 dark:text-orange-200 mb-3">
+                📄 Extensions of Time - If You've Missed the Deadline
+              </h3>
+              <div className="space-y-2 text-sm text-orange-900 dark:text-orange-100">
+                <p><strong>If the 28-day time limit has lapsed:</strong></p>
+                <ol className="ml-6 list-decimal space-y-2 mt-2">
+                  <li>
+                    <strong>File an Application for Extension of Time</strong> (use the form template in the Appeal Documents section above)
+                  </li>
+                  <li>
+                    <strong>Include an Affidavit</strong> explaining:
+                    <ul className="ml-4 list-disc mt-1">
+                      <li>Why you missed the deadline (e.g., lack of legal advice, mental health issues, didn't understand your rights, delay in receiving transcripts)</li>
+                      <li>The proposed grounds of appeal (to show merit)</li>
+                      <li>Any prejudice to the respondent if time is extended</li>
+                    </ul>
+                  </li>
+                  <li>File it <strong>as soon as possible</strong> — the longer the delay, the harder it is to get an extension</li>
+                </ol>
+                <p className="mt-3 bg-orange-100 dark:bg-orange-900/40 p-3 rounded border border-orange-300 dark:border-orange-700">
+                  <strong>Important:</strong> Courts will consider: (1) length of delay, (2) reason for delay, (3) merit of the appeal, (4) prejudice to the prosecution.
+                </p>
+              </div>
+            </div>
+
+            {/* Transcripts and Exhibits */}
+            <div className="bg-white/70 dark:bg-slate-900/40 rounded-lg p-5 border-l-4 border-amber-500">
+              <h3 className="text-lg font-bold text-amber-900 dark:text-amber-200 mb-3">
+                📝 Transcripts and Exhibits - Essential Documents
+              </h3>
+              <div className="space-y-3 text-sm text-amber-900 dark:text-amber-100">
+                <p><strong>You will almost certainly need:</strong></p>
+                
+                <div className="space-y-3">
+                  <div>
+                    <p className="font-bold">1. Court Transcripts</p>
+                    <ul className="ml-6 list-disc space-y-1 mt-1">
+                      <li>Full transcript of trial proceedings (all days)</li>
+                      <li>Judge's summing up and directions to jury</li>
+                      <li>Sentencing remarks</li>
+                      <li>Opening and closing addresses</li>
+                    </ul>
+                    <p className="mt-2 text-xs bg-amber-100 dark:bg-amber-900/40 p-2 rounded">
+                      <strong>How to get them:</strong> Use the "Request for Court Transcripts" form in the Appeal Documents section. Submit to the court where your trial occurred. <strong>Allow 4-8 weeks</strong> for preparation. Fees apply (typically $300-$1,500+ depending on length of trial).
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold">2. Trial Exhibits</p>
+                    <ul className="ml-6 list-disc space-y-1 mt-1">
+                      <li>Physical evidence tendered at trial</li>
+                      <li>Documents admitted into evidence</li>
+                      <li>Photos, videos, forensic reports</li>
+                    </ul>
+                    <p className="mt-2 text-xs bg-amber-100 dark:bg-amber-900/40 p-2 rounded">
+                      <strong>How to get them:</strong> Use the "Request for Exhibits" form. Contact the court registry. Note: Some exhibits may have been destroyed after retention periods.
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold">3. Police Brief of Evidence</p>
+                    <ul className="ml-6 list-disc space-y-1 mt-1">
+                      <li>Police facts sheet</li>
+                      <li>Witness statements</li>
+                      <li>ERISP (interview recordings)</li>
+                      <li>CCTV, body-worn camera footage</li>
+                    </ul>
+                    <p className="mt-2 text-xs bg-amber-100 dark:bg-amber-900/40 p-2 rounded">
+                      <strong>How to get them:</strong> FOI request to police or use "Authority to Release - Police Records" form. This can take 30+ days.
+                    </p>
+                  </div>
+                </div>
+
+                <p className="mt-4 bg-amber-200 dark:bg-amber-900/60 p-3 rounded border border-amber-400 dark:border-amber-600 font-medium">
+                  ⚡ <strong>PRO TIP:</strong> Request transcripts and exhibits <strong>immediately</strong> — even before finalizing your grounds of appeal. You can't properly identify appeal grounds without reviewing what was said and done at trial.
+                </p>
+              </div>
+            </div>
+
+            {/* Process Overview */}
+            <div className="bg-white/70 dark:bg-slate-900/40 rounded-lg p-5 border-l-4 border-blue-500">
+              <h3 className="text-lg font-bold text-blue-900 dark:text-blue-200 mb-3">
+                🔄 Standard Appeal Process
+              </h3>
+              <div className="space-y-2 text-sm text-blue-900 dark:text-blue-100">
+                <ol className="ml-6 list-decimal space-y-2">
+                  <li><strong>Within 28 days:</strong> File Notice of Intention to Appeal</li>
+                  <li><strong>Immediately:</strong> Request court transcripts and exhibits</li>
+                  <li><strong>Once transcripts received:</strong> Prepare detailed Grounds of Appeal</li>
+                  <li><strong>File:</strong> Notice of Appeal with Grounds (usually 3 months from conviction)</li>
+                  <li><strong>If required:</strong> Apply for Leave to Appeal (higher courts)</li>
+                  <li><strong>Wait:</strong> Case management, directions hearings (can take 11+ months)</li>
+                  <li><strong>Hearing:</strong> Appeal heard by 2-3 judges (no jury)</li>
+                  <li><strong>Decision:</strong> Allow appeal, dismiss, or order retrial</li>
+                </ol>
+                <p className="mt-3 text-xs italic">
+                  Average time from conviction to appeal hearing: <strong>11-18 months</strong> (varies by state and court workload).
+                </p>
+              </div>
             </div>
           </div>
         </div>
