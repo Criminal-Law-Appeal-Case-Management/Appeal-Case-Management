@@ -63,6 +63,9 @@ const LandingPage = () => {
             <Link to="/legal-resources" className="text-slate-400 hover:text-white text-sm transition-colors">
               Resources
             </Link>
+            <Link to="/contacts" className="text-slate-400 hover:text-white text-sm transition-colors">
+              Contacts
+            </Link>
             <Link to="/faq" className="text-slate-400 hover:text-white text-sm transition-colors">
               FAQ
             </Link>
@@ -98,6 +101,7 @@ const LandingPage = () => {
             <Link to="/success-stories" className="block py-2 text-slate-300 hover:text-white">Success Stories</Link>
             <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
             <Link to="/legal-resources" className="block py-2 text-slate-300 hover:text-white">Legal Resources</Link>
+            <Link to="/contacts" className="block py-2 text-slate-300 hover:text-white">Contacts Directory</Link>
             <Link to="/forms" className="block py-2 text-slate-300 hover:text-white">Forms</Link>
             <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
             <Link to="/about" className="block py-2 text-slate-300 hover:text-white">About</Link>

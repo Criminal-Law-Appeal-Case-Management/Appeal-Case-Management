@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Scale, ArrowLeft, Building, Users, Phone, Globe, ExternalLink, MapPin, Moon, Sun, Menu, X, Shield, Gavel, FileText, AlertTriangle } from "lucide-react";
+import { Scale, ArrowLeft, Building, Users, Phone, Globe, ExternalLink, MapPin, Moon, Sun, Menu, X, Shield, Gavel, FileText, AlertTriangle, Lightbulb } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
@@ -7,13 +7,13 @@ import { useTheme } from "../contexts/ThemeContext";
 const LegalResourcesPage = () => {
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("legal-aid");
+  const [activeTab, setActiveTab] = useState("options");
 
   const tabs = [
+    { id: "options", label: "You Have Options", icon: Lightbulb },
     { id: "legal-aid", label: "Legal Aid", icon: Users },
     { id: "law-societies", label: "Law Societies", icon: Scale },
     { id: "complaints", label: "Complaints & OLCR", icon: AlertTriangle },
-    { id: "courts", label: "Courts", icon: Gavel },
     { id: "community", label: "Community Legal", icon: Building },
     { id: "pro-bono", label: "Pro Bono", icon: Shield },
   ];
@@ -97,6 +97,105 @@ const LegalResourcesPage = () => {
       </div>
 
       <main className="max-w-5xl mx-auto px-6 py-8">
+
+        {/* You Have Options Tab */}
+        {activeTab === "options" && (
+          <div className="space-y-6">
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6">
+              <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Legal Help You May Not Know About
+              </h2>
+              <p className="text-muted-foreground text-sm">
+                For most people, Legal Aid is the only affordable option — but private firms are often out of reach. 
+                What many don't realise is that there are other avenues for help. <strong className="text-foreground">When you think you have no options, 
+                there definitely are options.</strong>
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Legal Aid Overview */}
+              <div className="bg-card border border-border rounded-xl p-6">
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-4">
+                  <Scale className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Legal Aid</h3>
+                <p className="text-muted-foreground text-sm mb-3">
+                  Government-funded legal assistance available in every state. While overburdened, they can provide 
+                  representation for serious criminal matters and appeals if you meet the eligibility criteria.
+                </p>
+                <button 
+                  onClick={() => setActiveTab("legal-aid")}
+                  className="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium"
+                >
+                  View all Legal Aid services →
+                </button>
+              </div>
+
+              {/* Pro Bono Overview */}
+              <div className="bg-card border border-border rounded-xl p-6">
+                <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center mb-4">
+                  <Users className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Pro Bono Legal Services</h3>
+                <p className="text-muted-foreground text-sm mb-3">
+                  Many law firms and barristers provide free legal services (pro bono) for those who cannot afford representation. 
+                  This is not widely advertised but is a genuine option.
+                </p>
+                <button 
+                  onClick={() => setActiveTab("pro-bono")}
+                  className="text-emerald-600 dark:text-emerald-400 hover:underline text-sm font-medium"
+                >
+                  Find pro bono services →
+                </button>
+              </div>
+
+              {/* Community Legal Centres */}
+              <div className="bg-card border border-border rounded-xl p-6">
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center mb-4">
+                  <MapPin className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Community Legal Centres</h3>
+                <p className="text-muted-foreground text-sm mb-3">
+                  Independent, non-profit organisations providing free legal advice and assistance. They often help with 
+                  matters Legal Aid cannot cover and can refer you to specialist services.
+                </p>
+                <button 
+                  onClick={() => setActiveTab("community")}
+                  className="text-purple-600 dark:text-purple-400 hover:underline text-sm font-medium"
+                >
+                  Find community legal centres →
+                </button>
+              </div>
+
+              {/* Grants & Funding */}
+              <div className="bg-card border border-border rounded-xl p-6">
+                <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center mb-4">
+                  <FileText className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Grants & Special Funding</h3>
+                <p className="text-muted-foreground text-sm mb-3">
+                  Various grants and funding programs exist specifically to support criminal appeals and wrongful conviction cases. 
+                  These are rarely advertised but can cover legal costs.
+                </p>
+                <ul className="text-xs text-muted-foreground space-y-1 mb-3">
+                  <li>• <a href="https://www.lawfoundation.net.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Law Foundation Grants</a></li>
+                  <li>• State-based legal assistance funding</li>
+                  <li>• Innocence projects (for wrongful convictions)</li>
+                  <li>• University law clinics</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Key Message */}
+            <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl p-6 text-center">
+              <h3 className="text-white text-lg font-bold mb-2">Don't Give Up</h3>
+              <p className="text-white/90 text-sm">
+                The legal system is complex, but help exists. Start with Legal Aid, then explore pro bono services 
+                and community legal centres. Many people have found help when they thought there was none.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Legal Aid Tab */}
         {activeTab === "legal-aid" && (

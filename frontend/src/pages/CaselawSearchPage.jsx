@@ -1,0 +1,503 @@
+import { useState } from "react";
+import { Scale, ArrowLeft, Moon, Sun, Menu, X, Search, ExternalLink, FileText, BookOpen, Gavel, HelpCircle } from "lucide-react";
+import { Button } from "../components/ui/button";
+import { Link } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
+
+const CaselawSearchPage = () => {
+  const { theme, toggleTheme } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [selectedState, setSelectedState] = useState("");
+
+  const databases = {
+    nsw: {
+      name: "New South Wales",
+      abbrev: "NSW",
+      color: "blue",
+      courts: [
+        {
+          name: "NSW Caselaw",
+          url: "https://www.caselaw.nsw.gov.au/",
+          description: "Official database of NSW court decisions including Supreme Court, Court of Criminal Appeal, District Court, and Local Court judgments.",
+          whatYouFind: [
+            "Full text of judgments and decisions",
+            "Sentencing remarks from criminal trials",
+            "Appeal decisions with reasons",
+            "Case citations and references",
+            "Judge's analysis and legal reasoning"
+          ],
+          searchTips: "Search by party name (e.g., 'R v Smith'), citation, judge name, or keywords. Use quotation marks for exact phrases.",
+          courts: ["Supreme Court", "Court of Criminal Appeal", "Court of Appeal", "District Court", "Local Court", "Land and Environment Court"]
+        }
+      ]
+    },
+    vic: {
+      name: "Victoria",
+      abbrev: "VIC",
+      color: "purple",
+      courts: [
+        {
+          name: "AustLII - Victorian Courts",
+          url: "https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/vic/",
+          description: "Comprehensive collection of Victorian court decisions through the Australasian Legal Information Institute.",
+          whatYouFind: [
+            "Supreme Court judgments",
+            "Court of Appeal decisions",
+            "County Court sentencing remarks",
+            "VCAT decisions",
+            "Historical cases dating back decades"
+          ],
+          searchTips: "Use Boolean operators (AND, OR, NOT). Search within specific courts or across all Victorian jurisdictions.",
+          courts: ["Supreme Court", "Court of Appeal", "County Court", "Magistrates Court", "VCAT"]
+        }
+      ]
+    },
+    qld: {
+      name: "Queensland",
+      abbrev: "QLD",
+      color: "red",
+      courts: [
+        {
+          name: "Supreme Court Library Queensland",
+          url: "https://www.sclqld.org.au/caselaw",
+          description: "Queensland's official legal information service providing access to court decisions and legal resources.",
+          whatYouFind: [
+            "Supreme Court and Court of Appeal judgments",
+            "District Court decisions",
+            "Sentencing remarks and reasons",
+            "Criminal appeal outcomes",
+            "Judicial consideration of legal principles"
+          ],
+          searchTips: "Search by case name, year, court level, or legal topic. Filter by date range for recent decisions.",
+          courts: ["Supreme Court", "Court of Appeal", "District Court", "Magistrates Court"]
+        }
+      ]
+    },
+    sa: {
+      name: "South Australia",
+      abbrev: "SA",
+      color: "amber",
+      courts: [
+        {
+          name: "Courts SA - Judgments",
+          url: "https://www.courts.sa.gov.au/judgments",
+          description: "South Australian courts judgment database with decisions from all court levels.",
+          whatYouFind: [
+            "Supreme Court full judgments",
+            "District Court sentencing remarks",
+            "Criminal appeal decisions",
+            "Legal analysis and precedents",
+            "Reasons for sentence"
+          ],
+          searchTips: "Browse by court type or search by party name. Recent judgments listed chronologically.",
+          courts: ["Supreme Court", "District Court", "Magistrates Court", "Youth Court"]
+        }
+      ]
+    },
+    wa: {
+      name: "Western Australia",
+      abbrev: "WA",
+      color: "emerald",
+      courts: [
+        {
+          name: "eCourts Portal WA",
+          url: "https://ecourts.justice.wa.gov.au/eCourtsPortal/Decisions",
+          description: "Western Australia's electronic courts portal providing access to published court decisions.",
+          whatYouFind: [
+            "Supreme Court judgments",
+            "Court of Appeal decisions",
+            "District Court outcomes",
+            "Criminal sentencing remarks",
+            "Appeal reasons and analysis"
+          ],
+          searchTips: "Search by case number, party name, or browse recent decisions. Filter by court and date.",
+          courts: ["Supreme Court", "Court of Appeal", "District Court", "Magistrates Court"]
+        }
+      ]
+    },
+    tas: {
+      name: "Tasmania",
+      abbrev: "TAS",
+      color: "teal",
+      courts: [
+        {
+          name: "AustLII - Tasmanian Courts",
+          url: "https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/tas/",
+          description: "Tasmanian court decisions through AustLII's comprehensive legal database.",
+          whatYouFind: [
+            "Supreme Court judgments",
+            "Criminal appeal decisions",
+            "Sentencing remarks",
+            "Legal reasoning and analysis",
+            "Case law precedents"
+          ],
+          searchTips: "Search across all Tasmanian courts or select specific jurisdictions.",
+          courts: ["Supreme Court", "Magistrates Court"]
+        }
+      ]
+    },
+    nt: {
+      name: "Northern Territory",
+      abbrev: "NT",
+      color: "orange",
+      courts: [
+        {
+          name: "AustLII - NT Courts",
+          url: "https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/nt/",
+          description: "Northern Territory court decisions including Supreme Court and Local Court judgments.",
+          whatYouFind: [
+            "Supreme Court decisions",
+            "Criminal sentencing remarks",
+            "Appeal judgments",
+            "Legal principles applied",
+            "Territory-specific case law"
+          ],
+          searchTips: "Search by case name or browse chronologically. NT has fewer cases so browsing can be effective.",
+          courts: ["Supreme Court", "Local Court"]
+        }
+      ]
+    },
+    act: {
+      name: "Australian Capital Territory",
+      abbrev: "ACT",
+      color: "indigo",
+      courts: [
+        {
+          name: "ACT Courts - Judgments",
+          url: "https://www.courts.act.gov.au/supreme/judgments",
+          description: "ACT Supreme Court and Magistrates Court published judgments and decisions.",
+          whatYouFind: [
+            "Supreme Court judgments",
+            "Court of Appeal decisions",
+            "Criminal sentencing",
+            "Appeal outcomes",
+            "Legal reasoning"
+          ],
+          searchTips: "Browse by year or search by party name. Relatively small jurisdiction so cases easier to locate.",
+          courts: ["Supreme Court", "Court of Appeal", "Magistrates Court"]
+        }
+      ]
+    },
+    federal: {
+      name: "Federal Courts",
+      abbrev: "FED",
+      color: "slate",
+      courts: [
+        {
+          name: "High Court of Australia",
+          url: "https://www.hcourt.gov.au/cases/cases-heard",
+          description: "Australia's highest court. Hears constitutional matters and appeals of national importance. Sets binding precedent for all Australian courts.",
+          whatYouFind: [
+            "Constitutional law decisions",
+            "Appeals on matters of public importance",
+            "Landmark criminal law precedents",
+            "Interpretation of Commonwealth legislation",
+            "Final appeals from state courts"
+          ],
+          searchTips: "Search by case name or browse by year. High Court cases are binding on all Australian courts.",
+          courts: ["High Court"]
+        },
+        {
+          name: "Federal Court of Australia",
+          url: "https://www.fedcourt.gov.au/judgments",
+          description: "Handles matters arising under Commonwealth law including some criminal appeals and migration matters.",
+          whatYouFind: [
+            "Federal criminal matters",
+            "Appeals from federal tribunals",
+            "Commonwealth law interpretation",
+            "Cross-jurisdictional matters",
+            "Migration and refugee cases"
+          ],
+          searchTips: "Search by case number, party name, or judge. Filter by practice area.",
+          courts: ["Federal Court", "Federal Circuit Court"]
+        }
+      ]
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background" style={{ fontFamily: 'Manrope, sans-serif' }}>
+      {/* Header */}
+      <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
+              <Scale className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Appeal Case Manager
+            </span>
+          </Link>
+          <div className="hidden md:flex items-center gap-4">
+            <Link to="/legal-framework" className="text-slate-400 hover:text-white text-sm transition-colors">Legislation</Link>
+            <Link to="/legal-resources" className="text-slate-400 hover:text-white text-sm transition-colors">Resources</Link>
+            <Link to="/glossary" className="text-slate-400 hover:text-white text-sm transition-colors">Legal Terms</Link>
+            <button onClick={toggleTheme} className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            <Link to="/">
+              <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800 rounded-lg">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+            </Link>
+          </div>
+          <button className="md:hidden p-2 text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-slate-800 border-t border-slate-700 px-6 py-4 space-y-3">
+            <Link to="/legal-framework" className="block py-2 text-slate-300 hover:text-white">Legislation</Link>
+            <Link to="/legal-resources" className="block py-2 text-slate-300 hover:text-white">Resources</Link>
+            <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
+            <Link to="/" className="block py-2 text-amber-500 hover:text-amber-400">Back to Home</Link>
+          </div>
+        )}
+      </header>
+
+      {/* Hero */}
+      <section className="py-12 px-6 bg-gradient-to-b from-slate-900 to-slate-800 text-white">
+        <div className="max-w-5xl mx-auto text-center">
+          <div className="flex justify-center mb-4">
+            <div className="w-14 h-14 rounded-2xl bg-blue-600 flex items-center justify-center">
+              <Search className="w-7 h-7 text-white" />
+            </div>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Live Caselaw Search
+          </h1>
+          <p className="text-slate-400 max-w-2xl mx-auto">
+            Search real Australian court decisions across all states and territories. 
+            Find cases similar to yours, understand legal precedents, and research appeal outcomes.
+          </p>
+        </div>
+      </section>
+
+      {/* What is Caselaw */}
+      <section className="py-8 px-6 bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-800">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8">
+            <div>
+              <h2 className="text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-blue-600" />
+                What is Case Law?
+              </h2>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Case law (also called "precedent" or "judge-made law") consists of the written decisions made by judges 
+                when they decide cases. These decisions interpret legislation, apply legal principles, and create 
+                binding precedents that other courts must follow.
+              </p>
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+                <HelpCircle className="w-5 h-5 text-blue-600" />
+                Why Search Case Law?
+              </h2>
+              <ul className="text-muted-foreground text-sm space-y-1">
+                <li>• Find cases with similar facts to yours</li>
+                <li>• Understand how courts interpret specific laws</li>
+                <li>• Research successful appeal arguments</li>
+                <li>• Identify sentencing patterns and ranges</li>
+                <li>• Support your own legal arguments with precedent</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* State Selector */}
+      <main className="max-w-5xl mx-auto px-6 py-8">
+        <div className="mb-8">
+          <label className="block text-sm font-semibold text-foreground mb-3">Select Jurisdiction</label>
+          <select 
+            value={selectedState}
+            onChange={(e) => setSelectedState(e.target.value)}
+            className="w-full md:w-64 px-4 py-3 bg-card border border-border rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-amber-500"
+          >
+            <option value="">-- Choose a State/Territory --</option>
+            <option value="federal">Federal Courts (High Court, Federal Court)</option>
+            <option value="nsw">New South Wales</option>
+            <option value="vic">Victoria</option>
+            <option value="qld">Queensland</option>
+            <option value="sa">South Australia</option>
+            <option value="wa">Western Australia</option>
+            <option value="tas">Tasmania</option>
+            <option value="nt">Northern Territory</option>
+            <option value="act">Australian Capital Territory</option>
+          </select>
+        </div>
+
+        {/* Selected State Details */}
+        {selectedState && databases[selectedState] && (
+          <div className="space-y-6">
+            <h2 className="text-xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              {databases[selectedState].name} Court Databases
+            </h2>
+            
+            {databases[selectedState].courts.map((court, index) => (
+              <div key={index} className="bg-card border border-border rounded-2xl overflow-hidden">
+                <div className={`bg-${databases[selectedState].color}-600 px-6 py-4 flex items-center justify-between`}
+                  style={{ backgroundColor: databases[selectedState].color === 'blue' ? '#2563eb' : databases[selectedState].color === 'purple' ? '#9333ea' : databases[selectedState].color === 'red' ? '#dc2626' : databases[selectedState].color === 'amber' ? '#d97706' : databases[selectedState].color === 'emerald' ? '#059669' : databases[selectedState].color === 'teal' ? '#0d9488' : databases[selectedState].color === 'orange' ? '#ea580c' : databases[selectedState].color === 'indigo' ? '#4f46e5' : '#475569' }}
+                >
+                  <div>
+                    <h3 className="text-white font-bold text-lg">{court.name}</h3>
+                    <p className="text-white/70 text-sm">{court.courts.join(" • ")}</p>
+                  </div>
+                  <a 
+                    href={court.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
+                  >
+                    Visit Database
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+                
+                <div className="p-6 space-y-6">
+                  <p className="text-muted-foreground">{court.description}</p>
+                  
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-amber-600" />
+                        What You'll Find
+                      </h4>
+                      <ul className="space-y-2">
+                        {court.whatYouFind.map((item, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                        <Search className="w-4 h-4 text-blue-600" />
+                        Search Tips
+                      </h4>
+                      <p className="text-sm text-muted-foreground bg-muted/50 p-4 rounded-lg">
+                        {court.searchTips}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* No Selection - Show All Quick Links */}
+        {!selectedState && (
+          <div>
+            <h2 className="text-xl font-bold text-foreground mb-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Quick Access - All Jurisdictions
+            </h2>
+            
+            <div className="grid md:grid-cols-3 gap-4 mb-8">
+              {Object.entries(databases).map(([key, state]) => (
+                <button
+                  key={key}
+                  onClick={() => setSelectedState(key)}
+                  className="text-left p-4 bg-card border border-border rounded-xl hover:border-amber-500 hover:shadow-md transition-all"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-white text-xs font-bold`}
+                      style={{ backgroundColor: state.color === 'blue' ? '#2563eb' : state.color === 'purple' ? '#9333ea' : state.color === 'red' ? '#dc2626' : state.color === 'amber' ? '#d97706' : state.color === 'emerald' ? '#059669' : state.color === 'teal' ? '#0d9488' : state.color === 'orange' ? '#ea580c' : state.color === 'indigo' ? '#4f46e5' : '#475569' }}
+                    >
+                      {state.abbrev}
+                    </div>
+                    <span className="font-semibold text-foreground">{state.name}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {state.courts.length} database{state.courts.length > 1 ? 's' : ''} available
+                  </p>
+                </button>
+              ))}
+            </div>
+
+            {/* AustLII - Universal Search */}
+            <div className="bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-400 dark:border-amber-600 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-lg font-bold text-foreground">AustLII - Search All Australian Courts</h3>
+                  <p className="text-sm text-muted-foreground">Australasian Legal Information Institute - The most comprehensive free legal database</p>
+                </div>
+                <a 
+                  href="https://www.austlii.edu.au/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-xl font-medium flex items-center gap-2"
+                >
+                  Search AustLII
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <h4 className="font-semibold text-foreground mb-2">What is AustLII?</h4>
+                  <p className="text-muted-foreground">A free, non-profit service providing access to legal information from Australia, New Zealand, and the Pacific region.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-foreground mb-2">Coverage</h4>
+                  <p className="text-muted-foreground">All Australian courts, tribunals, legislation, treaties, law reform reports, and journal articles.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-foreground mb-2">Best For</h4>
+                  <p className="text-muted-foreground">Cross-jurisdictional research, finding historical cases, and comprehensive legal research across all states.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Understanding Judgments */}
+        <section className="mt-12 bg-card border border-border rounded-2xl p-6">
+          <h2 className="text-lg font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Understanding Court Judgments
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6 text-sm">
+            <div>
+              <h3 className="font-semibold text-foreground mb-2">What's in a Judgment?</h3>
+              <ul className="text-muted-foreground space-y-1">
+                <li><strong>Case Citation:</strong> Unique identifier (e.g., R v Smith [2024] NSWSC 142)</li>
+                <li><strong>Parties:</strong> Crown (R) vs Defendant in criminal cases</li>
+                <li><strong>Facts:</strong> Summary of what happened</li>
+                <li><strong>Issues:</strong> Legal questions the court decided</li>
+                <li><strong>Reasoning:</strong> Judge's analysis and legal principles applied</li>
+                <li><strong>Decision/Orders:</strong> The outcome (conviction, sentence, appeal allowed/dismissed)</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-2">How to Use Case Law</h3>
+              <ul className="text-muted-foreground space-y-1">
+                <li><strong>Find similar cases:</strong> Search for your offence type + jurisdiction</li>
+                <li><strong>Check appeal success:</strong> Look for "appeal allowed" in criminal appeals</li>
+                <li><strong>Understand sentencing:</strong> Review sentencing remarks for comparable cases</li>
+                <li><strong>Support arguments:</strong> Cite relevant cases to strengthen your position</li>
+                <li><strong>Note the hierarchy:</strong> Higher court decisions are binding on lower courts</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 px-6 py-8 border-t border-slate-800 mt-12">
+        <div className="max-w-5xl mx-auto text-center">
+          <p className="text-slate-400 text-sm">
+            All court databases are publicly accessible and free to use.
+          </p>
+          <p className="text-red-400 text-xs mt-2 font-medium">
+            This is not legal advice. Always consult a qualified legal professional for interpretation.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default CaselawSearchPage;

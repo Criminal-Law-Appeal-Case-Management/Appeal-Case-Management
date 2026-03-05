@@ -28,6 +28,9 @@ import AboutPage from "./pages/AboutPage";
 import LegalResourcesPage from "./pages/LegalResourcesPage";
 import HowToUsePage from "./pages/HowToUsePage";
 import AppealStatisticsPage from "./pages/AppealStatisticsPage";
+import CaselawSearchPage from "./pages/CaselawSearchPage";
+import LegalFrameworkPage from "./pages/LegalFrameworkPage";
+import ContactsPage from "./pages/ContactsPage";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -267,6 +270,18 @@ function AppRouter() {
       <Route
         path="/appeal-statistics"
         element={<AppealStatisticsPage />}
+      />
+      <Route
+        path="/caselaw-search"
+        element={<CaselawSearchPage />}
+      />
+      <Route
+        path="/legal-framework"
+        element={<LegalFrameworkPage />}
+      />
+      <Route
+        path="/contacts"
+        element={<ContactsPage />}
       />
     </Routes>
   );
