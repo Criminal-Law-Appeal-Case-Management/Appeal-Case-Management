@@ -65,7 +65,7 @@ const LandingPage = () => {
         <div className="max-w-6xl mx-auto px-6">
           <p className="text-white text-center text-sm md:text-base font-medium">
             <AlertTriangle className="w-4 h-4 inline mr-2 -mt-0.5" />
-            <strong>NOT LEGAL ADVICE</strong> — Creator is not a lawyer. All results must be verified by a qualified legal professional.
+            <strong>NOT LEGAL ADVICE</strong> — Australian Law Only. Creator is not a lawyer. All results must be verified by a qualified legal professional.
             <Link to="/terms" className="underline ml-2 hover:text-amber-200">Read full terms</Link>
           </p>
         </div>
@@ -664,37 +664,56 @@ const LandingPage = () => {
       <section className="py-16 px-6 bg-slate-900">
         <div className="max-w-4xl mx-auto">
           <p className="text-amber-500 text-xs uppercase tracking-widest mb-4 text-center">About</p>
-          <p className="text-white text-lg leading-relaxed mb-6 text-center">
-            Created by <strong>Debra King</strong> — not a lawyer, but someone who spent years 
-            researching criminal law after seeing mates failed by a system that offers little support 
-            once sentenced.
-          </p>
           
+          {/* Business Name & Creator */}
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Criminal Law Appeal Case Management
+            </h3>
+            <p className="text-amber-400 text-sm font-medium">Founded by Debra King</p>
+          </div>
+
+          {/* Australian Law Only Notice */}
+          <div className="bg-amber-900/30 border border-amber-700/50 rounded-lg p-4 mb-8">
+            <p className="text-amber-300 text-sm text-center font-medium">
+              <span className="text-amber-400">AUSTRALIAN LAW ONLY</span> — This tool is designed exclusively for 
+              Australian Federal and State law matters. All legislation, case law references, and appeal procedures 
+              relate to Australian jurisdictions (NSW, VIC, QLD, SA, WA, TAS, NT, ACT).
+            </p>
+          </div>
+
+          {/* Personal Story */}
           <div className="bg-slate-800 rounded-lg p-6 mb-6">
+            <h4 className="text-white font-semibold mb-4">Why I Built This</h4>
             <p className="text-slate-300 text-sm leading-relaxed mb-4">
-              <strong className="text-white">The reality is:</strong> from manifest injustice to denial of procedural fairness, 
-              from critical elements missed or incorrectly applied at sentencing, to failures by defence counsel, 
-              errors by the judge, or simply unsafe and unsatisfactory verdicts — there are <em>many</em> potential 
-              grounds that can arise in criminal matters.
+              I'm not a lawyer — I'm someone who knows firsthand how isolating and confusing the justice system can be. 
+              <strong className="text-white"> I served a considerable amount of time in prison.</strong> During that time, 
+              I accepted my situation, believing I had no options. What I didn't know then was that I had appellant rights 
+              — rights that were never properly explained to me.
             </p>
             
             <p className="text-slate-300 text-sm leading-relaxed mb-4">
-              Consider just a few examples: judicial bias or errors in directions to the jury, failure to properly 
-              apply community standards, prejudicial media coverage influencing jurors, fresh evidence not available 
-              at trial, ineffective assistance of counsel, or misapplication of legal principles. Every person has 
-              a fundamental right to a fair trial — and that right extends to appeals.
+              Legal Aid failed to help me. Like so many others, I fell through the cracks of an overburdened system 
+              that offers little support once you're sentenced. I served my time not knowing what could have been challenged.
             </p>
 
             <p className="text-slate-300 text-sm leading-relaxed mb-4">
-              Unless you're a legal expert or have thousands of dollars to seek advice from lawyers and barristers, 
-              these issues often go unnoticed. And even legal professionals — usually overcommitted with heavy 
-              caseloads — don't always have the time or capacity for the kind of outside-the-box thinking needed 
-              to catch every potential issue.
+              <strong className="text-white">It's now been eight years since I've been free from trouble.</strong> In that time, 
+              I've invested years of hard work, research, and determination into building this application. Every hour spent 
+              learning criminal law, every late night developing this tool — it was all driven by one goal: to ensure others 
+              don't have to go through what I went through.
             </p>
+
+            <p className="text-slate-300 text-sm leading-relaxed mb-4">
+              The reality is: from manifest injustice to denial of procedural fairness, from critical elements missed 
+              at sentencing, to failures by defence counsel, errors by the judge, or simply unsafe verdicts — there are 
+              <em> many</em> potential grounds that can arise in criminal matters. Unless you're a legal expert or have 
+              thousands of dollars for advice, these issues often go unnoticed.
+            </p>
+
             <p className="text-slate-300 text-sm leading-relaxed">
-              <strong className="text-amber-400">That's where this tool comes in.</strong> It provides a fast, 
-              potential overview of issues that may warrant further investigation — giving families, support networks, 
-              and even legal professionals a starting point they might not otherwise have.
+              <strong className="text-amber-400">If this tool helps even one person discover grounds they didn't know existed, 
+              my goal is accomplished.</strong> People can change. I'm living proof of that — and I created this app to prove it.
             </p>
           </div>
 
@@ -859,9 +878,12 @@ const LandingPage = () => {
       {/* Footer - Minimal */}
       <footer className="py-8 px-6 border-t border-slate-200 bg-slate-50">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <Scale className="w-5 h-5 text-slate-400" />
-            <span className="text-slate-600 text-sm">Appeal Case Manager</span>
+          <div className="flex flex-col items-center md:items-start">
+            <div className="flex items-center gap-2">
+              <Scale className="w-5 h-5 text-slate-400" />
+              <span className="text-slate-900 text-sm font-semibold">Criminal Law Appeal Case Management</span>
+            </div>
+            <span className="text-slate-500 text-xs mt-1">Founded by Debra King</span>
           </div>
           <div className="flex items-center gap-6 text-sm text-slate-500">
             <Link to="/success-stories" className="hover:text-slate-900">Success Stories</Link>
@@ -869,8 +891,8 @@ const LandingPage = () => {
             <Link to="/contact" className="hover:text-slate-900">Contact</Link>
             <Link to="/terms" className="hover:text-slate-900">Terms & Privacy</Link>
           </div>
-          <p className="text-xs text-red-600 font-medium">
-            Not legal advice • Creator not a lawyer
+          <p className="text-xs text-red-600 font-medium text-center md:text-right">
+            Australian Law Only • Not legal advice
           </p>
         </div>
       </footer>
