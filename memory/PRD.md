@@ -577,16 +577,39 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Highlights: 8-12 similar cases, witness credibility, sentencing comparison, risk assessment
 - [x] **Testing**: iteration_29 (100% backend + frontend pass)
 
-## Next Priority Tasks
-- [ ] Implement PayPal payment processing to replace Stripe
-- [ ] Real-time collaboration/chat for Notes (WebSockets)
-- [ ] Continue backend refactoring — extract remaining routes from server.py
+### Session 6 - PayPal & PayID Payment Integration (Mar 2026) ✅
+- [x] **PayPal Payment Integration** — Full PayPal REST API integration:
+  - Backend: `/api/payments/paypal/create-order`, `/api/payments/paypal/execute`, `/api/payments/paypal/status/{id}`
+  - Frontend: PayPal button redirects to PayPal checkout
+  - Fixed pricing enforced server-side (never accepts amounts from frontend)
+- [x] **PayID (Australian Bank Transfer)** — Manual bank transfer support:
+  - Generates unique reference codes (ACM-XXXX-XXXX format)
+  - PayID: djkingy79@gmail.com
+  - Clear instructions for users on how to make bank transfer
+  - Admin verification endpoint `/api/payments/payid/admin-confirm/{reference}`
+- [x] **Payment Modal Updated** — Dual-tab interface:
+  - Tab 1: PayPal / Card (redirects to PayPal)
+  - Tab 2: PayID / Bank (shows bank transfer details with copy buttons)
+  - Both methods support: Full Report ($29), Extensive Report ($39), Grounds of Merit ($50)
+- [x] **Admin Dashboard Updated** — Pending PayID payments section:
+  - Shows all pending bank transfers awaiting verification
+  - One-click confirm button to unlock features for users
+  - Instructions for how to verify against bank statement
+- [x] **Testing**: iteration_30 (100% backend + frontend pass)
 
-## Backlog (Bottom)
+## Next Priority Tasks
+- [ ] Real-time collaboration/chat for Notes (WebSockets)
+- [ ] Continue backend refactoring — extract remaining routes from server.py (cases, documents, timeline, reports)
+
+## Backlog (Lower Priority)
 - [ ] Build and submit native mobile app (Capacitor ready)
 - [ ] Enhanced collaboration features (replies, threads, @mentions in notes)
 - [ ] Deadline Tracker with Calendar integration
 - [ ] Clarify purpose of ContactsPage.jsx vs ContactPage.jsx
+
+## Technical Debt
+- `server.py` is 4117 lines — needs modularization
+- Consider extracting: cases.py, documents.py, timeline.py, reports.py, grounds.py, notes.py
 
 
 
