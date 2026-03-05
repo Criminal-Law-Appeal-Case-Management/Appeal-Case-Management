@@ -4308,6 +4308,134 @@ async def export_report_docx(case_id: str, report_id: str, request: Request):
         }
     )
 
+# ============ STATISTICS DASHBOARD ============
+
+@api_router.get("/statistics/public")
+async def get_public_statistics():
+    """Get anonymized public statistics for the dashboard"""
+    
+    # Get total counts
+    total_cases = await db.cases.count_documents({})
+    total_documents = await db.documents.count_documents({})
+    total_reports = await db.reports.count_documents({})
+    total_grounds = await db.grounds_of_merit.count_documents({})
+    
+    # Cases by offence category
+    offence_pipeline = [
+        {"$group": {"_id": "$offence_category", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}}
+    ]
+    offence_stats = await db.cases.aggregate(offence_pipeline).to_list(20)
+    
+    # Cases by state
+    state_pipeline = [
+        {"$group": {"_id": "$state", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}}
+    ]
+    state_stats = await db.cases.aggregate(state_pipeline).to_list(10)
+    
+    # Reports by type
+    report_pipeline = [
+        {"$group": {"_id": "$report_type", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}}
+    ]
+    report_stats = await db.reports.aggregate(report_pipeline).to_list(5)
+    
+    # Grounds by type
+    ground_pipeline = [
+        {"$group": {"_id": "$ground_type", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}}
+    ]
+    ground_stats = await db.grounds_of_merit.aggregate(ground_pipeline).to_list(10)
+    
+    # Grounds by strength
+    strength_pipeline = [
+        {"$group": {"_id": "$strength", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}}
+    ]
+    strength_stats = await db.grounds_of_merit.aggregate(strength_pipeline).to_list(5)
+    
+    # Average documents per case
+    avg_docs = total_documents / total_cases if total_cases > 0 else 0
+    
+    # Format offence categories for display
+    offence_labels = {
+        "homicide": "Homicide",
+        "assault": "Assault",
+        "sexual_offences": "Sexual Offences",
+        "robbery_theft": "Robbery & Theft",
+        "drug_offences": "Drug Offences",
+        "fraud_dishonesty": "Fraud & Dishonesty",
+        "firearms_weapons": "Firearms & Weapons",
+        "domestic_violence": "Domestic Violence",
+        "public_order": "Public Order",
+        "terrorism": "Terrorism",
+        "driving_offences": "Driving Offences"
+    }
+    
+    state_labels = {
+        "nsw": "New South Wales",
+        "vic": "Victoria",
+        "qld": "Queensland",
+        "sa": "South Australia",
+        "wa": "Western Australia",
+        "tas": "Tasmania",
+        "nt": "Northern Territory",
+        "act": "ACT"
+    }
+    
+    ground_type_labels = {
+        "procedural_error": "Procedural Error",
+        "fresh_evidence": "Fresh Evidence",
+        "incompetent_counsel": "Incompetent Counsel",
+        "sentencing_error": "Sentencing Error",
+        "jury_misdirection": "Jury Misdirection",
+        "jury_irregularity": "Jury Irregularity",
+        "insufficient_evidence": "Insufficient Evidence",
+        "judicial_error": "Judicial Error",
+        "miscarriage_of_justice": "Miscarriage of Justice",
+        "ineffective_counsel": "Ineffective Counsel",
+        "constitutional_violation": "Constitutional Violation",
+        "prosecutorial_misconduct": "Prosecutorial Misconduct",
+        "evidence_error": "Evidence Error",
+        "other": "Other"
+    }
+    
+    return {
+        "overview": {
+            "total_cases": total_cases,
+            "total_documents": total_documents,
+            "total_reports": total_reports,
+            "total_grounds_identified": total_grounds,
+            "avg_documents_per_case": round(avg_docs, 1)
+        },
+        "cases_by_offence": [
+            {"category": offence_labels.get(s["_id"], s["_id"]), "count": s["count"], "key": s["_id"]}
+            for s in offence_stats if s["_id"]
+        ],
+        "cases_by_state": [
+            {"state": state_labels.get(s["_id"], s["_id"]), "count": s["count"], "key": s["_id"]}
+            for s in state_stats if s["_id"]
+        ],
+        "reports_by_type": [
+            {"type": s["_id"].replace("_", " ").title() if s["_id"] else "Unknown", "count": s["count"]}
+            for s in report_stats if s["_id"]
+        ],
+        "grounds_by_type": [
+            {"type": ground_type_labels.get(s["_id"], s["_id"]), "count": s["count"], "key": s["_id"]}
+            for s in ground_stats if s["_id"]
+        ],
+        "grounds_by_strength": [
+            {"strength": s["_id"].title() if s["_id"] else "Unknown", "count": s["count"]}
+            for s in strength_stats if s["_id"]
+        ],
+        "insights": {
+            "most_common_offence": offence_labels.get(offence_stats[0]["_id"], offence_stats[0]["_id"]) if offence_stats else "N/A",
+            "most_common_ground": ground_type_labels.get(ground_stats[0]["_id"], ground_stats[0]["_id"]) if ground_stats else "N/A",
+            "busiest_state": state_labels.get(state_stats[0]["_id"], state_stats[0]["_id"]) if state_stats else "N/A"
+        }
+    }
+
 # ============ HEALTH CHECK ============
 
 @api_router.get("/")

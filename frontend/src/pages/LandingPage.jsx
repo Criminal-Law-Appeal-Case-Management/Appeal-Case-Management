@@ -52,6 +52,9 @@ const LandingPage = () => {
             </span>
           </div>
           <div className="flex items-center gap-3">
+            <Link to="/statistics" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
+              Statistics
+            </Link>
             <Link to="/success-stories" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
               Success Stories
             </Link>
@@ -1445,6 +1448,7 @@ const LandingPage = () => {
             <span className="text-slate-500 text-xs mt-1">Founded by Debra King</span>
           </div>
           <div className="flex items-center gap-6 text-sm text-slate-500">
+            <Link to="/statistics" className="hover:text-slate-900">Statistics</Link>
             <Link to="/success-stories" className="hover:text-slate-900">Success Stories</Link>
             <Link to="/glossary" className="hover:text-slate-900">Legal Terms</Link>
             <Link to="/contact" className="hover:text-slate-900">Contact</Link>

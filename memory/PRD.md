@@ -386,6 +386,17 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - David R. (VIC) - Forensic calculation error, sentence reduced
 - [x] **Added timeframe badges** showing appeal duration
 
+### Case Statistics Dashboard ✅ (Dec 2025)
+- [x] **Public statistics page** at `/statistics`
+- [x] **Overview metrics**: Total cases, documents, reports, grounds identified
+- [x] **Visual charts**:
+  - Cases by Offence Type (horizontal bar chart)
+  - Cases by State (horizontal bar chart)
+  - Most Common Appeal Grounds (ranked list)
+  - Ground Strength Distribution (circular badges)
+- [x] **Key Insights section** highlighting trends
+- [x] **Navigation links** added to header and footer
+
 ### Landing Page Design Cleanup ✅ (Dec 2025)
 - [x] **Criminal Law by State** section converted to **collapsible accordions**
 - [x] Each state (NSW, VIC, QLD, SA, WA, CTH) is now a clickable dropdown

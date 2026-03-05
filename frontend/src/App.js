@@ -19,6 +19,7 @@ import AdminStats from "./pages/AdminStats";
 import ContactPage from "./pages/ContactPage";
 import LegalGlossary from "./pages/LegalGlossary";
 import SuccessStories from "./pages/SuccessStories";
+import Statistics from "./pages/Statistics";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
@@ -217,6 +218,10 @@ function AppRouter() {
       <Route
         path="/success-stories"
         element={<SuccessStories />}
+      />
+      <Route
+        path="/statistics"
+        element={<Statistics />}
       />
     </Routes>
   );
