@@ -305,3 +305,24 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Verified all states return correct legislation
   - Verified appeal framework returns state-specific procedures
 
+### Case Law Research Links ✅ (Mar 2026)
+- [x] **All State Case Law Databases Added**:
+  - NSW: caselaw.nsw.gov.au (Supreme, District & Local Court)
+  - VIC: AustLII Victoria (Supreme & County Court)
+  - QLD: sclqld.org.au (Supreme & District Court Library)
+  - SA: courts.sa.gov.au/judgments
+  - WA: ecourts.justice.wa.gov.au
+  - TAS: AustLII Tasmania
+  - NT: AustLII NT
+  - ACT: courts.act.gov.au/supreme/judgments
+  
+- [x] **Federal Courts Added**:
+  - High Court of Australia (hcourt.gov.au)
+  - Federal Court of Australia (fedcourt.gov.au)
+  
+- [x] **AustLII Integration** - Main search for all Australian law
+- [x] **Landing Page** - New "Search Real Court Decisions" section with all state links
+- [x] **Legal Framework Viewer** - Case law links integrated into Legal Framework tab
+
+
+

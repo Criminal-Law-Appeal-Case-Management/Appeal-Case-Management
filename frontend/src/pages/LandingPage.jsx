@@ -845,6 +845,163 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Case Law Research Section */}
+      <section className="py-16 px-6 bg-slate-900">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Research</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Search Real Court Decisions
+            </h2>
+            <p className="text-slate-400 max-w-2xl mx-auto">
+              Access official court databases to find cases similar to yours. These free resources contain real judgments 
+              that may support your appeal grounds.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <a 
+              href="https://www.caselaw.nsw.gov.au/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
+                NSW
+              </div>
+              <span className="text-white text-sm font-medium">NSW Caselaw</span>
+              <span className="text-slate-400 text-xs">caselaw.nsw.gov.au</span>
+            </a>
+
+            <a 
+              href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/vic/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
+                VIC
+              </div>
+              <span className="text-white text-sm font-medium">Victorian Cases</span>
+              <span className="text-slate-400 text-xs">AustLII Victoria</span>
+            </a>
+
+            <a 
+              href="https://www.sclqld.org.au/caselaw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              <div className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold">
+                QLD
+              </div>
+              <span className="text-white text-sm font-medium">QLD Caselaw</span>
+              <span className="text-slate-400 text-xs">sclqld.org.au</span>
+            </a>
+
+            <a 
+              href="https://www.courts.sa.gov.au/judgments"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              <div className="w-12 h-12 bg-amber-600 rounded-lg flex items-center justify-center text-white font-bold">
+                SA
+              </div>
+              <span className="text-white text-sm font-medium">SA Judgments</span>
+              <span className="text-slate-400 text-xs">courts.sa.gov.au</span>
+            </a>
+
+            <a 
+              href="https://ecourts.justice.wa.gov.au/eCourtsPortal/Decisions"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              <div className="w-12 h-12 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold">
+                WA
+              </div>
+              <span className="text-white text-sm font-medium">WA eCourts</span>
+              <span className="text-slate-400 text-xs">ecourts.justice.wa.gov.au</span>
+            </a>
+
+            <a 
+              href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/tas/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              <div className="w-12 h-12 bg-teal-600 rounded-lg flex items-center justify-center text-white font-bold">
+                TAS
+              </div>
+              <span className="text-white text-sm font-medium">Tasmanian Cases</span>
+              <span className="text-slate-400 text-xs">AustLII Tasmania</span>
+            </a>
+
+            <a 
+              href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/nt/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              <div className="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center text-white font-bold">
+                NT
+              </div>
+              <span className="text-white text-sm font-medium">NT Cases</span>
+              <span className="text-slate-400 text-xs">AustLII NT</span>
+            </a>
+
+            <a 
+              href="https://www.courts.act.gov.au/supreme/judgments"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 p-4 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">
+                ACT
+              </div>
+              <span className="text-white text-sm font-medium">ACT Judgments</span>
+              <span className="text-slate-400 text-xs">courts.act.gov.au</span>
+            </a>
+          </div>
+
+          {/* Federal Courts & AustLII */}
+          <div className="flex flex-col md:flex-row gap-4 justify-center">
+            <a 
+              href="https://www.hcourt.gov.au/cases/cases-heard"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 px-6 py-3 bg-slate-800 border border-slate-600 rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              <Scale className="w-5 h-5 text-amber-500" />
+              <span className="text-white font-medium">High Court of Australia</span>
+            </a>
+            <a 
+              href="https://www.fedcourt.gov.au/judgments"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 px-6 py-3 bg-slate-800 border border-slate-600 rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              <Scale className="w-5 h-5 text-amber-500" />
+              <span className="text-white font-medium">Federal Court</span>
+            </a>
+            <a 
+              href="https://www.austlii.edu.au/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 px-6 py-3 bg-amber-600 hover:bg-amber-700 rounded-lg transition-colors"
+            >
+              <FileText className="w-5 h-5 text-white" />
+              <span className="text-white font-medium">Search All on AustLII</span>
+            </a>
+          </div>
+
+          <p className="text-slate-500 text-xs text-center mt-6">
+            All resources are free and publicly accessible. AustLII is the Australasian Legal Information Institute.
+          </p>
+        </div>
+      </section>
+
       {/* Pricing Section */}
       <section className="py-16 px-6 bg-white border-t border-slate-200">
         <div className="max-w-4xl mx-auto">

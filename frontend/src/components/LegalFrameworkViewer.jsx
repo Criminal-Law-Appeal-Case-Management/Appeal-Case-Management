@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { 
   Scale, BookOpen, Shield, AlertTriangle, ChevronDown, ChevronRight,
-  FileText, Gavel, ExternalLink, Loader2, MapPin, Clock
+  FileText, Gavel, ExternalLink, Loader2, MapPin, Clock, Search
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
@@ -426,17 +426,198 @@ const LegalFrameworkViewer = ({ offenceCategory, offenceType, state = "nsw" }) =
           </div>
         )}
 
-        {/* AustLII Link */}
+        {/* Case Law Research Section */}
         <div className="pt-4 border-t border-slate-200">
+          <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+            <Search className="w-4 h-4 text-slate-600" />
+            Research Case Law
+          </h4>
+          <p className="text-xs text-slate-600 mb-4">
+            Search real court decisions to find cases similar to yours. These databases contain judgments 
+            that may support your appeal grounds.
+          </p>
+          
+          {/* State-specific case law links */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+            {/* NSW */}
+            <a 
+              href="https://www.caselaw.nsw.gov.au/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 p-3 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors"
+            >
+              <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold">
+                NSW
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-900">NSW Caselaw</p>
+                <p className="text-xs text-slate-600">Supreme, District & Local Court decisions</p>
+              </div>
+              <ExternalLink className="w-4 h-4 text-blue-600 ml-auto" />
+            </a>
+
+            {/* Victoria */}
+            <a 
+              href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/vic/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 p-3 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors"
+            >
+              <div className="w-8 h-8 bg-purple-600 rounded flex items-center justify-center text-white text-xs font-bold">
+                VIC
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-900">Victorian Cases</p>
+                <p className="text-xs text-slate-600">Supreme & County Court decisions</p>
+              </div>
+              <ExternalLink className="w-4 h-4 text-purple-600 ml-auto" />
+            </a>
+
+            {/* Queensland */}
+            <a 
+              href="https://www.sclqld.org.au/caselaw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 p-3 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
+            >
+              <div className="w-8 h-8 bg-red-600 rounded flex items-center justify-center text-white text-xs font-bold">
+                QLD
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-900">QLD Caselaw</p>
+                <p className="text-xs text-slate-600">Supreme & District Court Library</p>
+              </div>
+              <ExternalLink className="w-4 h-4 text-red-600 ml-auto" />
+            </a>
+
+            {/* South Australia */}
+            <a 
+              href="https://www.courts.sa.gov.au/judgments"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 p-3 bg-amber-50 border border-amber-200 rounded-lg hover:bg-amber-100 transition-colors"
+            >
+              <div className="w-8 h-8 bg-amber-600 rounded flex items-center justify-center text-white text-xs font-bold">
+                SA
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-900">SA Judgments</p>
+                <p className="text-xs text-slate-600">Courts Administration Authority</p>
+              </div>
+              <ExternalLink className="w-4 h-4 text-amber-600 ml-auto" />
+            </a>
+
+            {/* Western Australia */}
+            <a 
+              href="https://ecourts.justice.wa.gov.au/eCourtsPortal/Decisions"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 p-3 bg-emerald-50 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition-colors"
+            >
+              <div className="w-8 h-8 bg-emerald-600 rounded flex items-center justify-center text-white text-xs font-bold">
+                WA
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-900">WA eCourts</p>
+                <p className="text-xs text-slate-600">Supreme & District Court decisions</p>
+              </div>
+              <ExternalLink className="w-4 h-4 text-emerald-600 ml-auto" />
+            </a>
+
+            {/* Tasmania */}
+            <a 
+              href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/tas/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 p-3 bg-teal-50 border border-teal-200 rounded-lg hover:bg-teal-100 transition-colors"
+            >
+              <div className="w-8 h-8 bg-teal-600 rounded flex items-center justify-center text-white text-xs font-bold">
+                TAS
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-900">Tasmanian Cases</p>
+                <p className="text-xs text-slate-600">Supreme Court decisions</p>
+              </div>
+              <ExternalLink className="w-4 h-4 text-teal-600 ml-auto" />
+            </a>
+
+            {/* Northern Territory */}
+            <a 
+              href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/nt/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 p-3 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors"
+            >
+              <div className="w-8 h-8 bg-orange-600 rounded flex items-center justify-center text-white text-xs font-bold">
+                NT
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-900">NT Cases</p>
+                <p className="text-xs text-slate-600">Supreme Court decisions</p>
+              </div>
+              <ExternalLink className="w-4 h-4 text-orange-600 ml-auto" />
+            </a>
+
+            {/* ACT */}
+            <a 
+              href="https://www.courts.act.gov.au/supreme/judgments"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 p-3 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition-colors"
+            >
+              <div className="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center text-white text-xs font-bold">
+                ACT
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-900">ACT Judgments</p>
+                <p className="text-xs text-slate-600">Supreme Court decisions</p>
+              </div>
+              <ExternalLink className="w-4 h-4 text-indigo-600 ml-auto" />
+            </a>
+          </div>
+
+          {/* Federal Courts */}
+          <div className="bg-slate-100 border border-slate-200 rounded-lg p-4 mb-4">
+            <h5 className="font-medium text-slate-900 mb-2 flex items-center gap-2">
+              <Gavel className="w-4 h-4 text-slate-600" />
+              Federal Courts
+            </h5>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <a 
+                href="https://www.hcourt.gov.au/cases/cases-heard"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+              >
+                <ExternalLink className="w-3 h-3" />
+                High Court of Australia
+              </a>
+              <a 
+                href="https://www.fedcourt.gov.au/judgments"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+              >
+                <ExternalLink className="w-3 h-3" />
+                Federal Court of Australia
+              </a>
+            </div>
+          </div>
+
+          {/* AustLII Main */}
           <a 
             href="https://www.austlii.edu.au/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 transition-colors"
+            className="flex items-center justify-center gap-2 p-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors"
           >
+            <BookOpen className="w-5 h-5" />
+            <span className="font-medium">Search All Australian Law on AustLII</span>
             <ExternalLink className="w-4 h-4" />
-            View full legislation on AustLII
           </a>
+          <p className="text-xs text-slate-500 text-center mt-2">
+            AustLII provides free access to all Australian legislation and case law
+          </p>
         </div>
       </CardContent>
     </Card>
