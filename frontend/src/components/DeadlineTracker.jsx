@@ -2,24 +2,30 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { API } from "../App";
 import { 
-  Clock, AlertTriangle, CheckCircle2, Plus, Trash2, Calendar
+  Clock, AlertTriangle, CheckCircle2, Plus, Trash2, Calendar as CalendarIcon, List
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Badge } from "./ui/badge";
 import { toast } from "sonner";
+import { Calendar } from "./ui/calendar";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter
 } from "./ui/dialog";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from "./ui/select";
+import {
+  Tabs, TabsContent, TabsList, TabsTrigger
+} from "./ui/tabs";
 
 const DeadlineTracker = ({ caseId }) => {
   const [deadlines, setDeadlines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const [viewMode, setViewMode] = useState("list"); // "list" or "calendar"
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [newDeadline, setNewDeadline] = useState({
     title: "",
     description: "",
@@ -103,6 +109,39 @@ const DeadlineTracker = ({ caseId }) => {
     return "bg-slate-50 text-slate-700 border-slate-200";
   };
 
+  // Get deadlines for a specific date
+  const getDeadlinesForDate = (date) => {
+    return deadlines.filter(deadline => {
+      const deadlineDate = new Date(deadline.due_date);
+      return deadlineDate.toDateString() === date.toDateString();
+    });
+  };
+
+  // Get all deadline dates for calendar highlighting
+  const getDeadlineDates = () => {
+    return deadlines.map(d => new Date(d.due_date));
+  };
+
+  // Custom day component for calendar with deadline indicators
+  const modifiers = {
+    deadline: getDeadlineDates(),
+    overdue: deadlines
+      .filter(d => !d.is_completed && getDaysRemaining(d.due_date) < 0)
+      .map(d => new Date(d.due_date)),
+    urgent: deadlines
+      .filter(d => !d.is_completed && getDaysRemaining(d.due_date) <= 3 && getDaysRemaining(d.due_date) >= 0)
+      .map(d => new Date(d.due_date)),
+    upcoming: deadlines
+      .filter(d => !d.is_completed && getDaysRemaining(d.due_date) > 3 && getDaysRemaining(d.due_date) <= 7)
+      .map(d => new Date(d.due_date)),
+  };
+
+  const modifiersStyles = {
+    overdue: { color: '#dc2626', fontWeight: 'bold', backgroundColor: '#fee2e2' },
+    urgent: { color: '#ea580c', fontWeight: 'bold', backgroundColor: '#fed7aa' },
+    upcoming: { color: '#f59e0b', fontWeight: 'bold', backgroundColor: '#fef3c7' },
+  };
+
   const DEADLINE_TYPES = [
     { value: "appeal_lodgement", label: "Appeal Lodgement (28 days)" },
     { value: "leave_application", label: "Leave Application" },
@@ -126,79 +165,177 @@ const DeadlineTracker = ({ caseId }) => {
         </div>
       </CardHeader>
       <CardContent>
-        {loading ? (
-          <div className="animate-pulse space-y-3">
-            {[1, 2].map(i => (
-              <div key={i} className="h-16 bg-slate-100 rounded"></div>
-            ))}
-          </div>
-        ) : deadlines.length === 0 ? (
-          <div className="text-center py-6 text-slate-500">
-            <Clock className="w-10 h-10 mx-auto mb-2 opacity-30" />
-            <p>No deadlines set</p>
-            <p className="text-sm">Add important dates to track</p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {deadlines.map(deadline => {
-              const daysRemaining = getDaysRemaining(deadline.due_date);
-              const isOverdue = daysRemaining < 0 && !deadline.is_completed;
-              
-              return (
-                <div 
-                  key={deadline.deadline_id}
-                  className={`p-3 rounded-lg border ${getPriorityColor(deadline.priority, daysRemaining, deadline.is_completed)} ${deadline.is_completed ? 'opacity-60' : ''}`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-3">
-                      <button
-                        onClick={() => handleToggleComplete(deadline.deadline_id, deadline.is_completed)}
-                        className={`mt-0.5 ${deadline.is_completed ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'}`}
-                      >
-                        <CheckCircle2 className={`w-5 h-5 ${deadline.is_completed ? 'fill-emerald-100' : ''}`} />
-                      </button>
-                      <div>
-                        <p className={`font-medium ${deadline.is_completed ? 'line-through' : ''}`}>
-                          {deadline.title}
-                        </p>
-                        {deadline.description && (
-                          <p className="text-sm opacity-75">{deadline.description}</p>
-                        )}
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="outline" className="text-xs">
-                            {new Date(deadline.due_date).toLocaleDateString('en-AU', {
-                              weekday: 'short', day: 'numeric', month: 'short'
-                            })}
-                          </Badge>
-                          {!deadline.is_completed && (
-                            <span className={`text-xs font-medium ${isOverdue ? 'text-red-600' : daysRemaining <= 3 ? 'text-red-600' : daysRemaining <= 7 ? 'text-amber-600' : 'text-slate-600'}`}>
-                              {isOverdue 
-                                ? `${Math.abs(daysRemaining)} days overdue!`
-                                : daysRemaining === 0 
-                                  ? 'Due today!'
-                                  : daysRemaining === 1 
-                                    ? 'Due tomorrow'
-                                    : `${daysRemaining} days left`
-                              }
-                            </span>
-                          )}
+        <Tabs value={viewMode} onValueChange={setViewMode} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-4">
+            <TabsTrigger value="list" className="flex items-center gap-2">
+              <List className="w-4 h-4" />
+              List View
+            </TabsTrigger>
+            <TabsTrigger value="calendar" className="flex items-center gap-2">
+              <CalendarIcon className="w-4 h-4" />
+              Calendar View
+            </TabsTrigger>
+          </TabsList>
+
+          {/* List View */}
+          <TabsContent value="list" className="mt-0">
+            {loading ? (
+              <div className="animate-pulse space-y-3">
+                {[1, 2].map(i => (
+                  <div key={i} className="h-16 bg-slate-100 rounded"></div>
+                ))}
+              </div>
+            ) : deadlines.length === 0 ? (
+              <div className="text-center py-6 text-slate-500">
+                <Clock className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                <p>No deadlines set</p>
+                <p className="text-sm">Add important dates to track</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {deadlines.map(deadline => {
+                  const daysRemaining = getDaysRemaining(deadline.due_date);
+                  const isOverdue = daysRemaining < 0 && !deadline.is_completed;
+                  
+                  return (
+                    <div 
+                      key={deadline.deadline_id}
+                      className={`p-3 rounded-lg border ${getPriorityColor(deadline.priority, daysRemaining, deadline.is_completed)} ${deadline.is_completed ? 'opacity-60' : ''}`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-3">
+                          <button
+                            onClick={() => handleToggleComplete(deadline.deadline_id, deadline.is_completed)}
+                            className={`mt-0.5 ${deadline.is_completed ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'}`}
+                          >
+                            <CheckCircle2 className={`w-5 h-5 ${deadline.is_completed ? 'fill-emerald-100' : ''}`} />
+                          </button>
+                          <div>
+                            <p className={`font-medium ${deadline.is_completed ? 'line-through' : ''}`}>
+                              {deadline.title}
+                            </p>
+                            {deadline.description && (
+                              <p className="text-sm opacity-75">{deadline.description}</p>
+                            )}
+                            <div className="flex items-center gap-2 mt-1">
+                              <Badge variant="outline" className="text-xs">
+                                {new Date(deadline.due_date).toLocaleDateString('en-AU', {
+                                  weekday: 'short', day: 'numeric', month: 'short'
+                                })}
+                              </Badge>
+                              {!deadline.is_completed && (
+                                <span className={`text-xs font-medium ${isOverdue ? 'text-red-600' : daysRemaining <= 3 ? 'text-red-600' : daysRemaining <= 7 ? 'text-amber-600' : 'text-slate-600'}`}>
+                                  {isOverdue 
+                                    ? `${Math.abs(daysRemaining)} days overdue!`
+                                    : daysRemaining === 0 
+                                      ? 'Due today!'
+                                      : daysRemaining === 1 
+                                        ? 'Due tomorrow'
+                                        : `${daysRemaining} days left`
+                                  }
+                                </span>
+                              )}
+                            </div>
+                          </div>
                         </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteDeadline(deadline.deadline_id)}
+                          className="text-slate-400 hover:text-red-600"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDeleteDeadline(deadline.deadline_id)}
-                      className="text-slate-400 hover:text-red-600"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                  );
+                })}
+              </div>
+            )}
+          </TabsContent>
+
+          {/* Calendar View */}
+          <TabsContent value="calendar" className="mt-0">
+            {loading ? (
+              <div className="animate-pulse">
+                <div className="h-80 bg-slate-100 rounded"></div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex justify-center">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    modifiers={modifiers}
+                    modifiersStyles={modifiersStyles}
+                    className="rounded-md border"
+                  />
+                </div>
+
+                {/* Legend */}
+                <div className="flex flex-wrap gap-4 justify-center text-xs">
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 rounded-full bg-red-200"></div>
+                    <span>Overdue</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 rounded-full bg-orange-200"></div>
+                    <span>Urgent (≤3 days)</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 rounded-full bg-amber-200"></div>
+                    <span>Upcoming (≤7 days)</span>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        )}
+
+                {/* Deadlines for selected date */}
+                {selectedDate && (
+                  <div className="mt-4 border-t pt-4">
+                    <h4 className="font-medium text-sm mb-2">
+                      Deadlines on {selectedDate.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
+                    </h4>
+                    {getDeadlinesForDate(selectedDate).length === 0 ? (
+                      <p className="text-sm text-slate-500">No deadlines on this date</p>
+                    ) : (
+                      <div className="space-y-2">
+                        {getDeadlinesForDate(selectedDate).map(deadline => {
+                          const daysRemaining = getDaysRemaining(deadline.due_date);
+                          return (
+                            <div 
+                              key={deadline.deadline_id}
+                              className={`p-2 rounded border text-sm ${getPriorityColor(deadline.priority, daysRemaining, deadline.is_completed)}`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => handleToggleComplete(deadline.deadline_id, deadline.is_completed)}
+                                    className={`${deadline.is_completed ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'}`}
+                                  >
+                                    <CheckCircle2 className={`w-4 h-4 ${deadline.is_completed ? 'fill-emerald-100' : ''}`} />
+                                  </button>
+                                  <span className={deadline.is_completed ? 'line-through' : ''}>{deadline.title}</span>
+                                </div>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleDeleteDeadline(deadline.deadline_id)}
+                                  className="h-6 w-6 p-0 text-slate-400 hover:text-red-600"
+                                >
+                                  <Trash2 className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
 
         {/* Add Deadline Dialog */}
         <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>

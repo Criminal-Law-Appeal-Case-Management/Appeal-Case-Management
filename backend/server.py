@@ -4331,6 +4331,9 @@ app.include_router(admin_router)
 from routers.utilities import router as utilities_router
 app.include_router(utilities_router)
 
+from routers.deadlines import router as deadlines_router
+app.include_router(deadlines_router)
+
 # Include statistics router
 from routers.statistics import router as statistics_router
 app.include_router(statistics_router)
