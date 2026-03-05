@@ -178,7 +178,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **Document Templates** - Notice of Appeal, Leave to Appeal, Fresh Evidence Affidavit, Extension of Time
 - [x] **Progress Tab** - New tab showing Case Strength, Deadlines, and Checklist
 
-### Complete UI/UX Redesign (Dec 2025) ✅
+### Complete UI/UX Redesign (Dec 2025 - Mar 2026) ✅
 - [x] **New Color Scheme** - "Hope in Darkness" theme
   - Deep Indigo (#1E1B4B) primary color
   - Burnished Amber (#B45309) accent color
@@ -188,6 +188,8 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Manrope for body text (clean, modern)
 - [x] **Landing Page Redesign**
   - Asymmetric hero section with Lady Justice image
+  - State selector for jurisdiction-specific content
+  - Feature preview mockups for timeline, grounds, reports
   - Cleaner feature cards in bento grid layout
   - Quick links bar for easy navigation
   - Condensed About section with personal story
@@ -201,14 +203,21 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Glass header with breadcrumb navigation
   - Updated tab styling with rounded corners
   - Consistent card styling throughout
-- [x] **All Pages Updated**
-  - Forms & Templates page
-  - FAQ page with accordion
-  - Lawyer Directory page
-  - Statistics page
+- [x] **All Pages Updated** (Mar 2026 Session)
+  - ✅ AuthModal - Branded header with gradient, amber button styling
+  - ✅ ContactPage - Hero section, form redesign, navigation
+  - ✅ Statistics Page - Dashboard with stat cards and bar charts
+  - ✅ AdminStats - Admin analytics page
+  - ✅ TermsOfService - Collapsible sections, highlighted warnings
+  - ✅ SuccessStories - Story cards with outcome badges
+  - ✅ Forms & Templates page
+  - ✅ FAQ page with accordion and category graphics
+  - ✅ Lawyer Directory page
+  - ✅ Legal Glossary page with expandable definitions
   - All pages use new design tokens
 - [x] **Glass Morphism Effects** - Backdrop blur on headers and modals
 - [x] **Legal-themed Graphics** - Scales of justice, gavel imagery throughout
+- [x] **Testing Verified** - All redesigned pages tested (test_reports/iteration_19.json)
 
 
 
