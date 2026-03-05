@@ -260,62 +260,193 @@ const LandingPage = () => {
               </div>
             </div>
 
-            {/* Sample 4: Reports */}
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="order-2 md:order-1 bg-slate-100 rounded-lg p-4 border border-slate-200">
-                <div className="space-y-3">
-                  {/* Quick Summary Report */}
-                  <div className="bg-white rounded border border-slate-200 shadow-sm p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-xs font-semibold text-slate-800">QUICK SUMMARY REPORT</span>
-                    </div>
-                    <div className="text-xs text-slate-600 space-y-1">
-                      <p><strong>Case:</strong> R v Smith [2024]</p>
-                      <p><strong>Grounds Identified:</strong> 3 potential grounds</p>
-                      <p><strong>Strongest Ground:</strong> Misdirection on mens rea</p>
-                      <p><strong>Recommendation:</strong> Seek legal review of jury directions</p>
-                    </div>
-                  </div>
-                  
-                  {/* Full Report Preview */}
-                  <div className="bg-white rounded border border-slate-200 shadow-sm p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span className="text-xs font-semibold text-slate-800">FULL DETAILED REPORT</span>
-                    </div>
-                    <div className="text-xs text-slate-600">
-                      <p>Comprehensive analysis including case summary, all identified grounds with legal citations, 
-                      relevant case law, and detailed recommendations for each potential appeal point...</p>
-                    </div>
-                  </div>
-                  
-                  {/* Extensive Log Preview */}
-                  <div className="bg-white rounded border border-slate-200 shadow-sm p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                      <span className="text-xs font-semibold text-slate-800">EXTENSIVE LOG REPORT</span>
-                    </div>
-                    <div className="text-xs text-slate-600">
-                      <p>Complete audit trail with document analysis, timeline events, all grounds with full legal framework, 
-                      similar cases, and step-by-step appeal process guidance...</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="order-1 md:order-2">
+            {/* Sample 4: Reports - Detailed */}
+            <div>
+              <div className="text-center mb-8">
                 <span className="text-amber-600 font-semibold text-xs uppercase tracking-wider">Step 4</span>
                 <h3 className="text-xl font-bold text-slate-900 mt-2 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   Generate Reports
                 </h3>
-                <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                  Generate three types of reports to suit your needs:
+                <p className="text-slate-600 text-sm max-w-2xl mx-auto">
+                  Generate three types of reports to suit your needs. Here's what each report looks like:
                 </p>
-                <ul className="text-slate-600 text-sm space-y-2">
-                  <li><strong className="text-slate-900">Quick Summary:</strong> A brief overview of the case and key findings — perfect for initial assessment.</li>
-                  <li><strong className="text-slate-900">Full Detailed:</strong> Comprehensive analysis with legal citations, case law references, and detailed ground-by-ground breakdown.</li>
-                  <li><strong className="text-slate-900">Extensive Log:</strong> Complete documentation including all analysis, timeline, documents reviewed, and step-by-step appeal guidance.</li>
-                </ul>
+              </div>
+
+              <div className="space-y-8">
+                
+                {/* Quick Summary Report - Detailed */}
+                <div className="bg-gradient-to-r from-green-50 to-white rounded-xl border border-green-200 overflow-hidden">
+                  <div className="bg-green-600 text-white px-6 py-3 flex items-center gap-2">
+                    <div className="w-3 h-3 bg-white rounded-full"></div>
+                    <span className="font-semibold">QUICK SUMMARY REPORT</span>
+                    <span className="text-green-200 text-sm ml-2">— Perfect for initial assessment</span>
+                  </div>
+                  <div className="p-6">
+                    <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                      <div className="border-b border-slate-200 pb-4 mb-4">
+                        <h4 className="text-lg font-bold text-slate-900">CASE SUMMARY REPORT</h4>
+                        <p className="text-sm text-slate-600">R v Smith [2024] NSWSC 142</p>
+                        <p className="text-xs text-slate-500 mt-1">Generated: 5 March 2025</p>
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-6 text-sm">
+                        <div>
+                          <h5 className="font-semibold text-slate-800 mb-2">Case Overview</h5>
+                          <ul className="text-slate-600 space-y-1 text-xs">
+                            <li><strong>Offence:</strong> Murder (s.18(1)(a) Crimes Act 1900)</li>
+                            <li><strong>Verdict:</strong> Guilty</li>
+                            <li><strong>Sentence:</strong> 18 years imprisonment (NPP 12 years)</li>
+                            <li><strong>Trial Judge:</strong> Justice Williams</li>
+                            <li><strong>Documents Analysed:</strong> 12 files</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h5 className="font-semibold text-slate-800 mb-2">Key Findings</h5>
+                          <ul className="text-slate-600 space-y-1 text-xs">
+                            <li><strong>Grounds Identified:</strong> 3 potential grounds</li>
+                            <li><strong>Strongest Ground:</strong> Misdirection on mens rea</li>
+                            <li><strong>Strength Assessment:</strong> Moderate-Strong</li>
+                            <li><strong>Appeal Deadline:</strong> 28 days from sentencing</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="mt-4 pt-4 border-t border-slate-200">
+                        <h5 className="font-semibold text-slate-800 mb-2 text-sm">Recommendation</h5>
+                        <p className="text-xs text-slate-600">
+                          Based on initial analysis, this case presents viable grounds for appeal. The primary ground 
+                          relates to the trial judge's direction on intent (mens rea). Recommend seeking urgent legal 
+                          review of jury directions from qualified counsel.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Full Detailed Report */}
+                <div className="bg-gradient-to-r from-blue-50 to-white rounded-xl border border-blue-200 overflow-hidden">
+                  <div className="bg-blue-600 text-white px-6 py-3 flex items-center gap-2">
+                    <div className="w-3 h-3 bg-white rounded-full"></div>
+                    <span className="font-semibold">FULL DETAILED REPORT</span>
+                    <span className="text-blue-200 text-sm ml-2">— Comprehensive analysis with citations</span>
+                  </div>
+                  <div className="p-6">
+                    <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                      <div className="border-b border-slate-200 pb-4 mb-4">
+                        <h4 className="text-lg font-bold text-slate-900">DETAILED APPEAL ANALYSIS</h4>
+                        <p className="text-sm text-slate-600">R v Smith [2024] NSWSC 142</p>
+                      </div>
+                      
+                      <div className="space-y-4 text-sm">
+                        <div>
+                          <h5 className="font-bold text-slate-900 text-base mb-2">1. GROUND ONE: Misdirection on Mens Rea</h5>
+                          <div className="bg-amber-50 border-l-4 border-amber-500 p-3 mb-3">
+                            <p className="text-xs text-amber-800"><strong>Strength:</strong> STRONG — High likelihood of success</p>
+                          </div>
+                          <div className="text-xs text-slate-600 space-y-2">
+                            <p><strong>Issue:</strong> The trial judge's direction to the jury on the element of intent under 
+                            s.18(1)(a) Crimes Act 1900 (NSW) was inadequate. The direction failed to properly explain the 
+                            distinction between intent to kill and intent to cause grievous bodily harm.</p>
+                            <p><strong>Legal Framework:</strong></p>
+                            <ul className="list-disc list-inside ml-2 space-y-1">
+                              <li>s.18(1)(a) Crimes Act 1900 (NSW) — Murder where act done with intent to kill or cause GBH</li>
+                              <li>s.5.1 Criminal Code Act 1995 (Cth) — Definition of intention</li>
+                              <li>Woolmington v DPP [1935] AC 462 — Burden of proof</li>
+                            </ul>
+                            <p><strong>Supporting Case Law:</strong></p>
+                            <ul className="list-disc list-inside ml-2 space-y-1">
+                              <li>R v Lavender (2005) 222 CLR 67 — Requirement for proper mens rea direction</li>
+                              <li>Royall v The Queen (1991) 172 CLR 378 — Adequacy of jury directions</li>
+                              <li>Alister v The Queen (1984) 154 CLR 404 — Miscarriage from inadequate direction</li>
+                            </ul>
+                            <p><strong>Analysis:</strong> At page 142 of the trial transcript, the judge directed: "You must be 
+                            satisfied the accused intended to cause serious harm." This direction conflates GBH with "serious harm" 
+                            and fails to address the specific mental element required. Compare with the approved direction in 
+                            R v Lavender at [45].</p>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h5 className="font-bold text-slate-900 text-base mb-2">2. GROUND TWO: Procedural Fairness</h5>
+                          <div className="bg-blue-50 border-l-4 border-blue-500 p-3 mb-3">
+                            <p className="text-xs text-blue-800"><strong>Strength:</strong> MODERATE — Requires further evidence</p>
+                          </div>
+                          <div className="text-xs text-slate-600">
+                            <p><strong>Issue:</strong> Defence counsel was granted insufficient time to prepare following late 
+                            disclosure of forensic evidence. The additional material was provided 48 hours before trial...</p>
+                            <p className="mt-2 text-slate-400 italic">[Report continues with full analysis of each ground...]</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Extensive Log Report */}
+                <div className="bg-gradient-to-r from-purple-50 to-white rounded-xl border border-purple-200 overflow-hidden">
+                  <div className="bg-purple-600 text-white px-6 py-3 flex items-center gap-2">
+                    <div className="w-3 h-3 bg-white rounded-full"></div>
+                    <span className="font-semibold">EXTENSIVE LOG REPORT</span>
+                    <span className="text-purple-200 text-sm ml-2">— Complete documentation & guidance</span>
+                  </div>
+                  <div className="p-6">
+                    <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                      <div className="border-b border-slate-200 pb-4 mb-4">
+                        <h4 className="text-lg font-bold text-slate-900">COMPREHENSIVE APPEAL DOCUMENTATION</h4>
+                        <p className="text-sm text-slate-600">R v Smith [2024] NSWSC 142 — Complete Record</p>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-3 gap-4 text-xs mb-4">
+                        <div className="bg-slate-50 rounded p-3">
+                          <p className="font-semibold text-slate-800 mb-1">Documents Analysed</p>
+                          <p className="text-slate-600">12 files • 847 pages</p>
+                        </div>
+                        <div className="bg-slate-50 rounded p-3">
+                          <p className="font-semibold text-slate-800 mb-1">Timeline Events</p>
+                          <p className="text-slate-600">23 key events identified</p>
+                        </div>
+                        <div className="bg-slate-50 rounded p-3">
+                          <p className="font-semibold text-slate-800 mb-1">Analysis Duration</p>
+                          <p className="text-slate-600">Generated in 4m 32s</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3 text-xs">
+                        <div className="border border-slate-200 rounded p-3">
+                          <p className="font-semibold text-slate-800">TABLE OF CONTENTS</p>
+                          <div className="mt-2 text-slate-600 grid md:grid-cols-2 gap-1">
+                            <p>1. Executive Summary ..................... p.1</p>
+                            <p>2. Case Background ........................ p.3</p>
+                            <p>3. Complete Timeline ...................... p.8</p>
+                            <p>4. Document Analysis Log .................. p.15</p>
+                            <p>5. Ground 1: Full Analysis ................ p.24</p>
+                            <p>6. Ground 2: Full Analysis ................ p.38</p>
+                            <p>7. Ground 3: Full Analysis ................ p.49</p>
+                            <p>8. Relevant Case Law Summaries ............ p.58</p>
+                            <p>9. Legislative Framework .................. p.72</p>
+                            <p>10. Similar Successful Appeals ............ p.81</p>
+                            <p>11. Appeal Process Step-by-Step ........... p.89</p>
+                            <p>12. Deadlines & Requirements .............. p.95</p>
+                            <p>13. Recommended Actions ................... p.98</p>
+                            <p>14. Appendices & Source Documents ......... p.102</p>
+                          </div>
+                        </div>
+
+                        <div className="border border-slate-200 rounded p-3">
+                          <p className="font-semibold text-slate-800 mb-2">SAMPLE: APPEAL PROCESS GUIDANCE (Section 11)</p>
+                          <div className="text-slate-600 space-y-2">
+                            <p><strong>Step 1: Notice of Intention to Appeal</strong></p>
+                            <p className="ml-3">File Form 74C with the Court of Criminal Appeal Registry within 28 days of conviction/sentence. 
+                            Include: appellant details, conviction date, sentence imposed, brief grounds...</p>
+                            <p><strong>Step 2: Obtain Transcripts</strong></p>
+                            <p className="ml-3">Request from Reporting Services Branch. Cost: approximately $7.50/page. 
+                            Priority processing available for custody matters...</p>
+                            <p className="text-slate-400 italic">[Full step-by-step guide continues for 12 pages...]</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
 
