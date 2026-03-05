@@ -180,10 +180,13 @@ Important: Return ONLY valid JSON, no additional text."""
     try:
         llm_key = os.environ.get("LLM_KEY", "")
         
-        response = await LlmChat().with_api_key(llm_key).with_user_message(
-            UserMessage(text=prompt)
-        ).with_model("openai", "gpt-4o").chat()
+        chat = LlmChat(
+            api_key=llm_key,
+            session_id=f"contradiction_{case_id}_{uuid.uuid4().hex[:8]}",
+            system_message="You are a legal contradiction analyst specializing in criminal appeals in Australia."
+        ).with_model("openai", "gpt-4o")
         
+        response = await chat.send_message(UserMessage(text=prompt))
         response_text = response.content.strip()
         
         # Clean up response if needed
