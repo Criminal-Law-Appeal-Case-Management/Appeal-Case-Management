@@ -932,6 +932,11 @@ const CaseDetail = ({ user }) => {
           {/* Offence Type Display */}
           {caseData?.offence_category && (
             <div className="flex flex-wrap items-center gap-2 mt-3">
+              {caseData?.state && (
+                <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 uppercase">
+                  {caseData.state}
+                </Badge>
+              )}
               <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 capitalize">
                 {caseData.offence_category.replace(/_/g, ' ')}
               </Badge>
@@ -1564,6 +1569,7 @@ const CaseDetail = ({ user }) => {
             <LegalFrameworkViewer 
               offenceCategory={caseData?.offence_category}
               offenceType={caseData?.offence_type}
+              state={caseData?.state}
             />
           </TabsContent>
 

@@ -75,7 +75,7 @@ const LandingPage = () => {
       <section className="py-16 md:py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-amber-700 font-semibold text-xs uppercase tracking-widest mb-4">
-            All Criminal Offences • NSW & Federal Law
+            All Australian States & Territories • All Criminal Offences
           </p>
           <h1 
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight leading-tight mb-6"
@@ -84,8 +84,19 @@ const LandingPage = () => {
             Criminal Appeal Research Tool
           </h1>
           <p className="text-lg text-slate-600 mb-4 max-w-2xl mx-auto">
-            Organise case documents, generate timelines, and identify potential appeal issues under NSW and Australian Federal law.
+            Organise case documents, generate timelines, and identify potential appeal issues across all Australian jurisdictions.
           </p>
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">NSW</span>
+            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">VIC</span>
+            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">QLD</span>
+            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">SA</span>
+            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">WA</span>
+            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">TAS</span>
+            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">NT</span>
+            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">ACT</span>
+            <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded font-medium">Federal</span>
+          </div>
           <div className="flex flex-wrap justify-center gap-2 mb-8">
             <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Homicide</span>
             <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Assault</span>

@@ -59,6 +59,7 @@ class Case(BaseModel):
     case_number: Optional[str] = None
     court: Optional[str] = None
     judge: Optional[str] = None
+    state: str = "nsw"  # nsw, vic, qld, sa, wa, tas, nt, act
     offence_category: str = "homicide"  # homicide, assault, sexual_offences, robbery_theft, drug_offences, fraud_dishonesty, firearms_weapons, domestic_violence, public_order, terrorism, driving_offences
     offence_type: Optional[str] = None  # Specific offence within category
     status: str = "active"
@@ -72,6 +73,7 @@ class CaseCreate(BaseModel):
     case_number: Optional[str] = None
     court: Optional[str] = None
     judge: Optional[str] = None
+    state: str = "nsw"
     offence_category: str = "homicide"
     offence_type: Optional[str] = None
     summary: Optional[str] = None
@@ -584,7 +586,7 @@ async def get_submitted_stories(request: Request):
     stories = await db.success_stories.find({}, {"_id": 0}).sort("timestamp", -1).to_list(100)
     return {"stories": stories}
 
-from offence_framework import OFFENCE_CATEGORIES, COMMON_APPEAL_GROUNDS, HUMAN_RIGHTS_FRAMEWORK, APPEAL_FRAMEWORK
+from offence_framework import OFFENCE_CATEGORIES, COMMON_APPEAL_GROUNDS, HUMAN_RIGHTS_FRAMEWORK, APPEAL_FRAMEWORK, AUSTRALIAN_STATES
 
 # ============ OFFENCE-SPECIFIC HELPER FUNCTIONS ============
 
@@ -592,13 +594,16 @@ def get_offence_context(case: dict) -> str:
     """Build offence-specific context string for AI prompts"""
     offence_category = case.get('offence_category', 'homicide')
     offence_type = case.get('offence_type', '')
+    state = case.get('state', 'nsw')
     
     category_data = OFFENCE_CATEGORIES.get(offence_category, OFFENCE_CATEGORIES.get('homicide'))
+    state_info = AUSTRALIAN_STATES.get(state, AUSTRALIAN_STATES.get('nsw'))
     
     context = f"""
 OFFENCE INFORMATION:
 - Category: {category_data.get('name', 'Unknown')} ({offence_category})
 - Specific Offence: {offence_type if offence_type else 'Not specified'}
+- Jurisdiction: {state_info.get('name', 'New South Wales')} ({state_info.get('abbreviation', 'NSW')})
 - Description: {category_data.get('description', '')}
 
 KEY ELEMENTS TO PROVE:
@@ -607,15 +612,19 @@ KEY ELEMENTS TO PROVE:
 AVAILABLE DEFENCES:
 {chr(10).join(f"- {defence}" for defence in category_data.get('defences', []))}
 
-RELEVANT NSW LEGISLATION:
+RELEVANT {state_info.get('abbreviation', 'NSW')} LEGISLATION:
 """
-    for act_name, sections in category_data.get('nsw_legislation', {}).items():
+    # Get state-specific legislation
+    state_leg_key = f"{state}_legislation"
+    state_legislation = category_data.get(state_leg_key, category_data.get('nsw_legislation', {}))
+    
+    for act_name, sections in state_legislation.items():
         context += f"\n{act_name}:\n"
         for section in sections:
             context += f"  - {section.get('section')}: {section.get('title')}\n"
     
     if category_data.get('cth_legislation'):
-        context += "\nRELEVANT FEDERAL LEGISLATION:\n"
+        context += "\nRELEVANT FEDERAL/COMMONWEALTH LEGISLATION:\n"
         for act_name, sections in category_data.get('cth_legislation', {}).items():
             context += f"\n{act_name}:\n"
             for section in sections:
@@ -650,6 +659,18 @@ You have successfully overturned dozens of wrongful convictions in {category_nam
 
 # ============ OFFENCE FRAMEWORK ENDPOINTS ============
 
+@api_router.get("/states")
+async def get_australian_states():
+    """Get all Australian states and territories"""
+    states = []
+    for key, value in AUSTRALIAN_STATES.items():
+        states.append({
+            "id": key,
+            "name": value["name"],
+            "abbreviation": value["abbreviation"]
+        })
+    return {"states": states}
+
 @api_router.get("/offence-framework")
 async def get_offence_framework():
     """Get all offence categories and legal framework"""
@@ -657,7 +678,8 @@ async def get_offence_framework():
         "categories": OFFENCE_CATEGORIES,
         "common_appeal_grounds": COMMON_APPEAL_GROUNDS,
         "human_rights": HUMAN_RIGHTS_FRAMEWORK,
-        "appeal_framework": APPEAL_FRAMEWORK
+        "appeal_framework": APPEAL_FRAMEWORK,
+        "states": AUSTRALIAN_STATES
     }
 
 @api_router.get("/offence-categories")
@@ -674,15 +696,37 @@ async def get_offence_categories():
     return {"categories": categories}
 
 @api_router.get("/offence-framework/{category}")
-async def get_offence_category_details(category: str):
-    """Get detailed framework for a specific offence category"""
+async def get_offence_category_details(category: str, state: str = "nsw"):
+    """Get detailed framework for a specific offence category and state"""
     if category not in OFFENCE_CATEGORIES:
         raise HTTPException(status_code=404, detail="Offence category not found")
     
+    category_data = OFFENCE_CATEGORIES[category]
+    
+    # Get state-specific legislation
+    state_leg_key = f"{state}_legislation"
+    state_legislation = category_data.get(state_leg_key, {})
+    
+    # Build response with state-specific data
+    response_category = {
+        "name": category_data["name"],
+        "description": category_data["description"],
+        "offences": category_data["offences"],
+        "defences": category_data["defences"],
+        "key_elements": category_data["key_elements"],
+        "state_legislation": state_legislation,
+        "cth_legislation": category_data.get("cth_legislation", {}),
+    }
+    
+    # Get appeal framework for the state
+    state_appeal = APPEAL_FRAMEWORK.get(state, APPEAL_FRAMEWORK.get("nsw"))
+    
     return {
-        "category": OFFENCE_CATEGORIES[category],
+        "category": response_category,
         "common_appeal_grounds": COMMON_APPEAL_GROUNDS,
-        "human_rights": HUMAN_RIGHTS_FRAMEWORK
+        "human_rights": HUMAN_RIGHTS_FRAMEWORK,
+        "appeal_framework": state_appeal,
+        "state": AUSTRALIAN_STATES.get(state, AUSTRALIAN_STATES.get("nsw"))
     }
 
 # ============ AUTH ENDPOINTS ============

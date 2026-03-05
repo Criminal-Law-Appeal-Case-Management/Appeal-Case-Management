@@ -34,12 +34,14 @@ const Dashboard = ({ user }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showNewCaseDialog, setShowNewCaseDialog] = useState(false);
   const [offenceCategories, setOffenceCategories] = useState([]);
+  const [australianStates, setAustralianStates] = useState([]);
   const [newCase, setNewCase] = useState({
     title: "",
     defendant_name: "",
     case_number: "",
     court: "",
     judge: "",
+    state: "nsw",
     offence_category: "homicide",
     offence_type: "",
     summary: ""
@@ -48,7 +50,17 @@ const Dashboard = ({ user }) => {
   useEffect(() => {
     fetchCases();
     fetchOffenceCategories();
+    fetchStates();
   }, []);
+
+  const fetchStates = async () => {
+    try {
+      const response = await axios.get(`${API}/states`);
+      setAustralianStates(response.data.states);
+    } catch (error) {
+      console.error("Failed to load states");
+    }
+  };
 
   const fetchOffenceCategories = async () => {
     try {
@@ -397,20 +409,36 @@ const Dashboard = ({ user }) => {
                 {offenceCategories.find(c => c.id === newCase.offence_category)?.description}
               </p>
             </div>
-            <div>
-              <Label htmlFor="offence_type">Specific Offence</Label>
-              <select
-                id="offence_type"
-                value={newCase.offence_type}
-                onChange={(e) => setNewCase({ ...newCase, offence_type: e.target.value })}
-                className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
-                data-testid="new-case-offence-type"
-              >
-                <option value="">Select specific offence...</option>
-                {offenceCategories.find(c => c.id === newCase.offence_category)?.offences.map(off => (
-                  <option key={off} value={off}>{off}</option>
-                ))}
-              </select>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="offence_type">Specific Offence</Label>
+                <select
+                  id="offence_type"
+                  value={newCase.offence_type}
+                  onChange={(e) => setNewCase({ ...newCase, offence_type: e.target.value })}
+                  className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+                  data-testid="new-case-offence-type"
+                >
+                  <option value="">Select specific offence...</option>
+                  {offenceCategories.find(c => c.id === newCase.offence_category)?.offences.map(off => (
+                    <option key={off} value={off}>{off}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <Label htmlFor="state">State/Territory *</Label>
+                <select
+                  id="state"
+                  value={newCase.state}
+                  onChange={(e) => setNewCase({ ...newCase, state: e.target.value })}
+                  className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+                  data-testid="new-case-state"
+                >
+                  {australianStates.map(state => (
+                    <option key={state.id} value={state.id}>{state.name} ({state.abbreviation})</option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>

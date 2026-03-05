@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { 
   Scale, BookOpen, Shield, AlertTriangle, ChevronDown, ChevronRight,
-  FileText, Gavel, ExternalLink, Loader2
+  FileText, Gavel, ExternalLink, Loader2, MapPin, Clock
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { ScrollArea } from "./ui/scroll-area";
 import {
   Collapsible,
   CollapsibleContent,
@@ -15,27 +14,48 @@ import {
 } from "./ui/collapsible";
 import { API } from "../App";
 
-const LegalFrameworkViewer = ({ offenceCategory, offenceType }) => {
+const LegalFrameworkViewer = ({ offenceCategory, offenceType, state = "nsw" }) => {
   const [framework, setFramework] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedState, setSelectedState] = useState(state);
+  const [states, setStates] = useState([]);
   const [expandedSections, setExpandedSections] = useState({
-    nsw: true,
+    state: true,
     federal: false,
     defences: false,
     elements: false,
-    appeals: false
+    appeals: true
   });
+
+  useEffect(() => {
+    fetchStates();
+  }, []);
 
   useEffect(() => {
     if (offenceCategory) {
       fetchFramework();
     }
-  }, [offenceCategory]);
+  }, [offenceCategory, selectedState]);
+
+  useEffect(() => {
+    if (state) {
+      setSelectedState(state);
+    }
+  }, [state]);
+
+  const fetchStates = async () => {
+    try {
+      const response = await axios.get(`${API}/states`);
+      setStates(response.data.states);
+    } catch (error) {
+      console.error("Failed to load states:", error);
+    }
+  };
 
   const fetchFramework = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API}/offence-framework/${offenceCategory}`);
+      const response = await axios.get(`${API}/offence-framework/${offenceCategory}?state=${selectedState}`);
       setFramework(response.data);
     } catch (error) {
       console.error("Failed to load legal framework:", error);
@@ -75,11 +95,13 @@ const LegalFrameworkViewer = ({ offenceCategory, offenceType }) => {
 
   const category = framework.category;
   const commonGrounds = framework.common_appeal_grounds || [];
+  const appealFramework = framework.appeal_framework || {};
+  const stateInfo = framework.state || { name: "New South Wales", abbreviation: "NSW" };
 
   return (
     <Card className="border-slate-200">
       <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
               <Scale className="w-5 h-5 text-amber-700" />
@@ -96,30 +118,40 @@ const LegalFrameworkViewer = ({ offenceCategory, offenceType }) => {
               </p>
             </div>
           </div>
-          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-            NSW & Federal Law
-          </Badge>
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-slate-500" />
+            <select
+              value={selectedState}
+              onChange={(e) => setSelectedState(e.target.value)}
+              className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              data-testid="state-selector"
+            >
+              {states.map(s => (
+                <option key={s.id} value={s.id}>{s.name} ({s.abbreviation})</option>
+              ))}
+            </select>
+          </div>
         </div>
       </CardHeader>
       
       <CardContent className="space-y-4">
-        {/* NSW Legislation */}
-        {category?.nsw_legislation && Object.keys(category.nsw_legislation).length > 0 && (
-          <Collapsible open={expandedSections.nsw} onOpenChange={() => toggleSection('nsw')}>
+        {/* State Legislation */}
+        {category?.state_legislation && Object.keys(category.state_legislation).length > 0 && (
+          <Collapsible open={expandedSections.state} onOpenChange={() => toggleSection('state')}>
             <CollapsibleTrigger asChild>
               <Button 
                 variant="ghost" 
                 className="w-full justify-between p-4 h-auto bg-blue-50 hover:bg-blue-100 rounded-lg"
-                data-testid="nsw-legislation-toggle"
+                data-testid="state-legislation-toggle"
               >
                 <div className="flex items-center gap-3">
                   <BookOpen className="w-5 h-5 text-blue-600" />
-                  <span className="font-semibold text-blue-900">NSW Legislation</span>
+                  <span className="font-semibold text-blue-900">{stateInfo.name} Legislation</span>
                   <Badge variant="outline" className="bg-white text-blue-700 border-blue-200">
-                    {Object.values(category.nsw_legislation).flat().length} sections
+                    {Object.values(category.state_legislation).flat().length} sections
                   </Badge>
                 </div>
-                {expandedSections.nsw ? (
+                {expandedSections.state ? (
                   <ChevronDown className="w-5 h-5 text-blue-600" />
                 ) : (
                   <ChevronRight className="w-5 h-5 text-blue-600" />
@@ -128,7 +160,7 @@ const LegalFrameworkViewer = ({ offenceCategory, offenceType }) => {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <div className="mt-2 space-y-3 pl-2">
-                {Object.entries(category.nsw_legislation).map(([actName, sections]) => (
+                {Object.entries(category.state_legislation).map(([actName, sections]) => (
                   <div key={actName} className="bg-white border border-slate-200 rounded-lg p-4">
                     <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
                       <FileText className="w-4 h-4 text-slate-600" />
@@ -152,6 +184,22 @@ const LegalFrameworkViewer = ({ offenceCategory, offenceType }) => {
               </div>
             </CollapsibleContent>
           </Collapsible>
+        )}
+
+        {/* No State Legislation Notice */}
+        {(!category?.state_legislation || Object.keys(category.state_legislation).length === 0) && (
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-amber-900">No State-Specific Legislation</p>
+                <p className="text-sm text-amber-700 mt-1">
+                  This offence category is primarily governed by Commonwealth/Federal legislation. 
+                  State-specific provisions may exist in procedural laws.
+                </p>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Federal Legislation */}
@@ -292,21 +340,18 @@ const LegalFrameworkViewer = ({ offenceCategory, offenceType }) => {
           </Collapsible>
         )}
 
-        {/* Common Appeal Grounds */}
-        {commonGrounds.length > 0 && (
+        {/* Appeal Procedure for State */}
+        {appealFramework && appealFramework.legislation && (
           <Collapsible open={expandedSections.appeals} onOpenChange={() => toggleSection('appeals')}>
             <CollapsibleTrigger asChild>
               <Button 
                 variant="ghost" 
                 className="w-full justify-between p-4 h-auto bg-slate-100 hover:bg-slate-200 rounded-lg"
-                data-testid="appeal-grounds-toggle"
+                data-testid="appeal-procedure-toggle"
               >
                 <div className="flex items-center gap-3">
                   <Scale className="w-5 h-5 text-slate-600" />
-                  <span className="font-semibold text-slate-900">Common Appeal Grounds</span>
-                  <Badge variant="outline" className="bg-white text-slate-700 border-slate-200">
-                    {commonGrounds.length} grounds
-                  </Badge>
+                  <span className="font-semibold text-slate-900">Appeal Procedure ({stateInfo.abbreviation})</span>
                 </div>
                 {expandedSections.appeals ? (
                   <ChevronDown className="w-5 h-5 text-slate-600" />
@@ -316,19 +361,69 @@ const LegalFrameworkViewer = ({ offenceCategory, offenceType }) => {
               </Button>
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <div className="mt-2 space-y-2">
-                {commonGrounds.slice(0, 12).map((ground, idx) => (
-                  <div 
-                    key={idx} 
-                    className="bg-white border border-slate-200 rounded-lg p-3"
-                  >
-                    <h5 className="font-medium text-slate-900 mb-1">{ground.ground}</h5>
-                    <p className="text-sm text-slate-600">{ground.description}</p>
+              <div className="mt-2 bg-white border border-slate-200 rounded-lg p-4 space-y-4">
+                <div>
+                  <p className="text-sm text-slate-500">Governing Legislation</p>
+                  <p className="font-medium text-slate-900">{appealFramework.legislation}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-500">Appeal Court</p>
+                  <p className="font-medium text-slate-900">{appealFramework.court}</p>
+                </div>
+                {appealFramework.time_limits && (
+                  <div>
+                    <p className="text-sm text-slate-500 mb-2">Time Limits</p>
+                    <div className="space-y-2">
+                      {Object.entries(appealFramework.time_limits).map(([key, value]) => (
+                        <div key={key} className="flex items-center gap-2">
+                          <Clock className="w-4 h-4 text-amber-600" />
+                          <span className="text-sm text-slate-700">
+                            <span className="font-medium capitalize">{key.replace(/_/g, ' ')}:</span> {value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
+                )}
+                {appealFramework.forms && appealFramework.forms.length > 0 && (
+                  <div>
+                    <p className="text-sm text-slate-500 mb-2">Required Forms</p>
+                    <div className="space-y-1">
+                      {appealFramework.forms.map((form, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                          <FileText className="w-4 h-4 text-blue-600" />
+                          <span className="text-sm text-slate-700">
+                            <span className="font-mono font-medium">{form.form}</span> - {form.purpose}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </CollapsibleContent>
           </Collapsible>
+        )}
+
+        {/* Common Appeal Grounds */}
+        {commonGrounds.length > 0 && (
+          <div className="pt-4 border-t border-slate-200">
+            <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+              <Scale className="w-4 h-4 text-slate-600" />
+              Common Appeal Grounds
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              {commonGrounds.slice(0, 8).map((ground, idx) => (
+                <div 
+                  key={idx} 
+                  className="bg-slate-50 border border-slate-200 rounded-lg p-3"
+                >
+                  <h5 className="font-medium text-slate-900 text-sm">{ground.ground}</h5>
+                  <p className="text-xs text-slate-600 mt-1">{ground.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
 
         {/* AustLII Link */}
