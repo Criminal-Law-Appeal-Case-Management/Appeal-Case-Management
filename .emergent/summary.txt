@@ -1,102 +1,82 @@
 <analysis>**original_problem_statement:**
-The user, Deb King, wants a web application named Criminal Appeal AI to assist with criminal appeals for murder cases under NSW and Australian federal law.
+The user, Deb King, wants a web application, now named Appeal Case Manager, to assist with criminal appeals. Initially focused on murder and manslaughter cases under NSW and Australian federal law, the project has expanded to cover all criminal offence types.
 
 **PRODUCT REQUIREMENTS:**
-1.  **Document Management:** Store, sort, and organize case documents with multi-file upload capabilities.
-2.  **User Authentication:** Secure login system for users.
+1.  **Document Management:** Store, sort, and organize case documents with multi-file upload.
+2.  **User Authentication:** Secure login system using Google Auth.
 3.  **AI-Powered Analysis:**
-    *   **Timeline Generation:** Automatically create a timeline of events from uploaded documents.
-    *   **Grounds of Merit:** Identify potential grounds for appeal from documents.
-    *   **OCR Support:** Extract text from scanned documents and images.
-4.  **Reporting System:** Generate three types of reports (Quick, Full, Extensive Log).
-5.  **Notes and Comments:** Allow lawyers to add and manage case notes.
+    *   **Timeline Generation:** Automatically create a timeline of events.
+    *   **Grounds of Merit:** Identify potential grounds for appeal.
+    *   **OCR Support:** Extract text from scanned documents.
+4.  **Reporting System:** Generate three report types (Quick, Full, Extensive Log).
+5.  **Case & Appeal Management:** Features include a deadline tracker, contradiction finder, case strength meter, and an appeal progress checklist.
 6.  **Presentation View:** A clean Barrister View for presenting case information.
-7.  **Exporting:** Export reports to PDF and DOCX.
-8.  **Personalization:** App branded for Debra King, with a personal story about Joshua Homann and Brad Fletcher.
-9.  **User Guide & Professional Summary:** An in-app help page and a one-page summary for legal professionals.
-10. **Mobile App:** The user wants the application to be available as a mobile app (PWA/Capacitor foundation is built).
-11. **Paywall:** Monetize access to detailed Grounds of Merit and premium reports using PayPal.
-12. **New Features Implemented:** Appeal Deadline Tracker, Witness Statement Contradiction Finder, Case Strength Meter, Appeal Checklist System, Resource Directory, and Document Templates.
+7.  **Paywall:** Monetize access using PayPal. Current pricing: Unlock Grounds (0 AUD), Full Report (9 AUD), Extensive Report (9 AUD).
+8.  **Personalization & Branding:** App reflects the creator's personal story and expertise, with comprehensive legal disclaimers.
+9.  **User Engagement & Support:** Features include a visitor counter, admin statistics page, contact form, legal glossary, and a success stories page.
+10. **Mobile App:** The foundation for a PWA/Capacitor mobile app exists.
+11. **Multi-Crime Type Support:** The application must support various criminal offence categories beyond murder/manslaughter.
 
 **User's preferred language**: English
 
 **what currently exists?**
-A full-stack application (React, FastAPI, MongoDB) that fulfills most product requirements. It features Google authentication, case management, document handling with OCR, and AI-powered analysis (timeline, grounds of merit, reports). The application has been converted into a Progressive Web App (PWA) with Capacitor set up for future mobile builds.
+A full-stack application (React, FastAPI, MongoDB) with a completely redesigned, professional landing page. The application features Google authentication, a mandatory terms-of-service acceptance flow, and a comprehensive set of legal disclaimers. It includes pages for a legal glossary, success stories, and a contact form. An admin-only page exists for the user to track site statistics like visitor counts and user sign-ups.
 
-A significant backend refactoring was initiated, breaking the monolithic  into a modular structure with routers and services. However, the old  remains the primary entry point to ensure stability. On the frontend, the main  component is still a large monolith, though new component files have been created.
-
-A PayPal paywall has been implemented to monetize access to detailed AI analysis and premium reports. The landing page and overall branding have been updated extensively based on user feedback to be more professional and legally neutral.
+The app's scope has been expanded to handle all criminal offences. The initial backend and frontend work for this expansion has been started, including a new Offence Type selector when creating a case. The PayPal paywall is implemented with the user's specified pricing.
 
 **Last working item**:
-- **Last item agent was working:** The user reported two critical issues simultaneously: the application Keeps spinning saying authenticating and requested a full entire check of the app. The agent was about to begin investigating the authentication loop.
+- **Last item agent was working:** Expanding the application to support all criminal offence types. The agent implemented the initial data structures and UI changes for this feature. This involved creating  to store legal data, updating backend models and API endpoints, and modifying the frontend  to include an Offence Type selection dropdown when creating a new case. The landing page was also updated to reflect this broader scope.
 - **Status:** IN PROGRESS
 - **Agent Testing Done:** N
-- **Which testing method agent to use?** It is recommended to use the  to diagnose the system-wide authentication issue. If that fails, using both frontend and backend testing agents would be appropriate to isolate the problem.
-- **User Testing Done:** N (User reported the issue)
+- **Which testing method agent to use?** both. After completing the feature, the agent must perform end-to-end testing. This includes creating a case with a new offence type, verifying it's stored correctly, and ensuring the AI analysis prompt is dynamically adjusted based on the selected offence type.
+- **User Testing Done:** N
 
 **All Pending/In progress Issue list**:
-- **Issue 1: Authentication Loop (P0)**
-    - **Description:** The application is stuck in an infinite authenticating state, preventing user access. This is a critical blocker.
-    - **Attempted fixes:** None. The issue was reported in the user's last message.
-    - **Next debug checklist:**
-        1. Check the browser's developer console for any frontend errors related to authentication tokens, Google Auth, or API calls.
-        2. Examine the  function in  and its usage across all routers.
-        3. Review recent changes in  and  that handle auth state.
-        4. Check backend logs () for any errors during authentication requests.
-    - **Why fix this issue and what will be achieved with the fix?** The app is currently unusable. Fixing this will restore basic functionality.
-    - **Status:** IN PROGRESS
-    - **Is recurring issue?** N
-    - **Should Test frontend/backend/both after fix?** both
-
-- **Issue 2: PayPal Paywall Not Appearing (P1)**
-    - **Description:** The user reported that the PayPal payment link does not appear when they click on Grounds. The agent's investigation concluded this is expected behavior because the test case had zero grounds identified; the paywall is designed to appear only when .
-    - **Attempted fixes:** Agent investigated and identified the logic.
-    - **Status:** USER VERIFICATION PENDING
-    - **Is recurring issue?** N
-    - **Should Test frontend/backend/both after fix?** frontend
-
-- **Issue 3: Intermittent Performance Lag (P2)**
-    - **Description:** A recurring issue where the user reports the application lagging. The agent added a database index on  for the  collection as a potential fix, but its effectiveness is unconfirmed.
-    - **Attempted fixes:** Added a new MongoDB index to .
-    - **Status:** IN PROGRESS
-    - **Is recurring issue?** Y
-    - **Should Test frontend/backend/both after fix?** both
+There are no active bugs or issues. The previous critical authentication issue has been resolved.
 
 **In progress Task List**:
-- **Task 1: Frontend Refactoring of  (P1)**
-    - **Where to resume:** The agent created  and  but did not integrate them into . The next step is to refactor  to import and use these new child components, passing state down as props and moving logic into the smaller components.
-    - **What will be achieved with this?** It will break down the 2200+ line monolith, making the frontend easier to maintain, debug, and extend. This is crucial for long-term stability.
+- **Task 1: Complete Expansion to All Offence Types (P0)**
+    - **Where to resume:** The foundational work is done. The agent must now integrate the  into the core AI analysis logic.
+        1.  Modify the AI service calls in  and  to use the  of a case.
+        2.  Dynamically adjust the AI prompts based on the selected offence to ensure the analysis uses the correct legal framework.
+        3.  Update the  page to display the selected offence type for a given case.
+    - **What will be achieved with this?** The application will become a versatile tool for all criminal appeals in NSW, not just murder cases, significantly increasing its value and market reach.
     - **Status:** IN PROGRESS
-    - **Should Test frontend/backend/both after fix?** frontend
-    - **Blocked on something:** The P0 authentication issue must be resolved first.
+    - **Should Test frontend/backend/both after fix?** both
+    - **Blocked on something:** None.
 
 **Upcoming and Future Tasks**
 **Upcoming Tasks:**
--   **P1: Complete Backend Refactoring Integration:** The new modular router structure exists but isn't fully utilized by the main FastAPI app instance. The next step is to modify  to import and include the routers from  and decommission the corresponding endpoints from the monolithic file.
--   **P2: Grounds of Merit Analysis Depth:** An issue from a previous session where the user felt the AI analysis was not thorough. The prompt was improved, but user verification is still pending.
+-   **P1: Refactor :** This 2200+ line component is a major source of technical debt and fragility. It needs to be broken down into smaller, manageable components (,  were previously created for this purpose but not integrated).
+-   **P1: Complete Backend Refactoring:** The monolithic  still contains logic that should be fully migrated to the modular router structure () to improve maintainability.
+-   **P2: Finalize Contact Form Email Notifications:** The backend is ready for email notifications via Resend, but it requires an API key. The agent needs to prompt the user for this key and complete the integration.
+-   **P2: Move Admin Email to Environment Variable:** The admin email () is currently hardcoded in  and should be moved to a secure environment variable.
 
 **Future Tasks:**
--   **P2: Build and Submit Native Mobile App:** Use the existing Capacitor configuration to build and package the app for iOS and Android.
--   **P2: Integrate a Case Law Database:** Enhance the AI by connecting to a real legal database.
--   **P2: Enhance Collaboration Features:** Add replies, threads, and @mentions to the notes section.
+-   **P2: Build and Submit Native Mobile App:** Use the existing Capacitor configuration to create and package the app for iOS and Android.
+-   **P2: Integrate a Case Law Database:** Enhance the AI by connecting it to a real-time legal database like AustLII.
+-   **P3: Enhance Collaboration Features:** Add features like replies, threads, and @mentions to the notes section.
+-   **P3: Expand to Other Australian States:** Adapt the legal framework to support laws from other states like Victoria and Queensland.
 
 **Completed work in this session**
-- **Fixed Report Generation Bug**: Confirmed that Full and Extensive reports work correctly via direct  tests and the .
-- **Initiated Major Backend Refactoring**: Broke down the monolithic  into a modular structure with , , and  directories, keeping the original  as a stable entry point.
-- **Implemented PayPal Paywall**: Added a full paywall for unlocking AI-generated Grounds of Merit and premium reports. Configured the user's provided PayPal business credentials.
-- **Updated Landing Page and Branding**: Rewrote significant portions of the landing page, including the personal story, features, and disclaimers, to maintain legal neutrality and professionalism as requested by the user.
-- **Created Professional Summary Page**: Added a new  page targeted at legal professionals.
-- **Fixed iOS File Upload Bug**: Modified the file input  attribute to be more compatible with iOS devices.
-- **Removed Legal Aid Branding**: Purged all references to Legal Aid from the codebase and app titles. Guided the user on how to request a deployment URL change from the Emergent platform.
-- **Fixed Deployment Issues**: Resolved an N+1 query pattern and other minor bugs identified by the deployment agent.
+- **Fixed Critical Authentication Bug:** Resolved the Keeps spinning saying authenticating issue by clearing expired user sessions.
+- **Implemented Comprehensive Legal Protections:** Added a full Terms of Service page, a privacy policy, and a mandatory acceptance modal that appears for new users.
+- **Completed Major Landing Page Redesign:** Overhauled the landing page with a professional design, a prominent legal disclaimer, clearer feature descriptions, sample mockups, and a detailed pricing section.
+- **Added New Pages and Features:**
+    - **Visitor Tracking:** Implemented a site visitor counter with a private admin dashboard at .
+    - **Contact Form:** Created a  page that saves messages to the database.
+    - **Legal Glossary:** Created a  page to explain complex legal terms.
+    - **Success Stories:** Created a  page with placeholder testimonials and a submission form.
+- **Updated Content and Pricing:** Refined marketing copy based on user feedback, updated personal stories, and implemented a new pricing model (0 to unlock grounds, 9 for full report, 9 for extensive report).
+- **Initiated Expansion to All Crime Types:** Began the significant task of refactoring the app to support all criminal offence categories.
 
 **Earlier issues found/mentioned but not fixed**
-- The primary issue is the **incomplete refactoring** of both the backend () and the frontend (), which is the root cause of ongoing instability and is captured in the In progress and Upcoming task lists.
+- The **incomplete refactoring** of both the backend () and the frontend () remains the most significant technical debt. This is captured in the Upcoming Tasks.
 
 **Known issue recurrence from previous fork**
 - **Issue recurrence in previous fork:** Performance lag.
-- **Recurrence count:** High. The user reported the app was lagging again in this session.
-- **Status:** IN PROGRESS.
+- **Recurrence count:** High.
+- **Status:** IN PROGRESS (No new reports this session, but the underlying cause, likely related to un-refactored code, has not been fully addressed).
 
 **Code Architecture**
 
@@ -109,80 +89,84 @@ A PayPal paywall has been implemented to monetize access to detailed AI analysis
 - **Payments:** PayPal REST SDK
 - **Mobile:** PWA, CapacitorJS
 - **OCR:** Tesseract, Poppler
+- **Email (Planned):** Resend
 
 **key DB schema**
-- **payments:** 
-- **grounds:** Now returns a dictionary  where  is empty if not unlocked.
+- **cases:**  (New field)
+- **visitors:**  (New collection)
+- **contacts:**  (New collection)
+- **success_stories:**  (New collection)
+- **users:**  (Updated field)
 
 **changes in tech stack**
--  was added to .
-- Frontend logic was adapted to use direct PayPal REST API calls instead of a React library for creating orders.
+- No new dependencies were installed, but  is planned for email integration.
 
 **All files of reference**
-- : Still the main application file, but with many new endpoints (payments) and modifications for paywalls.
-- , , , : New directories and files for the backend refactoring.
-- : Heavily modified to handle paywall state for grounds of merit and reports. Still a monolith.
-- : Updated to show a paywall or locked content.
-- : New component to handle PayPal payments.
-- : Heavily modified with new branding and content.
-- : New page for legal professionals.
-- : Updated with new title and link.
-- : Updated with PayPal credentials.
+- : Completely rewritten with a new design and content.
+- : New file defining the legal frameworks for various crime types.
+- : Updated with several new Pydantic models for cases, visitors, contacts, etc.
+- : Modified to include the Offence Type selector in the new case dialog.
+- : Heavily modified with new endpoints for stats, contact, stories, and offence data.
+- **New Frontend Pages:** , , , , .
 
 **Areas that need refactoring**:
-- ** (URGENT):** This 2200+ line component is the biggest source of frontend fragility. It needs to be broken down using the  and  components that were already created.
-- ** (HIGH):** The refactoring was started but not completed. The application logic should be fully migrated to the new router structure to complete the modularization and improve stability.
+- ** (URGENT):** This 2200+ line component is fragile and difficult to maintain. It is the highest priority for refactoring.
+- ** (HIGH):** Logic needs to be fully migrated to the new router-based structure to complete the modularization and improve stability.
 
 **key api endpoints**
-- **Payments:**
-    - : Get prices for all paid features.
-    - : Create a PayPal payment order.
-    - : Capture a completed PayPal payment.
-- **Modified Endpoints:**
-    - : Now returns a count and lock status. The full list is only returned if payment is confirmed.
-    - : Now returns a 402 Payment Required error for premium reports if not paid.
+- : Logs a page visit for the admin counter.
+- : Retrieves site statistics (for admin use).
+- : Submits a message from the contact form.
+- : Submits a new success story.
+- : Returns a list of supported crime categories.
+- : Returns the detailed legal framework for all crimes.
+- : Records that a user has accepted the terms of service.
+- : Now includes the  status in the response.
 
 **Critical Info for New Agent**
-- **Fix the Blocker First:** The immediate and only priority is to fix the Keeps spinning saying authenticating bug. The application is completely unusable until this is resolved.
-- **Hybrid State:** Be aware that the application is in a fragile, hybrid state. The backend has been partially refactored but the old monolith is still active. The frontend refactor was started but not integrated. Tread carefully when making changes.
-- **Verify Paywall Flow:** After fixing the authentication bug, perform an end-to-end test of the paywall: identify grounds for a case, see the paywall, make a (sandbox) payment, and verify the grounds are unlocked. The user has reported issues here.
+- **Resume Feature Expansion:** The top priority is to complete the expansion to all crime types. This requires modifying the core AI analysis service to use the new  field and dynamically adjust its prompts.
+- **Prioritize Technical Debt:** After the current feature is done, immediately address the refactoring of  and . The application's complexity is growing, making this technical debt increasingly risky.
+- **Admin Email Hardcoded:** The admin email () is hardcoded in . This should be refactored into an environment variable.
+- **User is the Domain Expert:** The user provides excellent, specific feedback on legal matters and copy. Trust her expertise and implement her requests directly.
 
 **documents and test reports created in this job**
--  (17/17 backend tests passed, 100% frontend passed)
--  (17/17 backend tests passed, 100% frontend passed)
+- 
+- 
+- 
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **Can you run an entire check of the app**: User request following a critical bug report.
-2.  **Keeps spinning saying authenticating**: User reporting the current P0 authentication blocker. (PENDING)
-3.  **No it’s sent when I click grounds it just brings the grounds up no PayPal link to pay**: User reporting the paywall isn't appearing as expected. (Agent investigated, pending user verification).
-4.  **Yes please**: User confirming they want an email drafted to support.
-5.  **Can you pls set up the first option I don’t have a domaine**: User asking for help setting up a custom domain without owning one.
-6.  **And the actual deployment link states legal aid in it**: User pointing out the deployment URL itself has the old branding. (Agent explained how to fix this via support).
-7.  **It shouldn’t be referencing legal aid at all the actual link to the app says it to**: User re-iterating the need to remove all Legal Aid branding.
-8.  **Can we change the login page title Legal Aid get rid of it make a better one and I can’t seem to see the disclosure or the one page summary**: User reporting UI/branding issues. (Resolved).
-9.  **Call Deployer Agent and Run Health Check...**: User asking to check deployment readiness.
-10. **It’s lagging and no pay with PayPal coming up**: User reporting performance and payment issues.
+1.  **Yes start**: User approved starting the expansion to all crime types. (IN PROGRESS)
+2.  **How do I protect this app 0 I want to eventually include all types of crime...**: User asked about intellectual property protection and future expansion plans. (Answered)
+3.  **Add successful stories**: User requested a page for testimonials. (Completed)
+4.  **Skip bot**: User decided against implementing a chatbot for now. (Completed)
+5.  **Maybe add a contact me form so people can message me...**: User requested a contact form, a legal glossary, and a help bot. (Completed, except for bot)
+6.  **Can you also provide a counter so I can see how many peoples access the site**: User requested a visitor tracking feature. (Completed)
+7.  **And it cost 000 plus for a low level lawyer...**: User provided marketing copy for cost comparison. (Completed)
+8.  **Ok it’s proving wrong free to upload and create case...**: User specified the final, detailed pricing structure. (Completed)
+9.  **Nope great please let’s launch is it deployed for use now**: User was ready to launch the app. (Completed)
+10. **U fixed it**: User confirmed a spacing/grammar issue was resolved. (Completed)
 
 **Project Health Check:**
-- **Broken:** User Authentication. The app is stuck in an authentication loop.
-- **Mocked:** None.
+- **Broken:** None.
+- **Mocked:** The content on the Success Stories page is currently placeholder data. The See It In Action section on the landing page uses static images.
 
 **3rd Party Integrations**
 - **OpenAI GPT-4o** — uses Emergent LLM Key
 - **Emergent-managed Google Auth**
 - **PayPal** (Payments) — uses User API Key (Sandbox credentials configured)
 - **Tesseract & Poppler** (for OCR)
+- **Planned: Resend** (for Emails) — requires User API Key
 
 **Testing status**
-- **Testing agent used after significant changes:** YES (after backend refactoring, all tests passed).
+- **Testing agent used after significant changes:** YES, multiple times for the landing page redesign. All tests passed.
 - **Troubleshoot agent used after agent stuck in loop:** NO
-- **Test files created:** None
-- **Known regressions:** User Authentication is broken.
+- **Test files created:** None.
+- **Known regressions:** None in this session.
 
 **Credentials to test flow:**
-- Frontend login via Google OAuth.
-- Backend API testing can use the  endpoint, but this flow is likely part of the current bug.
-- PayPal sandbox credentials are set in .
+- User's admin email to test the  page is .
 
 **What agent forgot to execute**
-- The agent did not fully complete the integration of the refactored components on either the frontend or the backend. While this was a deliberate choice to mitigate risk, it leaves a significant and critical technical debt task unfinished, contributing to the application's fragility.</analysis>
+- The agent hardcoded the admin email () into  instead of using an environment variable.
+- The  integration for the contact form was left incomplete pending an API key, and this wasn't explicitly planned as a follow-up task with the user.
+- The critical refactoring tasks for  and  from the previous fork are still outstanding.</analysis>

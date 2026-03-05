@@ -33,18 +33,31 @@ const Dashboard = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [showNewCaseDialog, setShowNewCaseDialog] = useState(false);
+  const [offenceCategories, setOffenceCategories] = useState([]);
   const [newCase, setNewCase] = useState({
     title: "",
     defendant_name: "",
     case_number: "",
     court: "",
     judge: "",
+    offence_category: "homicide",
+    offence_type: "",
     summary: ""
   });
 
   useEffect(() => {
     fetchCases();
+    fetchOffenceCategories();
   }, []);
+
+  const fetchOffenceCategories = async () => {
+    try {
+      const response = await axios.get(`${API}/offence-categories`);
+      setOffenceCategories(response.data.categories);
+    } catch (error) {
+      console.error("Failed to load offence categories");
+    }
+  };
 
   const fetchCases = async () => {
     try {
@@ -67,7 +80,7 @@ const Dashboard = ({ user }) => {
       const response = await axios.post(`${API}/cases`, newCase);
       setCases([response.data, ...cases]);
       setShowNewCaseDialog(false);
-      setNewCase({ title: "", defendant_name: "", case_number: "", court: "", judge: "", summary: "" });
+      setNewCase({ title: "", defendant_name: "", case_number: "", court: "", judge: "", offence_category: "homicide", offence_type: "", summary: "" });
       toast.success("Case created successfully");
     } catch (error) {
       toast.error("Failed to create case");
@@ -366,6 +379,38 @@ const Dashboard = ({ user }) => {
                 placeholder="Full legal name"
                 data-testid="new-case-defendant"
               />
+            </div>
+            <div>
+              <Label htmlFor="offence_category">Offence Category *</Label>
+              <select
+                id="offence_category"
+                value={newCase.offence_category}
+                onChange={(e) => setNewCase({ ...newCase, offence_category: e.target.value, offence_type: "" })}
+                className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+                data-testid="new-case-offence-category"
+              >
+                {offenceCategories.map(cat => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
+              <p className="text-xs text-slate-500 mt-1">
+                {offenceCategories.find(c => c.id === newCase.offence_category)?.description}
+              </p>
+            </div>
+            <div>
+              <Label htmlFor="offence_type">Specific Offence</Label>
+              <select
+                id="offence_type"
+                value={newCase.offence_type}
+                onChange={(e) => setNewCase({ ...newCase, offence_type: e.target.value })}
+                className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+                data-testid="new-case-offence-type"
+              >
+                <option value="">Select specific offence...</option>
+                {offenceCategories.find(c => c.id === newCase.offence_category)?.offences.map(off => (
+                  <option key={off} value={off}>{off}</option>
+                ))}
+              </select>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>

@@ -75,17 +75,29 @@ const LandingPage = () => {
       <section className="py-16 md:py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-amber-700 font-semibold text-xs uppercase tracking-widest mb-4">
-            Murder • Manslaughter • Mens Rea
+            All Criminal Offences • NSW & Federal Law
           </p>
           <h1 
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight leading-tight mb-6"
             style={{ fontFamily: 'Crimson Pro, serif' }}
           >
-            Appeal Research Tool
+            Criminal Appeal Research Tool
           </h1>
-          <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 mb-4 max-w-2xl mx-auto">
             Organise case documents, generate timelines, and identify potential appeal issues under NSW and Australian Federal law.
           </p>
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
+            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Homicide</span>
+            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Assault</span>
+            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Sexual Offences</span>
+            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Drug Offences</span>
+            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Robbery</span>
+            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Fraud</span>
+            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Firearms</span>
+            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">DV</span>
+            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Driving</span>
+            <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">+ More</span>
+          </div>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button
               onClick={handleLogin}
@@ -588,24 +600,35 @@ const LandingPage = () => {
           
           {showLegalFramework && (
             <div className="mt-4 p-6 bg-slate-900 rounded-lg text-sm">
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-4 gap-6">
                 <div>
-                  <h4 className="text-amber-500 font-semibold text-xs uppercase tracking-wider mb-3">NSW State</h4>
-                  <p className="text-white font-medium mb-2">Crimes Act 1900</p>
+                  <h4 className="text-amber-500 font-semibold text-xs uppercase tracking-wider mb-3">Homicide & Violence</h4>
                   <ul className="text-slate-400 space-y-1 text-xs">
+                    <li className="text-white font-medium">Crimes Act 1900 (NSW)</li>
                     <li>s.18 — Murder & manslaughter</li>
-                    <li>s.19A/19B — Punishment</li>
-                    <li>s.23/23A — Self-defence</li>
-                    <li>s.24-27 — Provocation</li>
+                    <li>s.33-35 — GBH offences</li>
+                    <li>s.59-61 — Assault offences</li>
+                    <li>s.94-98 — Robbery offences</li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="text-amber-500 font-semibold text-xs uppercase tracking-wider mb-3">Federal</h4>
-                  <p className="text-white font-medium mb-2">Criminal Code Act 1995</p>
+                  <h4 className="text-amber-500 font-semibold text-xs uppercase tracking-wider mb-3">Drugs & Weapons</h4>
                   <ul className="text-slate-400 space-y-1 text-xs">
-                    <li>Div 5 — Fault elements (mens rea)</li>
-                    <li>s.5.1-5.4 — Intention, knowledge, recklessness, negligence</li>
-                    <li>Div 7 — Mistake/ignorance</li>
+                    <li className="text-white font-medium">Drug Misuse & Trafficking Act 1985</li>
+                    <li>s.25 — Supply</li>
+                    <li>s.33 — Commercial supply</li>
+                    <li className="text-white font-medium mt-2">Firearms Act 1996</li>
+                    <li>s.7 — Unauthorised possession</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-amber-500 font-semibold text-xs uppercase tracking-wider mb-3">Federal Offences</h4>
+                  <ul className="text-slate-400 space-y-1 text-xs">
+                    <li className="text-white font-medium">Criminal Code Act 1995 (Cth)</li>
+                    <li>Div 5 — Fault elements</li>
+                    <li>Div 302-308 — Drug trafficking</li>
+                    <li>Div 400 — Money laundering</li>
+                    <li>Div 101-103 — Terrorism</li>
                   </ul>
                 </div>
                 <div>
@@ -618,6 +641,9 @@ const LandingPage = () => {
                   </ul>
                 </div>
               </div>
+              <p className="text-slate-500 text-xs text-center mt-4">
+                Full framework includes: Sexual offences, Fraud, DV, Driving offences, Public order & more
+              </p>
             </div>
           )}
         </div>

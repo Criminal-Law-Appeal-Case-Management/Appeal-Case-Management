@@ -59,6 +59,8 @@ class Case(BaseModel):
     case_number: Optional[str] = None
     court: Optional[str] = None
     judge: Optional[str] = None
+    offence_category: str = "homicide"  # homicide, assault, sexual_offences, robbery_theft, drug_offences, fraud_dishonesty, firearms_weapons, domestic_violence, public_order, terrorism, driving_offences
+    offence_type: Optional[str] = None  # Specific offence within category
     status: str = "active"
     summary: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
@@ -70,6 +72,8 @@ class CaseCreate(BaseModel):
     case_number: Optional[str] = None
     court: Optional[str] = None
     judge: Optional[str] = None
+    offence_category: str = "homicide"
+    offence_type: Optional[str] = None
     summary: Optional[str] = None
 
 class Document(BaseModel):
@@ -579,6 +583,107 @@ async def get_submitted_stories(request: Request):
     
     stories = await db.success_stories.find({}, {"_id": 0}).sort("timestamp", -1).to_list(100)
     return {"stories": stories}
+
+from offence_framework import OFFENCE_CATEGORIES, COMMON_APPEAL_GROUNDS, HUMAN_RIGHTS_FRAMEWORK, APPEAL_FRAMEWORK
+
+# ============ OFFENCE-SPECIFIC HELPER FUNCTIONS ============
+
+def get_offence_context(case: dict) -> str:
+    """Build offence-specific context string for AI prompts"""
+    offence_category = case.get('offence_category', 'homicide')
+    offence_type = case.get('offence_type', '')
+    
+    category_data = OFFENCE_CATEGORIES.get(offence_category, OFFENCE_CATEGORIES.get('homicide'))
+    
+    context = f"""
+OFFENCE INFORMATION:
+- Category: {category_data.get('name', 'Unknown')} ({offence_category})
+- Specific Offence: {offence_type if offence_type else 'Not specified'}
+- Description: {category_data.get('description', '')}
+
+KEY ELEMENTS TO PROVE:
+{chr(10).join(f"- {elem}" for elem in category_data.get('key_elements', []))}
+
+AVAILABLE DEFENCES:
+{chr(10).join(f"- {defence}" for defence in category_data.get('defences', []))}
+
+RELEVANT NSW LEGISLATION:
+"""
+    for act_name, sections in category_data.get('nsw_legislation', {}).items():
+        context += f"\n{act_name}:\n"
+        for section in sections:
+            context += f"  - {section.get('section')}: {section.get('title')}\n"
+    
+    if category_data.get('cth_legislation'):
+        context += "\nRELEVANT FEDERAL LEGISLATION:\n"
+        for act_name, sections in category_data.get('cth_legislation', {}).items():
+            context += f"\n{act_name}:\n"
+            for section in sections:
+                context += f"  - {section.get('section')}: {section.get('title')}\n"
+    
+    return context
+
+def get_offence_system_prompt(offence_category: str) -> str:
+    """Generate offence-specific system prompt for AI analysis"""
+    category_data = OFFENCE_CATEGORIES.get(offence_category, OFFENCE_CATEGORIES.get('homicide'))
+    category_name = category_data.get('name', 'criminal')
+    
+    # Build legislation string for the prompt
+    legislation_refs = []
+    for act_name, sections in category_data.get('nsw_legislation', {}).items():
+        for section in sections[:5]:  # Limit to top 5 sections
+            legislation_refs.append(f"{section.get('section')} {act_name}")
+    for act_name, sections in category_data.get('cth_legislation', {}).items():
+        for section in sections[:3]:  # Limit to top 3 federal sections
+            legislation_refs.append(f"{section.get('section')} {act_name}")
+    
+    legislation_str = ", ".join(legislation_refs[:8]) if legislation_refs else "relevant criminal law sections"
+    
+    return f"""You are a senior Australian criminal appeal barrister with 30+ years experience in {category_name.lower()} and serious criminal appeals in NSW. You specialize in {category_name.lower()} offences and have extensive knowledge of {legislation_str}.
+
+YOUR EXPERTISE COVERS:
+- {category_name} offences under NSW and Commonwealth law
+- Key elements: {', '.join(category_data.get('key_elements', ['actus reus', 'mens rea'])[:4])}
+- Available defences: {', '.join(category_data.get('defences', ['self-defence'])[:5])}
+
+You have successfully overturned dozens of wrongful convictions in {category_name.lower()} cases."""
+
+# ============ OFFENCE FRAMEWORK ENDPOINTS ============
+
+@api_router.get("/offence-framework")
+async def get_offence_framework():
+    """Get all offence categories and legal framework"""
+    return {
+        "categories": OFFENCE_CATEGORIES,
+        "common_appeal_grounds": COMMON_APPEAL_GROUNDS,
+        "human_rights": HUMAN_RIGHTS_FRAMEWORK,
+        "appeal_framework": APPEAL_FRAMEWORK
+    }
+
+@api_router.get("/offence-categories")
+async def get_offence_categories():
+    """Get simplified list of offence categories for dropdowns"""
+    categories = []
+    for key, value in OFFENCE_CATEGORIES.items():
+        categories.append({
+            "id": key,
+            "name": value["name"],
+            "description": value["description"],
+            "offences": value["offences"]
+        })
+    return {"categories": categories}
+
+@api_router.get("/offence-framework/{category}")
+async def get_offence_category_details(category: str):
+    """Get detailed framework for a specific offence category"""
+    if category not in OFFENCE_CATEGORIES:
+        raise HTTPException(status_code=404, detail="Offence category not found")
+    
+    return {
+        "category": OFFENCE_CATEGORIES[category],
+        "common_appeal_grounds": COMMON_APPEAL_GROUNDS,
+        "human_rights": HUMAN_RIGHTS_FRAMEWORK
+    }
 
 # ============ AUTH ENDPOINTS ============
 
@@ -2784,6 +2889,11 @@ async def investigate_ground_of_merit(case_id: str, ground_id: str, request: Req
         {"_id": 0}
     ).sort("event_date", 1).to_list(500)
     
+    # Get offence-specific context
+    offence_category = case.get('offence_category', 'homicide')
+    offence_context = get_offence_context(case)
+    category_data = OFFENCE_CATEGORIES.get(offence_category, OFFENCE_CATEGORIES.get('homicide'))
+    
     # Build comprehensive context with FULL document content
     context = f"""
 === CASE INFORMATION ===
@@ -2791,6 +2901,8 @@ Title: {case.get('title', 'Unknown')}
 Defendant: {case.get('defendant_name', 'Unknown')}
 Case Number: {case.get('case_number', 'N/A')}
 Court: {case.get('court', 'N/A')}
+
+{offence_context}
 
 === GROUND OF MERIT TO INVESTIGATE ===
 Title: {ground.get('title')}
@@ -2819,9 +2931,20 @@ Supporting Evidence Listed: {', '.join(ground.get('supporting_evidence', []))}
         for event in timeline:
             context += f"- {event.get('event_date')}: {event.get('title')} - {event.get('description', '')[:200]}\n"
 
-    system_prompt = """You are an Australian criminal appeal barrister expert in NSW and Federal murder law.
+    # Use offence-specific system prompt
+    system_prompt = get_offence_system_prompt(offence_category)
+    system_prompt += """
+
 IMPORTANT: You must search through ALL the document content provided and cite specific evidence.
 Quote directly from documents to support your analysis."""
+
+    # Build dynamic law section examples based on offence type
+    law_examples = []
+    for act_name, sections in category_data.get('nsw_legislation', {}).items():
+        for section in sections[:3]:
+            law_examples.append(f"   - {section.get('section')} {act_name} - {section.get('title')}")
+    law_examples.append("   - s.6 Criminal Appeal Act 1912 (NSW) - Grounds for appeal")
+    law_examples_str = "\n".join(law_examples)
 
     user_prompt = f"""Conduct a THOROUGH investigation of this ground of merit.
 
@@ -2837,14 +2960,12 @@ REQUIRED ANALYSIS (search the documents above for evidence):
    - For EACH document, explain what it contains relevant to this ground
    - Quote specific passages that support or undermine this ground
 
-3. RELEVANT LAW SECTIONS (be specific)
-   - s.18 Crimes Act 1900 (NSW) - Murder
-   - s.23 Crimes Act 1900 (NSW) - Provocation
-   - s.6 Criminal Appeal Act 1912 (NSW) - Grounds for appeal
+3. RELEVANT LAW SECTIONS (be specific to this {category_data.get('name', 'criminal')} case)
+{law_examples_str}
    - Other relevant sections with explanations
 
 4. SIMILAR CASES
-   - Name 2-3 Australian cases with citations
+   - Name 2-3 Australian cases with citations relevant to {category_data.get('name', 'this type of')} appeals
    - Explain relevance to this ground
 
 5. EVIDENCE GAPS
@@ -2961,6 +3082,10 @@ async def auto_identify_grounds(case_id: str, request: Request):
         {"_id": 0}
     ).to_list(500)
     
+    # Get offence-specific context
+    offence_category = case.get('offence_category', 'homicide')
+    offence_context = get_offence_context(case)
+    
     # Build comprehensive context with full document content
     context = f"""
 CRIMINAL APPEAL CASE ANALYSIS
@@ -2973,6 +3098,7 @@ CASE DETAILS:
 - Judge: {case.get('judge', 'N/A')}
 - Summary: {case.get('summary', 'No summary provided')}
 
+{offence_context}
 """
     
     # Include existing grounds so AI doesn't duplicate them
@@ -3020,7 +3146,10 @@ CASE DETAILS:
             context += f"  {note.get('content', '')[:500]}\n"
         context += "\n"
 
-    system_prompt = """You are a senior Australian criminal appeal barrister with 30+ years experience in murder and serious criminal appeals in NSW. You have successfully overturned dozens of wrongful convictions.
+    # Use offence-specific system prompt
+    base_system_prompt = get_offence_system_prompt(offence_category)
+    
+    system_prompt = f"""{base_system_prompt}
 
 YOUR TASK: Conduct an EXHAUSTIVE, METICULOUS analysis of ALL provided case documents to identify EVERY possible ground of appeal. Leave no stone unturned.
 
@@ -3259,6 +3388,12 @@ async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str) -> 
         {"_id": 0}
     ).to_list(100)
     
+    # Get offence-specific context
+    offence_category = case.get('offence_category', 'homicide')
+    offence_context = get_offence_context(case)
+    category_data = OFFENCE_CATEGORIES.get(offence_category, OFFENCE_CATEGORIES.get('homicide'))
+    category_name = category_data.get('name', 'criminal')
+    
     # Prepare comprehensive context for AI with FULL document content
     case_context = f"""
 === CASE INFORMATION ===
@@ -3269,6 +3404,7 @@ Court: {case.get('court', 'N/A')}
 Judge: {case.get('judge', 'N/A')}
 Summary: {case.get('summary', 'N/A')}
 
+{offence_context}
 """
     
     # Include FULL document content for cross-referencing
@@ -3308,11 +3444,13 @@ Summary: {case.get('summary', 'N/A')}
             case_context += f"- [{g.get('ground_type')}] {g.get('title')} (Strength: {g.get('strength')})\n"
             case_context += f"  {g.get('description', '')[:300]}\n"
 
-    # Define prompts based on report type
+    # Define prompts based on report type with offence-specific language
+    base_system = get_offence_system_prompt(offence_category)
+    
     if report_type == "quick_summary":
-        system_prompt = """You are an expert criminal appeal legal analyst specializing in NSW State and Australian Federal murder law. 
+        system_prompt = f"""{base_system}
 Provide a concise summary of the case highlighting key points for an appeal. Reference specific documents and evidence."""
-        user_prompt = f"""Analyze this criminal appeal case and provide a QUICK SUMMARY (2-3 paragraphs) including:
+        user_prompt = f"""Analyze this {category_name.lower()} appeal case and provide a QUICK SUMMARY (2-3 paragraphs) including:
 1. Brief case overview
 2. Key evidence points (cite specific documents)
 3. Primary grounds for appeal consideration
@@ -3322,22 +3460,24 @@ IMPORTANT: Cross-reference the actual document content provided below.
 {case_context}"""
 
     elif report_type == "full_detailed":
-        system_prompt = """You are an expert criminal appeal legal analyst for NSW and Australian Federal murder law. Cite specific documents and law sections."""
-        user_prompt = f"""Provide a FULL DETAILED REPORT on this appeal case.
+        system_prompt = f"""{base_system}
+Cite specific documents and law sections relevant to {category_name.lower()} offences."""
+        user_prompt = f"""Provide a FULL DETAILED REPORT on this {category_name.lower()} appeal case.
 
 {case_context}
 
 Include:
 1. CASE OVERVIEW - cite specific documents
-2. GROUNDS OF MERIT - with evidence quotes and law sections (NSW Crimes Act, Criminal Appeal Act, Criminal Code Act)
-3. LEGAL FRAMEWORK - relevant law sections
+2. GROUNDS OF MERIT - with evidence quotes and relevant law sections for {category_name.lower()} offences
+3. LEGAL FRAMEWORK - applicable NSW and Federal law sections
 4. RECOMMENDATIONS
 
 Format as a legal brief for a barrister."""
 
     else:  # extensive_log
-        system_prompt = """You are an expert criminal appeal legal analyst. Provide thorough documentation with document citations."""
-        user_prompt = f"""Create an EXTENSIVE LOG REPORT for this case.
+        system_prompt = f"""{base_system}
+Provide thorough documentation with document citations for this {category_name.lower()} appeal."""
+        user_prompt = f"""Create an EXTENSIVE LOG REPORT for this {category_name.lower()} case.
 
 {case_context}
 
@@ -3345,7 +3485,7 @@ Include:
 1. CASE CHRONOLOGY - with document citations
 2. EVIDENCE ANALYSIS - quote key passages
 3. ALL GROUNDS OF MERIT - with supporting evidence
-4. LEGAL FRAMEWORK - with section numbers
+4. LEGAL FRAMEWORK - with section numbers relevant to {category_name.lower()} offences
 5. DETAILED RECOMMENDATIONS"""
 
     # Call OpenAI via Emergent

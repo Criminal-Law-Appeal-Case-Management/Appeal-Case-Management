@@ -928,6 +928,19 @@ const CaseDetail = ({ user }) => {
             )}
             {caseData?.court && <span>{caseData.court}</span>}
           </div>
+          {/* Offence Type Display */}
+          {caseData?.offence_category && (
+            <div className="flex flex-wrap items-center gap-2 mt-3">
+              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 capitalize">
+                {caseData.offence_category.replace(/_/g, ' ')}
+              </Badge>
+              {caseData?.offence_type && (
+                <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200">
+                  {caseData.offence_type}
+                </Badge>
+              )}
+            </div>
+          )}
           {caseData?.summary && (
             <p className="mt-4 text-slate-600 max-w-3xl">{caseData.summary}</p>
           )}
