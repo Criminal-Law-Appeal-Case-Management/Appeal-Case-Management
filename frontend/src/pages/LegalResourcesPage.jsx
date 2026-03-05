@@ -74,43 +74,20 @@ const LegalResourcesPage = () => {
         </div>
       </section>
 
-      {/* Tab Navigation */}
-      <div className="sticky top-16 z-40 bg-background border-b border-border">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="flex overflow-x-auto gap-1 py-2 scrollbar-hide">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                  activeTab === tab.id
-                    ? "bg-amber-600 text-white"
-                    : "bg-muted hover:bg-muted/80 text-muted-foreground"
-                }`}
-              >
-                <tab.icon className="w-4 h-4" />
-                {tab.label}
-              </button>
-            ))}
+      <main className="max-w-5xl mx-auto px-6 py-8 space-y-12">
+
+        {/* ============ SECTION: You Have Options ============ */}
+        <div id="options" className="space-y-6">
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6">
+            <h2 className="text-2xl font-bold text-foreground mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Legal Help You May Not Know About
+            </h2>
+            <p className="text-muted-foreground">
+              For most people, Legal Aid is the only affordable option — but private firms are often out of reach. 
+              What many don't realise is that there are other avenues for help. <strong className="text-foreground">When you think you have no options, 
+              there definitely are options.</strong>
+            </p>
           </div>
-        </div>
-      </div>
-
-      <main className="max-w-5xl mx-auto px-6 py-8">
-
-        {/* You Have Options Tab */}
-        {activeTab === "options" && (
-          <div className="space-y-6">
-            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6">
-              <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                Legal Help You May Not Know About
-              </h2>
-              <p className="text-muted-foreground text-sm">
-                For most people, Legal Aid is the only affordable option — but private firms are often out of reach. 
-                What many don't realise is that there are other avenues for help. <strong className="text-foreground">When you think you have no options, 
-                there definitely are options.</strong>
-              </p>
-            </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               {/* Legal Aid Overview */}
@@ -198,7 +175,7 @@ const LegalResourcesPage = () => {
         )}
 
         {/* Legal Aid Tab */}
-        {activeTab === "legal-aid" && (
+        <!-- LEGAL AID SECTION -->
           <div className="space-y-6">
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -280,7 +257,7 @@ const LegalResourcesPage = () => {
         )}
 
         {/* Law Societies Tab */}
-        {activeTab === "law-societies" && (
+        <!-- LAW SOCIETIES SECTION -->
           <div className="space-y-6">
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -395,7 +372,7 @@ const LegalResourcesPage = () => {
         )}
 
         {/* Complaints & OLCR Tab */}
-        {activeTab === "complaints" && (
+        <!-- COMPLAINTS SECTION -->
           <div className="space-y-6">
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -487,7 +464,7 @@ const LegalResourcesPage = () => {
         )}
 
         {/* Courts Tab */}
-        {activeTab === "courts" && (
+        <!-- COURTS SECTION -->
           <div className="space-y-6">
             <div className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -619,7 +596,7 @@ const LegalResourcesPage = () => {
         )}
 
         {/* Community Legal Tab */}
-        {activeTab === "community" && (
+        <!-- COMMUNITY SECTION -->
           <div className="space-y-6">
             <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -711,7 +688,7 @@ const LegalResourcesPage = () => {
         )}
 
         {/* Pro Bono Tab */}
-        {activeTab === "pro-bono" && (
+        <!-- PRO BONO SECTION -->
           <div className="space-y-6">
             <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-6">
               <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
