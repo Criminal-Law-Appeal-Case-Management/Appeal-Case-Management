@@ -510,42 +510,44 @@ const CaseDetail = ({ user }) => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="glass-header sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={() => navigate("/dashboard")}
-              className="rounded-xl"
+              className="rounded-xl shrink-0"
               data-testid="back-btn"
             >
               <ArrowLeft className="w-4 h-4 mr-1" />
-              Back
+              <span className="hidden sm:inline">Back</span>
             </Button>
-            <div className="flex items-center gap-2 flex-1">
-              <div className="w-8 h-8 rounded-lg gradient-amber flex items-center justify-center">
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+              <div className="w-8 h-8 rounded-lg gradient-amber flex items-center justify-center shrink-0">
                 <Scale className="w-4 h-4 text-white" />
               </div>
-              <span className="text-muted-foreground">/</span>
-              <span className="font-medium text-foreground">{caseData?.title}</span>
+              <span className="text-muted-foreground hidden sm:inline">/</span>
+              <span className="font-medium text-foreground truncate text-sm sm:text-base">{caseData?.title}</span>
             </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={() => navigate("/help")}
-              className="text-muted-foreground hover:text-foreground rounded-xl"
-              data-testid="help-btn"
-            >
-              <HelpCircle className="w-4 h-4 mr-1" />
-              Help
-            </Button>
-            <QuickExport caseId={caseId} caseTitle={caseData?.title} />
-            <DocumentBundler caseId={caseId} documents={documents} />
+            <div className="hidden sm:flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => navigate("/help")}
+                className="text-muted-foreground hover:text-foreground rounded-xl"
+                data-testid="help-btn"
+              >
+                <HelpCircle className="w-4 h-4 mr-1" />
+                Help
+              </Button>
+              <QuickExport caseId={caseId} caseTitle={caseData?.title} />
+              <DocumentBundler caseId={caseId} documents={documents} />
+            </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Case Info */}
         <div className="mb-8">
           <h1 
@@ -589,41 +591,43 @@ const CaseDetail = ({ user }) => {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <TabsList className="bg-muted rounded-xl p-1">
-              <TabsTrigger value="documents" className="rounded-lg" data-testid="tab-documents">
-                <FileText className="w-4 h-4 mr-2" />
-                Documents ({documents.length})
-              </TabsTrigger>
-              <TabsTrigger value="timeline" className="rounded-lg" data-testid="tab-timeline">
-                <Clock className="w-4 h-4 mr-2" />
-                Timeline ({timeline.length})
-              </TabsTrigger>
-              <TabsTrigger value="grounds" className="rounded-lg" data-testid="tab-grounds">
-                <Gavel className="w-4 h-4 mr-2" />
-                Grounds ({grounds.length})
-              </TabsTrigger>
-              <TabsTrigger value="notes" className="rounded-lg" data-testid="tab-notes">
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Notes ({notes.length})
-              </TabsTrigger>
-              <TabsTrigger value="reports" className="rounded-lg" data-testid="tab-reports">
-                <Scale className="w-4 h-4 mr-2" />
-                Reports ({reports.length})
-              </TabsTrigger>
-              <TabsTrigger value="legal" className="rounded-lg" data-testid="tab-legal">
-                <BookOpen className="w-4 h-4 mr-2" />
-                Legal Framework
-              </TabsTrigger>
-              <TabsTrigger value="contradictions" className="rounded-lg" data-testid="tab-contradictions">
-                <Search className="w-4 h-4 mr-2" />
-                Contradictions
-              </TabsTrigger>
-              <TabsTrigger value="progress" className="rounded-lg" data-testid="tab-progress">
-                <TrendingUp className="w-4 h-4 mr-2" />
-                Progress
-              </TabsTrigger>
-            </TabsList>
+          <div className="flex flex-col gap-4">
+            <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+              <TabsList className="bg-muted rounded-xl p-1 inline-flex min-w-max">
+                <TabsTrigger value="documents" className="rounded-lg text-xs sm:text-sm px-2 sm:px-3" data-testid="tab-documents">
+                  <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Documents</span><span className="sm:hidden">Docs</span> ({documents.length})
+                </TabsTrigger>
+                <TabsTrigger value="timeline" className="rounded-lg text-xs sm:text-sm px-2 sm:px-3" data-testid="tab-timeline">
+                  <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  Timeline ({timeline.length})
+                </TabsTrigger>
+                <TabsTrigger value="grounds" className="rounded-lg text-xs sm:text-sm px-2 sm:px-3" data-testid="tab-grounds">
+                  <Gavel className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  Grounds ({grounds.length})
+                </TabsTrigger>
+                <TabsTrigger value="notes" className="rounded-lg text-xs sm:text-sm px-2 sm:px-3" data-testid="tab-notes">
+                  <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  Notes ({notes.length})
+                </TabsTrigger>
+                <TabsTrigger value="reports" className="rounded-lg text-xs sm:text-sm px-2 sm:px-3" data-testid="tab-reports">
+                  <Scale className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  Reports ({reports.length})
+                </TabsTrigger>
+                <TabsTrigger value="legal" className="rounded-lg text-xs sm:text-sm px-2 sm:px-3" data-testid="tab-legal">
+                  <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  Legal
+                </TabsTrigger>
+                <TabsTrigger value="contradictions" className="rounded-lg text-xs sm:text-sm px-2 sm:px-3" data-testid="tab-contradictions">
+                  <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Contradictions</span><span className="sm:hidden">Scan</span>
+                </TabsTrigger>
+                <TabsTrigger value="progress" className="rounded-lg text-xs sm:text-sm px-2 sm:px-3" data-testid="tab-progress">
+                  <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  Progress
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             <div className="flex gap-2">
               {activeTab === "timeline" && (

@@ -164,6 +164,7 @@ const LandingPage = () => {
             <div className="border-t border-slate-700 pt-3 mt-3">
               <Link to="/how-to-use" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">How To Use The App</Link>
               <Link to="/legal-framework" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">Legal Framework & Legislation</Link>
+              <Link to="/caselaw-search" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">Live Caselaw Search</Link>
             </div>
             <div className="flex items-center gap-3 pt-2">
               <button onClick={toggleTheme} className="p-2 text-slate-300 hover:text-white">
