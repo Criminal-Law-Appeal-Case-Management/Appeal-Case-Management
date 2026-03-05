@@ -33,6 +33,7 @@ google-auth-httplib2==0.3.0
 google-genai==1.62.0
 google-generativeai==0.8.6
 googleapis-common-protos==1.72.0
+greenlet==3.3.2
 grpcio==1.76.0
 grpcio-status==1.71.2
 h11==0.16.0
@@ -69,10 +70,12 @@ packaging==26.0
 pandas==3.0.0
 passlib==1.7.4
 pathspec==1.0.4
+paypalrestsdk==1.13.3
 pdf2image==1.17.0
 pdfkit==1.0.0
 pillow==12.1.0
 platformdirs==4.5.1
+playwright==1.58.0
 pluggy==1.6.0
 propcache==0.4.1
 proto-plus==1.27.1
@@ -83,10 +86,12 @@ pycodestyle==2.14.0
 pycparser==3.0
 pydantic==2.12.5
 pydantic_core==2.41.5
+pyee==13.0.1
 pyflakes==3.4.0
 Pygments==2.19.2
 PyJWT==2.11.0
 pymongo==4.5.0
+pyOpenSSL==25.3.0
 pyparsing==3.3.2
 PyPDF2==3.0.1
 pytesseract==0.3.13
@@ -104,6 +109,7 @@ regex==2026.1.15
 reportlab==4.4.9
 requests==2.32.5
 requests-oauthlib==2.0.0
+resend==2.23.0
 rich==14.3.2
 rpds-py==0.30.0
 rsa==4.9.1
@@ -131,5 +137,3 @@ watchfiles==1.1.1
 websockets==15.0.1
 yarl==1.22.0
 zipp==3.23.0
-paypalrestsdk==1.13.3
-resend>=2.0.0

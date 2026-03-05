@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { Lock, Check, Loader2, ExternalLink } from "lucide-react";
+import { Lock, Check, Loader2, CreditCard, Smartphone } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -16,14 +16,36 @@ const FEATURE_INFO = {
   grounds_of_merit: {
     title: "Unlock Grounds of Merit Details",
     description: "See full descriptions, supporting evidence, and detailed analysis of each potential ground for appeal.",
+    benefits: [
+      "Full descriptions of all grounds identified",
+      "Supporting evidence from your documents",
+      "Relevant law sections and citations",
+      "Deep investigation feature unlocked"
+    ]
   },
   full_report: {
     title: "Full Detailed Report",
-    description: "Comprehensive legal analysis with all grounds, evidence citations, and recommendations.",
+    description: "Comprehensive legal analysis with similar cases, legislation links, and appeal filing guide.",
+    benefits: [
+      "Detailed legal analysis with legislation references",
+      "Similar cases with links to read their decisions",
+      "Step-by-step appeal filing guide for your court",
+      "Strategic recommendations for presenting your case",
+      "PDF and Word export + Barrister View"
+    ]
   },
   extensive_report: {
     title: "Extensive Log Report",
-    description: "Complete case documentation including all evidence, timeline analysis, and full legal references.",
+    description: "The ultimate forensic-level analysis — a barrister's primary working document.",
+    benefits: [
+      "Everything in the Full Report, plus:",
+      "8-12 similar cases with full AustLII decision links",
+      "Complete appeal filing guide for ALL court levels",
+      "Witness credibility analysis",
+      "Sentencing comparison with similar cases",
+      "Complete appeal strategy with oral & written submission advice",
+      "Risk assessment and cost estimates"
+    ]
   }
 };
 
@@ -36,29 +58,10 @@ export default function PaymentModal({
   onPaymentSuccess 
 }) {
   const [loading, setLoading] = useState(false);
-  const [paypalConfigured, setPaypalConfigured] = useState(false);
-  const [checkingConfig, setCheckingConfig] = useState(true);
 
-  useEffect(() => {
-    const checkConfig = async () => {
-      try {
-        const response = await axios.get(`${API}/payments/prices`);
-        setPaypalConfigured(response.data.paypal_configured || false);
-      } catch (error) {
-        console.error("Failed to check payment config:", error);
-        setPaypalConfigured(false);
-      } finally {
-        setCheckingConfig(false);
-      }
-    };
-    if (isOpen) {
-      checkConfig();
-    }
-  }, [isOpen]);
+  const featureInfo = FEATURE_INFO[featureType] || { title: "Premium Feature", description: "", benefits: [] };
 
-  const featureInfo = FEATURE_INFO[featureType] || { title: "Premium Feature", description: "" };
-
-  const handlePayWithPayPal = async () => {
+  const handlePayWithStripe = async () => {
     if (!caseId || !featureType) {
       toast.error("Missing payment information");
       return;
@@ -66,47 +69,29 @@ export default function PaymentModal({
 
     setLoading(true);
     try {
-      const response = await axios.post(`${API}/cases/${caseId}/payments/create-order`, {
+      const response = await axios.post(`${API}/payments/checkout`, {
         feature_type: featureType,
-        frontend_url: window.location.origin
+        case_id: caseId,
+        origin_url: window.location.origin
       });
       
-      if (response.data.approval_url) {
-        // Redirect to PayPal for payment
-        toast.info("Redirecting to PayPal...");
-        window.location.href = response.data.approval_url;
+      if (response.data.url) {
+        toast.info("Redirecting to secure checkout...");
+        window.location.href = response.data.url;
       } else {
-        toast.error("Failed to get PayPal payment URL");
+        toast.error("Failed to create checkout session");
       }
     } catch (error) {
       console.error("Payment error:", error);
-      if (error.response?.status === 400) {
-        toast.error(error.response.data.detail || "Payment error");
-      } else if (error.response?.status === 503) {
-        toast.error("Payment service not available");
-      } else {
-        toast.error("Failed to initiate payment. Please try again.");
-      }
+      toast.error(error.response?.data?.detail || "Failed to initiate payment. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  if (checkingConfig) {
-    return (
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-md">
-          <div className="flex items-center justify-center py-8">
-            <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" data-testid="payment-modal">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
             <Lock className="w-5 h-5 text-amber-500" />
@@ -117,111 +102,65 @@ export default function PaymentModal({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6 py-4">
+        <div className="space-y-5 py-4">
           {/* Price Display */}
-          <div className="bg-slate-50 rounded-lg p-4 text-center border border-slate-200">
-            <p className="text-sm text-slate-600 mb-1">One-time payment</p>
-            <p className="text-3xl font-bold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              ${price?.toFixed(2)} <span className="text-lg font-normal text-slate-500">AUD</span>
+          <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+            <p className="text-sm text-muted-foreground mb-1">One-time payment</p>
+            <p className="text-3xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              ${price?.toFixed(2)} <span className="text-lg font-normal text-muted-foreground">AUD</span>
             </p>
           </div>
 
           {/* What you get */}
           <div className="space-y-2">
-            <p className="text-sm font-medium text-slate-700">What you get:</p>
-            <ul className="space-y-1">
-              {featureType === "grounds_of_merit" && (
-                <>
-                  <li className="flex items-center gap-2 text-sm text-slate-600">
-                    <Check className="w-4 h-4 text-green-500" />
-                    Full descriptions of all grounds identified
-                  </li>
-                  <li className="flex items-center gap-2 text-sm text-slate-600">
-                    <Check className="w-4 h-4 text-green-500" />
-                    Supporting evidence from your documents
-                  </li>
-                  <li className="flex items-center gap-2 text-sm text-slate-600">
-                    <Check className="w-4 h-4 text-green-500" />
-                    Relevant law sections and citations
-                  </li>
-                  <li className="flex items-center gap-2 text-sm text-slate-600">
-                    <Check className="w-4 h-4 text-green-500" />
-                    Deep investigation feature unlocked
-                  </li>
-                </>
-              )}
-              {featureType === "full_report" && (
-                <>
-                  <li className="flex items-center gap-2 text-sm text-slate-600">
-                    <Check className="w-4 h-4 text-green-500" />
-                    Comprehensive legal analysis
-                  </li>
-                  <li className="flex items-center gap-2 text-sm text-slate-600">
-                    <Check className="w-4 h-4 text-green-500" />
-                    PDF and Word export
-                  </li>
-                  <li className="flex items-center gap-2 text-sm text-slate-600">
-                    <Check className="w-4 h-4 text-green-500" />
-                    Evidence citations included
-                  </li>
-                </>
-              )}
-              {featureType === "extensive_report" && (
-                <>
-                  <li className="flex items-center gap-2 text-sm text-slate-600">
-                    <Check className="w-4 h-4 text-green-500" />
-                    Complete case documentation
-                  </li>
-                  <li className="flex items-center gap-2 text-sm text-slate-600">
-                    <Check className="w-4 h-4 text-green-500" />
-                    Full timeline analysis
-                  </li>
-                  <li className="flex items-center gap-2 text-sm text-slate-600">
-                    <Check className="w-4 h-4 text-green-500" />
-                    All legal references
-                  </li>
-                  <li className="flex items-center gap-2 text-sm text-slate-600">
-                    <Check className="w-4 h-4 text-green-500" />
-                    Ready for legal review
-                  </li>
-                </>
-              )}
+            <p className="text-sm font-medium text-foreground">What you get:</p>
+            <ul className="space-y-1.5">
+              {featureInfo.benefits.map((benefit, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <Check className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
+                  {benefit}
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* PayPal Button */}
-          {paypalConfigured ? (
-            <Button
-              onClick={handlePayWithPayPal}
-              disabled={loading}
-              className="w-full bg-[#0070ba] hover:bg-[#005ea6] text-white py-6 text-lg"
-              data-testid="paypal-pay-btn"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  Processing...
-                </>
-              ) : (
-                <>
-                  <ExternalLink className="w-5 h-5 mr-2" />
-                  Pay with PayPal
-                </>
-              )}
-            </Button>
-          ) : (
-            <div className="text-center py-4">
-              <p className="text-sm text-amber-600 mb-4">
-                Payment service is currently being configured. Please try again later.
-              </p>
-              <Button variant="outline" onClick={onClose}>
-                Close
-              </Button>
-            </div>
-          )}
+          {/* Pay Button - Stripe supports Apple Pay, Google Pay, and Cards */}
+          <Button
+            onClick={handlePayWithStripe}
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white py-6 text-base rounded-xl shadow-lg shadow-amber-600/20"
+            data-testid="stripe-pay-btn"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Setting up checkout...
+              </>
+            ) : (
+              <>
+                <CreditCard className="w-5 h-5 mr-2" />
+                Pay ${price?.toFixed(2)} AUD
+              </>
+            )}
+          </Button>
 
-          <p className="text-xs text-slate-500 text-center">
-            You will be redirected to PayPal to complete your payment securely.
+          {/* Payment methods info */}
+          <div className="flex items-center justify-center gap-3 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <Smartphone className="w-3.5 h-3.5" />
+              <span>Apple Pay</span>
+            </div>
+            <span>|</span>
+            <div className="flex items-center gap-1">
+              <CreditCard className="w-3.5 h-3.5" />
+              <span>Card</span>
+            </div>
+            <span>|</span>
+            <span>Google Pay</span>
+          </div>
+
+          <p className="text-xs text-muted-foreground text-center">
+            Secure checkout powered by Stripe. Your payment details are never stored on our servers.
           </p>
         </div>
       </DialogContent>

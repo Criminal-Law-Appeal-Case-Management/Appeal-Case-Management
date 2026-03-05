@@ -3052,6 +3052,8 @@ async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str) -> 
     offence_context = get_offence_context(case)
     category_data = OFFENCE_CATEGORIES.get(offence_category, OFFENCE_CATEGORIES.get('homicide'))
     category_name = category_data.get('name', 'criminal')
+    state = case.get('state', 'nsw')
+    state_info = AUSTRALIAN_STATES.get(state, AUSTRALIAN_STATES.get('nsw'))
     
     # Prepare comprehensive context for AI with FULL document content
     case_context = f"""
@@ -3075,8 +3077,8 @@ Summary: {case.get('summary', 'N/A')}
                 case_context += f"Description: {doc.get('description')}\n"
             content = doc.get('content_text', '')
             if content:
-                # Limit content per document based on report type to avoid timeouts
-                max_chars = 2000 if report_type == "quick_summary" else 3000
+                # Limit content per document based on report type
+                max_chars = 3000 if report_type == "quick_summary" else 6000 if report_type == "full_detailed" else 10000
                 case_context += f"CONTENT:\n{content[:max_chars]}\n"
                 if len(content) > max_chars:
                     case_context += f"[... {len(content) - max_chars} more characters ...]\n"
@@ -3095,57 +3097,315 @@ Summary: {case.get('summary', 'N/A')}
     if notes:
         case_context += f"\n=== LEGAL NOTES ({len(notes)} notes) ===\n"
         for note in notes:
-            case_context += f"- [{note.get('category')}] {note.get('title')}: {note.get('content', '')[:500]}\n"
+            max_note = 300 if report_type == "quick_summary" else 1000
+            case_context += f"- [{note.get('category')}] {note.get('title')}: {note.get('content', '')[:max_note]}\n"
 
     if grounds:
         case_context += f"\n=== IDENTIFIED GROUNDS OF MERIT ({len(grounds)} grounds) ===\n"
         for g in grounds:
             case_context += f"- [{g.get('ground_type')}] {g.get('title')} (Strength: {g.get('strength')})\n"
-            case_context += f"  {g.get('description', '')[:300]}\n"
+            desc_limit = 300 if report_type == "quick_summary" else 1000
+            case_context += f"  {g.get('description', '')[:desc_limit]}\n"
+            if report_type != "quick_summary" and g.get('analysis'):
+                case_context += f"  Analysis: {g.get('analysis', '')[:500]}\n"
+            if report_type == "extensive_log" and g.get('deep_analysis'):
+                deep = g.get('deep_analysis', '')
+                if isinstance(deep, str):
+                    case_context += f"  Deep Analysis: {deep[:1000]}\n"
 
     # Define prompts based on report type with offence-specific language
     base_system = get_offence_system_prompt(offence_category)
     
     if report_type == "quick_summary":
         system_prompt = f"""{base_system}
-Provide a concise summary of the case highlighting key points for an appeal. Reference specific documents and evidence."""
-        user_prompt = f"""Analyze this {category_name.lower()} appeal case and provide a QUICK SUMMARY (2-3 paragraphs) including:
-1. Brief case overview
-2. Key evidence points (cite specific documents)
-3. Primary grounds for appeal consideration
+You are generating a FREE quick summary report. Provide real value — specific findings, identified grounds, and an honest assessment. But make it clear the paid reports include significantly deeper analysis with case law citations, legislation links, appeal step-by-step guides, and court-specific filing procedures. Tease the upgrade naturally."""
+        user_prompt = f"""Analyze this {category_name.lower()} appeal case and provide a QUICK SUMMARY REPORT.
 
-IMPORTANT: Cross-reference the actual document content provided below.
+{case_context}
 
-{case_context}"""
+Structure your response EXACTLY as follows:
+
+## CASE OVERVIEW
+3-4 sentences: defendant, charges, jurisdiction, sentencing outcome, key dates. Reference documents reviewed.
+
+## KEY FINDINGS
+5-6 bullet points summarising the most significant findings. Be specific — reference actual content from the documents.
+
+## POTENTIAL GROUNDS FOR APPEAL
+For each ground found (aim for 3-5), provide:
+- Ground name and type
+- 2-3 sentences explaining why it's viable
+- Strength rating (Strong / Moderate / Weak)
+
+## SIMILAR CASES (Preview)
+Mention 1-2 similar Australian appeal cases that may be relevant (e.g., "R v [Name] [Year] NSWCCA" or similar). Note: Full case analysis with links is available in the Full Report.
+
+## CASE STRENGTH ASSESSMENT
+Overall: Strong / Moderate / Requires Further Investigation. 2-3 sentences explaining.
+
+## WHAT THE FULL REPORT ($29) UNLOCKS
+- Detailed legal analysis with specific legislation sections and direct links
+- Similar case decisions you can read in full (with AustLII links)
+- Document-by-document evidence analysis with direct quotes
+- Complete appeal filing guide for your specific court level
+- Strategic recommendations for presenting your case
+- Barrister-ready legal brief format
+
+IMPORTANT: Be specific and reference actual document content. This should feel like a real legal professional reviewed the case."""
 
     elif report_type == "full_detailed":
         system_prompt = f"""{base_system}
-Cite specific documents and law sections relevant to {category_name.lower()} offences."""
-        user_prompt = f"""Provide a FULL DETAILED REPORT on this {category_name.lower()} appeal case.
+You are generating a PAID Full Detailed Report ($29 AUD). This must be comprehensive, professional, and worth every cent. Include specific legislation with section numbers, quote from documents, cite real Australian appeal cases with AustLII links (format: https://www.austlii.edu.au/cgi-bin/viewdoc/au/cases/[state]/[court]/[year]/[number].html), include step-by-step appeal filing procedures for the relevant court level, and provide strategic case presentation advice."""
+        user_prompt = f"""Create a FULL DETAILED LEGAL ANALYSIS REPORT for this {category_name.lower()} appeal case.
 
 {case_context}
 
-Include:
-1. CASE OVERVIEW - cite specific documents
-2. GROUNDS OF MERIT - with evidence quotes and relevant law sections for {category_name.lower()} offences
-3. LEGAL FRAMEWORK - applicable NSW and Federal law sections
-4. RECOMMENDATIONS
+This is a PAID premium report. Write a minimum of 2500 words. Be comprehensive and specific.
 
-Format as a legal brief for a barrister."""
+Structure your response EXACTLY as follows:
+
+## 1. EXECUTIVE SUMMARY
+4-5 paragraphs: thorough overview, key issues, appeal viability assessment. Reference specific documents.
+
+## 2. CASE CHRONOLOGY
+Detailed chronological timeline from all documents. Every key date, event, court appearance. Cross-reference between documents.
+
+## 3. EVIDENCE ANALYSIS
+For EACH document:
+- Document name, type, significance
+- Direct quotes (use "quotation marks")
+- Reliability assessment
+- How it supports/undermines the appeal
+- Cross-references with other documents
+
+## 4. GROUNDS OF APPEAL — DETAILED ANALYSIS
+For EACH identified ground:
+### Ground [Number]: [Type] — [Title]
+- **Legal Basis**: Cite specific {state_info.get('name', 'NSW')} legislation sections
+- **Supporting Evidence**: Direct quotes from documents
+- **Strength**: Strong / Moderate / Weak with reasoning
+- **Relevant Similar Cases**: Cite 2-3 real Australian appeal cases where this ground succeeded. Include:
+  - Case name and citation (e.g., R v Smith [2020] NSWCCA 123)
+  - What happened and how it's similar
+  - Link: https://www.austlii.edu.au/cgi-bin/viewdoc/au/cases/nsw/NSWCCA/2020/123.html (use real format)
+- **Counter-Arguments**: What the Crown might argue
+- **How to Strengthen**: Specific steps
+
+## 5. APPLICABLE LEGAL FRAMEWORK
+For each relevant Act, provide the section number, title, and what it means for this case:
+- {state_info.get('name', 'NSW')} Criminal legislation
+- Evidence Act sections
+- Criminal Appeal Act sections
+- Sentencing Act provisions
+Include links where possible: https://www.legislation.nsw.gov.au/ (or relevant state)
+
+## 6. SIMILAR CASES & PRECEDENTS
+For each similar case:
+- **Case**: Full citation
+- **Facts**: Brief summary of similar facts
+- **Outcome**: What happened on appeal
+- **Relevance**: How it applies to this case
+- **Decision Link**: AustLII URL to read the full decision
+
+## 7. HOW TO LODGE YOUR APPEAL — STEP BY STEP
+Provide the COMPLETE step-by-step process specific to {state_info.get('name', 'NSW')}:
+
+### From Local/Magistrates Court
+1. [Step-by-step with forms, deadlines, filing locations]
+
+### From District Court
+1. [Step-by-step with forms, deadlines, filing locations]
+
+### From Supreme Court to Court of Criminal Appeal
+1. [Step-by-step with forms, deadlines, filing locations]
+
+Include specific forms needed, filing fees, time limits (usually 28 days), and where to lodge.
+
+## 8. CONTRADICTIONS & INCONSISTENCIES
+Every contradiction found across documents — quote the specific contradictory statements side by side.
+
+## 9. STRATEGIC RECOMMENDATIONS — HOW TO PRESENT YOUR CASE
+- Which grounds to lead with and why
+- How to structure your written submissions
+- Key arguments to emphasise in oral submissions
+- Evidence to highlight for maximum impact
+- Weaknesses to address proactively
+- How to present yourself to the court
+- What judges look for in successful appeals
+
+## 10. NEXT STEPS & DEADLINES
+Specific, actionable steps with exact deadlines. What to do today, this week, within 28 days.
+
+IMPORTANT: Quote directly from documents. Cite specific legislation. Include real case citations with AustLII-format links. Include actual court-specific filing steps."""
 
     else:  # extensive_log
         system_prompt = f"""{base_system}
-Provide thorough documentation with document citations for this {category_name.lower()} appeal."""
-        user_prompt = f"""Create an EXTENSIVE LOG REPORT for this {category_name.lower()} case.
+You are generating the PREMIUM Extensive Log Report ($39 AUD). This is the most comprehensive report available — forensic-level analysis. Include EVERYTHING: line-by-line evidence analysis, complete legal mapping with legislation links, full cross-referencing, forensic timeline, all similar cases with AustLII decision links, complete appeal filing procedures for ALL court levels, witness credibility analysis, sentencing comparison, and a complete appeal strategy that a barrister could use as their primary working document. Write a minimum of 5000 words."""
+        user_prompt = f"""Create an EXTENSIVE LOG REPORT for this {category_name.lower()} appeal case. This is the PREMIUM report — the most detailed analysis possible.
 
 {case_context}
 
-Include:
-1. CASE CHRONOLOGY - with document citations
-2. EVIDENCE ANALYSIS - quote key passages
-3. ALL GROUNDS OF MERIT - with supporting evidence
-4. LEGAL FRAMEWORK - with section numbers relevant to {category_name.lower()} offences
-5. DETAILED RECOMMENDATIONS"""
+MINIMUM 5000 words. Cover every angle, every document, every potential issue.
+
+Structure your response EXACTLY as follows:
+
+## 1. EXECUTIVE SUMMARY & CASE OVERVIEW
+6-8 paragraphs: comprehensive overview covering all parties, all charges, jurisdiction, court history, sentencing details, aggravating/mitigating factors, and overall appeal viability. More detailed than the entire Quick Summary report.
+
+## 2. COMPLETE FORENSIC CHRONOLOGY
+Day-by-day reconstruction from ALL documents. Every date, interaction, court appearance, evidence collection. Source citation for each entry. Highlight gaps in the timeline.
+
+## 3. DOCUMENT-BY-DOCUMENT FORENSIC ANALYSIS
+For EACH document:
+### Document: [Name]
+- **Classification & Date**: Type and dating
+- **Author/Source**: Who created it, their role, potential bias
+- **Complete Summary**: Every relevant detail
+- **Key Quotes**: Every significant quote (use "quotation marks")
+- **Credibility Assessment**: Detailed reliability analysis
+- **Relevance to Each Appeal Ground**: How each element connects
+- **Cross-References**: Agreements/disagreements with other documents
+- **Gaps & Omissions**: What's missing that should be there
+- **Forensic Notes**: Anything unusual about the document
+
+## 4. EVIDENCE CROSS-REFERENCE MATRIX
+- Where witnesses agree/disagree (quote each version)
+- Timeline inconsistencies across documents
+- Factual claims contradicted by other evidence
+- Missing evidence that would normally be expected
+- Chain of custody issues
+- Hearsay vs direct evidence classification
+
+## 5. COMPREHENSIVE GROUNDS OF APPEAL
+For EVERY possible ground (examine ALL, not just the strongest):
+### Ground [Number]: [Type] — [Title]
+- **Strength Rating**: Strong / Moderate / Weak / Speculative (with percentage estimate)
+- **Detailed Legal Analysis**: Full discussion with multiple legislation references and section numbers
+- **Every Piece of Supporting Evidence**: All quotes, all documents, all witnesses
+- **Every Piece of Opposing Evidence**: What works against this ground
+- **Similar Cases (3-5 per ground)**:
+  For each case:
+  - Full citation (e.g., R v Smith [2020] NSWCCA 123)
+  - Brief facts and similarity to this case
+  - Appeal outcome
+  - Key legal principles established
+  - AustLII link: https://www.austlii.edu.au/cgi-bin/viewdoc/au/cases/[state]/[court]/[year]/[number].html
+- **Legal Tests**: The specific legal tests to satisfy
+- **How to Strengthen**: Detailed steps
+- **Counter-Strategy**: How to rebut Crown arguments
+
+## 6. COMPLETE LEGAL FRAMEWORK MAP
+Every relevant piece of legislation with section numbers, titles, and application to this case:
+- {state_info.get('name', 'NSW')} Criminal Law Act — with section-by-section relevance
+- Evidence Act — applicable rules and exceptions
+- Criminal Appeal Act — specific provisions for this appeal type
+- Sentencing Act — guidelines and principles
+- Commonwealth legislation — any federal provisions
+- Human Rights — ICCPR, UN conventions, state human rights acts
+- Include direct links: https://www.legislation.nsw.gov.au/ (or relevant state)
+
+## 7. ALL SIMILAR & PRECEDENT CASES
+A comprehensive table of 8-12 similar Australian appeal cases:
+For each:
+- **Citation**: Full case name and citation
+- **Court**: Which court decided it
+- **Year**: When
+- **Similar Facts**: What makes it relevant
+- **Grounds Used**: Which appeal grounds were argued
+- **Outcome**: Allowed/dismissed and why
+- **Key Principle**: Legal principle established
+- **Read the Decision**: Full AustLII URL
+
+## 8. COMPLETE APPEAL FILING GUIDE — ALL COURT LEVELS
+Step-by-step procedures for {state_info.get('name', 'NSW')}:
+
+### A. Appeal from Local/Magistrates Court to District Court
+1. Form required: [specific form name and number]
+2. Time limit: [days from conviction/sentence]
+3. Where to file: [specific court registry]
+4. Filing fee: [amount]
+5. What to include in the notice
+6. Serving the DPP
+7. What happens next (directions hearing, etc.)
+
+### B. Appeal from District Court to Court of Criminal Appeal
+1. Notice of Intention to Appeal: [form, deadline, where to file]
+2. Grounds of Appeal document: [requirements, format]
+3. Leave to appeal requirements
+4. Written submissions: [format, deadlines, page limits]
+5. Transcript requests and funding
+6. Legal Aid application process
+7. The hearing: what to expect
+
+### C. Appeal from Supreme Court to Court of Criminal Appeal
+1. [Same detailed steps]
+
+### D. Special Leave to Appeal to High Court
+1. [When this applies, requirements, timeline]
+
+### E. Extension of Time Applications
+1. When you've missed the deadline — how to apply, what to show
+
+## 9. SENTENCING ANALYSIS
+- Original sentence and classification
+- Sentencing range for this offence in {state_info.get('name', 'NSW')}
+- Comparable sentences in similar cases (with citations)
+- Standard non-parole period (if applicable)
+- Aggravating and mitigating factors from the documents
+- Grounds for sentence appeal (manifestly excessive, error in principle)
+
+## 10. WITNESS CREDIBILITY ANALYSIS
+For each witness in the documents:
+- What they claimed (with quotes)
+- Internal consistency
+- Consistency with other evidence
+- Potential motives for bias
+- Areas for cross-examination
+
+## 11. COMPLETE APPEAL STRATEGY — HOW TO PRESENT YOUR CASE
+
+### Written Submissions
+- Structure and format
+- Which grounds to lead with
+- How to cite legislation and case law
+- Key arguments to make
+- How to present evidence references
+
+### Oral Submissions
+- How to present to the Court of Criminal Appeal
+- Key points to emphasise
+- How to handle judicial questions
+- Time management in the hearing
+
+### Evidence Presentation
+- Which documents to include in the appeal book
+- Order and indexing
+- Highlighting key passages
+- Fresh evidence applications
+
+### Personal Presentation
+- What to wear, how to address the court
+- Courtroom etiquette
+- Self-represented vs legal representation considerations
+
+## 12. RISK ASSESSMENT
+- Best case scenario with probability
+- Worst case scenario
+- What could go wrong
+- Mitigating strategies
+- Whether appeal could increase sentence (rare but possible)
+
+## 13. IMMEDIATE ACTION ITEMS
+Numbered priority list with specific deadlines. What to do today, this week, within 28 days, within 3 months.
+
+## 14. APPENDIX — COMPLETE REFERENCES
+- All legislation cited with section references and links
+- All case law cited with AustLII links
+- All documents referenced
+- Glossary of legal terms
+- Contact details for relevant courts and legal aid
+
+IMPORTANT: This is the PREMIUM report. Be exhaustive. Quote extensively from documents. Cite every relevant law section with links. Reference 8-12 similar cases with AustLII links. Include complete court-specific filing procedures. This should be a barrister's primary working document."""
 
     # Call OpenAI via Emergent
     api_key = os.environ.get('EMERGENT_LLM_KEY')
@@ -3839,6 +4099,14 @@ app.include_router(contradictions_router)
 # Include export router
 from routers.export import router as export_router
 app.include_router(export_router)
+
+# Include Stripe payment router
+from routers.stripe_payments import router as stripe_payments_router
+app.include_router(stripe_payments_router)
+
+# Include Stripe webhook router
+from routers.stripe_webhook import router as stripe_webhook_router
+app.include_router(stripe_webhook_router)
 
 app.add_middleware(
     CORSMiddleware,
