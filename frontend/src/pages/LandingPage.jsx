@@ -348,7 +348,7 @@ const LandingPage = () => {
       <section className="py-10 px-6 bg-amber-50 border-t border-amber-200">
         <div className="max-w-4xl mx-auto">
           <h3 className="text-lg font-semibold text-amber-900 mb-4 text-center" style={{ fontFamily: 'Crimson Pro, serif' }}>
-            Important Notice
+            Important Notice & Disclaimer
           </h3>
           <div className="space-y-4 text-sm text-amber-800">
             <p>
@@ -360,8 +360,13 @@ const LandingPage = () => {
               should not be relied upon as a substitute for advice from a qualified Australian legal practitioner.
             </p>
             <p>
-              Users should obtain independent legal advice before making any decision or taking any action 
-              in relation to an appeal or criminal proceeding.
+              <strong>User Responsibility:</strong> By using this application, you acknowledge that you do so at your own discretion and risk. 
+              You are solely responsible for ensuring you have the necessary permissions and legal authority to upload any documents or content. 
+              The application owner accepts no responsibility for the content uploaded by users.
+            </p>
+            <p>
+              All information, analysis, and results generated through this application are for informational purposes only and 
+              <strong> must be reviewed by a qualified legal professional</strong> before any reliance or action is taken.
             </p>
           </div>
         </div>
