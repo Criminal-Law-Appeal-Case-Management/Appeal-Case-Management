@@ -119,7 +119,9 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Hero Section with Legal Graphics */}
+      {/* ============================================ */}
+      {/* SECTION 1: HERO */}
+      {/* ============================================ */}
       <section className="relative py-20 md:py-28 px-6 overflow-hidden">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
@@ -223,40 +225,9 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Features - Grid with Graphics */}
-      <section className="py-20 px-6 bg-muted/50 dark:bg-muted/20 relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <img 
-            src="https://images.unsplash.com/photo-1769092992534-f2d0210162b9?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920" 
-            alt=""
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-12">
-            <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Features</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              What You Can Do
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Powerful tools to organize your case, identify appeal grounds, and track your progress.
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <FeatureCard icon={Upload} title="Upload Documents" desc="Organise case files in one place" />
-            <FeatureCard icon={Clock} title="Build Timelines" desc="AI-generated event chronology" />
-            <FeatureCard icon={BarChart3} title="Find Issues" desc="Flag potential appeal grounds" />
-            <FeatureCard icon={FileCheck} title="Generate Reports" desc="Structured case summaries" />
-            <FeatureCard icon={FileText} title="OCR Extraction" desc="Text from scanned documents" />
-            <FeatureCard icon={Presentation} title="Barrister View" desc="Professional presentation mode" />
-            <FeatureCard icon={ListChecks} title="Progress Tracker" desc="Track appeal process steps" />
-            <FeatureCard icon={Shield} title="Secure Storage" desc="Your data, your control" />
-          </div>
-        </div>
-      </section>
-
-      {/* See It In Action - Sample Screenshots */}
+      {/* ============================================ */}
+      {/* SECTION 2: SEE IT IN ACTION (with Features merged) */}
+      {/* ============================================ */}
       <section className="py-20 px-6 bg-background relative">
         {/* Decorative Elements */}
         <div className="absolute top-0 left-0 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl" />
@@ -276,6 +247,18 @@ const LandingPage = () => {
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Here's what you can expect when using the tool — from uploading documents to generating reports.
             </p>
+          </div>
+
+          {/* Feature Grid - merged from Features section */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+            <FeatureCard icon={Upload} title="Upload Documents" desc="Organise case files in one place" />
+            <FeatureCard icon={Clock} title="Build Timelines" desc="AI-generated event chronology" />
+            <FeatureCard icon={BarChart3} title="Find Issues" desc="Flag potential appeal grounds" />
+            <FeatureCard icon={FileCheck} title="Generate Reports" desc="Structured case summaries" />
+            <FeatureCard icon={FileText} title="OCR Extraction" desc="Text from scanned documents" />
+            <FeatureCard icon={Presentation} title="Barrister View" desc="Professional presentation mode" />
+            <FeatureCard icon={ListChecks} title="Progress Tracker" desc="Track appeal process steps" />
+            <FeatureCard icon={Shield} title="Secure Storage" desc="Your data, your control" />
           </div>
 
           <div className="space-y-20">
@@ -479,10 +462,10 @@ const LandingPage = () => {
             <div>
               <div className="text-center mb-8">
                 <span className="text-amber-600 font-semibold text-xs uppercase tracking-wider">Step 4</span>
-                <h3 className="text-xl font-bold text-slate-900 mt-2 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-2 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   Generate Reports
                 </h3>
-                <p className="text-slate-600 text-sm max-w-2xl mx-auto">
+                <p className="text-slate-600 dark:text-slate-400 text-sm max-w-2xl mx-auto">
                   Generate three types of reports to suit your needs. Here's what each report looks like:
                 </p>
               </div>
@@ -490,23 +473,23 @@ const LandingPage = () => {
               <div className="space-y-8">
                 
                 {/* Quick Summary Report - Detailed */}
-                <div className="bg-gradient-to-r from-green-50 to-white rounded-xl border border-green-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-green-50 to-white dark:from-green-900/20 dark:to-slate-900 rounded-xl border border-green-200 dark:border-green-800 overflow-hidden">
                   <div className="bg-green-600 text-white px-6 py-3 flex items-center gap-2">
                     <div className="w-3 h-3 bg-white rounded-full"></div>
                     <span className="font-semibold">QUICK SUMMARY REPORT</span>
                     <span className="text-green-200 text-sm ml-2">— Perfect for initial assessment</span>
                   </div>
                   <div className="p-6">
-                    <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                      <div className="border-b border-slate-200 pb-4 mb-4">
-                        <h4 className="text-lg font-bold text-slate-900">CASE SUMMARY REPORT</h4>
-                        <p className="text-sm text-slate-600">R v Smith [2024] NSWSC 142</p>
+                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-5 shadow-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                      <div className="border-b border-slate-200 dark:border-slate-700 pb-4 mb-4">
+                        <h4 className="text-lg font-bold text-slate-900 dark:text-white">CASE SUMMARY REPORT</h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">R v Smith [2024] NSWSC 142</p>
                         <p className="text-xs text-slate-500 mt-1">Generated: 5 March 2025</p>
                       </div>
                       <div className="grid md:grid-cols-2 gap-6 text-sm">
                         <div>
-                          <h5 className="font-semibold text-slate-800 mb-2">Case Overview</h5>
-                          <ul className="text-slate-600 space-y-1 text-xs">
+                          <h5 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">Case Overview</h5>
+                          <ul className="text-slate-600 dark:text-slate-400 space-y-1 text-xs">
                             <li><strong>Offence:</strong> Murder (s.18(1)(a) Crimes Act 1900)</li>
                             <li><strong>Verdict:</strong> Guilty</li>
                             <li><strong>Sentence:</strong> 18 years imprisonment (NPP 12 years)</li>
@@ -515,8 +498,8 @@ const LandingPage = () => {
                           </ul>
                         </div>
                         <div>
-                          <h5 className="font-semibold text-slate-800 mb-2">Key Findings</h5>
-                          <ul className="text-slate-600 space-y-1 text-xs">
+                          <h5 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">Key Findings</h5>
+                          <ul className="text-slate-600 dark:text-slate-400 space-y-1 text-xs">
                             <li><strong>Grounds Identified:</strong> 3 potential grounds</li>
                             <li><strong>Strongest Ground:</strong> Misdirection on mens rea</li>
                             <li><strong>Strength Assessment:</strong> Moderate-Strong</li>
@@ -524,9 +507,9 @@ const LandingPage = () => {
                           </ul>
                         </div>
                       </div>
-                      <div className="mt-4 pt-4 border-t border-slate-200">
-                        <h5 className="font-semibold text-slate-800 mb-2 text-sm">Recommendation</h5>
-                        <p className="text-xs text-slate-600">
+                      <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+                        <h5 className="font-semibold text-slate-800 dark:text-slate-200 mb-2 text-sm">Recommendation</h5>
+                        <p className="text-xs text-slate-600 dark:text-slate-400">
                           Based on initial analysis, this case presents viable grounds for appeal. The primary ground 
                           relates to the trial judge's direction on intent (mens rea). Recommend seeking urgent legal 
                           review of jury directions from qualified counsel.
@@ -537,26 +520,26 @@ const LandingPage = () => {
                 </div>
 
                 {/* Full Detailed Report */}
-                <div className="bg-gradient-to-r from-blue-50 to-white rounded-xl border border-blue-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-50 to-white dark:from-blue-900/20 dark:to-slate-900 rounded-xl border border-blue-200 dark:border-blue-800 overflow-hidden">
                   <div className="bg-blue-600 text-white px-6 py-3 flex items-center gap-2">
                     <div className="w-3 h-3 bg-white rounded-full"></div>
                     <span className="font-semibold">FULL DETAILED REPORT</span>
                     <span className="text-blue-200 text-sm ml-2">— Comprehensive analysis with citations</span>
                   </div>
                   <div className="p-6">
-                    <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                      <div className="border-b border-slate-200 pb-4 mb-4">
-                        <h4 className="text-lg font-bold text-slate-900">DETAILED APPEAL ANALYSIS</h4>
-                        <p className="text-sm text-slate-600">R v Smith [2024] NSWSC 142</p>
+                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-5 shadow-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                      <div className="border-b border-slate-200 dark:border-slate-700 pb-4 mb-4">
+                        <h4 className="text-lg font-bold text-slate-900 dark:text-white">DETAILED APPEAL ANALYSIS</h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">R v Smith [2024] NSWSC 142</p>
                       </div>
                       
                       <div className="space-y-4 text-sm">
                         <div>
-                          <h5 className="font-bold text-slate-900 text-base mb-2">1. GROUND ONE: Misdirection on Mens Rea</h5>
-                          <div className="bg-amber-50 border-l-4 border-amber-500 p-3 mb-3">
-                            <p className="text-xs text-amber-800"><strong>Strength:</strong> STRONG — High likelihood of success</p>
+                          <h5 className="font-bold text-slate-900 dark:text-white text-base mb-2">1. GROUND ONE: Misdirection on Mens Rea</h5>
+                          <div className="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 p-3 mb-3">
+                            <p className="text-xs text-amber-800 dark:text-amber-200"><strong>Strength:</strong> STRONG — High likelihood of success</p>
                           </div>
-                          <div className="text-xs text-slate-600 space-y-2">
+                          <div className="text-xs text-slate-600 dark:text-slate-400 space-y-2">
                             <p><strong>Issue:</strong> The trial judge's direction to the jury on the element of intent under 
                             s.18(1)(a) Crimes Act 1900 (NSW) was inadequate. The direction failed to properly explain the 
                             distinction between intent to kill and intent to cause grievous bodily harm.</p>
@@ -580,11 +563,11 @@ const LandingPage = () => {
                         </div>
 
                         <div>
-                          <h5 className="font-bold text-slate-900 text-base mb-2">2. GROUND TWO: Procedural Fairness</h5>
-                          <div className="bg-blue-50 border-l-4 border-blue-500 p-3 mb-3">
-                            <p className="text-xs text-blue-800"><strong>Strength:</strong> MODERATE — Requires further evidence</p>
+                          <h5 className="font-bold text-slate-900 dark:text-white text-base mb-2">2. GROUND TWO: Procedural Fairness</h5>
+                          <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-3 mb-3">
+                            <p className="text-xs text-blue-800 dark:text-blue-200"><strong>Strength:</strong> MODERATE — Requires further evidence</p>
                           </div>
-                          <div className="text-xs text-slate-600">
+                          <div className="text-xs text-slate-600 dark:text-slate-400">
                             <p><strong>Issue:</strong> Defence counsel was granted insufficient time to prepare following late 
                             disclosure of forensic evidence. The additional material was provided 48 hours before trial...</p>
                             <p className="mt-2 text-slate-400 italic">[Report continues with full analysis of each ground...]</p>
@@ -596,38 +579,38 @@ const LandingPage = () => {
                 </div>
 
                 {/* Extensive Log Report */}
-                <div className="bg-gradient-to-r from-purple-50 to-white rounded-xl border border-purple-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-purple-50 to-white dark:from-purple-900/20 dark:to-slate-900 rounded-xl border border-purple-200 dark:border-purple-800 overflow-hidden">
                   <div className="bg-purple-600 text-white px-6 py-3 flex items-center gap-2">
                     <div className="w-3 h-3 bg-white rounded-full"></div>
                     <span className="font-semibold">EXTENSIVE LOG REPORT</span>
                     <span className="text-purple-200 text-sm ml-2">— Complete documentation & guidance</span>
                   </div>
                   <div className="p-6">
-                    <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                      <div className="border-b border-slate-200 pb-4 mb-4">
-                        <h4 className="text-lg font-bold text-slate-900">COMPREHENSIVE APPEAL DOCUMENTATION</h4>
-                        <p className="text-sm text-slate-600">R v Smith [2024] NSWSC 142 — Complete Record</p>
+                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-5 shadow-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                      <div className="border-b border-slate-200 dark:border-slate-700 pb-4 mb-4">
+                        <h4 className="text-lg font-bold text-slate-900 dark:text-white">COMPREHENSIVE APPEAL DOCUMENTATION</h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">R v Smith [2024] NSWSC 142 — Complete Record</p>
                       </div>
                       
                       <div className="grid md:grid-cols-3 gap-4 text-xs mb-4">
-                        <div className="bg-slate-50 rounded p-3">
-                          <p className="font-semibold text-slate-800 mb-1">Documents Analysed</p>
-                          <p className="text-slate-600">12 files • 847 pages</p>
+                        <div className="bg-slate-50 dark:bg-slate-700 rounded p-3">
+                          <p className="font-semibold text-slate-800 dark:text-slate-200 mb-1">Documents Analysed</p>
+                          <p className="text-slate-600 dark:text-slate-400">12 files • 847 pages</p>
                         </div>
-                        <div className="bg-slate-50 rounded p-3">
-                          <p className="font-semibold text-slate-800 mb-1">Timeline Events</p>
-                          <p className="text-slate-600">23 key events identified</p>
+                        <div className="bg-slate-50 dark:bg-slate-700 rounded p-3">
+                          <p className="font-semibold text-slate-800 dark:text-slate-200 mb-1">Timeline Events</p>
+                          <p className="text-slate-600 dark:text-slate-400">23 key events identified</p>
                         </div>
-                        <div className="bg-slate-50 rounded p-3">
-                          <p className="font-semibold text-slate-800 mb-1">Analysis Duration</p>
-                          <p className="text-slate-600">Generated in 4m 32s</p>
+                        <div className="bg-slate-50 dark:bg-slate-700 rounded p-3">
+                          <p className="font-semibold text-slate-800 dark:text-slate-200 mb-1">Analysis Duration</p>
+                          <p className="text-slate-600 dark:text-slate-400">Generated in 4m 32s</p>
                         </div>
                       </div>
 
                       <div className="space-y-3 text-xs">
-                        <div className="border border-slate-200 rounded p-3">
-                          <p className="font-semibold text-slate-800">TABLE OF CONTENTS</p>
-                          <div className="mt-2 text-slate-600 grid md:grid-cols-2 gap-1">
+                        <div className="border border-slate-200 dark:border-slate-700 rounded p-3">
+                          <p className="font-semibold text-slate-800 dark:text-slate-200">TABLE OF CONTENTS</p>
+                          <div className="mt-2 text-slate-600 dark:text-slate-400 grid md:grid-cols-2 gap-1">
                             <p>1. Executive Summary ..................... p.1</p>
                             <p>2. Case Background ........................ p.3</p>
                             <p>3. Complete Timeline ...................... p.8</p>
@@ -645,9 +628,9 @@ const LandingPage = () => {
                           </div>
                         </div>
 
-                        <div className="border border-slate-200 rounded p-3">
-                          <p className="font-semibold text-slate-800 mb-2">SAMPLE: APPEAL PROCESS GUIDANCE (Section 11)</p>
-                          <div className="text-slate-600 space-y-2">
+                        <div className="border border-slate-200 dark:border-slate-700 rounded p-3">
+                          <p className="font-semibold text-slate-800 dark:text-slate-200 mb-2">SAMPLE: APPEAL PROCESS GUIDANCE (Section 11)</p>
+                          <div className="text-slate-600 dark:text-slate-400 space-y-2">
                             <p><strong>Step 1: Notice of Intention to Appeal</strong></p>
                             <p className="ml-3">File Form 74C with the Court of Criminal Appeal Registry within 28 days of conviction/sentence. 
                             Include: appellant details, conviction date, sentence imposed, brief grounds...</p>
@@ -669,48 +652,48 @@ const LandingPage = () => {
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
                 <span className="text-amber-600 font-semibold text-xs uppercase tracking-wider">Step 5</span>
-                <h3 className="text-xl font-bold text-slate-900 mt-2 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                <h3 className="text-xl font-bold text-foreground mt-2 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   Track Your Appeal Progress
                 </h3>
-                <p className="text-slate-600 text-sm leading-relaxed">
+                <p className="text-muted-foreground text-sm leading-relaxed">
                   The appeal checklist helps you track what's been done and what comes next. 
                   Each step in the appeal process is laid out clearly — from filing a Notice of Intention 
                   to preparing submissions. Check off completed items and always know your next action.
                 </p>
               </div>
-              <div className="bg-slate-100 rounded-lg p-4 border border-slate-200">
-                <div className="bg-white rounded border border-slate-200 shadow-sm p-4">
-                  <div className="text-sm font-semibold text-slate-800 mb-3">Appeal Progress Checklist</div>
+              <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                <div className="bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 shadow-sm p-4">
+                  <div className="text-sm font-semibold text-slate-800 dark:text-white mb-3">Appeal Progress Checklist</div>
                   <div className="space-y-2">
-                    <div className="flex items-center gap-3 p-2 bg-green-50 border border-green-200 rounded">
+                    <div className="flex items-center gap-3 p-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded">
                       <div className="w-5 h-5 bg-green-500 rounded flex items-center justify-center">
                         <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      <span className="text-sm text-green-800">File Notice of Intention to Appeal</span>
+                      <span className="text-sm text-green-800 dark:text-green-200">File Notice of Intention to Appeal</span>
                     </div>
-                    <div className="flex items-center gap-3 p-2 bg-green-50 border border-green-200 rounded">
+                    <div className="flex items-center gap-3 p-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded">
                       <div className="w-5 h-5 bg-green-500 rounded flex items-center justify-center">
                         <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      <span className="text-sm text-green-800">Obtain Trial Transcripts</span>
+                      <span className="text-sm text-green-800 dark:text-green-200">Obtain Trial Transcripts</span>
                     </div>
-                    <div className="flex items-center gap-3 p-2 bg-amber-50 border border-amber-200 rounded">
+                    <div className="flex items-center gap-3 p-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded">
                       <div className="w-5 h-5 bg-amber-500 rounded flex items-center justify-center">
                         <span className="text-white text-xs font-bold">!</span>
                       </div>
-                      <span className="text-sm text-amber-800 font-medium">Identify Grounds of Appeal ← Current Step</span>
+                      <span className="text-sm text-amber-800 dark:text-amber-200 font-medium">Identify Grounds of Appeal ← Current Step</span>
                     </div>
-                    <div className="flex items-center gap-3 p-2 bg-slate-50 border border-slate-200 rounded">
-                      <div className="w-5 h-5 bg-slate-300 rounded"></div>
-                      <span className="text-sm text-slate-500">Draft Appeal Submissions</span>
+                    <div className="flex items-center gap-3 p-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded">
+                      <div className="w-5 h-5 bg-slate-300 dark:bg-slate-500 rounded"></div>
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Draft Appeal Submissions</span>
                     </div>
-                    <div className="flex items-center gap-3 p-2 bg-slate-50 border border-slate-200 rounded">
-                      <div className="w-5 h-5 bg-slate-300 rounded"></div>
-                      <span className="text-sm text-slate-500">File Appeal with Court of Criminal Appeal</span>
+                    <div className="flex items-center gap-3 p-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded">
+                      <div className="w-5 h-5 bg-slate-300 dark:bg-slate-500 rounded"></div>
+                      <span className="text-sm text-slate-500 dark:text-slate-400">File Appeal with Court of Criminal Appeal</span>
                     </div>
                   </div>
                 </div>
@@ -743,10 +726,10 @@ const LandingPage = () => {
               </div>
               <div className="order-1 md:order-2">
                 <span className="text-amber-600 font-semibold text-xs uppercase tracking-wider">For Legal Professionals</span>
-                <h3 className="text-xl font-bold text-slate-900 mt-2 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                <h3 className="text-xl font-bold text-foreground mt-2 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   Barrister Presentation View
                 </h3>
-                <p className="text-slate-600 text-sm leading-relaxed">
+                <p className="text-muted-foreground text-sm leading-relaxed">
                   A clean, professional presentation mode designed for legal counsel. 
                   Present case information in court or client meetings with a formatted view 
                   that looks like a proper legal brief — numbered sections, case citations, 
@@ -759,23 +742,138 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Legal Framework - Collapsible */}
-      <section className="py-12 px-6 border-t border-slate-200">
-        <div className="max-w-4xl mx-auto">
+      {/* ============================================ */}
+      {/* SECTION 3: RELEVANT LEGISLATION (merged) */}
+      {/* ============================================ */}
+      <section className="py-16 px-6 bg-muted/50 dark:bg-muted/20 border-t border-border">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-blue-700 dark:text-blue-400 font-semibold text-xs uppercase tracking-widest mb-3">Legislation & Rights</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Criminal Law by State
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Direct links to the primary criminal legislation for each Australian jurisdiction. 
+              Know your rights and understand the law that applies to your case.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            {/* NSW */}
+            <div className="bg-card border border-border rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  NSW
+                </div>
+                <h3 className="font-bold text-foreground">New South Wales</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1900-040" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Crimes Act 1900</a></li>
+                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1912-016" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Appeal Act 1912</a></li>
+                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1995-025" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Evidence Act 1995</a></li>
+                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1986-209" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Drug Misuse and Trafficking Act 1985</a></li>
+                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-2007-080" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Crimes (Domestic Violence) Act 2007</a></li>
+              </ul>
+            </div>
+
+            {/* Victoria */}
+            <div className="bg-card border border-border rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  VIC
+                </div>
+                <h3 className="font-bold text-foreground">Victoria</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/crimes-act-1958" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Crimes Act 1958</a></li>
+                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/criminal-procedure-act-2009" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Procedure Act 2009</a></li>
+                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/evidence-act-2008" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Evidence Act 2008</a></li>
+                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/drugs-poisons-and-controlled-substances-act-1981" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Drugs, Poisons Act 1981</a></li>
+                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/family-violence-protection-act-2008" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Family Violence Protection Act 2008</a></li>
+              </ul>
+            </div>
+
+            {/* Queensland */}
+            <div className="bg-card border border-border rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  QLD
+                </div>
+                <h3 className="font-bold text-foreground">Queensland</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1899-009" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Code Act 1899</a></li>
+                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1977-026" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Practice Rules 1999</a></li>
+                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1977-047" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Evidence Act 1977</a></li>
+                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1986-023" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Drugs Misuse Act 1986</a></li>
+                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-2012-005" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Domestic Violence Act 2012</a></li>
+              </ul>
+            </div>
+
+            {/* South Australia */}
+            <div className="bg-card border border-border rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  SA
+                </div>
+                <h3 className="font-bold text-foreground">South Australia</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/criminal%20law%20consolidation%20act%201935" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Law Consolidation Act 1935</a></li>
+                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/evidence%20act%201929" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Evidence Act 1929</a></li>
+                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/controlled%20substances%20act%201984" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Controlled Substances Act 1984</a></li>
+                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/intervention%20orders%20(prevention%20of%20abuse)%20act%202009" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Intervention Orders Act 2009</a></li>
+              </ul>
+            </div>
+
+            {/* Western Australia */}
+            <div className="bg-card border border-border rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  WA
+                </div>
+                <h3 className="font-bold text-foreground">Western Australia</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_218_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Code Act 1913</a></li>
+                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_221_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Appeals Act 2004</a></li>
+                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_327_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Evidence Act 1906</a></li>
+                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_599_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Misuse of Drugs Act 1981</a></li>
+              </ul>
+            </div>
+
+            {/* Commonwealth */}
+            <div className="bg-card border border-border rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  CTH
+                </div>
+                <h3 className="font-bold text-foreground">Commonwealth</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://www.legislation.gov.au/C2004A04868/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Criminal Code Act 1995</a></li>
+                <li><a href="https://www.legislation.gov.au/C2004A04858/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Evidence Act 1995</a></li>
+                <li><a href="https://www.legislation.gov.au/C2004A01586/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Judiciary Act 1903</a></li>
+                <li><a href="https://www.legislation.gov.au/C2004A03712/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Crimes Act 1914</a></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Legal Framework - Collapsible */}
           <button 
             onClick={() => setShowLegalFramework(!showLegalFramework)}
-            className="w-full flex items-center justify-between p-4 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+            className="w-full flex items-center justify-between p-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors mt-8"
           >
             <div className="flex items-center gap-3">
-              <Scale className="w-5 h-5 text-slate-600" />
-              <span className="font-semibold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                Applicable Legal Framework
+              <Scale className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              <span className="font-semibold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                View Applicable Legal Framework
               </span>
-              <span className="text-xs text-slate-500 hidden sm:inline">
+              <span className="text-xs text-muted-foreground hidden sm:inline">
                 NSW Crimes Act 1900 • Criminal Code Act 1995 (Cth) • Human Rights
               </span>
             </div>
-            <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${showLegalFramework ? 'rotate-180' : ''}`} />
+            <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform ${showLegalFramework ? 'rotate-180' : ''}`} />
           </button>
           
           {showLegalFramework && (
@@ -826,195 +924,64 @@ const LandingPage = () => {
               </p>
             </div>
           )}
-        </div>
-      </section>
 
-      {/* About - Brief */}
-      <section className="py-16 px-6 bg-slate-900">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-amber-500 text-xs uppercase tracking-widest mb-4 text-center">About</p>
-          
-          {/* Business Name & Creator */}
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Criminal Law Appeal Case Management
-            </h3>
-            <p className="text-amber-400 text-sm font-medium">Founded by Debra King</p>
-          </div>
+          {/* Human Rights Section */}
+          <div className="mt-12 grid md:grid-cols-2 gap-6">
+            {/* International Human Rights */}
+            <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Shield className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
+                <h3 className="font-bold text-foreground text-lg">International Human Rights</h3>
+              </div>
+              <p className="text-muted-foreground text-sm mb-4">
+                Australia has signed international treaties that protect your rights. While not always directly enforceable, 
+                courts must consider these when interpreting Australian law.
+              </p>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <a href="https://www.ohchr.org/en/instruments-mechanisms/instruments/international-covenant-civil-and-political-rights" target="_blank" rel="noopener noreferrer" className="text-emerald-700 dark:text-emerald-400 hover:underline font-medium">
+                    International Covenant on Civil and Political Rights (ICCPR)
+                  </a>
+                </li>
+                <li className="pl-4 text-muted-foreground text-xs">
+                  • Art 14: Right to fair and public hearing<br/>
+                  • Art 14(2): Presumption of innocence<br/>
+                  • Art 14(3): Right to legal assistance<br/>
+                  • Art 9: Right to liberty and security<br/>
+                  • Art 7: Freedom from torture/cruel treatment
+                </li>
+                <li className="flex items-start gap-2">
+                  <a href="https://www.un.org/en/about-us/universal-declaration-of-human-rights" target="_blank" rel="noopener noreferrer" className="text-emerald-700 dark:text-emerald-400 hover:underline font-medium">
+                    Universal Declaration of Human Rights (UDHR)
+                  </a>
+                </li>
+              </ul>
+            </div>
 
-          {/* Australian Law Only Notice */}
-          <div className="bg-amber-900/30 border border-amber-700/50 rounded-lg p-4 mb-8">
-            <p className="text-amber-300 text-sm text-center font-medium">
-              <span className="text-amber-400">AUSTRALIAN LAW ONLY</span> — This tool is designed exclusively for 
-              Australian Federal and State law matters. All legislation, case law references, and appeal procedures 
-              relate to Australian jurisdictions (NSW, VIC, QLD, SA, WA, TAS, NT, ACT).
-            </p>
-          </div>
-
-          {/* Personal Story */}
-          <div className="bg-slate-800 rounded-lg p-6 mb-6">
-            <h4 className="text-white font-semibold mb-4">Why I Built This</h4>
-            <p className="text-slate-300 text-sm leading-relaxed mb-4">
-              I'm not a lawyer — I'm someone who knows firsthand how isolating and confusing the justice system can be. 
-              <strong className="text-white"> I served a considerable amount of time in prison.</strong> During that time, 
-              I accepted my situation, believing I had no options. What I didn't know then was that I had appellant rights 
-              — rights that were never properly explained to me.
-            </p>
-            
-            <p className="text-slate-300 text-sm leading-relaxed mb-4">
-              Legal Aid failed to help me. Like so many others, I fell through the cracks of an overburdened system 
-              that offers little support once you're sentenced. I served my time not knowing what could have been challenged.
-            </p>
-
-            <p className="text-slate-300 text-sm leading-relaxed mb-4">
-              <strong className="text-white">It's now been eight years since I've been free from trouble.</strong> In that time, 
-              I've invested years of hard work, research, and determination into building this application. Every hour spent 
-              learning criminal law, every late night developing this tool — it was all driven by one goal: to ensure others 
-              don't have to go through what I went through.
-            </p>
-
-            <p className="text-slate-300 text-sm leading-relaxed mb-4">
-              <strong className="text-white">This app exists because of Josh and Brad.</strong> Josh has served 10 years 
-              of a 30-year sentence for murder. He was severely let down by the system — and for years, believed he had 
-              no options. Using this very app, we identified his rights to a fair trial and uncovered extensive errors 
-              in his case. <strong className="text-amber-400">He now has an appeal on all grounds currently being actioned.</strong>
-            </p>
-
-            <p className="text-slate-300 text-sm leading-relaxed mb-4">
-              Brad Fletcher has been on remand for over two years, still waiting for his matter to be finalised. 
-              Even at this early stage, we've already identified multiple issues with his case. Once his matter concludes, 
-              this app will be there to help him too.
-            </p>
-
-            <p className="text-slate-300 text-sm leading-relaxed mb-4">
-              <strong className="text-white">Josh and Brad inspired me to build this.</strong> Watching them — and so many 
-              others — struggle through a system that offers little help once you're sentenced, I knew something had to change. 
-              Best mates for life, and the reason this app exists.
-            </p>
-
-            <p className="text-slate-300 text-sm leading-relaxed mb-4">
-              The reality is: from manifest injustice to denial of procedural fairness, from critical elements missed 
-              at sentencing, to failures by defence counsel, errors by the judge, or simply unsafe verdicts — there are 
-              <em> many</em> potential grounds that can arise in criminal matters. Unless you're a legal expert or have 
-              thousands of dollars for advice, these issues often go unnoticed.
-            </p>
-
-            <p className="text-slate-300 text-sm leading-relaxed">
-              <strong className="text-amber-400">If this tool helps even one person discover grounds they didn't know existed, 
-              my goal is accomplished.</strong> People can change. I'm living proof of that — and I created this app to prove it.
-            </p>
-          </div>
-
-          <p className="text-slate-400 text-sm italic text-center">
-            "I just wanted to create something that could help others without them spending years working it out themselves."
-          </p>
-          <div className="text-center">
-            <Link to="/terms" className="inline-block mt-6 text-amber-500 hover:text-amber-400 text-sm underline">
-              Read the full story & terms
-            </Link>
+            {/* Australian Human Rights Acts */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Scale className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                <h3 className="font-bold text-foreground text-lg">Australian Human Rights Laws</h3>
+              </div>
+              <p className="text-muted-foreground text-sm mb-4">
+                Australian legislation that protects your rights in criminal proceedings. These laws 
+                ensure fair treatment and proper process throughout the justice system.
+              </p>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://www.legislation.gov.au/C2004A03366/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Australian Human Rights Commission Act 1986</a></li>
+                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/charter-human-rights-and-responsibilities-act-2006" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Charter of Human Rights (VIC)</a></li>
+                <li><a href="https://www.legislation.act.gov.au/a/2004-5/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Human Rights Act 2004 (ACT)</a></li>
+                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-2019-005" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Human Rights Act 2019 (QLD)</a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Legal Options Section */}
-      <section className="py-16 px-6 bg-slate-50 border-t border-slate-200">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-amber-700 font-semibold text-xs uppercase tracking-widest mb-3">You Have Options</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Legal Help You May Not Know About
-            </h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">
-              For most people, Legal Aid is the only affordable option — but private firms are often out of reach. 
-              What many don't realise is that there are other avenues for help. <strong>When you think you have no options, 
-              there definitely are options.</strong>
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Legal Aid */}
-            <div className="bg-white border border-slate-200 rounded-xl p-6">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <Scale className="w-5 h-5 text-blue-600" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Legal Aid</h3>
-              <p className="text-slate-600 text-sm mb-3">
-                Government-funded legal assistance available in every state. While overburdened, they can provide 
-                representation for serious criminal matters and appeals if you meet the eligibility criteria.
-              </p>
-              <ul className="text-xs text-slate-500 space-y-1">
-                <li>• <a href="https://www.legalaid.nsw.gov.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Legal Aid NSW</a></li>
-                <li>• <a href="https://www.legalaid.vic.gov.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Victoria Legal Aid</a></li>
-                <li>• <a href="https://www.legalaid.qld.gov.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Legal Aid Queensland</a></li>
-                <li>• Search "Legal Aid" + your state for other jurisdictions</li>
-              </ul>
-            </div>
-
-            {/* Pro Bono */}
-            <div className="bg-white border border-slate-200 rounded-xl p-6">
-              <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
-                <Users className="w-5 h-5 text-emerald-600" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Pro Bono Legal Services</h3>
-              <p className="text-slate-600 text-sm mb-3">
-                Many law firms and barristers provide free legal services (pro bono) for those who cannot afford representation. 
-                This is not widely advertised but is a genuine option.
-              </p>
-              <ul className="text-xs text-slate-500 space-y-1">
-                <li>• <a href="https://www.probonocentre.org.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Australian Pro Bono Centre</a></li>
-                <li>• <a href="https://www.justiceconnect.org.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Justice Connect</a></li>
-                <li>• Contact your state's Law Society for pro bono referrals</li>
-                <li>• Many barristers accept pro bono criminal appeal cases</li>
-              </ul>
-            </div>
-
-            {/* Community Legal Centres */}
-            <div className="bg-white border border-slate-200 rounded-xl p-6">
-              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                <MapPin className="w-5 h-5 text-purple-600" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Community Legal Centres</h3>
-              <p className="text-slate-600 text-sm mb-3">
-                Independent, non-profit organisations providing free legal advice and assistance. They often help with 
-                matters Legal Aid cannot cover and can refer you to specialist services.
-              </p>
-              <ul className="text-xs text-slate-500 space-y-1">
-                <li>• <a href="https://clcs.org.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Community Legal Centres Australia</a></li>
-                <li>• <a href="https://www.clcnsw.org.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">CLC NSW</a></li>
-                <li>• Aboriginal Legal Services in every state</li>
-                <li>• Specialist centres for women, youth, and prisoners</li>
-              </ul>
-            </div>
-
-            {/* Grants & Funding */}
-            <div className="bg-white border border-slate-200 rounded-xl p-6">
-              <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
-                <FileText className="w-5 h-5 text-amber-600" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Grants & Special Funding</h3>
-              <p className="text-slate-600 text-sm mb-3">
-                Various grants and funding programs exist specifically to support criminal appeals and wrongful conviction cases. 
-                These are rarely advertised but can cover legal costs.
-              </p>
-              <ul className="text-xs text-slate-500 space-y-1">
-                <li>• <a href="https://www.lawfoundation.net.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Law Foundation grants</a></li>
-                <li>• Public Purpose Fund (managed by Law Societies)</li>
-                <li>• Innocence projects at universities</li>
-                <li>• Crowdfunding for legal defence (GoFundMe, etc.)</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-8 bg-amber-50 border border-amber-200 rounded-lg p-4">
-            <p className="text-amber-800 text-sm text-center">
-              <strong>Don't give up.</strong> Even if you've been knocked back before, circumstances change and new options emerge. 
-              This tool can help you identify potential grounds — then use these resources to find someone to review your case.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Case Law Research Section */}
+      {/* ============================================ */}
+      {/* SECTION 4: LIVE CASELAW SEARCH */}
+      {/* ============================================ */}
       <section className="py-16 px-6 bg-slate-900">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
@@ -1171,304 +1138,29 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Criminal Legislation Section */}
-      <section className="py-16 px-6 bg-slate-50 border-t border-slate-200">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-blue-700 font-semibold text-xs uppercase tracking-widest mb-3">Legislation</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Criminal Law by State
-            </h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">
-              Direct links to the primary criminal legislation for each Australian jurisdiction. 
-              Know your rights and understand the law that applies to your case.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {/* NSW */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  NSW
-                </div>
-                <h3 className="font-bold text-slate-900">New South Wales</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1900-040" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Crimes Act 1900</a></li>
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1912-016" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Appeal Act 1912</a></li>
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1995-025" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1995</a></li>
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1986-209" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Drug Misuse and Trafficking Act 1985</a></li>
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-2007-080" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Crimes (Domestic Violence) Act 2007</a></li>
-              </ul>
-            </div>
-
-            {/* Victoria */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  VIC
-                </div>
-                <h3 className="font-bold text-slate-900">Victoria</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/crimes-act-1958" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Crimes Act 1958</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/criminal-procedure-act-2009" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Procedure Act 2009</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/evidence-act-2008" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 2008</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/drugs-poisons-and-controlled-substances-act-1981" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Drugs, Poisons Act 1981</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/family-violence-protection-act-2008" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Family Violence Protection Act 2008</a></li>
-              </ul>
-            </div>
-
-            {/* Queensland */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  QLD
-                </div>
-                <h3 className="font-bold text-slate-900">Queensland</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1899-009" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Code Act 1899</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1977-026" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Practice Rules 1999</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1977-047" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1977</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1986-023" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Drugs Misuse Act 1986</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-2012-005" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Domestic Violence Act 2012</a></li>
-              </ul>
-            </div>
-
-            {/* South Australia */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  SA
-                </div>
-                <h3 className="font-bold text-slate-900">South Australia</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/criminal%20law%20consolidation%20act%201935" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Law Consolidation Act 1935</a></li>
-                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/evidence%20act%201929" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1929</a></li>
-                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/controlled%20substances%20act%201984" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Controlled Substances Act 1984</a></li>
-                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/intervention%20orders%20(prevention%20of%20abuse)%20act%202009" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Intervention Orders Act 2009</a></li>
-              </ul>
-            </div>
-
-            {/* Western Australia */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  WA
-                </div>
-                <h3 className="font-bold text-slate-900">Western Australia</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_218_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Code Act 1913</a></li>
-                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_221_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Appeals Act 2004</a></li>
-                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_327_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1906</a></li>
-                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_599_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Misuse of Drugs Act 1981</a></li>
-              </ul>
-            </div>
-
-            {/* Commonwealth */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  CTH
-                </div>
-                <h3 className="font-bold text-slate-900">Commonwealth</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.gov.au/C2004A04868/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Code Act 1995</a></li>
-                <li><a href="https://www.legislation.gov.au/C2004A04858/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1995</a></li>
-                <li><a href="https://www.legislation.gov.au/C2004A01586/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Judiciary Act 1903</a></li>
-                <li><a href="https://www.legislation.gov.au/C2004A03712/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Crimes Act 1914</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Human Rights & Fair Trial Section */}
-      <section className="py-16 px-6 bg-white border-t border-slate-200">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-emerald-700 font-semibold text-xs uppercase tracking-widest mb-3">Your Rights</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Human Rights & Fair Trial Laws
-            </h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">
-              Every person has fundamental rights in criminal proceedings. These laws protect your right to a fair trial, 
-              proper legal representation, and humane treatment. <strong>Know your rights.</strong>
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            {/* International Human Rights */}
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Shield className="w-8 h-8 text-emerald-600" />
-                <h3 className="font-bold text-slate-900 text-lg">International Human Rights</h3>
-              </div>
-              <p className="text-slate-600 text-sm mb-4">
-                Australia has signed international treaties that protect your rights. While not always directly enforceable, 
-                courts must consider these when interpreting Australian law.
-              </p>
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-start gap-2">
-                  <a href="https://www.ohchr.org/en/instruments-mechanisms/instruments/international-covenant-civil-and-political-rights" target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline font-medium">
-                    International Covenant on Civil and Political Rights (ICCPR)
-                  </a>
-                </li>
-                <li className="pl-4 text-slate-600">
-                  • Art 14: Right to fair and public hearing<br/>
-                  • Art 14(2): Presumption of innocence<br/>
-                  • Art 14(3): Right to legal assistance<br/>
-                  • Art 9: Right to liberty and security<br/>
-                  • Art 7: Freedom from torture/cruel treatment
-                </li>
-                <li className="flex items-start gap-2">
-                  <a href="https://www.un.org/en/about-us/universal-declaration-of-human-rights" target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline font-medium">
-                    Universal Declaration of Human Rights (UDHR)
-                  </a>
-                </li>
-                <li className="pl-4 text-slate-600">
-                  • Art 10: Right to fair public hearing<br/>
-                  • Art 11: Presumption of innocence
-                </li>
-                <li className="flex items-start gap-2">
-                  <a href="https://www.ohchr.org/en/instruments-mechanisms/instruments/convention-against-torture-and-other-cruel-inhuman-or-degrading" target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline font-medium">
-                    Convention Against Torture (CAT)
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Australian Human Rights Acts */}
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Scale className="w-8 h-8 text-blue-600" />
-                <h3 className="font-bold text-slate-900 text-lg">Australian Human Rights Laws</h3>
-              </div>
-              <p className="text-slate-600 text-sm mb-4">
-                Some Australian states have enacted Human Rights Acts. These provide direct legal protection 
-                and can be used to challenge unfair treatment in criminal proceedings.
-              </p>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <a href="https://www.legislation.vic.gov.au/in-force/acts/charter-human-rights-and-responsibilities-act-2006" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline font-medium">
-                    Charter of Human Rights (Victoria)
-                  </a>
-                  <p className="text-slate-600 pl-2 mt-1">Right to fair hearing (s24), presumption of innocence (s25), right not to be tried twice (s26)</p>
-                </li>
-                <li>
-                  <a href="https://www.legislation.act.gov.au/a/2004-5" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline font-medium">
-                    Human Rights Act 2004 (ACT)
-                  </a>
-                  <p className="text-slate-600 pl-2 mt-1">Fair trial rights (s21), presumption of innocence (s22)</p>
-                </li>
-                <li>
-                  <a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-2019-005" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline font-medium">
-                    Human Rights Act 2019 (Queensland)
-                  </a>
-                  <p className="text-slate-600 pl-2 mt-1">Fair hearing (s31), rights in criminal proceedings (s32)</p>
-                </li>
-                <li>
-                  <a href="https://www.legislation.gov.au/C2004A03366/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline font-medium">
-                    Australian Human Rights Commission Act 1986 (Cth)
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Fair Trial Principles */}
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8">
-            <h3 className="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
-              <AlertTriangle className="w-6 h-6 text-amber-600" />
-              Your Fair Trial Rights
-            </h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <h4 className="font-semibold text-slate-800 mb-2">Before & During Trial</h4>
-                <ul className="text-sm text-slate-700 space-y-2">
-                  <li>• <strong>Presumption of innocence</strong> - guilty must be proven</li>
-                  <li>• <strong>Right to silence</strong> - cannot be forced to incriminate yourself</li>
-                  <li>• <strong>Right to legal representation</strong> - access to a lawyer</li>
-                  <li>• <strong>Disclosure</strong> - prosecution must reveal all evidence</li>
-                  <li>• <strong>Adequate time</strong> - to prepare your defence</li>
-                  <li>• <strong>Interpreter</strong> - if you don't speak English</li>
-                  <li>• <strong>Examine witnesses</strong> - cross-examine prosecution witnesses</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-slate-800 mb-2">After Conviction</h4>
-                <ul className="text-sm text-slate-700 space-y-2">
-                  <li>• <strong>Right to appeal</strong> - challenge conviction or sentence</li>
-                  <li>• <strong>Not punished twice</strong> - double jeopardy protection</li>
-                  <li>• <strong>Proportionate sentence</strong> - punishment must fit the crime</li>
-                  <li>• <strong>Humane treatment</strong> - in custody</li>
-                  <li>• <strong>Access to courts</strong> - to challenge conditions</li>
-                  <li>• <strong>Fresh evidence</strong> - new evidence can reopen case</li>
-                  <li>• <strong>Pardon/mercy</strong> - right to seek clemency</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* Additional Fairness Resources */}
-          <div className="grid md:grid-cols-3 gap-4">
-            <a 
-              href="https://humanrights.gov.au/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 p-4 bg-slate-100 border border-slate-200 rounded-lg hover:bg-slate-200 transition-colors"
-            >
-              <Shield className="w-5 h-5 text-slate-600" />
-              <span className="font-medium text-slate-900">Human Rights Commission</span>
-            </a>
-            <a 
-              href="https://www.ombudsman.gov.au/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 p-4 bg-slate-100 border border-slate-200 rounded-lg hover:bg-slate-200 transition-colors"
-            >
-              <Scale className="w-5 h-5 text-slate-600" />
-              <span className="font-medium text-slate-900">Commonwealth Ombudsman</span>
-            </a>
-            <a 
-              href="https://www.alrc.gov.au/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 p-4 bg-slate-100 border border-slate-200 rounded-lg hover:bg-slate-200 transition-colors"
-            >
-              <FileText className="w-5 h-5 text-slate-600" />
-              <span className="font-medium text-slate-900">Law Reform Commission</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section className="py-16 px-6 bg-white border-t border-slate-200">
+      {/* ============================================ */}
+      {/* SECTION 5: PRICING */}
+      {/* ============================================ */}
+      <section className="py-16 px-6 bg-background border-t border-border">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <p className="text-amber-700 font-semibold text-xs uppercase tracking-widest mb-3">Pricing</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <p className="text-amber-700 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Pricing</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
               Simple, Affordable Access
             </h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">
+            <p className="text-muted-foreground max-w-2xl mx-auto">
               Basic features are free. Pay only for detailed analysis when you need it — a fraction of what lawyers charge.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Free Tier */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
+            <div className="bg-muted/50 dark:bg-muted/20 border border-border rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>Free</h3>
-                <span className="text-2xl font-bold text-slate-900">$0</span>
+                <h3 className="text-lg font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>Free</h3>
+                <span className="text-2xl font-bold text-foreground">$0</span>
               </div>
-              <ul className="space-y-3 text-sm text-slate-600 mb-6">
+              <ul className="space-y-3 text-sm text-muted-foreground mb-6">
                 <li className="flex items-start gap-2">
                   <svg className="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -1509,70 +1201,183 @@ const LandingPage = () => {
               <Button
                 onClick={() => setShowAuthModal(true)}
                 variant="outline"
-                className="w-full border-slate-300 text-slate-700 hover:bg-slate-100"
+                className="w-full border-border text-foreground hover:bg-muted"
               >
                 Get Started Free
               </Button>
             </div>
 
             {/* Paid Features */}
-            <div className="bg-amber-50 border-2 border-amber-400 rounded-xl p-6 relative">
+            <div className="bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-400 dark:border-amber-600 rounded-xl p-6 relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full">
                 UNLOCK FULL ANALYSIS
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>Premium Features</h3>
+              <h3 className="text-lg font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>Premium Features</h3>
               
-              <ul className="space-y-4 text-sm text-slate-700 mb-6">
-                <li className="flex items-start gap-2 p-3 bg-white rounded-lg border border-amber-200">
+              <ul className="space-y-4 text-sm text-foreground mb-6">
+                <li className="flex items-start gap-2 p-3 bg-white dark:bg-slate-800 rounded-lg border border-amber-200 dark:border-amber-700">
                   <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   <div className="flex-1">
                     <div className="flex justify-between items-start">
                       <strong>Unlock Grounds of Merit</strong>
-                      <span className="text-amber-700 font-bold">$50</span>
+                      <span className="text-amber-700 dark:text-amber-400 font-bold">$50</span>
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">See full details of each potential ground, investigate further with legal citations and case law</p>
+                    <p className="text-xs text-muted-foreground mt-1">See full details of each potential ground, investigate further with legal citations and case law</p>
                   </div>
                 </li>
-                <li className="flex items-start gap-2 p-3 bg-white rounded-lg border border-amber-200">
+                <li className="flex items-start gap-2 p-3 bg-white dark:bg-slate-800 rounded-lg border border-amber-200 dark:border-amber-700">
                   <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   <div className="flex-1">
                     <div className="flex justify-between items-start">
                       <strong>Full Detailed Report</strong>
-                      <span className="text-amber-700 font-bold">$29</span>
+                      <span className="text-amber-700 dark:text-amber-400 font-bold">$29</span>
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">Comprehensive analysis with recommendations and case law references</p>
+                    <p className="text-xs text-muted-foreground mt-1">Comprehensive analysis with recommendations and case law references</p>
                   </div>
                 </li>
-                <li className="flex items-start gap-2 p-3 bg-white rounded-lg border border-amber-200">
+                <li className="flex items-start gap-2 p-3 bg-white dark:bg-slate-800 rounded-lg border border-amber-200 dark:border-amber-700">
                   <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   <div className="flex-1">
                     <div className="flex justify-between items-start">
                       <strong>Extensive Log Report</strong>
-                      <span className="text-amber-700 font-bold">$39</span>
+                      <span className="text-amber-700 dark:text-amber-400 font-bold">$39</span>
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">Complete documentation with step-by-step appeal guidance</p>
+                    <p className="text-xs text-muted-foreground mt-1">Complete documentation with step-by-step appeal guidance</p>
                   </div>
                 </li>
               </ul>
-              <div className="bg-white rounded-lg p-3 text-center text-sm text-slate-600 mb-4">
-                <p><strong className="text-slate-900">Compare:</strong> A junior lawyer charges $1,000+ just to review a case</p>
-                <p className="text-xs text-slate-500 mt-1">Barristers charge triple that. A full legal report? Thousands.</p>
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-3 text-center text-sm text-muted-foreground mb-4">
+                <p><strong className="text-foreground">Compare:</strong> A junior lawyer charges $1,000+ just to review a case</p>
+                <p className="text-xs text-muted-foreground mt-1">Barristers charge triple that. A full legal report? Thousands.</p>
               </div>
-              <p className="text-xs text-slate-500 text-center">
+              <p className="text-xs text-muted-foreground text-center">
                 Secure payment via PayPal
               </p>
             </div>
           </div>
 
-          <p className="text-center text-xs text-slate-500 mt-6">
+          <p className="text-center text-xs text-muted-foreground mt-6">
             * Premium features are per-case. Pay once, access that analysis forever.
           </p>
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* SECTION 6: YOU HAVE OPTIONS (moved to bottom) */}
+      {/* ============================================ */}
+      <section className="py-16 px-6 bg-muted/50 dark:bg-muted/20 border-t border-border">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-amber-700 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">You Have Options</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Legal Help You May Not Know About
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              For most people, Legal Aid is the only affordable option — but private firms are often out of reach. 
+              What many don't realise is that there are other avenues for help. <strong className="text-foreground">When you think you have no options, 
+              there definitely are options.</strong>
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Legal Aid */}
+            <div className="bg-card border border-border rounded-xl p-6">
+              <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-4">
+                <Scale className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="text-lg font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Legal Aid</h3>
+              <p className="text-muted-foreground text-sm mb-3">
+                Government-funded legal assistance available in every state. While overburdened, they can provide 
+                representation for serious criminal matters and appeals if you meet the eligibility criteria.
+              </p>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li>• <a href="https://www.legalaid.nsw.gov.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Legal Aid NSW</a></li>
+                <li>• <a href="https://www.legalaid.vic.gov.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Victoria Legal Aid</a></li>
+                <li>• <a href="https://www.legalaid.qld.gov.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Legal Aid Queensland</a></li>
+                <li>• Search "Legal Aid" + your state for other jurisdictions</li>
+              </ul>
+            </div>
+
+            {/* Pro Bono */}
+            <div className="bg-card border border-border rounded-xl p-6">
+              <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center mb-4">
+                <Users className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <h3 className="text-lg font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Pro Bono Legal Services</h3>
+              <p className="text-muted-foreground text-sm mb-3">
+                Many law firms and barristers provide free legal services (pro bono) for those who cannot afford representation. 
+                This is not widely advertised but is a genuine option.
+              </p>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li>• <a href="https://www.probonocentre.org.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Australian Pro Bono Centre</a></li>
+                <li>• <a href="https://www.justiceconnect.org.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Justice Connect</a></li>
+                <li>• Contact your state's Law Society for pro bono referrals</li>
+                <li>• Many barristers accept pro bono criminal appeal cases</li>
+              </ul>
+            </div>
+
+            {/* Community Legal Centres */}
+            <div className="bg-card border border-border rounded-xl p-6">
+              <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4">
+                <MapPin className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+              </div>
+              <h3 className="text-lg font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Community Legal Centres</h3>
+              <p className="text-muted-foreground text-sm mb-3">
+                Independent, non-profit organisations providing free legal advice and assistance. They often help with 
+                matters Legal Aid cannot cover and can refer you to specialist services.
+              </p>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li>• <a href="https://clcs.org.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Community Legal Centres Australia</a></li>
+                <li>• <a href="https://www.clcnsw.org.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">CLC NSW</a></li>
+                <li>• Aboriginal Legal Services in every state</li>
+                <li>• Specialist centres for women, youth, and prisoners</li>
+              </ul>
+            </div>
+
+            {/* Grants & Funding */}
+            <div className="bg-card border border-border rounded-xl p-6">
+              <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center mb-4">
+                <FileText className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <h3 className="text-lg font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Grants & Special Funding</h3>
+              <p className="text-muted-foreground text-sm mb-3">
+                Various grants and funding programs exist specifically to support criminal appeals and wrongful conviction cases. 
+                These are rarely advertised but can cover legal costs.
+              </p>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li>• <a href="https://www.lawfoundation.net.au" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">Law Foundation Grants</a></li>
+                <li>• State-based legal assistance funding</li>
+                <li>• Innocence projects (for wrongful convictions)</li>
+                <li>• University law clinics</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Link Section */}
+      <section className="py-12 px-6 bg-slate-900 dark:bg-slate-950">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-amber-500 text-xs uppercase tracking-widest mb-4">About</p>
+          <h3 className="text-xl font-bold text-white mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Criminal Law Appeal Case Management
+          </h3>
+          <p className="text-amber-400 text-sm font-medium mb-4">Founded by Debra King</p>
+          <p className="text-slate-400 text-sm mb-6 max-w-2xl mx-auto">
+            Built from lived experience, driven by the belief that everyone deserves to understand their legal rights. 
+            If this tool helps even one person discover grounds they didn't know existed, my goal is accomplished.
+          </p>
+          <Link to="/about">
+            <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800 rounded-lg">
+              Read My Full Story
+            </Button>
+          </Link>
         </div>
       </section>
 
@@ -1606,6 +1411,7 @@ const LandingPage = () => {
             <span className="text-muted-foreground text-xs mt-1">Founded by Debra King</span>
           </div>
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
+            <Link to="/about" className="hover:text-foreground">About</Link>
             <Link to="/success-stories" className="hover:text-foreground">Success Stories</Link>
             <Link to="/glossary" className="hover:text-foreground">Legal Terms</Link>
             <Link to="/contact" className="hover:text-foreground">Contact</Link>

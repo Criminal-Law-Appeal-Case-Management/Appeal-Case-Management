@@ -24,6 +24,7 @@ import FAQPage from "./pages/FAQPage";
 import LawyerDirectory from "./pages/LawyerDirectory";
 import FormTemplates from "./pages/FormTemplates";
 import CompareCasesPage from "./pages/CompareCasesPage";
+import AboutPage from "./pages/AboutPage";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -247,6 +248,10 @@ function AppRouter() {
             {({ user }) => <CompareCasesPage user={user} />}
           </ProtectedRoute>
         }
+      />
+      <Route
+        path="/about"
+        element={<AboutPage />}
       />
     </Routes>
   );
