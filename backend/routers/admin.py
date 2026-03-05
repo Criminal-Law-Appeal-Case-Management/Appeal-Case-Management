@@ -1,0 +1,246 @@
+"""
+Criminal Appeal AI - Admin Router
+Handles admin-only routes: contact messages, success stories, analytics
+"""
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime, timezone, timedelta
+import os
+import uuid
+import asyncio
+import resend
+
+from config import db, logger
+from auth_utils import get_current_user
+
+router = APIRouter(prefix="/api", tags=["admin"])
+
+# Admin configuration
+ADMIN_EMAILS = os.environ.get("ADMIN_EMAILS", "djkingy79@gmail.com").split(",")
+
+# Resend email configuration
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "djkingy79@gmail.com")
+
+if RESEND_API_KEY:
+    resend.api_key = RESEND_API_KEY
+    logger.info("Resend email configured")
+else:
+    logger.warning("Resend API key not configured - contact form will store messages only")
+
+# ============ MODELS ============
+
+class ContactMessage(BaseModel):
+    name: str
+    email: str
+    subject: str
+    message: str
+
+class SuccessStorySubmission(BaseModel):
+    name: str
+    email: str
+    relationship: Optional[str] = ""
+    story: str
+    outcome: Optional[str] = ""
+    consent: bool
+
+# ============ VISITOR TRACKING ============
+
+@router.post("/track/visit")
+async def track_visit(request: Request):
+    """Track a site visit"""
+    try:
+        # Get visitor info
+        forwarded_for = request.headers.get("X-Forwarded-For", "")
+        ip = forwarded_for.split(",")[0].strip() if forwarded_for else request.client.host if request.client else "unknown"
+        user_agent = request.headers.get("User-Agent", "unknown")
+        referer = request.headers.get("Referer", "direct")
+        
+        # Store visit
+        visit = {
+            "ip_hash": hash(ip) % 10000000,  # Hash IP for privacy
+            "user_agent": user_agent[:200],  # Truncate
+            "referer": referer[:500],
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "page": "landing"
+        }
+        await db.visits.insert_one(visit)
+        
+        # Update daily counter
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        await db.visit_stats.update_one(
+            {"date": today},
+            {"$inc": {"count": 1}},
+            upsert=True
+        )
+        
+        # Get total count
+        total = await db.visits.count_documents({})
+        
+        return {"tracked": True, "total_visits": total}
+    except Exception as e:
+        logger.error(f"Visit tracking error: {e}")
+        return {"tracked": False}
+
+@router.get("/stats/visits")
+async def get_visit_stats(request: Request):
+    """Get visit statistics (admin only - requires auth)"""
+    try:
+        user = await get_current_user(request)
+        
+        # Only allow admin emails
+        if user.email not in ADMIN_EMAILS:
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        total_visits = await db.visits.count_documents({})
+        total_users = await db.users.count_documents({})
+        total_cases = await db.cases.count_documents({})
+        
+        # Get last 7 days stats
+        daily_stats = []
+        for i in range(7):
+            date = (datetime.now(timezone.utc) - timedelta(days=i)).strftime("%Y-%m-%d")
+            stat = await db.visit_stats.find_one({"date": date}, {"_id": 0})
+            daily_stats.append({
+                "date": date,
+                "count": stat["count"] if stat else 0
+            })
+        
+        return {
+            "total_visits": total_visits,
+            "total_users": total_users,
+            "total_cases": total_cases,
+            "daily_stats": daily_stats
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Stats error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get stats")
+
+# ============ CONTACT FORM ============
+
+@router.post("/contact")
+async def submit_contact_form(contact: ContactMessage):
+    """Submit a contact form message"""
+    try:
+        # Store message in database
+        message_doc = {
+            "message_id": f"msg_{uuid.uuid4().hex[:12]}",
+            "name": contact.name,
+            "email": contact.email,
+            "subject": contact.subject,
+            "message": contact.message,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "read": False
+        }
+        await db.contact_messages.insert_one(message_doc)
+        
+        # Try to send email notification
+        email_sent = False
+        if RESEND_API_KEY:
+            try:
+                html_content = f"""
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #1e293b; border-bottom: 2px solid #f59e0b; padding-bottom: 10px;">
+                        New Contact Form Message
+                    </h2>
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                        <p><strong>From:</strong> {contact.name}</p>
+                        <p><strong>Email:</strong> {contact.email}</p>
+                        <p><strong>Subject:</strong> {contact.subject}</p>
+                    </div>
+                    <div style="background: #fff; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                        <p><strong>Message:</strong></p>
+                        <p style="white-space: pre-wrap;">{contact.message}</p>
+                    </div>
+                    <p style="color: #64748b; font-size: 12px; margin-top: 20px;">
+                        Sent from Appeal Case Manager contact form
+                    </p>
+                </div>
+                """
+                
+                params = {
+                    "from": "Appeal Case Manager <onboarding@resend.dev>",
+                    "to": [CONTACT_EMAIL],
+                    "subject": f"Contact Form: {contact.subject}",
+                    "html": html_content,
+                    "reply_to": contact.email
+                }
+                
+                await asyncio.to_thread(resend.Emails.send, params)
+                email_sent = True
+                logger.info(f"Contact form email sent to {CONTACT_EMAIL}")
+            except Exception as e:
+                logger.error(f"Failed to send contact email: {e}")
+        
+        return {
+            "success": True,
+            "message": "Your message has been sent. We'll get back to you soon!",
+            "email_sent": email_sent
+        }
+    except Exception as e:
+        logger.error(f"Contact form error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to send message")
+
+@router.get("/admin/messages")
+async def get_contact_messages(request: Request):
+    """Get all contact messages (admin only)"""
+    user = await get_current_user(request)
+    if user.email not in ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    messages = await db.contact_messages.find({}, {"_id": 0}).sort("timestamp", -1).to_list(100)
+    unread_count = await db.contact_messages.count_documents({"read": False})
+    
+    return {
+        "messages": messages,
+        "unread_count": unread_count
+    }
+
+@router.post("/admin/messages/{message_id}/read")
+async def mark_message_read(message_id: str, request: Request):
+    """Mark a message as read"""
+    user = await get_current_user(request)
+    if user.email not in ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    await db.contact_messages.update_one(
+        {"message_id": message_id},
+        {"$set": {"read": True}}
+    )
+    return {"success": True}
+
+# ============ SUCCESS STORIES ============
+
+@router.post("/success-stories")
+async def submit_success_story(submission: SuccessStorySubmission):
+    """Submit a success story"""
+    if not submission.consent:
+        raise HTTPException(status_code=400, detail="Consent is required")
+    
+    story_doc = {
+        "story_id": f"story_{uuid.uuid4().hex[:12]}",
+        "name": submission.name,
+        "email": submission.email,
+        "relationship": submission.relationship,
+        "story": submission.story,
+        "outcome": submission.outcome,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "approved": False,
+        "featured": False
+    }
+    await db.success_stories.insert_one(story_doc)
+    
+    return {"success": True, "message": "Story submitted for review"}
+
+@router.get("/admin/success-stories")
+async def get_submitted_stories(request: Request):
+    """Get all submitted stories (admin only)"""
+    user = await get_current_user(request)
+    if user.email not in ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    stories = await db.success_stories.find({}, {"_id": 0}).sort("timestamp", -1).to_list(100)
+    return {"stories": stories}

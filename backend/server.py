@@ -4325,6 +4325,12 @@ app.include_router(api_router)
 from routers.auth import router as auth_router
 app.include_router(auth_router)
 
+from routers.admin import router as admin_router
+app.include_router(admin_router)
+
+from routers.utilities import router as utilities_router
+app.include_router(utilities_router)
+
 # Include statistics router
 from routers.statistics import router as statistics_router
 app.include_router(statistics_router)
