@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation, Navigate } from
 import axios from "axios";
 import { Toaster } from "./components/ui/sonner";
 import InstallPrompt from "./components/InstallPrompt";
+import TermsAcceptance from "./components/TermsAcceptance";
 
 // Pages
 import LandingPage from "./pages/LandingPage";
@@ -64,23 +65,28 @@ const AuthCallback = () => {
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [termsAccepted, setTermsAccepted] = useState(null);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
+  const checkUserStatus = async (userData) => {
+    setUser(userData);
+    setIsAuthenticated(true);
+    setTermsAccepted(userData.terms_accepted === true);
+  };
+
   useEffect(() => {
     // If user data was passed from AuthCallback, use it directly
     if (location.state?.user) {
-      setUser(location.state.user);
-      setIsAuthenticated(true);
+      checkUserStatus(location.state.user);
       return;
     }
 
     const checkAuth = async () => {
       try {
         const response = await axios.get(`${API}/auth/me`);
-        setUser(response.data);
-        setIsAuthenticated(true);
+        checkUserStatus(response.data);
       } catch (error) {
         setIsAuthenticated(false);
         navigate("/", { replace: true });
@@ -89,6 +95,11 @@ const ProtectedRoute = ({ children }) => {
 
     checkAuth();
   }, [navigate, location.state]);
+
+  const handleTermsAccepted = () => {
+    setTermsAccepted(true);
+    setUser(prev => ({ ...prev, terms_accepted: true }));
+  };
 
   if (isAuthenticated === null) {
     return (
@@ -103,6 +114,11 @@ const ProtectedRoute = ({ children }) => {
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
+  }
+
+  // Show terms acceptance if not yet accepted
+  if (!termsAccepted) {
+    return <TermsAcceptance onAccept={handleTermsAccepted} />;
   }
 
   // Clone children and pass user prop

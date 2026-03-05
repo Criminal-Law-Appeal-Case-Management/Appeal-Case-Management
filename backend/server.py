@@ -426,7 +426,25 @@ async def create_session(request: Request, response: Response):
 async def get_me(request: Request):
     """Get current user info"""
     user = await get_current_user(request)
-    return user.model_dump()
+    user_dict = user.model_dump()
+    # Check if user has accepted terms
+    user_doc = await db.users.find_one({"user_id": user.user_id}, {"_id": 0})
+    user_dict["terms_accepted"] = user_doc.get("terms_accepted", False)
+    user_dict["terms_accepted_at"] = user_doc.get("terms_accepted_at")
+    return user_dict
+
+@api_router.post("/auth/accept-terms")
+async def accept_terms(request: Request):
+    """Accept terms and conditions"""
+    user = await get_current_user(request)
+    await db.users.update_one(
+        {"user_id": user.user_id},
+        {"$set": {
+            "terms_accepted": True,
+            "terms_accepted_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    return {"message": "Terms accepted", "terms_accepted": True}
 
 @api_router.post("/auth/logout")
 async def logout(request: Request, response: Response):
