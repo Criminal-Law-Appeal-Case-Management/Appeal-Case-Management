@@ -1002,6 +1002,283 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Criminal Legislation Section */}
+      <section className="py-16 px-6 bg-slate-50 border-t border-slate-200">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-blue-700 font-semibold text-xs uppercase tracking-widest mb-3">Legislation</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Criminal Law by State
+            </h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">
+              Direct links to the primary criminal legislation for each Australian jurisdiction. 
+              Know your rights and understand the law that applies to your case.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            {/* NSW */}
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  NSW
+                </div>
+                <h3 className="font-bold text-slate-900">New South Wales</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1900-040" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Crimes Act 1900</a></li>
+                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1912-016" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Appeal Act 1912</a></li>
+                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1995-025" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1995</a></li>
+                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1986-209" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Drug Misuse and Trafficking Act 1985</a></li>
+                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-2007-080" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Crimes (Domestic Violence) Act 2007</a></li>
+              </ul>
+            </div>
+
+            {/* Victoria */}
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  VIC
+                </div>
+                <h3 className="font-bold text-slate-900">Victoria</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/crimes-act-1958" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Crimes Act 1958</a></li>
+                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/criminal-procedure-act-2009" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Procedure Act 2009</a></li>
+                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/evidence-act-2008" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 2008</a></li>
+                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/drugs-poisons-and-controlled-substances-act-1981" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Drugs, Poisons Act 1981</a></li>
+                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/family-violence-protection-act-2008" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Family Violence Protection Act 2008</a></li>
+              </ul>
+            </div>
+
+            {/* Queensland */}
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  QLD
+                </div>
+                <h3 className="font-bold text-slate-900">Queensland</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1899-009" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Code Act 1899</a></li>
+                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1977-026" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Practice Rules 1999</a></li>
+                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1977-047" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1977</a></li>
+                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1986-023" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Drugs Misuse Act 1986</a></li>
+                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-2012-005" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Domestic Violence Act 2012</a></li>
+              </ul>
+            </div>
+
+            {/* South Australia */}
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  SA
+                </div>
+                <h3 className="font-bold text-slate-900">South Australia</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/criminal%20law%20consolidation%20act%201935" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Law Consolidation Act 1935</a></li>
+                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/evidence%20act%201929" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1929</a></li>
+                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/controlled%20substances%20act%201984" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Controlled Substances Act 1984</a></li>
+                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/intervention%20orders%20(prevention%20of%20abuse)%20act%202009" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Intervention Orders Act 2009</a></li>
+              </ul>
+            </div>
+
+            {/* Western Australia */}
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  WA
+                </div>
+                <h3 className="font-bold text-slate-900">Western Australia</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_218_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Code Act 1913</a></li>
+                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_221_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Appeals Act 2004</a></li>
+                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_327_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1906</a></li>
+                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_599_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Misuse of Drugs Act 1981</a></li>
+              </ul>
+            </div>
+
+            {/* Commonwealth */}
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  CTH
+                </div>
+                <h3 className="font-bold text-slate-900">Commonwealth</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://www.legislation.gov.au/C2004A04868/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Code Act 1995</a></li>
+                <li><a href="https://www.legislation.gov.au/C2004A04858/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1995</a></li>
+                <li><a href="https://www.legislation.gov.au/C2004A01586/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Judiciary Act 1903</a></li>
+                <li><a href="https://www.legislation.gov.au/C2004A03712/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Crimes Act 1914</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Human Rights & Fair Trial Section */}
+      <section className="py-16 px-6 bg-white border-t border-slate-200">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-emerald-700 font-semibold text-xs uppercase tracking-widest mb-3">Your Rights</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Human Rights & Fair Trial Laws
+            </h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">
+              Every person has fundamental rights in criminal proceedings. These laws protect your right to a fair trial, 
+              proper legal representation, and humane treatment. <strong>Know your rights.</strong>
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {/* International Human Rights */}
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Shield className="w-8 h-8 text-emerald-600" />
+                <h3 className="font-bold text-slate-900 text-lg">International Human Rights</h3>
+              </div>
+              <p className="text-slate-600 text-sm mb-4">
+                Australia has signed international treaties that protect your rights. While not always directly enforceable, 
+                courts must consider these when interpreting Australian law.
+              </p>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <a href="https://www.ohchr.org/en/instruments-mechanisms/instruments/international-covenant-civil-and-political-rights" target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline font-medium">
+                    International Covenant on Civil and Political Rights (ICCPR)
+                  </a>
+                </li>
+                <li className="pl-4 text-slate-600">
+                  • Art 14: Right to fair and public hearing<br/>
+                  • Art 14(2): Presumption of innocence<br/>
+                  • Art 14(3): Right to legal assistance<br/>
+                  • Art 9: Right to liberty and security<br/>
+                  • Art 7: Freedom from torture/cruel treatment
+                </li>
+                <li className="flex items-start gap-2">
+                  <a href="https://www.un.org/en/about-us/universal-declaration-of-human-rights" target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline font-medium">
+                    Universal Declaration of Human Rights (UDHR)
+                  </a>
+                </li>
+                <li className="pl-4 text-slate-600">
+                  • Art 10: Right to fair public hearing<br/>
+                  • Art 11: Presumption of innocence
+                </li>
+                <li className="flex items-start gap-2">
+                  <a href="https://www.ohchr.org/en/instruments-mechanisms/instruments/convention-against-torture-and-other-cruel-inhuman-or-degrading" target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline font-medium">
+                    Convention Against Torture (CAT)
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Australian Human Rights Acts */}
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Scale className="w-8 h-8 text-blue-600" />
+                <h3 className="font-bold text-slate-900 text-lg">Australian Human Rights Laws</h3>
+              </div>
+              <p className="text-slate-600 text-sm mb-4">
+                Some Australian states have enacted Human Rights Acts. These provide direct legal protection 
+                and can be used to challenge unfair treatment in criminal proceedings.
+              </p>
+              <ul className="space-y-3 text-sm">
+                <li>
+                  <a href="https://www.legislation.vic.gov.au/in-force/acts/charter-human-rights-and-responsibilities-act-2006" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline font-medium">
+                    Charter of Human Rights (Victoria)
+                  </a>
+                  <p className="text-slate-600 pl-2 mt-1">Right to fair hearing (s24), presumption of innocence (s25), right not to be tried twice (s26)</p>
+                </li>
+                <li>
+                  <a href="https://www.legislation.act.gov.au/a/2004-5" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline font-medium">
+                    Human Rights Act 2004 (ACT)
+                  </a>
+                  <p className="text-slate-600 pl-2 mt-1">Fair trial rights (s21), presumption of innocence (s22)</p>
+                </li>
+                <li>
+                  <a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-2019-005" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline font-medium">
+                    Human Rights Act 2019 (Queensland)
+                  </a>
+                  <p className="text-slate-600 pl-2 mt-1">Fair hearing (s31), rights in criminal proceedings (s32)</p>
+                </li>
+                <li>
+                  <a href="https://www.legislation.gov.au/C2004A03366/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline font-medium">
+                    Australian Human Rights Commission Act 1986 (Cth)
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Fair Trial Principles */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8">
+            <h3 className="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
+              <AlertTriangle className="w-6 h-6 text-amber-600" />
+              Your Fair Trial Rights
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-semibold text-slate-800 mb-2">Before & During Trial</h4>
+                <ul className="text-sm text-slate-700 space-y-2">
+                  <li>• <strong>Presumption of innocence</strong> - guilty must be proven</li>
+                  <li>• <strong>Right to silence</strong> - cannot be forced to incriminate yourself</li>
+                  <li>• <strong>Right to legal representation</strong> - access to a lawyer</li>
+                  <li>• <strong>Disclosure</strong> - prosecution must reveal all evidence</li>
+                  <li>• <strong>Adequate time</strong> - to prepare your defence</li>
+                  <li>• <strong>Interpreter</strong> - if you don't speak English</li>
+                  <li>• <strong>Examine witnesses</strong> - cross-examine prosecution witnesses</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-800 mb-2">After Conviction</h4>
+                <ul className="text-sm text-slate-700 space-y-2">
+                  <li>• <strong>Right to appeal</strong> - challenge conviction or sentence</li>
+                  <li>• <strong>Not punished twice</strong> - double jeopardy protection</li>
+                  <li>• <strong>Proportionate sentence</strong> - punishment must fit the crime</li>
+                  <li>• <strong>Humane treatment</strong> - in custody</li>
+                  <li>• <strong>Access to courts</strong> - to challenge conditions</li>
+                  <li>• <strong>Fresh evidence</strong> - new evidence can reopen case</li>
+                  <li>• <strong>Pardon/mercy</strong> - right to seek clemency</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Fairness Resources */}
+          <div className="grid md:grid-cols-3 gap-4">
+            <a 
+              href="https://humanrights.gov.au/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 p-4 bg-slate-100 border border-slate-200 rounded-lg hover:bg-slate-200 transition-colors"
+            >
+              <Shield className="w-5 h-5 text-slate-600" />
+              <span className="font-medium text-slate-900">Human Rights Commission</span>
+            </a>
+            <a 
+              href="https://www.ombudsman.gov.au/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 p-4 bg-slate-100 border border-slate-200 rounded-lg hover:bg-slate-200 transition-colors"
+            >
+              <Scale className="w-5 h-5 text-slate-600" />
+              <span className="font-medium text-slate-900">Commonwealth Ombudsman</span>
+            </a>
+            <a 
+              href="https://www.alrc.gov.au/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 p-4 bg-slate-100 border border-slate-200 rounded-lg hover:bg-slate-200 transition-colors"
+            >
+              <FileText className="w-5 h-5 text-slate-600" />
+              <span className="font-medium text-slate-900">Law Reform Commission</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing Section */}
       <section className="py-16 px-6 bg-white border-t border-slate-200">
         <div className="max-w-4xl mx-auto">
