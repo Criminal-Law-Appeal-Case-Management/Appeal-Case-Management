@@ -7,7 +7,6 @@ import { useTheme } from "../contexts/ThemeContext";
 const LegalFrameworkPage = () => {
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("criminal");
   const [expandedState, setExpandedState] = useState(null);
 
   const tabs = [
@@ -264,33 +263,10 @@ const LegalFrameworkPage = () => {
         </div>
       </section>
 
-      {/* Tab Navigation */}
-      <div className="sticky top-16 z-40 bg-background border-b border-border">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="flex overflow-x-auto gap-1 py-2 scrollbar-hide">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                  activeTab === tab.id
-                    ? "bg-amber-600 text-white"
-                    : "bg-muted hover:bg-muted/80 text-muted-foreground"
-                }`}
-              >
-                <tab.icon className="w-4 h-4" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-16">
 
-      <main className="max-w-5xl mx-auto px-6 py-8">
-
-        {/* Criminal Law Tab */}
-        {activeTab === "criminal" && (
-          <div className="space-y-4">
+        {/* Criminal Law Section */}
+          <div id="criminal" className="space-y-4">
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mb-6">
               <h2 className="font-bold text-foreground mb-2">Criminal Law by Jurisdiction</h2>
               <p className="text-sm text-muted-foreground">
@@ -340,11 +316,9 @@ const LegalFrameworkPage = () => {
               </div>
             ))}
           </div>
-        )}
 
-        {/* Evidence Acts Tab */}
-        {activeTab === "evidence" && (
-          <div className="space-y-4">
+        {/* Evidence Acts Section */}
+          <div id="evidence" className="space-y-4">
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mb-6">
               <h2 className="font-bold text-foreground mb-2">Evidence Acts</h2>
               <p className="text-sm text-muted-foreground">
@@ -396,11 +370,9 @@ const LegalFrameworkPage = () => {
               </div>
             </div>
           </div>
-        )}
 
-        {/* Appeals Tab */}
-        {activeTab === "appeals" && (
-          <div className="space-y-4">
+        {/* Appeal Legislation Section */}
+          <div id="appeals" className="space-y-4">
             <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4 mb-6">
               <h2 className="font-bold text-foreground mb-2">Appeal Legislation</h2>
               <p className="text-sm text-muted-foreground">
@@ -450,11 +422,9 @@ const LegalFrameworkPage = () => {
               </div>
             </div>
           </div>
-        )}
 
-        {/* Human Rights Tab */}
-        {activeTab === "rights" && (
-          <div className="space-y-6">
+        {/* Human Rights Section */}
+          <div id="rights" className="space-y-6">
             <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4 mb-6">
               <h2 className="font-bold text-foreground mb-2">Human Rights & Fair Trial</h2>
               <p className="text-sm text-muted-foreground">
@@ -524,7 +494,6 @@ const LegalFrameworkPage = () => {
               </div>
             </div>
           </div>
-        )}
 
       </main>
 

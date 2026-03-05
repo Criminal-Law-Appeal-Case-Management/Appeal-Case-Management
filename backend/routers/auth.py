@@ -12,6 +12,9 @@ import secrets
 
 from config import db, logger
 from auth_utils import get_current_user
+import os
+
+ADMIN_EMAILS = os.environ.get("ADMIN_EMAILS", "djkingy79@gmail.com").split(",")
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -230,6 +233,7 @@ async def get_me(request: Request):
     user_doc = await db.users.find_one({"user_id": user.user_id}, {"_id": 0})
     user_dict["terms_accepted"] = user_doc.get("terms_accepted", False)
     user_dict["terms_accepted_at"] = user_doc.get("terms_accepted_at")
+    user_dict["is_admin"] = user.email in ADMIN_EMAILS
     return user_dict
 
 @router.post("/accept-terms")
