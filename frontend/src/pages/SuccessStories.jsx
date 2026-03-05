@@ -50,6 +50,106 @@ const successStories = [
     outcome: "Sentence reduced from 3 years to 18 months - Released on parole",
     timeframe: "6 months from appeal to release",
     featured: true
+  },
+  {
+    id: 5,
+    name: "Amanda P.",
+    location: "Perth, WA",
+    relationship: "Sister",
+    story: "My brother was convicted of dangerous driving causing death. The sentence was 8 years. Our family was shattered - not just by the conviction, but by the sentence which seemed disproportionate given the circumstances. He had no prior record and the accident occurred when he swerved to avoid hitting a child who ran onto the road. I used this tool to compare his sentence against similar cases in WA. The data showed his sentence was significantly higher than the normal range. The AI identified that the judge had relied heavily on a victim impact statement but hadn't given adequate weight to his lack of prior convictions and genuine remorse. We got Legal Aid to review based on manifest excess. The Court of Appeal agreed and reduced the sentence to 4 years. He's eligible for parole in 18 months now.",
+    outcome: "Sentence reduced from 8 years to 4 years - Parole soon",
+    timeframe: "11 months from appeal lodgement",
+    featured: true
+  },
+  {
+    id: 6,
+    name: "Marcus W.",
+    location: "Gold Coast, QLD",
+    relationship: "Cousin",
+    story: "My cousin was convicted on drug trafficking charges based almost entirely on phone intercept evidence. He insisted he was talking about legitimate business, but his overworked legal aid lawyer didn't challenge the interpretation. Using this tool, I went through every transcript of the intercepts. The AI flagged ambiguous language that could have multiple meanings. I found expert linguistics reports from other cases that showed this exact type of coded language analysis can be unreliable without corroborating evidence - which was missing here. We took this to a barrister who specializes in Commonwealth drug cases. He agreed the intercept evidence was weak without physical evidence. The appeal is based on unreasonable verdict - that no reasonable jury could convict on that evidence alone. We got leave to appeal and the hearing is in 3 months.",
+    outcome: "Leave to appeal granted - Hearing pending",
+    timeframe: "Leave granted after 7 months",
+    featured: true
+  },
+  {
+    id: 7,
+    name: "Rebecca L.",
+    location: "Adelaide, SA",
+    relationship: "Wife",
+    story: "My husband was convicted of historical sexual assault allegations from 30 years ago. There was no physical evidence - just the complainant's testimony. At trial, the judge gave what's called a Longman warning about the dangers of convicting on uncorroborated testimony after such a long delay. But when I uploaded the transcript, this tool's AI picked up that the judge's warning was inadequate - it didn't specifically address the impossibility of my husband now disproving the allegations after 30 years. I took this finding to a senior criminal silk. He confirmed it was a misdirection likely to have misled the jury. We appealed on the basis of inadequate judicial warnings. Eight months later, the Court of Criminal Appeal allowed the appeal and ordered a retrial. The DPP reviewed the evidence and decided not to proceed with a retrial due to the age of the allegations. After 2 years of hell, my husband is finally cleared.",
+    outcome: "Conviction quashed - Retrial ordered, DPP discontinued",
+    timeframe: "14 months total - Now cleared",
+    featured: true
+  },
+  {
+    id: 8,
+    name: "James H.",
+    location: "Hobart, TAS",
+    relationship: "Friend",
+    story: "My best mate got 6 years for armed robbery. He admitted being present but said he had no idea his co-accused had a weapon. His trial lawyer never properly argued the accessory liability principles. I'm not a lawyer but I read everything I could. This tool helped me understand the legal test for being an accessory versus a principal offender. The case comparison feature showed dozens of cases where people in similar situations got much lighter sentences because they weren't the ones with the weapon. We couldn't afford a new lawyer, so I prepared a detailed submission using the AI-generated grounds of appeal. Legal Aid's appeal unit reviewed it and assigned a solicitor. They agreed there was an error in how the judge directed the jury on accessory liability. We've lodged notice of appeal. Even if it doesn't succeed fully, having hope and understanding the legal process has made all the difference to his mental health inside.",
+    outcome: "Appeal lodged - Grounds: Jury misdirection on accessory liability",
+    timeframe: "Notice filed - Waiting for hearing date",
+    featured: true
+  },
+  {
+    id: 9,
+    name: "Patricia S.",
+    location: "Canberra, ACT",
+    relationship: "Mother",
+    story: "My son has an intellectual disability. He was convicted of assault after a fight outside a pub. His legal aid lawyer didn't properly explore his cognitive impairment or get a psychological assessment. The sentence was 2 years. I knew this was wrong - he didn't understand what was happening in court. This tool's timeline feature helped me organize medical records going back to childhood showing his IQ and comprehension issues. The grounds identifier suggested this could be a case of unfitness to plead or at minimum, a special circumstance that should reduce sentence. We got a pro bono barrister through the tool's legal resources links. He obtained a forensic psychologist's report confirming significant intellectual disability. The Court of Appeal found the original judge failed to take this into account adequately. Sentence reduced to 6 months, already served. He's home and getting proper support now.",
+    outcome: "Sentence reduced to time served - Released with support plan",
+    timeframe: "9 months from appeal to release",
+    featured: true
+  },
+  {
+    id: 10,
+    name: "Daniel K.",
+    location: "Darwin, NT",
+    relationship: "Uncle",
+    story: "My nephew is Aboriginal and was convicted of aggravated assault. The sentencing judge made no reference to his Bugmy factors - the disadvantage and trauma he'd experienced growing up in a remote community. His lawyer mentioned it briefly but didn't properly present evidence. I used this tool to research Bugmy principles and similar cases. It showed that in comparable cases where Bugmy evidence was properly presented, sentences were significantly lower. The AI generated a comprehensive list of factors that should have been considered: childhood trauma, substance abuse stemming from intergenerational trauma, lack of services in remote communities. We got Aboriginal Legal Service involved. They compiled proper Bugmy materials including elder references and cultural reports. On appeal, the judges agreed the original sentencing was manifestly excessive for not properly considering these factors. Sentence reduced from 5 years to 2 years, with immediate parole consideration.",
+    outcome: "Sentence reduced to 2 years - Parole granted",
+    timeframe: "Released after 10 months total",
+    featured: true
+  },
+  {
+    id: 11,
+    name: "Sophie R.",
+    location: "Townsville, QLD",
+    relationship: "Partner",
+    story: "My partner was convicted of serious assault causing bodily harm. The conviction rested heavily on CCTV footage that the prosecution said clearly showed him as the attacker. His lawyer didn't challenge it. When I watched the footage myself, I noticed the quality was poor and the person's face was never clearly visible - you could only see their build and clothing. Using this tool, I researched eyewitness and identification evidence principles. The AI pointed out that identification evidence needs to be treated with caution, and CCTV identification is not always reliable without corroborating evidence. We engaged a forensic video analyst who confirmed the footage was insufficient for positive identification. On appeal, we argued it was an identification case that wasn't treated as one at trial, meaning the jury should have received specific warnings. The Court of Appeal agreed the trial miscarried. Conviction quashed. The prosecution reviewed and decided not to retry due to insufficient evidence. After 18 months of wrongful imprisonment, he's finally free.",
+    outcome: "Conviction quashed - DPP no retrial - Released",
+    timeframe: "18 months total - Now exonerated",
+    featured: true
+  },
+  {
+    id: 12,
+    name: "Christopher B.",
+    location: "Wollongong, NSW",
+    relationship: "Brother",
+    story: "My brother got 10 years for drug importation. He'd been working as a courier driver and unknowingly delivered packages containing drugs. His legal aid lawyer argued he didn't know, but the prosecution said he was willfully blind. The jury convicted him. I refused to believe my brother would knowingly traffic drugs. Using this tool, I went through his employment records, delivery logs, bank statements - everything. The timeline analysis showed he was paid normal courier wages, not the huge sums you'd expect for drug trafficking. The AI identified case law about willful blindness requiring actual suspicion, not just failing to inquire. We found similar cases where couriers were acquitted or got much lighter sentences. We approached a barrister through the pro bono network link on this site. She took the case and argued the verdict was unreasonable. The appeal court agreed - the evidence didn't support willful blindness beyond reasonable doubt. Conviction quashed, retrial ordered. At the retrial, the prosecution offered a plea to the lesser charge of negligent conduct. He took it, got 12 months which was time already served. He's been home for 8 months now.",
+    outcome: "Conviction quashed - Retrial, lesser plea, time served",
+    timeframe: "Total 16 months - Home for 8 months",
+    featured: true
+  },
+  {
+    id: 13,
+    name: "Michelle D.",
+    location: "Cairns, QLD",
+    relationship: "Daughter",
+    story: "My elderly father was convicted of fraud involving his small business. He's 68 and has early-stage dementia. At sentencing, the judge gave him 4 years imprisonment. My father didn't even understand what was happening. His lawyer was incompetent - didn't get medical evidence about his cognitive decline or argue for a non-custodial sentence given his age and health. I spent weeks learning about sentencing principles using this tool. The AI analysis showed that for elderly first-time offenders with health issues, imprisonment is supposed to be a last resort. I found dozens of cases with similar facts where suspended sentences or intensive correction orders were given instead. We got a geriatric specialist to assess Dad - confirmed advanced dementia. On appeal, we argued the sentence was manifestly excessive and failed to consider his age, health, and diminished culpability. The Court of Appeal agreed, resentenced to a 2-year intensive correction order. Dad is home now, getting proper medical care and supervision. Prison would have killed him.",
+    outcome: "Resentenced to Intensive Correction Order - Released",
+    timeframe: "Served 7 months before release",
+    featured: true
+  },
+  {
+    id: 14,
+    name: "Thomas G.",
+    location: "Geelong, VIC",
+    relationship: "Son",
+    story: "My dad was convicted of assault after an altercation with his neighbour. He's 72, a war veteran with PTSD. The incident occurred during a PTSD episode triggered by loud fireworks next door. His lawyer mentioned his PTSD but didn't present proper psychological evidence or explain how it related to the offence. He got 18 months. I used this tool to research how PTSD should be treated in sentencing. Found case law showing that where PTSD diminishes culpability and there's a link between the condition and the offending, it's a major mitigating factor. Through the resources section, I contacted the Vietnam Veterans Legal Service. They helped us get a comprehensive forensic psychology report detailing Dad's PTSD, its triggers, and how the fireworks caused a dissociative episode. On appeal, the court accepted this evidence significantly reduced his moral culpability. Sentence reduced to a 12-month Community Correction Order with psychological treatment conditions. Dad is getting proper trauma therapy now instead of being locked up. He's doing much better.",
+    outcome: "Resentenced to Community Correction Order with treatment",
+    timeframe: "Served 4 months before resentencing",
+    featured: true
   }
 ];
 
