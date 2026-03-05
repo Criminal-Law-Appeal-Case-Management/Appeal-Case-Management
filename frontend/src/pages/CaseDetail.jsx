@@ -6,7 +6,7 @@ import {
   Scale, ArrowLeft, FileText, Clock, Plus, Trash2, 
   Upload, Loader2, ChevronRight, FileUp, AlertCircle,
   MessageSquare, Pin, PinOff, Edit2, User, Sparkles, Gavel,
-  Search, X, ScanLine, HelpCircle, TrendingUp, CheckSquare, Users
+  Search, X, ScanLine, HelpCircle, TrendingUp, CheckSquare, Users, BookOpen
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -38,6 +38,7 @@ import CaseStrengthMeter from "../components/CaseStrengthMeter";
 import DeadlineTracker from "../components/DeadlineTracker";
 import AppealChecklist from "../components/AppealChecklist";
 import PaymentModal from "../components/PaymentModal";
+import LegalFrameworkViewer from "../components/LegalFrameworkViewer";
 
 const DOCUMENT_CATEGORIES = [
   { value: "brief", label: "Legal Brief" },
@@ -970,6 +971,10 @@ const CaseDetail = ({ user }) => {
                 <Scale className="w-4 h-4 mr-2" />
                 Reports ({reports.length})
               </TabsTrigger>
+              <TabsTrigger value="legal" data-testid="tab-legal">
+                <BookOpen className="w-4 h-4 mr-2" />
+                Legal Framework
+              </TabsTrigger>
               <TabsTrigger value="progress" data-testid="tab-progress">
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Progress
@@ -1552,6 +1557,14 @@ const CaseDetail = ({ user }) => {
                 ))}
               </div>
             )}
+          </TabsContent>
+
+          {/* Legal Framework Tab */}
+          <TabsContent value="legal" className="space-y-6">
+            <LegalFrameworkViewer 
+              offenceCategory={caseData?.offence_category}
+              offenceType={caseData?.offence_type}
+            />
           </TabsContent>
 
           {/* Progress Tab */}

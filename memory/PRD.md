@@ -250,3 +250,15 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 
 - [x] **Testing**: All tests passed (`/app/test_reports/iteration_13.json`)
 
+### Legal Framework Viewer ✅ (Mar 2026)
+- [x] **New Tab in Case Detail** - "Legal Framework" tab shows applicable legislation for the case
+- [x] **Collapsible Sections**:
+  - NSW Legislation with section references
+  - Commonwealth/Federal Legislation
+  - Key Elements to Prove (numbered list)
+  - Available Defences (badge tags)
+  - Common Appeal Grounds
+- [x] **Dynamic Content** - Automatically loads based on case's offence category
+- [x] **AustLII Link** - Quick link to view full legislation on AustLII.edu.au
+- [x] **Component**: `/app/frontend/src/components/LegalFrameworkViewer.jsx`
+
