@@ -552,27 +552,41 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **PDF Export Fixed** — iOS-compatible download (opens in new tab on iPhone)
 - [x] **Testing**: iteration_28 (100% backend + frontend)
 
-### Landing Page Reorganization (Dec 2025) ✅
-- [x] **Section Order Reorganized** - Per user request, Landing Page now follows this structure:
-  1. Hero Section (top)
-  2. See It In Action (with Features merged - no separate Features section)
-  3. Relevant Legislation (Criminal Law by State + Human Rights merged)
-  4. Live Caselaw Search
-  5. Pricing
-  6. "You Have Options" (Legal Help - moved to bottom)
-- [x] **About Page Created** - `/about` route with standalone page for creator's story
-  - Contains: Deb's story, Josh & Brad's stories, mission statement
-  - Moved from Landing Page's About section
-- [x] **Footer Updated** - Added "About" link to footer navigation
-- [x] **"Read My Full Story" Button** - Links to /about from Landing Page
-- [x] **Testing**: All sections verified in correct order (`/app/test_reports/iteration_22.json`)
-  - Hero (Y=289px) → See It In Action (Y=978px) → Legislation (Y=6032px) → Caselaw (Y=7222px) → Pricing (Y=7925px) → You Have Options (Y=8776px)
+### Session 5 - Stripe Removal & Barrister View Overhaul (Mar 2026) ✅
+- [x] **Stripe Integration Removed** — Per user request, completely removed Stripe payment system:
+  - Deleted `/app/backend/routers/stripe_payments.py` and `stripe_webhook.py`
+  - Removed Stripe imports from `server.py` (lines 4103-4109)
+  - Removed `stripe==14.3.0` from requirements.txt
+  - Updated `PaymentModal.jsx` to show "Payment Coming Soon" placeholder
+  - Removed Stripe checkout verification from `CaseDetail.jsx`
+- [x] **Barrister View Redesigned** — Complete overhaul for "sensational" legal professional presentation:
+  - Premium gradient header with branded design
+  - Executive Summary section with case strength score (0-100 circular indicator)
+  - Enhanced grounds display with color-coded strength badges (HIGH/MEDIUM/LOW)
+  - Key Timeline Events section with critical event highlighting
+  - Legal Framework reference section with primary/federal legislation
+  - Professional footer with branding
+  - Fullscreen mode for presentations
+  - Mobile-responsive design
+  - Print-optimized with page break controls
+- [x] **Landing Page Report Section Updated** — New descriptions matching upgraded AI reports:
+  - Quick Summary: Now shows "FREE" badge with feature list
+  - Full Detailed: "$29 AUD" with Similar Cases Analysis + Complete Appeal Filing Guide
+  - Extensive Log: "$39 AUD" with 14 sections, forensic-level analysis description
+  - Clear pricing badges in header of each report card
+  - Highlights: 8-12 similar cases, witness credibility, sentencing comparison, risk assessment
+- [x] **Testing**: iteration_29 (100% backend + frontend pass)
+
+## Next Priority Tasks
+- [ ] Implement PayPal payment processing to replace Stripe
+- [ ] Real-time collaboration/chat for Notes (WebSockets)
+- [ ] Continue backend refactoring — extract remaining routes from server.py
 
 ## Backlog (Bottom)
 - [ ] Build and submit native mobile app (Capacitor ready)
 - [ ] Enhanced collaboration features (replies, threads, @mentions in notes)
 - [ ] Deadline Tracker with Calendar integration
-- [ ] Real-time collaboration/chat for Notes section
+- [ ] Clarify purpose of ContactsPage.jsx vs ContactPage.jsx
 
 
 
