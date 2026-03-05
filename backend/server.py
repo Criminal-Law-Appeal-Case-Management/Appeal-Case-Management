@@ -3525,8 +3525,9 @@ BE THOROUGH. Identify ALL potential grounds. The appellant's freedom may depend 
         "identified_count": len(identified_grounds),
         "skipped_duplicates": skipped_duplicates,
         "existing_grounds": len(existing_grounds),
-        "grounds": identified_grounds,
-        "message": f"Found {len(identified_grounds)} new grounds. Skipped {skipped_duplicates} duplicates." if skipped_duplicates > 0 else f"Found {len(identified_grounds)} new grounds."
+        "message": f"Found {len(identified_grounds)} new grounds. Skipped {skipped_duplicates} duplicates." if skipped_duplicates > 0 else f"Found {len(identified_grounds)} new grounds.",
+        "unlock_required": True,
+        "unlock_price": FEATURE_PRICES["grounds_of_merit"]["price"]
     }
 
 # ============ AI ANALYSIS & REPORTS ============

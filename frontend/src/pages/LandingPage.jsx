@@ -1,10 +1,16 @@
-import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin } from "lucide-react";
+import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin, ExternalLink } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API } from "../App";
 import AuthModal from "../components/AuthModal";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../components/ui/accordion";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -1014,117 +1020,110 @@ const LandingPage = () => {
       {/* Criminal Legislation Section */}
       <section className="py-16 px-6 bg-slate-50 border-t border-slate-200">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <p className="text-blue-700 font-semibold text-xs uppercase tracking-widest mb-3">Legislation</p>
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
               Criminal Law by State
             </h2>
             <p className="text-slate-600 max-w-2xl mx-auto">
-              Direct links to the primary criminal legislation for each Australian jurisdiction. 
-              Know your rights and understand the law that applies to your case.
+              Direct links to the primary criminal legislation for each Australian jurisdiction.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {/* NSW */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  NSW
+          <Accordion type="single" collapsible className="bg-white rounded-xl border border-slate-200">
+            <AccordionItem value="nsw" className="border-b border-slate-200">
+              <AccordionTrigger className="px-5 hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold text-xs">NSW</div>
+                  <span className="font-semibold text-slate-900">New South Wales</span>
                 </div>
-                <h3 className="font-bold text-slate-900">New South Wales</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1900-040" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Crimes Act 1900</a></li>
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1912-016" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Appeal Act 1912</a></li>
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1995-025" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1995</a></li>
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1986-209" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Drug Misuse and Trafficking Act 1985</a></li>
-                <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-2007-080" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Crimes (Domestic Violence) Act 2007</a></li>
-              </ul>
-            </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-5 pb-4">
+                <ul className="space-y-2 text-sm">
+                  <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1900-040" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Crimes Act 1900 <ExternalLink className="w-3 h-3" /></a></li>
+                  <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1912-016" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Criminal Appeal Act 1912 <ExternalLink className="w-3 h-3" /></a></li>
+                  <li><a href="https://legislation.nsw.gov.au/view/html/inforce/current/act-1995-025" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Evidence Act 1995 <ExternalLink className="w-3 h-3" /></a></li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
 
-            {/* Victoria */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  VIC
+            <AccordionItem value="vic" className="border-b border-slate-200">
+              <AccordionTrigger className="px-5 hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-purple-600 rounded flex items-center justify-center text-white font-bold text-xs">VIC</div>
+                  <span className="font-semibold text-slate-900">Victoria</span>
                 </div>
-                <h3 className="font-bold text-slate-900">Victoria</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/crimes-act-1958" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Crimes Act 1958</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/criminal-procedure-act-2009" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Procedure Act 2009</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/evidence-act-2008" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 2008</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/drugs-poisons-and-controlled-substances-act-1981" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Drugs, Poisons Act 1981</a></li>
-                <li><a href="https://www.legislation.vic.gov.au/in-force/acts/family-violence-protection-act-2008" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Family Violence Protection Act 2008</a></li>
-              </ul>
-            </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-5 pb-4">
+                <ul className="space-y-2 text-sm">
+                  <li><a href="https://www.legislation.vic.gov.au/in-force/acts/crimes-act-1958" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Crimes Act 1958 <ExternalLink className="w-3 h-3" /></a></li>
+                  <li><a href="https://www.legislation.vic.gov.au/in-force/acts/criminal-procedure-act-2009" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Criminal Procedure Act 2009 <ExternalLink className="w-3 h-3" /></a></li>
+                  <li><a href="https://www.legislation.vic.gov.au/in-force/acts/evidence-act-2008" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Evidence Act 2008 <ExternalLink className="w-3 h-3" /></a></li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
 
-            {/* Queensland */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  QLD
+            <AccordionItem value="qld" className="border-b border-slate-200">
+              <AccordionTrigger className="px-5 hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-red-600 rounded flex items-center justify-center text-white font-bold text-xs">QLD</div>
+                  <span className="font-semibold text-slate-900">Queensland</span>
                 </div>
-                <h3 className="font-bold text-slate-900">Queensland</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1899-009" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Code Act 1899</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1977-026" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Practice Rules 1999</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1977-047" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1977</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1986-023" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Drugs Misuse Act 1986</a></li>
-                <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-2012-005" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Domestic Violence Act 2012</a></li>
-              </ul>
-            </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-5 pb-4">
+                <ul className="space-y-2 text-sm">
+                  <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1899-009" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Criminal Code Act 1899 <ExternalLink className="w-3 h-3" /></a></li>
+                  <li><a href="https://www.legislation.qld.gov.au/view/html/inforce/current/act-1977-047" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Evidence Act 1977 <ExternalLink className="w-3 h-3" /></a></li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
 
-            {/* South Australia */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  SA
+            <AccordionItem value="sa" className="border-b border-slate-200">
+              <AccordionTrigger className="px-5 hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-amber-600 rounded flex items-center justify-center text-white font-bold text-xs">SA</div>
+                  <span className="font-semibold text-slate-900">South Australia</span>
                 </div>
-                <h3 className="font-bold text-slate-900">South Australia</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/criminal%20law%20consolidation%20act%201935" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Law Consolidation Act 1935</a></li>
-                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/evidence%20act%201929" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1929</a></li>
-                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/controlled%20substances%20act%201984" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Controlled Substances Act 1984</a></li>
-                <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/intervention%20orders%20(prevention%20of%20abuse)%20act%202009" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Intervention Orders Act 2009</a></li>
-              </ul>
-            </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-5 pb-4">
+                <ul className="space-y-2 text-sm">
+                  <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/criminal%20law%20consolidation%20act%201935" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Criminal Law Consolidation Act 1935 <ExternalLink className="w-3 h-3" /></a></li>
+                  <li><a href="https://www.legislation.sa.gov.au/lz?path=/c/a/evidence%20act%201929" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Evidence Act 1929 <ExternalLink className="w-3 h-3" /></a></li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
 
-            {/* Western Australia */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  WA
+            <AccordionItem value="wa" className="border-b border-slate-200">
+              <AccordionTrigger className="px-5 hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-emerald-600 rounded flex items-center justify-center text-white font-bold text-xs">WA</div>
+                  <span className="font-semibold text-slate-900">Western Australia</span>
                 </div>
-                <h3 className="font-bold text-slate-900">Western Australia</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_218_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Code Act 1913</a></li>
-                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_221_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Appeals Act 2004</a></li>
-                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_327_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1906</a></li>
-                <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_599_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Misuse of Drugs Act 1981</a></li>
-              </ul>
-            </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-5 pb-4">
+                <ul className="space-y-2 text-sm">
+                  <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_218_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Criminal Code Act 1913 <ExternalLink className="w-3 h-3" /></a></li>
+                  <li><a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_221_homepage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Criminal Appeals Act 2004 <ExternalLink className="w-3 h-3" /></a></li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
 
-            {/* Commonwealth */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  CTH
+            <AccordionItem value="cth">
+              <AccordionTrigger className="px-5 hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-slate-800 rounded flex items-center justify-center text-white font-bold text-xs">CTH</div>
+                  <span className="font-semibold text-slate-900">Commonwealth (Federal)</span>
                 </div>
-                <h3 className="font-bold text-slate-900">Commonwealth</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://www.legislation.gov.au/C2004A04868/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Criminal Code Act 1995</a></li>
-                <li><a href="https://www.legislation.gov.au/C2004A04858/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Evidence Act 1995</a></li>
-                <li><a href="https://www.legislation.gov.au/C2004A01586/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Judiciary Act 1903</a></li>
-                <li><a href="https://www.legislation.gov.au/C2004A03712/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Crimes Act 1914</a></li>
-              </ul>
-            </div>
-          </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-5 pb-4">
+                <ul className="space-y-2 text-sm">
+                  <li><a href="https://www.legislation.gov.au/C2004A04868/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Criminal Code Act 1995 <ExternalLink className="w-3 h-3" /></a></li>
+                  <li><a href="https://www.legislation.gov.au/C2004A04858/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Evidence Act 1995 <ExternalLink className="w-3 h-3" /></a></li>
+                  <li><a href="https://www.legislation.gov.au/C2004A01586/latest/text" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1">Judiciary Act 1903 <ExternalLink className="w-3 h-3" /></a></li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </section>
 

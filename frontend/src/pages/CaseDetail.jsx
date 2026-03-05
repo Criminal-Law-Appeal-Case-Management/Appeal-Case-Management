@@ -404,17 +404,26 @@ const CaseDetail = ({ user }) => {
       const response = await axios.post(`${API}/cases/${caseId}/grounds/auto-identify`, {}, {
         timeout: 120000 // 2 minute timeout for AI analysis
       });
-      if (response.data.grounds && response.data.grounds.length > 0) {
-        setGrounds([...response.data.grounds, ...grounds]);
-        // Show appropriate message based on results
-        if (response.data.skipped_duplicates > 0) {
-          toast.success(`Found ${response.data.identified_count} new ground(s). ${response.data.skipped_duplicates} duplicate(s) skipped.`);
+      
+      const { identified_count, skipped_duplicates, existing_grounds, unlock_required, unlock_price } = response.data;
+      
+      if (identified_count > 0) {
+        // Refresh grounds list to get updated data with proper paywall state
+        const groundsRes = await axios.get(`${API}/cases/${caseId}/grounds`);
+        setGrounds(groundsRes.data.grounds || []);
+        setGroundsCount(groundsRes.data.count || 0);
+        setGroundsUnlocked(groundsRes.data.is_unlocked || false);
+        setGroundsUnlockPrice(groundsRes.data.unlock_price || 50.00);
+        
+        // Show appropriate message
+        if (skipped_duplicates > 0) {
+          toast.success(`Found ${identified_count} new ground(s)! ${skipped_duplicates} duplicate(s) skipped. Pay $${unlock_price?.toFixed(2)} to see full details.`);
         } else {
-          toast.success(`Identified ${response.data.identified_count} potential ground(s) of merit!`);
+          toast.success(`Identified ${identified_count} potential ground(s)! Pay $${unlock_price?.toFixed(2)} to unlock full details.`);
         }
       } else {
         // No new grounds found
-        if (response.data.existing_grounds > 0) {
+        if (existing_grounds > 0) {
           toast.info("All significant grounds have already been identified for this case.");
         } else {
           toast.info("No grounds identified. Try adding more case documents with detailed content.");
