@@ -1,4 +1,4 @@
-import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin, Moon, Sun, Menu, X } from "lucide-react";
+import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin, Moon, Sun, Menu, X, Briefcase, BookOpen, Heart, MessageCircle, Download, Book, HelpCircle, TrendingUp } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -397,6 +397,258 @@ const LandingPage = () => {
                   </li>
                 </ul>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* COMPLETE APP CAPABILITIES - At A Glance */}
+      {/* ============================================ */}
+      <section className="py-16 px-6 bg-slate-900 dark:bg-slate-950">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Everything At Your Fingertips</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Complete Criminal Appeal Platform
+            </h2>
+            <p className="text-slate-400 text-lg max-w-3xl mx-auto">
+              From document management to legal research, everything you need to build and understand your appeal — all in one place.
+            </p>
+          </div>
+
+          {/* Stats Row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+            <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5 text-center">
+              <div className="text-3xl font-bold text-amber-500 mb-1">8</div>
+              <div className="text-slate-400 text-sm">States & Territories</div>
+            </div>
+            <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5 text-center">
+              <div className="text-3xl font-bold text-emerald-500 mb-1">30+</div>
+              <div className="text-slate-400 text-sm">Legal Form Templates</div>
+            </div>
+            <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5 text-center">
+              <div className="text-3xl font-bold text-blue-500 mb-1">84+</div>
+              <div className="text-slate-400 text-sm">Legal Terms Explained</div>
+            </div>
+            <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5 text-center">
+              <div className="text-3xl font-bold text-purple-500 mb-1">100+</div>
+              <div className="text-slate-400 text-sm">Legal Contacts Listed</div>
+            </div>
+          </div>
+
+          {/* Feature Grid - All Pages & Capabilities */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            {/* Case Management */}
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Briefcase className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-bold text-white text-lg">Case Management</h3>
+              </div>
+              <p className="text-slate-400 text-sm mb-3">
+                Create unlimited cases, upload documents with OCR, track deadlines with visual calendar, and organize everything in one secure place.
+              </p>
+              <div className="text-amber-500 text-xs font-medium">
+                ✓ Unlimited document upload • Calendar view • Progress tracking
+              </div>
+            </div>
+
+            {/* AI Analysis */}
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <BarChart3 className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-bold text-white text-lg">AI-Powered Analysis</h3>
+              </div>
+              <p className="text-slate-400 text-sm mb-3">
+                Automatically identify potential appeal grounds, find contradictions, generate case timelines, and get AI-driven insights based on Australian law.
+              </p>
+              <div className="text-emerald-500 text-xs font-medium">
+                ✓ GPT-4 powered • Australian law trained • Grounds identification
+              </div>
+            </div>
+
+            {/* Legal Research Hub */}
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <BookOpen className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-bold text-white text-lg">Legal Research Hub</h3>
+              </div>
+              <p className="text-slate-400 text-sm mb-3">
+                Access legislation for all 8 states, search live court databases, explore legal frameworks, and understand Human Rights laws.
+              </p>
+              <div className="text-purple-500 text-xs font-medium">
+                ✓ All state legislation • Live caselaw search • Framework guides
+              </div>
+            </div>
+
+            {/* Forms & Templates */}
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <FileText className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-bold text-white text-lg">Forms & Templates</h3>
+              </div>
+              <p className="text-slate-400 text-sm mb-3">
+                30+ downloadable legal forms including Notice of Appeal, Extension of Time, Transcript Requests, and state-specific templates.
+              </p>
+              <div className="text-amber-500 text-xs font-medium">
+                ✓ Key procedural requirements • Time limits guide • All jurisdictions
+              </div>
+            </div>
+
+            {/* Legal Contacts Directory */}
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-teal-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Users className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-bold text-white text-lg">Contacts Directory</h3>
+              </div>
+              <p className="text-slate-400 text-sm mb-3">
+                100+ legal contacts: Legal Aid offices, Law Societies, Complaints Bodies, Courts, Community Legal Centres, Pro Bono services.
+              </p>
+              <div className="text-teal-500 text-xs font-medium">
+                ✓ All 8 states • Phone numbers • Direct website links
+              </div>
+            </div>
+
+            {/* Legal Glossary */}
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Book className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-bold text-white text-lg">Legal Glossary</h3>
+              </div>
+              <p className="text-slate-400 text-sm mb-3">
+                84+ legal terms explained in plain English including 23 specific Appeal Grounds, evidence law, and sentencing principles.
+              </p>
+              <div className="text-indigo-500 text-xs font-medium">
+                ✓ Searchable • Categorized • Plain language explanations
+              </div>
+            </div>
+
+            {/* Appeal Statistics */}
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <TrendingUp className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-bold text-white text-lg">Appeal Statistics</h3>
+              </div>
+              <p className="text-slate-400 text-sm mb-3">
+                National and state-by-state data on criminal appeals: success rates, common grounds, timelines, and access to justice analysis.
+              </p>
+              <div className="text-red-500 text-xs font-medium">
+                ✓ 0.012% appeal rate exposed • State comparisons • Justice gap analysis
+              </div>
+            </div>
+
+            {/* Success Stories */}
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-pink-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Heart className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-bold text-white text-lg">Success Stories</h3>
+              </div>
+              <p className="text-slate-400 text-sm mb-3">
+                14 real stories from families who found hope and successfully appealed: convictions quashed, sentences reduced, justice served.
+              </p>
+              <div className="text-pink-500 text-xs font-medium">
+                ✓ Real outcomes • Diverse scenarios • All jurisdictions
+              </div>
+            </div>
+
+            {/* Lawyer Directory */}
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-cyan-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Scale className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-bold text-white text-lg">Lawyer Directory</h3>
+              </div>
+              <p className="text-slate-400 text-sm mb-3">
+                Find criminal appeal specialists, barristers, and solicitors organized by state with expertise areas, success rates, and contact info.
+              </p>
+              <div className="text-cyan-500 text-xs font-medium">
+                ✓ Verified specialists • State-specific • Pro bono options
+              </div>
+            </div>
+
+            {/* Reports & Export */}
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Download className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-bold text-white text-lg">Reports & Export</h3>
+              </div>
+              <p className="text-slate-400 text-sm mb-3">
+                Generate detailed reports with legal citations, export to PDF/DOCX, create appeal bundles, and use Barrister View for presentations.
+              </p>
+              <div className="text-orange-500 text-xs font-medium">
+                ✓ Professional formatting • Barrister View • Document bundling
+              </div>
+            </div>
+
+            {/* How To Use Guide */}
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-lime-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <HelpCircle className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-bold text-white text-lg">Step-by-Step Guide</h3>
+              </div>
+              <p className="text-slate-400 text-sm mb-3">
+                Complete tutorial with visual mockups showing exactly how to use every feature from account creation to report generation.
+              </p>
+              <div className="text-lime-500 text-xs font-medium">
+                ✓ 10-step guide • Visual examples • Beginner-friendly
+              </div>
+            </div>
+
+            {/* FAQ */}
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-yellow-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <MessageCircle className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-bold text-white text-lg">FAQ & Support</h3>
+              </div>
+              <p className="text-slate-400 text-sm mb-3">
+                Answers to common questions about using the platform, appeal processes, costs, legal disclaimers, and technical support.
+              </p>
+              <div className="text-yellow-500 text-xs font-medium">
+                ✓ Comprehensive answers • Contact form • Email support
+              </div>
+            </div>
+
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="mt-12 text-center">
+            <div className="inline-block bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-8">
+              <p className="text-white font-bold text-xl mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                All This For Free To Get Started
+              </p>
+              <p className="text-slate-400 mb-4">
+                No credit card • No commitment • Pay only for premium AI analysis when you need it
+              </p>
+              <Button
+                onClick={() => setShowAuthModal(true)}
+                className="bg-amber-600 text-white hover:bg-amber-700 rounded-xl px-8 py-3 font-semibold text-lg"
+              >
+                Create Free Account
+              </Button>
             </div>
           </div>
         </div>
