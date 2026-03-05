@@ -14,6 +14,7 @@ import BarristerView from "./pages/BarristerView";
 import HelpPage from "./pages/HelpPage";
 import ResourcesPage from "./pages/ResourcesPage";
 import ProfessionalSummary from "./pages/ProfessionalSummary";
+import TermsOfService from "./pages/TermsOfService";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
@@ -188,6 +189,10 @@ function AppRouter() {
       <Route
         path="/professional-summary"
         element={<ProfessionalSummary />}
+      />
+      <Route
+        path="/terms"
+        element={<TermsOfService />}
       />
     </Routes>
   );

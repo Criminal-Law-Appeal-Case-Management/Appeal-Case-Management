@@ -406,7 +406,16 @@ const LandingPage = () => {
               navigate complex legal processes.
             </p>
           </div>
-          <p className="text-xs text-slate-500 mt-6">
+          <div className="flex items-center justify-center gap-4 mt-6">
+            <Link to="/terms" className="text-xs text-slate-400 hover:text-slate-300 underline">
+              Terms of Service
+            </Link>
+            <span className="text-slate-600">•</span>
+            <Link to="/terms" className="text-xs text-slate-400 hover:text-slate-300 underline">
+              Privacy Policy
+            </Link>
+          </div>
+          <p className="text-xs text-slate-500 mt-4">
             NSW State &amp; Australian Federal Law Reference
           </p>
         </div>
