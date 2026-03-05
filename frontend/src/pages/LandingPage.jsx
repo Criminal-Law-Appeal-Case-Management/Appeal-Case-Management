@@ -157,11 +157,13 @@ const LandingPage = () => {
             <Link to="/contacts" className="block py-2 text-slate-300 hover:text-white">Contacts Directory</Link>
             <Link to="/forms" className="block py-2 text-slate-300 hover:text-white">Forms</Link>
             <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
+            <Link to="/legal-framework" className="block py-2 text-slate-300 hover:text-white">Legal Framework</Link>
             <Link to="/about" className="block py-2 text-slate-300 hover:text-white">About</Link>
             <Link to="/contact" className="block py-2 text-slate-300 hover:text-white">Contact</Link>
             <Link to="/terms" className="block py-2 text-slate-300 hover:text-white">Terms & Privacy</Link>
             <div className="border-t border-slate-700 pt-3 mt-3">
               <Link to="/how-to-use" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">How To Use The App</Link>
+              <Link to="/legal-framework" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">Legal Framework & Legislation</Link>
             </div>
             <div className="flex items-center gap-3 pt-2">
               <button onClick={toggleTheme} className="p-2 text-slate-300 hover:text-white">
@@ -473,7 +475,7 @@ const LandingPage = () => {
             </div>
 
             {/* Legal Research Hub */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+            <Link to="/legal-framework" className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group block">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                   <BookOpen className="w-5 h-5 text-white" />
@@ -486,10 +488,10 @@ const LandingPage = () => {
               <div className="text-purple-500 text-xs font-medium">
                 ✓ All state legislation • Live caselaw search • Framework guides
               </div>
-            </div>
+            </Link>
 
             {/* Forms & Templates */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+            <Link to="/forms" className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group block">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                   <FileText className="w-5 h-5 text-white" />
@@ -502,10 +504,10 @@ const LandingPage = () => {
               <div className="text-amber-500 text-xs font-medium">
                 ✓ Key procedural requirements • Time limits guide • All jurisdictions
               </div>
-            </div>
+            </Link>
 
             {/* Legal Contacts Directory */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+            <Link to="/contacts" className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group block">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 bg-teal-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Users className="w-5 h-5 text-white" />
@@ -518,10 +520,10 @@ const LandingPage = () => {
               <div className="text-teal-500 text-xs font-medium">
                 ✓ All 8 states • Phone numbers • Direct website links
               </div>
-            </div>
+            </Link>
 
             {/* Legal Glossary */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+            <Link to="/glossary" className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group block">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Book className="w-5 h-5 text-white" />
@@ -534,10 +536,10 @@ const LandingPage = () => {
               <div className="text-indigo-500 text-xs font-medium">
                 ✓ Searchable • Categorized • Plain language explanations
               </div>
-            </div>
+            </Link>
 
             {/* Appeal Statistics */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+            <Link to="/appeal-statistics" className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group block">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                   <TrendingUp className="w-5 h-5 text-white" />
@@ -550,10 +552,10 @@ const LandingPage = () => {
               <div className="text-red-500 text-xs font-medium">
                 ✓ 0.012% appeal rate exposed • State comparisons • Justice gap analysis
               </div>
-            </div>
+            </Link>
 
             {/* Success Stories */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+            <Link to="/success-stories" className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group block">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 bg-pink-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Heart className="w-5 h-5 text-white" />
@@ -566,10 +568,10 @@ const LandingPage = () => {
               <div className="text-pink-500 text-xs font-medium">
                 ✓ Real outcomes • Diverse scenarios • All jurisdictions
               </div>
-            </div>
+            </Link>
 
             {/* Lawyer Directory */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+            <Link to="/lawyers" className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group block">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 bg-cyan-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Scale className="w-5 h-5 text-white" />
@@ -582,7 +584,7 @@ const LandingPage = () => {
               <div className="text-cyan-500 text-xs font-medium">
                 ✓ Verified specialists • State-specific • Pro bono options
               </div>
-            </div>
+            </Link>
 
             {/* Reports & Export */}
             <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
@@ -601,7 +603,7 @@ const LandingPage = () => {
             </div>
 
             {/* How To Use Guide */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+            <Link to="/how-to-use" className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group block">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 bg-lime-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                   <HelpCircle className="w-5 h-5 text-white" />
@@ -609,15 +611,15 @@ const LandingPage = () => {
                 <h3 className="font-bold text-white text-lg">Step-by-Step Guide</h3>
               </div>
               <p className="text-slate-400 text-sm mb-3">
-                Complete tutorial with visual mockups showing exactly how to use every feature from account creation to report generation.
+                Complete tutorial with real app screenshots showing exactly how to use every feature from account creation to report generation.
               </p>
               <div className="text-lime-500 text-xs font-medium">
-                ✓ 10-step guide • Visual examples • Beginner-friendly
+                ✓ 10-step guide • Real screenshots • Beginner-friendly
               </div>
-            </div>
+            </Link>
 
             {/* FAQ */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group">
+            <Link to="/faq" className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group block">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 bg-yellow-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                   <MessageCircle className="w-5 h-5 text-white" />
@@ -630,7 +632,7 @@ const LandingPage = () => {
               <div className="text-yellow-500 text-xs font-medium">
                 ✓ Comprehensive answers • Contact form • Email support
               </div>
-            </div>
+            </Link>
 
           </div>
 
