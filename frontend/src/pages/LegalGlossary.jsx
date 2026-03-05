@@ -75,6 +75,30 @@ const glossaryCategories = [
     image: "https://images.unsplash.com/photo-1662516201865-8633915e668a?crop=entropy&cs=srgb&fm=jpg&q=85&w=400&h=200&fit=crop",
     terms: [
       {
+        term: "Appellant",
+        simple: "The person who is appealing",
+        detailed: "The party who brings an appeal against a conviction or sentence. In criminal appeals, this is usually the person who was convicted, though the Crown can also appeal against sentence.",
+        example: "As the appellant, you bear the burden of showing error in your trial."
+      },
+      {
+        term: "Respondent",
+        simple: "The other side in an appeal",
+        detailed: "The party responding to an appeal. In criminal appeals, when you appeal your conviction, the Crown (prosecution) is the respondent. When the Crown appeals your sentence, you are the respondent.",
+        example: "The Crown as respondent will argue your conviction should stand."
+      },
+      {
+        term: "Leave to Appeal",
+        simple: "Permission to appeal - some appeals need the court's approval first",
+        detailed: "For some appeals, you need the court's permission before you can proceed. Appeals against sentence usually require leave. The court grants leave if there's an arguable case that the sentence was wrong.",
+        example: "You need to apply for leave to appeal against your sentence within 28 days."
+      },
+      {
+        term: "Grounds of Appeal",
+        simple: "The specific reasons why your conviction or sentence should be overturned",
+        detailed: "The legal arguments setting out why the appeal should succeed. Each ground identifies a specific error — such as a misdirection, procedural unfairness, or unreasonable verdict. Well-drafted grounds are essential to success.",
+        example: "Ground 1: The trial judge misdirected the jury on the element of intent."
+      },
+      {
         term: "Miscarriage of Justice",
         simple: "When something went seriously wrong with your trial or conviction",
         detailed: "A broad term covering situations where the justice system has failed, resulting in an unfair outcome. Includes wrongful convictions, procedural errors, and other failures that undermine confidence in the verdict.",
@@ -87,10 +111,46 @@ const glossaryCategories = [
         example: "A life sentence for a minor first offence might be considered manifestly unjust."
       },
       {
+        term: "Manifestly Excessive",
+        simple: "When the sentence is way too harsh for what you did",
+        detailed: "A common ground for sentence appeals. A sentence is manifestly excessive if it's clearly unreasonable or unjust given the circumstances of the offence and the offender. The error must be obvious, not just that another judge might have given less.",
+        example: "A 10-year sentence for a first offence with strong mitigating factors may be manifestly excessive."
+      },
+      {
+        term: "Manifestly Inadequate",
+        simple: "When the sentence is too lenient (Crown appeals this)",
+        detailed: "A ground used by the Crown when appealing a sentence. The sentence must be so unreasonably low that it fails to reflect the seriousness of the crime. The Crown must show the error is obvious.",
+        example: "A suspended sentence for a violent home invasion may be manifestly inadequate."
+      },
+      {
+        term: "Natural Justice",
+        simple: "Your fundamental right to be treated fairly",
+        detailed: "Also called procedural fairness. The basic principles that ensure a fair hearing: the right to know the case against you, the right to be heard, and the right to an impartial decision-maker. Denial of natural justice is a powerful appeal ground.",
+        example: "Being denied the right to call witnesses or cross-examine is a breach of natural justice."
+      },
+      {
+        term: "Denial of Natural Justice",
+        simple: "When you weren't given a fair go",
+        detailed: "Occurs when fundamental fairness principles are violated. This includes being denied a fair hearing, not being told the case against you, being judged by someone with bias, or being denied the right to present your defence. A strong ground for appeal.",
+        example: "The judge refused to hear your alibi evidence — this is denial of natural justice."
+      },
+      {
+        term: "Procedural Fairness",
+        simple: "Your right to a fair process",
+        detailed: "The same as natural justice. Means you have the right to know the case against you, the right to be heard, and the right to have your case decided by an impartial judge. Denial of procedural fairness is a strong appeal ground.",
+        example: "The prosecution ambushed you with evidence you'd never seen before trial."
+      },
+      {
         term: "Misdirection",
         simple: "When the judge gives the jury wrong instructions",
         detailed: "If the trial judge incorrectly explains the law to the jury, this can be grounds for appeal. Common misdirections include wrong explanations of intent, self-defence, or burden of proof.",
         example: "The judge wrongly told jurors they could convict if they thought it was 'probably' the defendant."
+      },
+      {
+        term: "Non-Direction",
+        simple: "When the judge fails to tell the jury something important",
+        detailed: "When a trial judge fails to give a necessary direction to the jury on a matter of law. The judge must direct on all essential elements of the offence and any defences raised.",
+        example: "The judge failed to direct the jury on self-defence when it was clearly raised."
       },
       {
         term: "Fresh Evidence",
@@ -105,6 +165,12 @@ const glossaryCategories = [
         example: "The only evidence was a single unreliable witness with motivation to lie."
       },
       {
+        term: "Unreasonable Verdict",
+        simple: "No reasonable jury could have convicted on the evidence",
+        detailed: "A ground of appeal arguing the verdict was against the weight of evidence. The appeal court considers whether, based on the whole evidence, it was open to the jury to be satisfied beyond reasonable doubt.",
+        example: "The evidence was so weak that conviction was not reasonably open to the jury."
+      },
+      {
         term: "Ineffective Assistance of Counsel",
         simple: "Your lawyer didn't do their job properly",
         detailed: "If your defence lawyer's performance was so deficient that it affected the outcome of your trial, this can be grounds for appeal. Examples include failing to call important witnesses, not challenging key evidence, or not properly preparing.",
@@ -117,16 +183,34 @@ const glossaryCategories = [
         example: "The judge told the jury 'people like the defendant' usually lie."
       },
       {
-        term: "Procedural Fairness",
-        simple: "Your right to a fair process",
-        detailed: "Also called 'natural justice'. This means you have the right to know the case against you, the right to be heard, and the right to have your case decided by an impartial judge. Denial of procedural fairness is a strong appeal ground.",
-        example: "The prosecution ambushed you with evidence you'd never seen before trial."
+        term: "Judge Alone Trial",
+        simple: "A trial decided by a judge without a jury",
+        detailed: "Under s.132 Criminal Procedure Act 1986 (NSW), an accused can elect to be tried by a judge alone instead of a jury. Both prosecution and court must consent. The judge decides both fact and law.",
+        example: "In complex fraud cases, defendants often elect for judge alone trial."
       },
       {
         term: "Perjury",
         simple: "A witness lying under oath",
         detailed: "The criminal offence of making false statements while under oath in court. If discovered after trial, perjured evidence can be grounds for appeal as it undermines the fairness of the proceedings.",
         example: "The main witness later admitted they made up their testimony."
+      },
+      {
+        term: "Quash",
+        simple: "To overturn or cancel a conviction",
+        detailed: "When an appeal court sets aside a conviction, it 'quashes' it. The conviction is treated as if it never happened. A new trial may or may not be ordered depending on the circumstances.",
+        example: "The Court of Criminal Appeal quashed the conviction due to the trial judge's misdirection."
+      },
+      {
+        term: "Remit",
+        simple: "To send back for reconsideration",
+        detailed: "When an appeal court sends a matter back to a lower court for further hearing or a new trial. Often occurs when a conviction is quashed but a retrial is warranted.",
+        example: "The matter was remitted for a new trial before a different judge."
+      },
+      {
+        term: "Resentence",
+        simple: "To give a new sentence",
+        detailed: "When an appeal court finds a sentence was wrong, it may resentence the offender itself or send the matter back for resentencing. The new sentence can be higher or lower.",
+        example: "The CCA found the sentence manifestly excessive and resentenced to 8 years."
       }
     ]
   },

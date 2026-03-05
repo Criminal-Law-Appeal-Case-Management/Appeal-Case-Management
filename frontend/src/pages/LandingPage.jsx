@@ -63,6 +63,9 @@ const LandingPage = () => {
             <Link to="/forms" className="text-slate-400 hover:text-white text-sm transition-colors">
               Forms
             </Link>
+            <Link to="/legal-resources" className="text-slate-400 hover:text-white text-sm transition-colors">
+              Resources
+            </Link>
             <Link to="/contact" className="text-slate-400 hover:text-white text-sm transition-colors">
               Contact
             </Link>
@@ -95,6 +98,7 @@ const LandingPage = () => {
             <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
             <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
             <Link to="/forms" className="block py-2 text-slate-300 hover:text-white">Forms</Link>
+            <Link to="/legal-resources" className="block py-2 text-slate-300 hover:text-white">Legal Resources</Link>
             <Link to="/contact" className="block py-2 text-slate-300 hover:text-white">Contact</Link>
             <div className="flex items-center gap-3 pt-2">
               <button onClick={toggleTheme} className="p-2 text-slate-300 hover:text-white">
@@ -1414,6 +1418,7 @@ const LandingPage = () => {
             <Link to="/about" className="hover:text-foreground">About</Link>
             <Link to="/success-stories" className="hover:text-foreground">Success Stories</Link>
             <Link to="/glossary" className="hover:text-foreground">Legal Terms</Link>
+            <Link to="/legal-resources" className="hover:text-foreground">Resources</Link>
             <Link to="/contact" className="hover:text-foreground">Contact</Link>
             <Link to="/terms" className="hover:text-foreground">Terms & Privacy</Link>
           </div>

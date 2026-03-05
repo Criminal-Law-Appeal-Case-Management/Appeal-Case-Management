@@ -25,6 +25,7 @@ import LawyerDirectory from "./pages/LawyerDirectory";
 import FormTemplates from "./pages/FormTemplates";
 import CompareCasesPage from "./pages/CompareCasesPage";
 import AboutPage from "./pages/AboutPage";
+import LegalResourcesPage from "./pages/LegalResourcesPage";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -252,6 +253,10 @@ function AppRouter() {
       <Route
         path="/about"
         element={<AboutPage />}
+      />
+      <Route
+        path="/legal-resources"
+        element={<LegalResourcesPage />}
       />
     </Routes>
   );
