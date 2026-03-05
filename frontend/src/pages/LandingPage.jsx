@@ -82,12 +82,15 @@ const LandingPage = () => {
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight leading-tight mb-6"
               style={{ fontFamily: 'Crimson Pro, serif' }}
             >
-              Organise Case Documents.<br />
-              Identify Appeal Issues.
+              Murder &amp; Manslaughter<br />
+              Appeal Research Tool
             </h1>
-            <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-8 max-w-3xl">
-              A document analysis and case organisation tool designed to assist with identifying potential 
-              appeal issues in homicide cases under NSW State and Australian Federal law.
+            <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-4 max-w-3xl">
+              A document analysis and case organisation tool <strong>specifically designed for murder, manslaughter, 
+              and mens rea cases</strong> under NSW State and Australian Federal law.
+            </p>
+            <p className="text-base text-slate-500 mb-8 max-w-3xl">
+              This tool focuses exclusively on homicide offences and related appeal grounds. It does not cover other criminal matters.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
@@ -107,6 +110,92 @@ const LandingPage = () => {
                 </Button>
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Legal Framework Section */}
+      <section className="bg-slate-900 border-b border-slate-800">
+        <div className="max-w-6xl mx-auto px-6 py-12">
+          <div className="text-center mb-8">
+            <p className="text-amber-500 font-semibold text-sm uppercase tracking-wider mb-3">
+              Applicable Legal Framework
+            </p>
+            <h2 
+              className="text-2xl md:text-3xl font-bold text-white tracking-tight mb-4"
+              style={{ fontFamily: 'Crimson Pro, serif' }}
+            >
+              Murder, Manslaughter &amp; Mens Rea Only
+            </h2>
+            <p className="text-slate-400 max-w-3xl mx-auto">
+              This application is designed exclusively to assist with research related to the following legislation and legal frameworks:
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* NSW State Law */}
+            <div className="bg-slate-800 border border-slate-700 rounded-lg p-5">
+              <h3 className="text-amber-500 font-semibold text-sm uppercase tracking-wider mb-3">
+                NSW State Law
+              </h3>
+              <h4 className="text-white font-semibold mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Crimes Act 1900 (NSW)
+              </h4>
+              <ul className="text-slate-300 text-sm space-y-2">
+                <li><strong className="text-white">Section 18</strong> — Murder and manslaughter defined</li>
+                <li><strong className="text-white">Section 19A</strong> — Punishment for murder</li>
+                <li><strong className="text-white">Section 19B</strong> — Punishment for manslaughter</li>
+                <li><strong className="text-white">Section 23</strong> — Self-defence</li>
+                <li><strong className="text-white">Section 23A</strong> — Excessive self-defence</li>
+                <li><strong className="text-white">Sections 24-27</strong> — Provocation, diminished responsibility</li>
+                <li><strong className="text-white">Section 52A</strong> — Dangerous driving causing death</li>
+              </ul>
+            </div>
+
+            {/* Federal Law */}
+            <div className="bg-slate-800 border border-slate-700 rounded-lg p-5">
+              <h3 className="text-amber-500 font-semibold text-sm uppercase tracking-wider mb-3">
+                Australian Federal Law
+              </h3>
+              <h4 className="text-white font-semibold mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Criminal Code Act 1995 (Cth)
+              </h4>
+              <ul className="text-slate-300 text-sm space-y-2">
+                <li><strong className="text-white">Division 5</strong> — Fault elements (mens rea)</li>
+                <li><strong className="text-white">Section 5.1</strong> — Intention</li>
+                <li><strong className="text-white">Section 5.2</strong> — Knowledge</li>
+                <li><strong className="text-white">Section 5.3</strong> — Recklessness</li>
+                <li><strong className="text-white">Section 5.4</strong> — Negligence</li>
+                <li><strong className="text-white">Section 5.6</strong> — Offences that do not specify fault elements</li>
+                <li><strong className="text-white">Division 7</strong> — Circumstances involving mistake or ignorance</li>
+              </ul>
+            </div>
+
+            {/* Human Rights & Appeals */}
+            <div className="bg-slate-800 border border-slate-700 rounded-lg p-5">
+              <h3 className="text-amber-500 font-semibold text-sm uppercase tracking-wider mb-3">
+                Human Rights &amp; Appeal Framework
+              </h3>
+              <h4 className="text-white font-semibold mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Additional Relevant Legislation
+              </h4>
+              <ul className="text-slate-300 text-sm space-y-2">
+                <li><strong className="text-white">Criminal Appeal Act 1912 (NSW)</strong> — Appeal procedures</li>
+                <li><strong className="text-white">Crimes (Appeal and Review) Act 2001 (NSW)</strong> — Post-conviction review</li>
+                <li><strong className="text-white">Australian Human Rights Commission Act 1986 (Cth)</strong></li>
+                <li><strong className="text-white">ICCPR</strong> — International Covenant on Civil and Political Rights</li>
+                <li><strong className="text-white">Evidence Act 1995 (NSW)</strong> — Admissibility of evidence</li>
+                <li><strong className="text-white">Jury Act 1977 (NSW)</strong> — Jury procedures</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-8 p-4 bg-slate-800/50 border border-slate-700 rounded-lg">
+            <p className="text-slate-400 text-sm text-center">
+              <strong className="text-amber-500">Note:</strong> This tool focuses on identifying potential grounds for appeal related to 
+              <strong className="text-white"> murder (s.18(1)(a)), manslaughter (s.18(1)(b)), and mens rea elements</strong>. 
+              It does not cover other criminal offences. All analysis must be verified by a qualified legal practitioner.
+            </p>
           </div>
         </div>
       </section>
