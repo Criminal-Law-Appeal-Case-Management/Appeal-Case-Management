@@ -1,0 +1,204 @@
+"""
+Criminal Appeal AI - Analytics Router
+Provides comprehensive usage statistics and metrics
+"""
+from fastapi import APIRouter, HTTPException, Request
+from datetime import datetime, timezone, timedelta
+
+from config import db, logger
+from auth_utils import get_current_user
+import os
+
+router = APIRouter(prefix="/api/analytics", tags=["analytics"])
+
+# Admin emails
+ADMIN_EMAILS = os.environ.get("ADMIN_EMAILS", "djkingy79@gmail.com").split(",")
+
+@router.get("/dashboard")
+async def get_dashboard_stats(request: Request):
+    """Get comprehensive dashboard statistics (admin only)"""
+    try:
+        user = await get_current_user(request)
+        
+        # Only allow admin emails
+        if user.email not in ADMIN_EMAILS:
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        # Calculate date ranges
+        now = datetime.now(timezone.utc)
+        today = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        week_ago = now - timedelta(days=7)
+        month_ago = now - timedelta(days=30)
+        
+        # === USER METRICS ===
+        total_users = await db.users.count_documents({})
+        
+        # New users in last 7 days
+        new_users_7d = await db.users.count_documents({
+            "created_at": {"$gte": week_ago.isoformat()}
+        })
+        
+        # New users in last 30 days
+        new_users_30d = await db.users.count_documents({
+            "created_at": {"$gte": month_ago.isoformat()}
+        })
+        
+        # Users by auth type
+        email_users = await db.users.count_documents({"auth_type": "email"})
+        google_users = await db.users.count_documents({"auth_type": "google"})
+        
+        # === CASE METRICS ===
+        total_cases = await db.cases.count_documents({})
+        
+        # Cases created in last 7 days
+        new_cases_7d = await db.cases.count_documents({
+            "created_at": {"$gte": week_ago.isoformat()}
+        })
+        
+        # Cases created in last 30 days
+        new_cases_30d = await db.cases.count_documents({
+            "created_at": {"$gte": month_ago.isoformat()}
+        })
+        
+        # Cases by state
+        cases_by_state = {}
+        states = ["nsw", "vic", "qld", "sa", "wa", "tas", "nt", "act"]
+        for state in states:
+            count = await db.cases.count_documents({"state": state})
+            if count > 0:
+                cases_by_state[state.upper()] = count
+        
+        # === DOCUMENT METRICS ===
+        total_documents = await db.documents.count_documents({})
+        documents_7d = await db.documents.count_documents({
+            "uploaded_at": {"$gte": week_ago.isoformat()}
+        })
+        
+        # === ACTIVITY METRICS ===
+        total_visits = await db.visits.count_documents({})
+        visits_7d = await db.visits.count_documents({
+            "timestamp": {"$gte": week_ago.isoformat()}
+        })
+        visits_30d = await db.visits.count_documents({
+            "timestamp": {"$gte": month_ago.isoformat()}
+        })
+        
+        # === ENGAGEMENT METRICS ===
+        # Reports generated
+        total_reports = await db.reports.count_documents({}) if "reports" in await db.list_collection_names() else 0
+        
+        # Deadlines tracked
+        total_deadlines = await db.deadlines.count_documents({})
+        
+        # Notes created
+        total_notes = await db.notes.count_documents({})
+        
+        # Contact messages
+        total_messages = await db.contact_messages.count_documents({})
+        unread_messages = await db.contact_messages.count_documents({"read": False})
+        
+        # Success stories submitted
+        total_stories = await db.success_stories.count_documents({})
+        
+        # === DAILY STATS FOR CHART (Last 30 days) ===
+        daily_stats = []
+        for i in range(30, -1, -1):
+            date = (now - timedelta(days=i)).strftime("%Y-%m-%d")
+            
+            # Users registered on this day
+            users_on_day = await db.users.count_documents({
+                "created_at": {
+                    "$gte": f"{date}T00:00:00",
+                    "$lt": f"{date}T23:59:59"
+                }
+            })
+            
+            # Cases created on this day
+            cases_on_day = await db.cases.count_documents({
+                "created_at": {
+                    "$gte": f"{date}T00:00:00",
+                    "$lt": f"{date}T23:59:59"
+                }
+            })
+            
+            # Visits on this day
+            visit_stat = await db.visit_stats.find_one({"date": date}, {"_id": 0})
+            visits_on_day = visit_stat["count"] if visit_stat else 0
+            
+            daily_stats.append({
+                "date": date,
+                "users": users_on_day,
+                "cases": cases_on_day,
+                "visits": visits_on_day
+            })
+        
+        # === RESPONSE ===
+        return {
+            "users": {
+                "total": total_users,
+                "new_7d": new_users_7d,
+                "new_30d": new_users_30d,
+                "by_auth_type": {
+                    "email": email_users,
+                    "google": google_users
+                }
+            },
+            "cases": {
+                "total": total_cases,
+                "new_7d": new_cases_7d,
+                "new_30d": new_cases_30d,
+                "by_state": cases_by_state
+            },
+            "documents": {
+                "total": total_documents,
+                "uploaded_7d": documents_7d
+            },
+            "engagement": {
+                "reports_generated": total_reports,
+                "deadlines_tracked": total_deadlines,
+                "notes_created": total_notes,
+                "contact_messages": total_messages,
+                "unread_messages": unread_messages,
+                "success_stories": total_stories
+            },
+            "visits": {
+                "total": total_visits,
+                "last_7d": visits_7d,
+                "last_30d": visits_30d
+            },
+            "daily_stats": daily_stats,
+            "generated_at": now.isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Analytics dashboard error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to generate analytics")
+
+@router.get("/quick-stats")
+async def get_quick_stats(request: Request):
+    """Get quick overview stats (admin only)"""
+    try:
+        user = await get_current_user(request)
+        
+        if user.email not in ADMIN_EMAILS:
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        total_users = await db.users.count_documents({})
+        total_cases = await db.cases.count_documents({})
+        total_visits = await db.visits.count_documents({})
+        unread_messages = await db.contact_messages.count_documents({"read": False})
+        
+        return {
+            "total_users": total_users,
+            "total_cases": total_cases,
+            "total_visits": total_visits,
+            "unread_messages": unread_messages
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Quick stats error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get quick stats")
