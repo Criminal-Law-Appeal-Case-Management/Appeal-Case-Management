@@ -4321,6 +4321,10 @@ async def health_check():
 # Include the router in the main app
 app.include_router(api_router)
 
+# Include modular routers
+from routers.auth import router as auth_router
+app.include_router(auth_router)
+
 # Include statistics router
 from routers.statistics import router as statistics_router
 app.include_router(statistics_router)
