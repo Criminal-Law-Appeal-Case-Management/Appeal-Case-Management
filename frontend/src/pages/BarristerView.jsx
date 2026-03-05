@@ -3,8 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { 
-  Scale, ArrowLeft, Download, Printer, Loader2,
-  BookOpen, Gavel, FileText, CheckCircle, AlertTriangle, XCircle
+  Scale, ArrowLeft, Download, Printer, Loader2, Share2, Maximize2,
+  BookOpen, Gavel, FileText, CheckCircle, AlertTriangle, XCircle,
+  Calendar, User, MapPin, Building2, Clock, Target, Shield, Sword,
+  ChevronRight, ExternalLink, Quote, BarChart3, Bookmark
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -24,9 +26,9 @@ const GROUND_TYPE_LABELS = {
 };
 
 const STRENGTH_CONFIG = {
-  strong: { icon: CheckCircle, color: "text-emerald-700", label: "Strong" },
-  moderate: { icon: AlertTriangle, color: "text-amber-700", label: "Moderate" },
-  weak: { icon: XCircle, color: "text-red-700", label: "Weak" }
+  strong: { icon: CheckCircle, color: "text-emerald-700", bg: "bg-emerald-50", border: "border-emerald-200", label: "Strong Ground", score: "HIGH" },
+  moderate: { icon: AlertTriangle, color: "text-amber-700", bg: "bg-amber-50", border: "border-amber-200", label: "Moderate Ground", score: "MEDIUM" },
+  weak: { icon: XCircle, color: "text-red-700", bg: "bg-red-50", border: "border-red-200", label: "Requires Development", score: "LOW" }
 };
 
 const BarristerView = ({ user }) => {
@@ -35,7 +37,10 @@ const BarristerView = ({ user }) => {
   const [report, setReport] = useState(null);
   const [caseData, setCaseData] = useState(null);
   const [grounds, setGrounds] = useState([]);
+  const [timeline, setTimeline] = useState([]);
+  const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -43,14 +48,18 @@ const BarristerView = ({ user }) => {
 
   const fetchData = async () => {
     try {
-      const [reportRes, caseRes, groundsRes] = await Promise.all([
+      const [reportRes, caseRes, groundsRes, timelineRes, docsRes] = await Promise.all([
         axios.get(`${API}/cases/${caseId}/reports/${reportId}`),
         axios.get(`${API}/cases/${caseId}`),
-        axios.get(`${API}/cases/${caseId}/grounds`)
+        axios.get(`${API}/cases/${caseId}/grounds`),
+        axios.get(`${API}/cases/${caseId}/timeline`),
+        axios.get(`${API}/cases/${caseId}/documents`)
       ]);
       setReport(reportRes.data);
       setCaseData(caseRes.data);
       setGrounds(groundsRes.data?.grounds || []);
+      setTimeline(timelineRes.data || []);
+      setDocuments(docsRes.data || []);
     } catch (error) {
       toast.error("Failed to load report");
       navigate(`/cases/${caseId}`);
@@ -59,8 +68,16 @@ const BarristerView = ({ user }) => {
     }
   };
 
-  const handlePrint = () => {
-    window.print();
+  const handlePrint = () => window.print();
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
   };
 
   const handleExportPDF = async () => {
@@ -74,7 +91,6 @@ const BarristerView = ({ user }) => {
       const blob = new Blob([response.data], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
       
-      // iOS Safari doesn't support programmatic downloads
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       if (isIOS) {
         window.open(url, '_blank');
@@ -90,7 +106,6 @@ const BarristerView = ({ user }) => {
       setTimeout(() => window.URL.revokeObjectURL(url), 5000);
       toast.success("PDF downloaded successfully!");
     } catch (error) {
-      console.error("PDF export error:", error);
       toast.error("Failed to export PDF.");
     }
   };
@@ -121,7 +136,6 @@ const BarristerView = ({ user }) => {
       setTimeout(() => window.URL.revokeObjectURL(url), 5000);
       toast.success("Word document downloaded successfully!");
     } catch (error) {
-      console.error("DOCX export error:", error);
       toast.error("Failed to export Word document.");
     }
   };
@@ -131,6 +145,15 @@ const BarristerView = ({ user }) => {
     return new Date(dateStr).toLocaleDateString("en-AU", {
       day: "numeric",
       month: "long",
+      year: "numeric"
+    });
+  };
+
+  const formatShortDate = (dateStr) => {
+    if (!dateStr) return "N/A";
+    return new Date(dateStr).toLocaleDateString("en-AU", {
+      day: "numeric",
+      month: "short",
       year: "numeric"
     });
   };
@@ -147,32 +170,33 @@ const BarristerView = ({ user }) => {
     let currentContent = [];
     
     const sectionPatterns = [
-      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(CASE OVERVIEW|OVERVIEW)/i, title: "CASE OVERVIEW" },
-      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(EVIDENCE|DOCUMENT)/i, title: "EVIDENCE ANALYSIS" },
-      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(GROUNDS|MERIT)/i, title: "GROUNDS OF MERIT" },
-      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(LEGAL|LAW|FRAMEWORK)/i, title: "LEGAL FRAMEWORK" },
-      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(STRATEGIC|RECOMMEND|STRATEGY)/i, title: "RECOMMENDATIONS" },
-      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(CONCLUSION)/i, title: "CONCLUSION" },
-      { pattern: /^\*\*([A-Z][A-Z\s]+)\*\*/i, title: null } // Capture markdown headers
+      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(CASE OVERVIEW|OVERVIEW)/i, title: "CASE OVERVIEW", icon: "file" },
+      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(EVIDENCE|DOCUMENT)/i, title: "EVIDENCE ANALYSIS", icon: "search" },
+      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(GROUNDS|MERIT)/i, title: "GROUNDS OF MERIT", icon: "scale" },
+      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(LEGAL|LAW|FRAMEWORK)/i, title: "LEGAL FRAMEWORK", icon: "book" },
+      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(STRATEGIC|RECOMMEND|STRATEGY)/i, title: "STRATEGIC RECOMMENDATIONS", icon: "target" },
+      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(SIMILAR|PRECEDENT)/i, title: "SIMILAR CASES & PRECEDENT", icon: "archive" },
+      { pattern: /^(?:\d+\.|I\.|II\.|III\.|IV\.|V\.|VI\.)\s*(CONCLUSION)/i, title: "CONCLUSION", icon: "flag" },
+      { pattern: /^\*\*([A-Z][A-Z\s]+)\*\*/i, title: null, icon: "chevron" }
     ];
     
     for (const line of lines) {
       let foundSection = false;
       
-      for (const { pattern, title } of sectionPatterns) {
+      for (const { pattern, title, icon } of sectionPatterns) {
         if (pattern.test(line)) {
           if (currentSection) {
             sections.push({
               number: String(sections.length + 1),
               title: currentSection,
-              content: currentContent.join('\n').trim()
+              content: currentContent.join('\n').trim(),
+              icon: icon
             });
           }
           
           if (title) {
             currentSection = title;
           } else {
-            // Extract title from markdown header
             const match = line.match(/\*\*([A-Z][A-Z\s]+)\*\*/i);
             currentSection = match ? match[1].trim() : "ANALYSIS";
           }
@@ -185,7 +209,6 @@ const BarristerView = ({ user }) => {
       if (!foundSection && currentSection) {
         currentContent.push(line);
       } else if (!foundSection && !currentSection && line.trim()) {
-        // Content before first section
         if (!currentSection) {
           currentSection = "PRELIMINARY ANALYSIS";
           currentContent = [line];
@@ -193,7 +216,6 @@ const BarristerView = ({ user }) => {
       }
     }
     
-    // Add last section
     if (currentSection && currentContent.length > 0) {
       sections.push({
         number: String(sections.length + 1),
@@ -202,7 +224,6 @@ const BarristerView = ({ user }) => {
       });
     }
     
-    // If no sections found, create one with all content
     if (sections.length === 0) {
       sections.push({
         number: "1",
@@ -214,43 +235,83 @@ const BarristerView = ({ user }) => {
     return { sections };
   };
 
+  // Calculate case strength score
+  const calculateStrength = () => {
+    const strongGrounds = grounds.filter(g => g.strength === 'strong').length;
+    const moderateGrounds = grounds.filter(g => g.strength === 'moderate').length;
+    const score = (strongGrounds * 30) + (moderateGrounds * 15) + Math.min(documents.length * 2, 20) + Math.min(timeline.length, 10);
+    return Math.min(score, 100);
+  };
+
+  // Get key timeline events
+  const getKeyEvents = () => {
+    return timeline
+      .filter(e => e.significance === 'critical' || e.significance === 'important')
+      .slice(0, 5);
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-slate-400 mx-auto" />
-          <p className="mt-4 text-slate-600">Loading report...</p>
+          <div className="relative">
+            <Scale className="w-16 h-16 text-amber-500 mx-auto animate-pulse" />
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent animate-pulse" />
+          </div>
+          <p className="mt-6 text-slate-300 text-lg" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Preparing your brief...
+          </p>
         </div>
       </div>
     );
   }
 
   const parsedContent = parseAnalysis(report?.content);
+  const caseStrength = calculateStrength();
+  const keyEvents = getKeyEvents();
+  const strongGrounds = grounds.filter(g => g.strength === 'strong');
+  const moderateGrounds = grounds.filter(g => g.strength === 'moderate');
 
   return (
-    <div className="min-h-screen bg-slate-100 print:bg-white">
-      {/* Header - hidden when printing */}
-      <header className="bg-slate-900 text-white sticky top-0 z-40 no-print">
-        <div className="max-w-4xl mx-auto px-6 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 print:bg-white">
+      {/* Premium Header Bar - hidden when printing */}
+      <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white sticky top-0 z-50 no-print border-b border-amber-500/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Button 
                 variant="ghost" 
                 size="sm" 
-                onClick={() => navigate(`/cases/${caseId}/reports/${reportId}`)}
-                className="text-white hover:bg-slate-800"
+                onClick={() => navigate(`/cases/${caseId}`)}
+                className="text-slate-300 hover:text-white hover:bg-slate-700"
                 data-testid="back-btn"
               >
                 <ArrowLeft className="w-4 h-4 mr-1" />
-                Standard View
+                <span className="hidden sm:inline">Back to Case</span>
               </Button>
+              <div className="hidden sm:block h-6 w-px bg-slate-600" />
+              <div className="hidden sm:flex items-center gap-2">
+                <Scale className="w-5 h-5 text-amber-500" />
+                <span className="font-semibold tracking-tight" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  Barrister Brief
+                </span>
+              </div>
             </div>
             <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={toggleFullscreen}
+                className="text-slate-300 hover:text-white hover:bg-slate-700 hidden md:flex"
+                data-testid="fullscreen-btn"
+              >
+                <Maximize2 className="w-4 h-4" />
+              </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleExportPDF}
-                className="bg-white text-slate-900 hover:bg-slate-100"
+                className="bg-amber-500 hover:bg-amber-600 text-slate-900 border-amber-500"
                 data-testid="export-btn"
               >
                 <Download className="w-4 h-4 mr-1 sm:mr-2" />
@@ -260,7 +321,7 @@ const BarristerView = ({ user }) => {
                 variant="outline"
                 size="sm"
                 onClick={handleExportDOCX}
-                className="border-blue-300 text-blue-100 hover:bg-slate-800 hidden sm:flex"
+                className="border-slate-500 text-slate-300 hover:bg-slate-700 hidden sm:flex"
                 data-testid="export-docx-btn"
               >
                 <FileText className="w-4 h-4 mr-2" />
@@ -270,7 +331,7 @@ const BarristerView = ({ user }) => {
                 variant="outline"
                 size="sm"
                 onClick={handlePrint}
-                className="border-white text-white hover:bg-slate-800 hidden sm:flex"
+                className="border-slate-500 text-slate-300 hover:bg-slate-700 hidden md:flex"
                 data-testid="print-btn"
               >
                 <Printer className="w-4 h-4 mr-2" />
@@ -281,211 +342,529 @@ const BarristerView = ({ user }) => {
         </div>
       </header>
 
-      <main className="py-8 print:py-0">
-        {/* A4 Paper Format */}
-        <div 
-          className="max-w-[210mm] mx-auto bg-white shadow-lg print:shadow-none border border-slate-200 print:border-none"
-          style={{ minHeight: '297mm', padding: '25mm 20mm' }}
-          data-testid="barrister-report"
-        >
-          {/* Title Page Header */}
-          <div className="text-center border-b-2 border-slate-900 pb-8 mb-8">
-            <p className="text-sm uppercase tracking-widest text-slate-500 mb-2">
-              Criminal Appeal Case Analysis
-            </p>
-            <h1 
-              className="text-3xl font-bold text-slate-900 mb-4"
-              style={{ fontFamily: 'Crimson Pro, serif' }}
-            >
-              {caseData?.title}
-            </h1>
-            <div className="text-slate-700 space-y-1">
-              <p><strong>Defendant:</strong> {caseData?.defendant_name}</p>
-              {caseData?.case_number && (
-                <p><strong>Case No:</strong> <span className="font-mono">{caseData.case_number}</span></p>
-              )}
-              {caseData?.court && (
-                <p><strong>Court:</strong> {caseData.court}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Report Metadata */}
-          <div className="mb-8 text-sm text-slate-600 border-l-4 border-amber-500 pl-4">
-            <p><strong>Report Type:</strong> {
-              report?.report_type === 'quick_summary' ? 'Quick Summary' :
-              report?.report_type === 'full_detailed' ? 'Full Detailed Analysis' :
-              'Extensive Log Report'
-            }</p>
-            <p><strong>Generated:</strong> {formatDate(report?.generated_at)}</p>
-            <p><strong>Documents Reviewed:</strong> {report?.content?.document_count || 0}</p>
-            <p><strong>Timeline Events:</strong> {report?.content?.event_count || 0}</p>
-          </div>
-
-          {/* GROUNDS OF MERIT SECTION - Prominent Display */}
-          {grounds.length > 0 && (
-            <div className="mb-10 page-break-inside-avoid">
-              <h2 
-                className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3 border-b-2 border-amber-500 pb-3"
-                style={{ fontFamily: 'Crimson Pro, serif' }}
-              >
-                <Gavel className="w-6 h-6 text-amber-600" />
-                GROUNDS OF MERIT
-              </h2>
+      <main className="py-6 sm:py-8 print:py-0">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          
+          {/* ===== COVER PAGE ===== */}
+          <div 
+            className="bg-white dark:bg-slate-800 shadow-2xl rounded-xl overflow-hidden mb-8 print:shadow-none print:rounded-none"
+            style={{ minHeight: '100vh' }}
+            data-testid="barrister-report"
+          >
+            {/* Cover Header with gradient */}
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 text-white p-8 sm:p-12 relative overflow-hidden">
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-amber-500/5 rounded-full translate-y-1/2 -translate-x-1/2" />
               
-              <div className="space-y-6">
-                {grounds.map((ground, idx) => {
-                  const strengthConfig = STRENGTH_CONFIG[ground.strength] || STRENGTH_CONFIG.moderate;
-                  const StrengthIcon = strengthConfig.icon;
-                  
-                  return (
-                    <div key={ground.ground_id} className="border border-slate-200 rounded-lg p-4 bg-slate-50">
-                      {/* Ground Header */}
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="text-amber-600 font-bold text-lg">{idx + 1}.</span>
-                            <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-                              {GROUND_TYPE_LABELS[ground.ground_type] || ground.ground_type}
-                            </Badge>
-                            <div className="flex items-center gap-1">
-                              <StrengthIcon className={`w-4 h-4 ${strengthConfig.color}`} />
-                              <span className={`text-sm font-medium ${strengthConfig.color}`}>
-                                {strengthConfig.label}
-                              </span>
-                            </div>
-                          </div>
-                          <h3 
-                            className="text-lg font-bold text-slate-900"
-                            style={{ fontFamily: 'Crimson Pro, serif' }}
-                          >
-                            {ground.title}
-                          </h3>
-                        </div>
-                      </div>
-                      
-                      {/* Description */}
-                      <p className="text-slate-700 mb-4" style={{ fontFamily: 'Crimson Pro, serif', lineHeight: '1.7' }}>
-                        {ground.description}
-                      </p>
-                      
-                      {/* Legal References */}
-                      {ground.law_sections && ground.law_sections.length > 0 && (
-                        <div className="mb-4">
-                          <h4 className="text-sm font-bold text-blue-800 flex items-center gap-2 mb-2">
-                            <BookOpen className="w-4 h-4" />
-                            Relevant Law Sections
-                          </h4>
-                          <div className="bg-blue-50 border border-blue-200 rounded p-3">
-                            <ul className="space-y-1">
-                              {ground.law_sections.map((section, sidx) => (
-                                <li key={sidx} className="text-sm text-blue-900 font-mono">
-                                  • s.{section.section} {section.act} ({section.jurisdiction || 'NSW'})
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Similar Cases */}
-                      {ground.similar_cases && ground.similar_cases.length > 0 && (
-                        <div className="mb-4">
-                          <h4 className="text-sm font-bold text-amber-800 flex items-center gap-2 mb-2">
-                            <Scale className="w-4 h-4" />
-                            Similar Cases
-                          </h4>
-                          <div className="bg-amber-50 border border-amber-200 rounded p-3">
-                            <ul className="space-y-1">
-                              {ground.similar_cases.map((caseRef, cidx) => (
-                                <li key={cidx} className="text-sm text-amber-900">
-                                  • <strong>{caseRef.case_name}</strong> {caseRef.citation && `(${caseRef.citation})`}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Supporting Evidence */}
-                      {ground.supporting_evidence && ground.supporting_evidence.length > 0 && (
-                        <div>
-                          <h4 className="text-sm font-bold text-emerald-800 flex items-center gap-2 mb-2">
-                            <FileText className="w-4 h-4" />
-                            Supporting Evidence
-                          </h4>
-                          <div className="bg-emerald-50 border border-emerald-200 rounded p-3">
-                            <ul className="space-y-1">
-                              {ground.supporting_evidence.map((evidence, eidx) => (
-                                <li key={eidx} className="text-sm text-emerald-900">
-                                  • {evidence}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+              <div className="relative z-10">
+                {/* Document Type Badge */}
+                <div className="flex items-center gap-2 mb-6">
+                  <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 px-3 py-1">
+                    <Scale className="w-3 h-3 mr-1" />
+                    CONFIDENTIAL LEGAL BRIEF
+                  </Badge>
+                  <Badge variant="outline" className="border-slate-500 text-slate-300">
+                    {report?.report_type === 'quick_summary' ? 'Summary' :
+                     report?.report_type === 'full_detailed' ? 'Full Analysis' :
+                     'Extensive Log'}
+                  </Badge>
+                </div>
 
-          {/* Analysis Sections */}
-          <div className="space-y-8">
-            {parsedContent.sections.map((section, idx) => (
-              <div key={idx} className="page-break-inside-avoid">
-                <h2 
-                  className="text-xl font-bold text-slate-900 mb-4 flex items-baseline gap-3"
+                {/* Case Title */}
+                <h1 
+                  className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight"
                   style={{ fontFamily: 'Crimson Pro, serif' }}
                 >
-                  <span className="text-amber-600">{section.number}.</span>
-                  {section.title}
-                </h2>
-                <div 
-                  className="text-slate-700 leading-relaxed whitespace-pre-wrap pl-6"
-                  style={{ fontFamily: 'Crimson Pro, serif', fontSize: '11pt', lineHeight: '1.8' }}
-                >
-                  {section.content.replace(/\*\*/g, '')}
+                  {caseData?.title}
+                </h1>
+                
+                {/* Subtitle */}
+                <p className="text-lg sm:text-xl text-slate-300 mb-8" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  Appeal Case Analysis & Legal Brief
+                </p>
+
+                {/* Key Case Info Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+                  <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
+                    <div className="flex items-center gap-2 text-amber-400 mb-1">
+                      <User className="w-4 h-4" />
+                      <span className="text-xs uppercase tracking-wide">Defendant</span>
+                    </div>
+                    <p className="font-semibold text-white">{caseData?.defendant_name}</p>
+                  </div>
+                  
+                  {caseData?.case_number && (
+                    <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
+                      <div className="flex items-center gap-2 text-amber-400 mb-1">
+                        <FileText className="w-4 h-4" />
+                        <span className="text-xs uppercase tracking-wide">Case No.</span>
+                      </div>
+                      <p className="font-mono font-semibold text-white">{caseData.case_number}</p>
+                    </div>
+                  )}
+                  
+                  {caseData?.court && (
+                    <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
+                      <div className="flex items-center gap-2 text-amber-400 mb-1">
+                        <Building2 className="w-4 h-4" />
+                        <span className="text-xs uppercase tracking-wide">Court</span>
+                      </div>
+                      <p className="font-semibold text-white text-sm">{caseData.court}</p>
+                    </div>
+                  )}
+                  
+                  <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
+                    <div className="flex items-center gap-2 text-amber-400 mb-1">
+                      <MapPin className="w-4 h-4" />
+                      <span className="text-xs uppercase tracking-wide">Jurisdiction</span>
+                    </div>
+                    <p className="font-semibold text-white uppercase">{caseData?.state || 'NSW'}</p>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Legal Reference Notes */}
-          <div className="mt-16 pt-8 border-t border-slate-200">
-            <h3 
-              className="text-lg font-semibold text-slate-900 mb-4"
-              style={{ fontFamily: 'Crimson Pro, serif' }}
-            >
-              Legal Reference Framework
-            </h3>
-            <div className="text-sm text-slate-600 space-y-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              <p>This analysis references relevant provisions from:</p>
-              <ul className="list-disc pl-6 space-y-1">
-                <li><strong>Crimes Act 1900 (NSW)</strong> - Primary criminal law for New South Wales</li>
-                <li><strong>Criminal Appeal Act 1912 (NSW)</strong> - Governs criminal appeals in NSW</li>
-                <li><strong>Criminal Code Act 1995 (Cth)</strong> - Federal criminal law</li>
-                <li><strong>Evidence Act 1995 (NSW & Cth)</strong> - Rules on evidence admissibility</li>
-                <li><strong>Sentencing Act 1995 (NSW)</strong> - Sentencing guidelines and procedures</li>
-              </ul>
-              <p className="mt-4 italic">
-                This document is prepared as an analytical aid and should be reviewed by qualified 
-                legal counsel before being relied upon in legal proceedings.
-              </p>
             </div>
-          </div>
 
-          {/* Document Footer */}
-          <div className="mt-12 pt-4 border-t border-slate-100 text-center text-xs text-slate-400">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Scale className="w-4 h-4" />
-              <span style={{ fontFamily: 'Crimson Pro, serif' }}>Criminal Appeal AI</span>
+            {/* ===== EXECUTIVE SUMMARY SECTION ===== */}
+            <div className="p-8 sm:p-12 border-b border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+                  <Target className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                </div>
+                <h2 
+                  className="text-2xl font-bold text-slate-900 dark:text-white"
+                  style={{ fontFamily: 'Crimson Pro, serif' }}
+                >
+                  Executive Summary
+                </h2>
+              </div>
+              
+              <div className="grid md:grid-cols-3 gap-6">
+                {/* Case Strength Indicator */}
+                <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-800/50 rounded-xl p-6 border border-slate-200 dark:border-slate-600">
+                  <div className="text-center">
+                    <div className="relative w-28 h-28 mx-auto mb-4">
+                      <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#e2e8f0" strokeWidth="8" />
+                        <circle 
+                          cx="50" cy="50" r="40" fill="none" 
+                          stroke={caseStrength >= 70 ? '#10b981' : caseStrength >= 40 ? '#f59e0b' : '#ef4444'}
+                          strokeWidth="8"
+                          strokeLinecap="round"
+                          strokeDasharray={`${caseStrength * 2.51} 251`}
+                          className="transition-all duration-1000"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div>
+                          <span className="text-3xl font-bold text-slate-900 dark:text-white">{caseStrength}</span>
+                          <span className="text-sm text-slate-500">/100</span>
+                        </div>
+                      </div>
+                    </div>
+                    <h3 className="font-semibold text-slate-900 dark:text-white">Case Strength</h3>
+                    <Badge className={
+                      caseStrength >= 70 ? 'bg-emerald-100 text-emerald-700' :
+                      caseStrength >= 40 ? 'bg-amber-100 text-amber-700' :
+                      'bg-red-100 text-red-700'
+                    }>
+                      {caseStrength >= 70 ? 'Strong Appeal' : caseStrength >= 40 ? 'Moderate Prospects' : 'Needs Development'}
+                    </Badge>
+                  </div>
+                </div>
+
+                {/* Grounds Overview */}
+                <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Gavel className="w-5 h-5 text-emerald-600" />
+                    <h3 className="font-semibold text-slate-900 dark:text-white">Grounds Identified</h3>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600 dark:text-slate-300">Strong Grounds</span>
+                      <span className="font-bold text-emerald-600 text-lg">{strongGrounds.length}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600 dark:text-slate-300">Moderate Grounds</span>
+                      <span className="font-bold text-amber-600 text-lg">{moderateGrounds.length}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600 dark:text-slate-300">Total Grounds</span>
+                      <span className="font-bold text-slate-900 dark:text-white text-lg">{grounds.length}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick Stats */}
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-xl p-6 border border-amber-200 dark:border-amber-800">
+                  <div className="flex items-center gap-2 mb-4">
+                    <BarChart3 className="w-5 h-5 text-amber-600" />
+                    <h3 className="font-semibold text-slate-900 dark:text-white">Evidence Base</h3>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600 dark:text-slate-300">Documents</span>
+                      <span className="font-bold text-slate-900 dark:text-white text-lg">{documents.length}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600 dark:text-slate-300">Timeline Events</span>
+                      <span className="font-bold text-slate-900 dark:text-white text-lg">{timeline.length}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600 dark:text-slate-300">Key Events</span>
+                      <span className="font-bold text-slate-900 dark:text-white text-lg">{keyEvents.length}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Report Metadata */}
+              <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>Generated: {formatDate(report?.generated_at)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  <span>{report?.content?.document_count || documents.length} documents analyzed</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  <span>{report?.content?.event_count || timeline.length} timeline events</span>
+                </div>
+              </div>
             </div>
-            <p className="font-medium">Prepared for: Deb King, Glenmore Park 2745</p>
-            <p className="italic">One woman's fight for justice — seeking truth for Joshua Homann, failed by the system</p>
-            <p className="mt-2">NSW State & Australian Federal Law Reference</p>
+
+            {/* ===== GROUNDS OF MERIT SECTION ===== */}
+            {grounds.length > 0 && (
+              <div className="p-8 sm:p-12 border-b border-slate-200 dark:border-slate-700 page-break-inside-avoid">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center">
+                    <Gavel className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div>
+                    <h2 
+                      className="text-2xl font-bold text-slate-900 dark:text-white"
+                      style={{ fontFamily: 'Crimson Pro, serif' }}
+                    >
+                      Grounds of Merit
+                    </h2>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      {grounds.length} potential ground{grounds.length !== 1 ? 's' : ''} for appeal identified
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="space-y-6">
+                  {grounds.map((ground, idx) => {
+                    const strengthConfig = STRENGTH_CONFIG[ground.strength] || STRENGTH_CONFIG.moderate;
+                    const StrengthIcon = strengthConfig.icon;
+                    
+                    return (
+                      <div 
+                        key={ground.ground_id} 
+                        className={`rounded-xl border-2 ${strengthConfig.border} ${strengthConfig.bg} dark:bg-opacity-20 overflow-hidden`}
+                      >
+                        {/* Ground Header */}
+                        <div className="p-5 sm:p-6 bg-white/50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                              <div className="flex flex-wrap items-center gap-2 mb-3">
+                                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-amber-500 text-white font-bold text-sm">
+                                  {idx + 1}
+                                </span>
+                                <Badge variant="outline" className="bg-white dark:bg-slate-700">
+                                  {GROUND_TYPE_LABELS[ground.ground_type] || ground.ground_type}
+                                </Badge>
+                                <div className={`flex items-center gap-1 px-2 py-1 rounded-full ${strengthConfig.bg}`}>
+                                  <StrengthIcon className={`w-4 h-4 ${strengthConfig.color}`} />
+                                  <span className={`text-xs font-semibold ${strengthConfig.color}`}>
+                                    {strengthConfig.label}
+                                  </span>
+                                </div>
+                              </div>
+                              <h3 
+                                className="text-xl font-bold text-slate-900 dark:text-white"
+                                style={{ fontFamily: 'Crimson Pro, serif' }}
+                              >
+                                {ground.title}
+                              </h3>
+                            </div>
+                            <div className={`hidden sm:flex items-center justify-center w-12 h-12 rounded-xl ${strengthConfig.bg} ${strengthConfig.border} border`}>
+                              <span className={`text-lg font-bold ${strengthConfig.color}`}>{strengthConfig.score}</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Ground Content */}
+                        <div className="p-5 sm:p-6">
+                          {/* Description */}
+                          <div className="mb-5">
+                            <p 
+                              className="text-slate-700 dark:text-slate-300 leading-relaxed"
+                              style={{ fontFamily: 'Crimson Pro, serif', fontSize: '1.05rem' }}
+                            >
+                              {ground.description}
+                            </p>
+                          </div>
+                          
+                          <div className="grid md:grid-cols-2 gap-5">
+                            {/* Legal References */}
+                            {ground.law_sections && ground.law_sections.length > 0 && (
+                              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                                <h4 className="text-sm font-bold text-blue-800 dark:text-blue-300 flex items-center gap-2 mb-3">
+                                  <BookOpen className="w-4 h-4" />
+                                  Relevant Legislation
+                                </h4>
+                                <ul className="space-y-2">
+                                  {ground.law_sections.map((section, sidx) => (
+                                    <li key={sidx} className="flex items-start gap-2">
+                                      <ChevronRight className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                                      <span className="text-sm text-blue-900 dark:text-blue-200">
+                                        <span className="font-mono font-semibold">s.{section.section}</span>
+                                        {' '}{section.act}
+                                        {section.jurisdiction && (
+                                          <span className="text-blue-600 dark:text-blue-400"> ({section.jurisdiction})</span>
+                                        )}
+                                      </span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            
+                            {/* Similar Cases */}
+                            {ground.similar_cases && ground.similar_cases.length > 0 && (
+                              <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4">
+                                <h4 className="text-sm font-bold text-purple-800 dark:text-purple-300 flex items-center gap-2 mb-3">
+                                  <Scale className="w-4 h-4" />
+                                  Similar Cases
+                                </h4>
+                                <ul className="space-y-2">
+                                  {ground.similar_cases.slice(0, 3).map((caseRef, cidx) => (
+                                    <li key={cidx} className="flex items-start gap-2">
+                                      <Bookmark className="w-4 h-4 text-purple-500 shrink-0 mt-0.5" />
+                                      <span className="text-sm text-purple-900 dark:text-purple-200">
+                                        <span className="font-semibold">{caseRef.case_name}</span>
+                                        {caseRef.citation && (
+                                          <span className="text-purple-600 dark:text-purple-400"> [{caseRef.citation}]</span>
+                                        )}
+                                      </span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                          
+                          {/* Supporting Evidence */}
+                          {ground.supporting_evidence && ground.supporting_evidence.length > 0 && (
+                            <div className="mt-5 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4">
+                              <h4 className="text-sm font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-2 mb-3">
+                                <FileText className="w-4 h-4" />
+                                Supporting Evidence
+                              </h4>
+                              <ul className="grid sm:grid-cols-2 gap-2">
+                                {ground.supporting_evidence.map((evidence, eidx) => (
+                                  <li key={eidx} className="flex items-start gap-2 text-sm text-emerald-900 dark:text-emerald-200">
+                                    <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                                    {evidence}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* ===== KEY TIMELINE EVENTS ===== */}
+            {keyEvents.length > 0 && (
+              <div className="p-8 sm:p-12 border-b border-slate-200 dark:border-slate-700 page-break-inside-avoid">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <h2 
+                    className="text-2xl font-bold text-slate-900 dark:text-white"
+                    style={{ fontFamily: 'Crimson Pro, serif' }}
+                  >
+                    Critical Timeline Events
+                  </h2>
+                </div>
+                
+                <div className="relative">
+                  {/* Timeline line */}
+                  <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-indigo-500 to-purple-500 hidden sm:block" />
+                  
+                  <div className="space-y-4">
+                    {keyEvents.map((event, idx) => (
+                      <div key={event.event_id} className="flex gap-4 sm:gap-6">
+                        <div className="hidden sm:flex flex-col items-center">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center z-10 ${
+                            event.significance === 'critical' 
+                              ? 'bg-red-500 text-white' 
+                              : 'bg-blue-500 text-white'
+                          }`}>
+                            {idx + 1}
+                          </div>
+                        </div>
+                        <div className="flex-1 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 shadow-sm">
+                          <div className="flex flex-wrap items-center gap-2 mb-2">
+                            <Badge variant="outline" className="text-xs">
+                              {formatShortDate(event.event_date)}
+                            </Badge>
+                            {event.significance === 'critical' && (
+                              <Badge className="bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300">
+                                Critical
+                              </Badge>
+                            )}
+                            <Badge variant="outline" className="capitalize">
+                              {event.event_type?.replace(/_/g, ' ')}
+                            </Badge>
+                          </div>
+                          <h4 className="font-semibold text-slate-900 dark:text-white mb-1">
+                            {event.title}
+                          </h4>
+                          <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                            {event.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ===== AI ANALYSIS SECTIONS ===== */}
+            <div className="p-8 sm:p-12">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                </div>
+                <h2 
+                  className="text-2xl font-bold text-slate-900 dark:text-white"
+                  style={{ fontFamily: 'Crimson Pro, serif' }}
+                >
+                  Detailed Analysis
+                </h2>
+              </div>
+
+              <div className="space-y-8">
+                {parsedContent.sections.map((section, idx) => (
+                  <div key={idx} className="page-break-inside-avoid">
+                    <div className="flex items-baseline gap-4 mb-4 pb-3 border-b-2 border-amber-500">
+                      <span className="text-3xl font-bold text-amber-500" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                        {section.number}.
+                      </span>
+                      <h3 
+                        className="text-xl font-bold text-slate-900 dark:text-white uppercase tracking-wide"
+                        style={{ fontFamily: 'Crimson Pro, serif' }}
+                      >
+                        {section.title}
+                      </h3>
+                    </div>
+                    <div 
+                      className="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap pl-4 sm:pl-12 border-l-2 border-slate-200 dark:border-slate-700"
+                      style={{ fontFamily: 'Crimson Pro, serif', fontSize: '1.05rem', lineHeight: '1.85' }}
+                    >
+                      {section.content.replace(/\*\*/g, '')}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ===== LEGAL REFERENCE FRAMEWORK ===== */}
+            <div className="p-8 sm:p-12 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+                  <BookOpen className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                </div>
+                <h2 
+                  className="text-xl font-bold text-slate-900 dark:text-white"
+                  style={{ fontFamily: 'Crimson Pro, serif' }}
+                >
+                  Legal Reference Framework
+                </h2>
+              </div>
+              
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold text-slate-900 dark:text-white mb-3">
+                    Primary Legislation
+                  </h4>
+                  <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                    <li className="flex items-start gap-2">
+                      <Scale className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
+                      <span><strong>Crimes Act 1900 (NSW)</strong> — Primary criminal law</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Scale className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
+                      <span><strong>Criminal Appeal Act 1912 (NSW)</strong> — Appeal procedures</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Scale className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
+                      <span><strong>Evidence Act 1995</strong> — Evidence admissibility</span>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-slate-900 dark:text-white mb-3">
+                    Federal Legislation
+                  </h4>
+                  <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                    <li className="flex items-start gap-2">
+                      <Scale className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
+                      <span><strong>Criminal Code Act 1995 (Cth)</strong> — Federal offences</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Scale className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
+                      <span><strong>Judiciary Act 1903 (Cth)</strong> — Court jurisdiction</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
+                <p className="text-sm text-amber-800 dark:text-amber-200 italic" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  This document is prepared as an analytical aid and should be reviewed by qualified 
+                  legal counsel before being relied upon in legal proceedings. The analysis is based 
+                  on information provided and publicly available legal resources.
+                </p>
+              </div>
+            </div>
+
+            {/* ===== DOCUMENT FOOTER ===== */}
+            <div className="p-8 sm:p-12 bg-gradient-to-br from-slate-900 to-indigo-900 text-white">
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <Scale className="w-6 h-6 text-amber-500" />
+                  <span 
+                    className="text-xl font-semibold"
+                    style={{ fontFamily: 'Crimson Pro, serif' }}
+                  >
+                    Criminal Appeal AI
+                  </span>
+                </div>
+                <p className="text-slate-300 mb-2">
+                  Prepared for: <span className="font-semibold text-white">Deb King, Glenmore Park 2745</span>
+                </p>
+                <p className="text-amber-400 italic text-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  "One woman's fight for justice — seeking truth for Joshua Homann, failed by the system"
+                </p>
+                <div className="mt-4 pt-4 border-t border-slate-700">
+                  <p className="text-xs text-slate-400">
+                    NSW State & Australian Federal Law Reference | Generated {formatDate(report?.generated_at)}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </main>

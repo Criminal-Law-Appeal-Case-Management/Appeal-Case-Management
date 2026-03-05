@@ -170,27 +170,13 @@ const CaseDetail = ({ user }) => {
   useEffect(() => {
     fetchCaseData();
     
-    // Handle payment return from Stripe
+    // Handle payment return (for future PayPal integration)
     const params = new URLSearchParams(window.location.search);
     const paymentStatus = params.get('payment');
-    const sessionId = params.get('session_id');
     
-    if (paymentStatus === 'success' && sessionId) {
-      // Verify payment status
-      axios.get(`${API}/payments/status/${sessionId}`)
-        .then(res => {
-          if (res.data.payment_status === 'paid') {
-            toast.success('Payment successful! Feature unlocked.');
-          } else {
-            toast.info('Payment is being processed...');
-          }
-          // Clean URL
-          window.history.replaceState({}, '', `/cases/${caseId}`);
-        })
-        .catch(() => {
-          toast.info('Checking payment status...');
-          window.history.replaceState({}, '', `/cases/${caseId}`);
-        });
+    if (paymentStatus === 'success') {
+      toast.success('Payment successful! Feature unlocked.');
+      window.history.replaceState({}, '', `/cases/${caseId}`);
     } else if (paymentStatus === 'cancelled') {
       toast.info('Payment was cancelled.');
       window.history.replaceState({}, '', `/cases/${caseId}`);
