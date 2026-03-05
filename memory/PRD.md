@@ -539,15 +539,18 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **Fixed LlmChat constructor error** in contradictions.py - was missing required args
 - [x] **Testing**: iteration_23 (24/24 pass), iteration_24 (all pass), iteration_25 (18/18 pass)
 
-### Session 4 - AI Bug Fixes (Mar 2026) ✅
-- [x] **Fixed All AI Features** — Reports, grounds investigation, and contradictions scanner all working
-  - Restored `get_offence_context` and `get_offence_system_prompt` functions removed during refactoring
-  - Fixed contradictions router: wrong env var name (LLM_KEY → EMERGENT_LLM_KEY), wrong response parsing (response.content → str(response))
-  - Added admin bypass for report payment checks (full_detailed and extensive_log)
-  - Fixed report date display (generated_at vs created_at)
-  - Fixed report content rendering (analysis text vs raw object)
-- [x] **Legal Framework Page Tabs Removed** — All 4 sections scrollable
-- [x] **Testing**: iteration_26 (13/13 pass, 100% backend + frontend)
+### Session 4 - Super Reports & Stripe (Mar 2026) ✅
+- [x] **Super Report Prompts** — All 3 report types massively upgraded:
+  - Quick Summary: Structured with grounds preview, similar cases teaser, upgrade CTA
+  - Full Detailed ($29): 10 sections including similar cases with AustLII links, complete appeal filing guide for all court levels, strategic case presentation advice
+  - Extensive Log ($39): 14 sections, forensic-level analysis, 8-12 similar cases, witness credibility, sentencing comparison, complete appeal strategy
+- [x] **Stripe Payment Integration** — Replaced PayPal with Stripe (supports Apple Pay, Google Pay, cards)
+  - Backend: `/api/payments/checkout`, `/api/payments/status/{id}`, `/api/payments/prices`
+  - Frontend: New PaymentModal with Stripe redirect
+  - Webhook handler for payment confirmation
+- [x] **Barrister View Fixed** — Grounds now display correctly (fixed data binding)
+- [x] **PDF Export Fixed** — iOS-compatible download (opens in new tab on iPhone)
+- [x] **Testing**: iteration_28 (100% backend + frontend)
 
 ### Landing Page Reorganization (Dec 2025) ✅
 - [x] **Section Order Reorganized** - Per user request, Landing Page now follows this structure:
