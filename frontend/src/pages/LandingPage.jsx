@@ -51,27 +51,80 @@ const LandingPage = () => {
             </span>
           </div>
           <div className="hidden md:flex items-center gap-4">
-            <Link to="/appeal-statistics" className="text-slate-400 hover:text-white text-sm transition-colors">
-              Statistics
-            </Link>
-            <Link to="/success-stories" className="text-slate-400 hover:text-white text-sm transition-colors">
-              Success Stories
-            </Link>
-            <Link to="/glossary" className="text-slate-400 hover:text-white text-sm transition-colors">
-              Legal Terms
-            </Link>
-            <Link to="/legal-resources" className="text-slate-400 hover:text-white text-sm transition-colors">
-              Resources
-            </Link>
-            <Link to="/contacts" className="text-slate-400 hover:text-white text-sm transition-colors">
-              Contacts
-            </Link>
-            <Link to="/faq" className="text-slate-400 hover:text-white text-sm transition-colors">
-              FAQ
-            </Link>
-            <Link to="/how-to-use" className="text-amber-400 hover:text-amber-300 text-sm transition-colors font-medium">
-              How To Use
-            </Link>
+            {/* Resources Dropdown */}
+            <div className="relative group">
+              <button className="text-slate-400 hover:text-white text-sm transition-colors flex items-center gap-1">
+                Resources
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              <div className="absolute top-full left-0 mt-2 w-56 bg-slate-800 rounded-lg shadow-xl border border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                <Link to="/legal-resources" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-t-lg">
+                  Legal Resources
+                </Link>
+                <Link to="/contacts" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  Contacts Directory
+                </Link>
+                <Link to="/legal-framework" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  Legal Frameworks
+                </Link>
+                <Link to="/caselaw-search" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  Caselaw Search
+                </Link>
+                <Link to="/lawyers" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  Lawyer Directory
+                </Link>
+                <Link to="/forms" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-b-lg">
+                  Forms & Templates
+                </Link>
+              </div>
+            </div>
+
+            {/* Learn Dropdown */}
+            <div className="relative group">
+              <button className="text-slate-400 hover:text-white text-sm transition-colors flex items-center gap-1">
+                Learn
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              <div className="absolute top-full left-0 mt-2 w-56 bg-slate-800 rounded-lg shadow-xl border border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                <Link to="/how-to-use" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-t-lg">
+                  How To Use
+                </Link>
+                <Link to="/glossary" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  Legal Glossary
+                </Link>
+                <Link to="/faq" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  FAQ
+                </Link>
+                <Link to="/appeal-statistics" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  Appeal Statistics
+                </Link>
+                <Link to="/success-stories" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-b-lg">
+                  Success Stories
+                </Link>
+              </div>
+            </div>
+
+            {/* About Dropdown */}
+            <div className="relative group">
+              <button className="text-slate-400 hover:text-white text-sm transition-colors flex items-center gap-1">
+                About
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              <div className="absolute top-full left-0 mt-2 w-56 bg-slate-800 rounded-lg shadow-xl border border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                <Link to="/about" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-t-lg">
+                  Our Story
+                </Link>
+                <Link to="/contact" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  Contact Us
+                </Link>
+                <Link to="/professional-summary" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  For Legal Professionals
+                </Link>
+                <Link to="/terms" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-b-lg">
+                  Terms & Privacy
+                </Link>
+              </div>
+            </div>
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
@@ -233,6 +286,116 @@ const LandingPage = () => {
                 <div className="absolute -top-4 -right-4 bg-amber-600 text-white px-4 py-2 rounded-xl shadow-lg text-sm font-semibold">
                   AI-Powered
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* APP OVERVIEW - What This Tool Does */}
+      {/* ============================================ */}
+      <section className="py-16 px-6 bg-gradient-to-b from-background to-muted/30">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-indigo-600 dark:text-indigo-400 font-semibold text-xs uppercase tracking-widest mb-3">What This Tool Does</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Your Complete Appeal Research Companion
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              This application helps you organize, analyze, and research criminal appeals across all Australian jurisdictions. 
+              Whether you're representing yourself or working with a lawyer, get the tools you need to understand your case.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {/* Organize */}
+            <div className="bg-card border border-border rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
+              <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Upload className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="font-bold text-foreground text-lg mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Organize Everything
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                Upload all your case documents, create a timeline of events, and keep everything in one secure place. 
+                OCR extracts text from scanned documents automatically.
+              </p>
+            </div>
+
+            {/* Analyze */}
+            <div className="bg-card border border-border rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
+              <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <BarChart3 className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <h3 className="font-bold text-foreground text-lg mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                AI-Powered Analysis
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                Automatically identify potential grounds for appeal based on Australian law. 
+                The AI scans your case for procedural errors, misdirections, and legal issues.
+              </p>
+            </div>
+
+            {/* Generate Reports */}
+            <div className="bg-card border border-border rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
+              <div className="w-14 h-14 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <FileCheck className="w-7 h-7 text-amber-600 dark:text-amber-400" />
+              </div>
+              <h3 className="font-bold text-foreground text-lg mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Generate Reports
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                Create detailed reports with legal citations, case law references, and structured analysis. 
+                Export to PDF or present in Barrister View for legal meetings.
+              </p>
+            </div>
+          </div>
+
+          {/* Key Features Highlight */}
+          <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 rounded-2xl p-8 border border-indigo-200 dark:border-indigo-800">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>Built for Australian Law</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+                    <span>All 8 states & territories + Commonwealth</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+                    <span>Covers all criminal offence types</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+                    <span>Direct links to legislation & case law</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+                    <span>Progress tracker for appeal process</span>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>Free to Get Started</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+                    <span>No credit card required to begin</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+                    <span>Upload unlimited documents for free</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+                    <span>Pay only for detailed AI analysis reports</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+                    <span>A fraction of what lawyers charge</span>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
