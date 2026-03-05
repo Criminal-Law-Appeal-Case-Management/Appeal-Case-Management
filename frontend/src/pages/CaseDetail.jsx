@@ -331,7 +331,7 @@ const CaseDetail = ({ user }) => {
       toast.success("Timeline analysis complete!");
     } catch (error) {
       console.error("Timeline analysis error:", error);
-      toast.error("Failed to analyze timeline. Please try again.");
+      toast.error("Failed to analyse timeline. Please try again.");
     } finally {
       setAnalyzingTimeline(false);
     }
@@ -756,7 +756,7 @@ const CaseDetail = ({ user }) => {
                   No grounds of merit identified
                 </h3>
                 <p className="text-muted-foreground mb-4 max-w-md mx-auto">
-                  Use AI to automatically analyze your case materials and identify potential grounds for appeal, 
+                  Use AI to automatically analyse your case materials and identify potential grounds for appeal, 
                   or add grounds manually.
                 </p>
                 <div className="flex gap-3 justify-center">

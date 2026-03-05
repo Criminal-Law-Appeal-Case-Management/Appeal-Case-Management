@@ -517,7 +517,7 @@ const CompareCasesPage = ({ user }) => {
                         <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                       </div>
                       <p className="text-2xl font-bold text-foreground">{patterns.total_cases_analyzed}</p>
-                      <p className="text-sm text-muted-foreground">Cases Analyzed</p>
+                      <p className="text-sm text-muted-foreground">Cases Analysed</p>
                     </CardContent>
                   </Card>
                   <Card className="bg-card border-border">

@@ -75,7 +75,7 @@ const faqs = [
       },
       {
         q: "How does the AI identify grounds for appeal?",
-        a: "The AI analyzes your uploaded documents looking for patterns that commonly indicate appealable errors: inconsistencies in evidence, procedural irregularities, potential misdirections by the judge, and gaps in the prosecution's case. It cross-references against Australian criminal law."
+        a: "The AI analyses your uploaded documents looking for patterns that commonly indicate appealable errors: inconsistencies in evidence, procedural irregularities, potential misdirections by the judge, and gaps in the prosecution's case. It cross-references against Australian criminal law."
       },
       {
         q: "Are the AI-generated reports legally accurate?",
@@ -91,7 +91,7 @@ const faqs = [
       },
       {
         q: "How does the OCR (text extraction) work?",
-        a: "OCR (Optical Character Recognition) automatically converts scanned documents and images into searchable text. This allows the AI to analyze documents that are photos or scans of paper documents."
+        a: "OCR (Optical Character Recognition) automatically converts scanned documents and images into searchable text. This allows the AI to analyse documents that are photos or scans of paper documents."
       }
     ]
   },

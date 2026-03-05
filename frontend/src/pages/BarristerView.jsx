@@ -526,7 +526,7 @@ const BarristerView = ({ user }) => {
                 </div>
                 <div className="flex items-center gap-2">
                   <FileText className="w-4 h-4" />
-                  <span>{report?.content?.document_count || documents.length} documents analyzed</span>
+                  <span>{report?.content?.document_count || documents.length} documents analysed</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />

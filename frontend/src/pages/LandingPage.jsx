@@ -196,9 +196,9 @@ const LandingPage = () => {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1589578527966-fdac0f44566c?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920" 
-            alt="Lady Justice"
-            className="w-full h-full object-cover opacity-10 dark:opacity-5"
+            src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/3f6a0144e6ddce5a8eb6a1e25b25974fca11bfd9515dbad29662cab81313d84b.png" 
+            alt="Australian Courtroom"
+            className="w-full h-full object-cover opacity-20 dark:opacity-10"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
         </div>
@@ -269,8 +269,8 @@ const LandingPage = () => {
             <div className="hidden lg:block relative">
               <div className="relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1772096168169-1b69984d2cfc?crop=entropy&cs=srgb&fm=jpg&q=85&w=600" 
-                  alt="Lady Justice with Gavel"
+                  src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/6fe186d3d7a5b01e3d3c6076c0a6aefc22c07aea5667124e0978d927d9c58335.png" 
+                  alt="Gavel and Law Books"
                   className="rounded-3xl shadow-2xl w-full object-cover h-[450px] border-4 border-white/20"
                 />
                 {/* Floating Card */}
@@ -306,7 +306,7 @@ const LandingPage = () => {
               Your Complete Appeal Research Companion
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              This application helps you organize, analyze, and research criminal appeals across all Australian jurisdictions. 
+              This application helps you organise, analyse, and research criminal appeals across all Australian jurisdictions. 
               Whether you're representing yourself or working with a lawyer, get the tools you need to understand your case.
             </p>
           </div>
@@ -318,7 +318,7 @@ const LandingPage = () => {
                 <Upload className="w-7 h-7 text-blue-600 dark:text-blue-400" />
               </div>
               <h3 className="font-bold text-foreground text-lg mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                Organize Everything
+                Organise Everything
               </h3>
               <p className="text-muted-foreground text-sm">
                 Upload all your case documents, create a timeline of events, and keep everything in one secure place. 
@@ -326,7 +326,7 @@ const LandingPage = () => {
               </p>
             </div>
 
-            {/* Analyze */}
+            {/* Analyse */}
             <div className="bg-card border border-border rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
               <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <BarChart3 className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
@@ -408,8 +408,17 @@ const LandingPage = () => {
       {/* ============================================ */}
       {/* COMPLETE APP CAPABILITIES - At A Glance */}
       {/* ============================================ */}
-      <section className="py-16 px-6 bg-slate-900 dark:bg-slate-950">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-16 px-6 bg-slate-900 dark:bg-slate-950 relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/e20c677eb0c9cdb1ef84e9e79a9f3bbd37795a24bfbe29e4d8cfe78da35bf516.png" 
+            alt="Handcuffs and Justice"
+            className="w-full h-full object-cover opacity-10"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/95 via-slate-900/90 to-slate-900" />
+        </div>
+        <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-12">
             <p className="text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Everything At Your Fingertips</p>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -452,10 +461,10 @@ const LandingPage = () => {
                 <h3 className="font-bold text-white text-lg">Case Management</h3>
               </div>
               <p className="text-slate-400 text-sm mb-3">
-                Create unlimited cases, upload documents with OCR, track deadlines with visual calendar, and organize everything in one secure place.
+                Create unlimited cases, upload documents with OCR, track deadlines with calendar view, and organise everything in one secure place.
               </p>
               <div className="text-amber-500 text-xs font-medium">
-                ✓ Unlimited document upload • Calendar view • Progress tracking
+                ✓ Unlimited document upload • Deadline tracker • Progress checklist
               </div>
             </div>
 
@@ -580,7 +589,7 @@ const LandingPage = () => {
                 <h3 className="font-bold text-white text-lg">Lawyer Directory</h3>
               </div>
               <p className="text-slate-400 text-sm mb-3">
-                Find criminal appeal specialists, barristers, and solicitors organized by state with expertise areas, success rates, and contact info.
+                Find criminal appeal specialists, barristers, and solicitors organised by state with expertise areas, success rates, and contact info.
               </p>
               <div className="text-cyan-500 text-xs font-medium">
                 ✓ Verified specialists • State-specific • Pro bono options
@@ -1345,8 +1354,17 @@ const LandingPage = () => {
       </section>
 
       {/* About Link Section */}
-      <section className="py-12 px-6 bg-slate-900 dark:bg-slate-950">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="py-12 px-6 bg-slate-900 dark:bg-slate-950 relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/8b44435fd117a9b64ee15135358c94668930cdd6015f5bad0cab217fd77610b5.png" 
+            alt="Prison bars with light"
+            className="w-full h-full object-cover opacity-20"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-900" />
+        </div>
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <p className="text-amber-500 text-xs uppercase tracking-widest mb-4">About</p>
           <h3 className="text-xl font-bold text-white mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Criminal Law Appeal Case Management

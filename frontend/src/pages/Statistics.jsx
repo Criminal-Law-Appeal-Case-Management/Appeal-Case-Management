@@ -398,7 +398,7 @@ const Statistics = () => {
       <section className="bg-slate-900 dark:bg-slate-950 px-6 py-12 border-t border-slate-800">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
-            Ready to Analyze Your Case?
+            Ready to Analyse Your Case?
           </h2>
           <p className="text-slate-400 mb-8">
             Let our AI help identify potential grounds for appeal in your case.

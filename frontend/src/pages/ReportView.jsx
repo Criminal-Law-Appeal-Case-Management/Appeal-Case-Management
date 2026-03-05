@@ -290,7 +290,7 @@ const ReportView = ({ user }) => {
                 </div>
               )}
               <div>
-                <span className="text-slate-500">Documents Analyzed:</span>
+                <span className="text-slate-500">Documents Analysed:</span>
                 <p className="font-medium text-slate-900">{report?.content?.document_count || 0}</p>
               </div>
               <div>

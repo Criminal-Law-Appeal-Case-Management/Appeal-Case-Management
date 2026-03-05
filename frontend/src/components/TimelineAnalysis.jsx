@@ -150,7 +150,7 @@ const TimelineAnalysis = ({ analysis, onClose }) => {
               
               {prosecution_events.length > defence_events.length && (
                 <p className="text-xs text-slate-500 bg-slate-50 p-2 rounded">
-                  Timeline currently favors prosecution. Consider gathering more defence-supportive evidence.
+                  Timeline currently favours prosecution. Consider gathering more defence-supportive evidence.
                 </p>
               )}
             </div>

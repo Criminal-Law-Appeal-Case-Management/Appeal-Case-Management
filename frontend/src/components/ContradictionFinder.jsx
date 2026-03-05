@@ -83,7 +83,7 @@ const ContradictionFinder = ({ caseId, documents }) => {
       if (found > 0) {
         toast.success(`Found ${found} potential contradiction${found === 1 ? '' : 's'}`);
       } else {
-        toast.info("No contradictions found in the analyzed documents");
+        toast.info("No contradictions found in the analysed documents");
       }
     } catch (error) {
       toast.error(error.response?.data?.detail || "Failed to scan for contradictions");
@@ -377,7 +377,7 @@ const ContradictionFinder = ({ caseId, documents }) => {
                   No Contradictions Found
                 </h3>
                 <p className="text-sm text-emerald-700 dark:text-emerald-300">
-                  The analyzed documents appear to be internally consistent.
+                  The analysed documents appear to be internally consistent.
                 </p>
               </CardContent>
             </Card>

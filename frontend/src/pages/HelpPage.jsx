@@ -634,7 +634,7 @@ const HelpPage = ({ user }) => {
                   Welcome to Criminal Appeal AI
                 </h2>
                 <p className="text-slate-300 mb-4">
-                  This guide will walk you through using all features of the app to build and analyze your criminal appeal case.
+                  This guide will walk you through using all features of the app to build and analyse your criminal appeal case.
                 </p>
                 <div className="flex items-center gap-2 text-amber-400">
                   <CheckCircle className="w-5 h-5" />
