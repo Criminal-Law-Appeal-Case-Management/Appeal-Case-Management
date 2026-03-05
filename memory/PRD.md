@@ -530,9 +530,28 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - `deadlines.py` - Deadline tracking
   - `resources.py` - Legal resources
 
+### Landing Page Reorganization (Dec 2025) ✅
+- [x] **Section Order Reorganized** - Per user request, Landing Page now follows this structure:
+  1. Hero Section (top)
+  2. See It In Action (with Features merged - no separate Features section)
+  3. Relevant Legislation (Criminal Law by State + Human Rights merged)
+  4. Live Caselaw Search
+  5. Pricing
+  6. "You Have Options" (Legal Help - moved to bottom)
+- [x] **About Page Created** - `/about` route with standalone page for creator's story
+  - Contains: Deb's story, Josh & Brad's stories, mission statement
+  - Moved from Landing Page's About section
+- [x] **Footer Updated** - Added "About" link to footer navigation
+- [x] **"Read My Full Story" Button** - Links to /about from Landing Page
+- [x] **Testing**: All sections verified in correct order (`/app/test_reports/iteration_22.json`)
+  - Hero (Y=289px) → See It In Action (Y=978px) → Legislation (Y=6032px) → Caselaw (Y=7222px) → Pricing (Y=7925px) → You Have Options (Y=8776px)
+
 ## Backlog
 - [ ] Build and submit native mobile app (Capacitor ready)
 - [ ] Enhanced collaboration features (replies, threads, @mentions in notes)
+- [ ] Backend refactoring - continue modularizing server.py
+- [ ] Deadline Tracker with Calendar integration
+- [ ] Email functionality (requires Resend API key from user)
 
 
 
