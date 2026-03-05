@@ -2028,6 +2028,10 @@ async def create_payment_order(case_id: str, request: Request):
     user = await get_current_user(request)
     body = await request.json()
     feature_type = body.get("feature_type")
+    frontend_url = body.get("frontend_url", "")
+    
+    if not frontend_url:
+        raise HTTPException(status_code=400, detail="Frontend URL is required")
     
     if feature_type not in FEATURE_PRICES:
         raise HTTPException(status_code=400, detail="Invalid feature type")
@@ -2049,8 +2053,8 @@ async def create_payment_order(case_id: str, request: Request):
         "intent": "sale",
         "payer": {"payment_method": "paypal"},
         "redirect_urls": {
-            "return_url": f"{os.environ.get('FRONTEND_URL', 'http://localhost:3000')}/payment/success",
-            "cancel_url": f"{os.environ.get('FRONTEND_URL', 'http://localhost:3000')}/payment/cancel"
+            "return_url": f"{frontend_url}/payment/success",
+            "cancel_url": f"{frontend_url}/payment/cancel"
         },
         "transactions": [{
             "item_list": {

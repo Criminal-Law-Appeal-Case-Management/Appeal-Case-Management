@@ -67,7 +67,8 @@ export default function PaymentModal({
     setLoading(true);
     try {
       const response = await axios.post(`${API}/cases/${caseId}/payments/create-order`, {
-        feature_type: featureType
+        feature_type: featureType,
+        frontend_url: window.location.origin
       });
       
       if (response.data.approval_url) {
