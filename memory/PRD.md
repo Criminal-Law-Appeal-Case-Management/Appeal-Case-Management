@@ -539,12 +539,15 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **Fixed LlmChat constructor error** in contradictions.py - was missing required args
 - [x] **Testing**: iteration_23 (24/24 pass), iteration_24 (all pass), iteration_25 (18/18 pass)
 
-### Session 4 - Continued (Mar 2026) ✅
-- [x] **Legal Framework Page Tabs Removed** — All 4 sections (Criminal Law, Evidence Acts, Appeal Legislation, Human Rights) now shown on one scrollable page
-- [x] **Mobile Responsiveness Fixed** — Case detail page: header cleaned up, tabs are horizontally scrollable with compact text
-- [x] **Caselaw Search Added to Mobile Menu** — Now easily accessible from hamburger menu
-- [x] **Backend Refactoring Phase 1** — Removed 600 duplicate route lines from server.py (4381→3783 lines). Auth/admin/utility routes now exclusively in routers/
-- [x] **User Counter Active** — Analytics dashboard at /admin/dashboard shows 82 users, 761 visits, 58 cases, 113 documents
+### Session 4 - AI Bug Fixes (Mar 2026) ✅
+- [x] **Fixed All AI Features** — Reports, grounds investigation, and contradictions scanner all working
+  - Restored `get_offence_context` and `get_offence_system_prompt` functions removed during refactoring
+  - Fixed contradictions router: wrong env var name (LLM_KEY → EMERGENT_LLM_KEY), wrong response parsing (response.content → str(response))
+  - Added admin bypass for report payment checks (full_detailed and extensive_log)
+  - Fixed report date display (generated_at vs created_at)
+  - Fixed report content rendering (analysis text vs raw object)
+- [x] **Legal Framework Page Tabs Removed** — All 4 sections scrollable
+- [x] **Testing**: iteration_26 (13/13 pass, 100% backend + frontend)
 
 ### Landing Page Reorganization (Dec 2025) ✅
 - [x] **Section Order Reorganized** - Per user request, Landing Page now follows this structure:
