@@ -25,6 +25,7 @@ import {
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
 import { API } from "../App";
+import DisclaimerReminder from "../components/DisclaimerReminder";
 
 const Dashboard = ({ user }) => {
   const navigate = useNavigate();
@@ -111,8 +112,11 @@ const Dashboard = ({ user }) => {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      {/* Disclaimer Reminder */}
+      <DisclaimerReminder />
+      
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-slate-200 p-6 hidden lg:block">
+      <aside className="fixed left-0 top-8 bottom-0 w-64 bg-white border-r border-slate-200 p-6 hidden lg:block">
         <div className="flex items-center gap-3 mb-10">
           <Scale className="w-8 h-8 text-slate-900" />
           <span className="text-xl font-bold tracking-tight" style={{ fontFamily: 'Crimson Pro, serif' }}>
