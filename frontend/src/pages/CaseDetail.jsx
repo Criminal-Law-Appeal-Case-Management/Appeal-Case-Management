@@ -2081,7 +2081,7 @@ const CaseDetail = ({ user }) => {
               <div className="text-sm text-amber-800">
                 <p className="font-medium">AI-Powered Analysis</p>
                 <p className="mt-1">Reports are generated using AI analysis of your uploaded documents and timeline. 
-                They reference NSW State and Australian Federal criminal law related to murder appeals.</p>
+                They reference Australian State and Federal criminal law relevant to your selected offence type.</p>
               </div>
             </div>
 

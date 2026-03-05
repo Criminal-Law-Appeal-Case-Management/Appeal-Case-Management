@@ -730,6 +730,139 @@ async def get_offence_category_details(category: str, state: str = "nsw"):
 
 # ============ AUTH ENDPOINTS ============
 
+import hashlib
+import secrets
+
+def hash_password(password: str, salt: str = None) -> tuple:
+    """Hash password with salt"""
+    if salt is None:
+        salt = secrets.token_hex(16)
+    hashed = hashlib.pbkdf2_hmac('sha256', password.encode(), salt.encode(), 100000)
+    return hashed.hex(), salt
+
+def verify_password(password: str, hashed: str, salt: str) -> bool:
+    """Verify password against hash"""
+    new_hash, _ = hash_password(password, salt)
+    return new_hash == hashed
+
+class RegisterRequest(BaseModel):
+    email: str
+    password: str
+    name: str
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+@api_router.post("/auth/register")
+async def register_user(request: RegisterRequest, response: Response):
+    """Register a new user with email/password"""
+    # Validate email format
+    if not request.email or '@' not in request.email:
+        raise HTTPException(status_code=400, detail="Invalid email format")
+    
+    # Check password strength
+    if len(request.password) < 6:
+        raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
+    
+    # Check if user exists
+    existing_user = await db.users.find_one({"email": request.email.lower()}, {"_id": 0})
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered. Please login instead.")
+    
+    # Hash password
+    hashed_password, salt = hash_password(request.password)
+    
+    # Create user
+    user_id = f"user_{uuid.uuid4().hex[:12]}"
+    user_doc = {
+        "user_id": user_id,
+        "email": request.email.lower(),
+        "name": request.name,
+        "password_hash": hashed_password,
+        "password_salt": salt,
+        "auth_type": "email",
+        "picture": None,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.users.insert_one(user_doc)
+    
+    # Create session
+    session_token = f"sess_{uuid.uuid4().hex}"
+    expires_at = datetime.now(timezone.utc) + timedelta(days=7)
+    
+    await db.user_sessions.insert_one({
+        "user_id": user_id,
+        "session_token": session_token,
+        "expires_at": expires_at.isoformat(),
+        "created_at": datetime.now(timezone.utc).isoformat()
+    })
+    
+    # Set cookie
+    response.set_cookie(
+        key="session_token",
+        value=session_token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+        path="/",
+        max_age=7 * 24 * 60 * 60
+    )
+    
+    return {
+        "user_id": user_id,
+        "email": request.email.lower(),
+        "name": request.name,
+        "picture": None
+    }
+
+@api_router.post("/auth/login")
+async def login_user(request: LoginRequest, response: Response):
+    """Login with email/password"""
+    # Find user
+    user_doc = await db.users.find_one({"email": request.email.lower()}, {"_id": 0})
+    
+    if not user_doc:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    # Check if user has password (email auth)
+    if not user_doc.get("password_hash"):
+        raise HTTPException(status_code=401, detail="This account uses Google login. Please sign in with Google.")
+    
+    # Verify password
+    if not verify_password(request.password, user_doc["password_hash"], user_doc["password_salt"]):
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    # Create session
+    session_token = f"sess_{uuid.uuid4().hex}"
+    expires_at = datetime.now(timezone.utc) + timedelta(days=7)
+    
+    await db.user_sessions.insert_one({
+        "user_id": user_doc["user_id"],
+        "session_token": session_token,
+        "expires_at": expires_at.isoformat(),
+        "created_at": datetime.now(timezone.utc).isoformat()
+    })
+    
+    # Set cookie
+    response.set_cookie(
+        key="session_token",
+        value=session_token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+        path="/",
+        max_age=7 * 24 * 60 * 60
+    )
+    
+    return {
+        "user_id": user_doc["user_id"],
+        "email": user_doc["email"],
+        "name": user_doc["name"],
+        "picture": user_doc.get("picture")
+    }
+
 @api_router.post("/auth/session")
 async def create_session(request: Request, response: Response):
     """Exchange session_id for session_token"""

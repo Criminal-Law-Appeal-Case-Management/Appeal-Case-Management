@@ -273,8 +273,8 @@ const HelpPage = ({ user }) => {
       content: (
         <div className="space-y-4 text-slate-700">
           <p>
-            <strong>Criminal Appeal AI</strong> is a tool designed to help analyse criminal appeal cases, 
-            particularly murder and serious criminal matters under NSW and Australian Federal law.
+            <strong>Criminal Appeal Case Manager</strong> is a tool designed to help analyse criminal appeal cases 
+            across <strong>all criminal offences</strong> under Australian State and Federal law.
           </p>
           <div className="bg-slate-50 p-4 rounded-lg">
             <p className="font-medium mb-2">The app helps you:</p>

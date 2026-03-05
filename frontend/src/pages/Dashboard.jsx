@@ -235,9 +235,9 @@ const Dashboard = ({ user }) => {
         {/* Purpose Statement */}
         <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4">
           <p className="text-slate-700 text-sm leading-relaxed">
-            Designed specifically for analysing appeal issues in murder and manslaughter convictions, 
+            Designed for analysing appeal issues across <strong>all criminal offences</strong> in Australian courts, 
             including questions relating to <strong>mens rea</strong>, <strong>procedural error</strong>, 
-            and <strong>fresh evidence</strong>.
+            <strong>fresh evidence</strong>, and <strong>sentencing</strong>.
           </p>
         </div>
 

@@ -1,12 +1,15 @@
 import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin } from "lucide-react";
 import { Button } from "../components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API } from "../App";
+import AuthModal from "../components/AuthModal";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   const [showLegalFramework, setShowLegalFramework] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   // Track visit on page load
   useEffect(() => {
@@ -20,13 +23,19 @@ const LandingPage = () => {
     trackVisit();
   }, []);
 
-  const handleLogin = () => {
-    const redirectUrl = window.location.origin + "/dashboard";
-    window.location.href = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(redirectUrl)}`;
+  const handleAuthSuccess = (userData) => {
+    navigate("/dashboard", { state: { user: userData }, replace: true });
   };
 
   return (
     <div className="min-h-screen bg-white" style={{ fontFamily: 'Manrope, sans-serif' }}>
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)} 
+        onSuccess={handleAuthSuccess}
+      />
+      
       {/* Header */}
       <header className="bg-slate-900">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -50,7 +59,7 @@ const LandingPage = () => {
               Terms
             </Link>
             <Button 
-              onClick={handleLogin}
+              onClick={() => setShowAuthModal(true)}
               data-testid="login-btn"
               className="bg-amber-600 text-white hover:bg-amber-700 rounded px-4 py-2 text-sm font-medium"
             >
@@ -111,7 +120,7 @@ const LandingPage = () => {
           </div>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button
-              onClick={handleLogin}
+              onClick={() => setShowAuthModal(true)}
               data-testid="hero-login-btn"
               className="bg-slate-900 text-white hover:bg-slate-800 rounded px-8 py-3 text-base font-medium inline-flex items-center justify-center gap-2"
             >
@@ -1338,7 +1347,7 @@ const LandingPage = () => {
                 </li>
               </ul>
               <Button
-                onClick={handleLogin}
+                onClick={() => setShowAuthModal(true)}
                 variant="outline"
                 className="w-full border-slate-300 text-slate-700 hover:bg-slate-100"
               >
@@ -1417,11 +1426,11 @@ const LandingPage = () => {
             Sign in to organise your case and identify potential appeal issues.
           </p>
           <Button
-            onClick={handleLogin}
+            onClick={() => setShowAuthModal(true)}
             data-testid="cta-login-btn"
             className="bg-amber-600 text-white hover:bg-amber-700 rounded px-8 py-3 font-medium"
           >
-            Sign In with Google
+            Sign In
           </Button>
         </div>
       </section>

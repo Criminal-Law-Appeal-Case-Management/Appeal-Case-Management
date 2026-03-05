@@ -104,6 +104,142 @@ const glossaryTerms = [
     term: "Sentencing Remarks",
     simple: "The judge's explanation of why they gave you that sentence",
     detailed: "The reasons the judge provides for the sentence imposed. These are important for appeals as they show what the judge considered and may reveal errors in reasoning."
+  },
+  // Additional terms for all crime types
+  {
+    term: "Assault",
+    simple: "Intentionally or recklessly causing someone to fear immediate violence",
+    detailed: "Under s.61 Crimes Act 1900 (NSW), assault is any act that intentionally or recklessly causes another person to apprehend immediate and unlawful violence. Physical contact is not required - the threat itself is sufficient."
+  },
+  {
+    term: "Grievous Bodily Harm (GBH)",
+    simple: "Really serious injury - permanent or life-threatening",
+    detailed: "Includes any permanent or serious disfiguring of the person, destruction of a foetus, or any grievous bodily disease. Under s.33 Crimes Act 1900 (NSW), causing GBH with intent carries a maximum 25 years imprisonment."
+  },
+  {
+    term: "Actual Bodily Harm (ABH)",
+    simple: "An injury that interferes with health or comfort",
+    detailed: "Any hurt or injury that interferes with health or comfort, more than merely transient or trifling. Bruises, scratches, and psychological harm can constitute ABH."
+  },
+  {
+    term: "Sexual Assault",
+    simple: "Sexual intercourse without consent",
+    detailed: "Under s.61I Crimes Act 1900 (NSW), sexual assault occurs when a person has sexual intercourse with another without their consent, knowing they don't consent. Consent must be freely and voluntarily given."
+  },
+  {
+    term: "Consent",
+    simple: "Freely agreeing to something",
+    detailed: "A person consents if they freely and voluntarily agree. Consent obtained by force, threat, intimidation, or while intoxicated is not valid consent. The person must have capacity to consent."
+  },
+  {
+    term: "Robbery",
+    simple: "Stealing using force or fear",
+    detailed: "Theft accompanied by violence or threat of violence. Under s.94 Crimes Act 1900 (NSW), robbery with wounding or armed robbery carry severe penalties up to 25 years imprisonment."
+  },
+  {
+    term: "Larceny (Theft)",
+    simple: "Taking someone's property without permission, intending to keep it",
+    detailed: "The unlawful taking and carrying away of property belonging to another with intent to permanently deprive them of it. Under s.117 Crimes Act 1900 (NSW), maximum penalty is 5 years imprisonment."
+  },
+  {
+    term: "Break and Enter",
+    simple: "Breaking into a building to commit a crime",
+    detailed: "Entering a dwelling-house or building with intent to commit a serious indictable offence. Under s.112 Crimes Act 1900 (NSW), aggravated break and enter carries up to 20 years imprisonment."
+  },
+  {
+    term: "Drug Supply",
+    simple: "Giving, selling, or distributing drugs",
+    detailed: "Under the Drug Misuse and Trafficking Act 1985 (NSW), supply includes selling, giving, distributing, or agreeing to supply. Penalties depend on the type and quantity of drug, ranging from years to life imprisonment for commercial quantities."
+  },
+  {
+    term: "Trafficable Quantity",
+    simple: "Enough drugs to suggest you're selling, not just using",
+    detailed: "The amount of drugs above which it's presumed you possessed them for supply. Varies by drug type - e.g., 3g for cocaine, 300g for cannabis. Possession of trafficable quantity shifts the burden to prove personal use."
+  },
+  {
+    term: "Fraud",
+    simple: "Deceiving someone to get money or property",
+    detailed: "Under s.192E Crimes Act 1900 (NSW), fraud involves dishonestly obtaining property or financial advantage by deception. Maximum penalty is 10 years imprisonment."
+  },
+  {
+    term: "Apprehended Violence Order (AVO)",
+    simple: "A court order to protect someone from violence or harassment",
+    detailed: "An order made by a court prohibiting certain behaviour and contact. Breach of an AVO is a criminal offence under s.14 Crimes (Domestic and Personal Violence) Act 2007 (NSW), carrying up to 2 years imprisonment."
+  },
+  {
+    term: "Domestic Violence",
+    simple: "Violence or abuse against a family member or partner",
+    detailed: "Includes physical, sexual, emotional, psychological, and economic abuse within a domestic relationship. Domestic violence offences often carry aggravated penalties."
+  },
+  {
+    term: "Coercive Control",
+    simple: "A pattern of behaviour used to dominate and control someone",
+    detailed: "Behaviour that is abusive and seeks to control a partner through intimidation, isolation, and restrictions. Now a criminal offence in NSW, carrying up to 7 years imprisonment."
+  },
+  {
+    term: "Dangerous Driving",
+    simple: "Driving in a way that puts others at risk",
+    detailed: "Under s.52A Crimes Act 1900 (NSW), dangerous driving causing death carries up to 10 years imprisonment, or 14 years if aggravated (drunk, speeding, evading police)."
+  },
+  {
+    term: "Double Jeopardy",
+    simple: "You can't be tried twice for the same crime",
+    detailed: "A fundamental legal principle that protects against being prosecuted multiple times for the same offence. However, there are limited exceptions for fresh and compelling evidence in serious cases."
+  },
+  {
+    term: "Bail",
+    simple: "Being released from custody while waiting for your trial",
+    detailed: "Under the Bail Act 2013 (NSW), bail allows release from custody with conditions. Courts consider flight risk, danger to community, and offence seriousness. Some offences have 'show cause' requirements."
+  },
+  {
+    term: "Remand",
+    simple: "Being held in custody while waiting for trial",
+    detailed: "When bail is refused, you're held on remand until your trial. Time on remand is usually counted as time served if convicted."
+  },
+  {
+    term: "Indictment",
+    simple: "The formal document setting out the charges against you",
+    detailed: "A written accusation charging a person with a serious criminal offence. For serious crimes tried in higher courts, the indictment lists the specific charges and particulars."
+  },
+  {
+    term: "Committal Hearing",
+    simple: "A hearing to decide if there's enough evidence for trial",
+    detailed: "A preliminary hearing in the Local Court to determine if there's sufficient evidence for a person to stand trial in a higher court. The magistrate decides if a reasonable jury could convict."
+  },
+  {
+    term: "Voir Dire",
+    simple: "A 'trial within a trial' to decide if evidence is allowed",
+    detailed: "A hearing held in the absence of the jury to determine whether certain evidence should be admitted. Common for confessions, identification evidence, and disputed evidence."
+  },
+  {
+    term: "Exclusionary Rule",
+    simple: "Keeping out evidence that was obtained unfairly",
+    detailed: "Under s.138 Evidence Act 1995 (NSW), evidence obtained improperly or illegally may be excluded if its admission would be unfair or bring the administration of justice into disrepute."
+  },
+  {
+    term: "Standard Non-Parole Period (SNPP)",
+    simple: "The 'starting point' sentence for serious crimes",
+    detailed: "A reference point set by parliament for sentencing certain serious offences. Judges must consider the SNPP but can depart from it based on aggravating or mitigating factors."
+  },
+  {
+    term: "Mitigating Factors",
+    simple: "Things that might reduce your sentence",
+    detailed: "Circumstances that reduce the seriousness of the offence or the offender's culpability. Includes early guilty plea, remorse, good character, mental health issues, and assistance to authorities."
+  },
+  {
+    term: "Aggravating Factors",
+    simple: "Things that might increase your sentence",
+    detailed: "Circumstances that increase the seriousness of the offence. Includes previous convictions, vulnerability of victim, use of weapons, breach of trust, and offences committed while on bail."
+  },
+  {
+    term: "Intensive Correction Order (ICO)",
+    simple: "A sentence served in the community instead of prison",
+    detailed: "An alternative to full-time imprisonment where the offender serves their sentence in the community under strict supervision. May include home detention, electronic monitoring, and community service."
+  },
+  {
+    term: "Special Leave",
+    simple: "Permission to appeal to the High Court",
+    detailed: "To appeal to the High Court of Australia, you must first obtain special leave. The High Court grants leave only for cases involving important questions of law or possible miscarriage of justice."
   }
 ];
 
