@@ -625,6 +625,21 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - "View Your Case" button linking directly to case
   - Footer with contact info and tagline
 
+### Session 9 - Visitor Counter (Mar 2026) ✅
+- [x] **Public Visitor Counter** — Real-time statistics displayed on landing page:
+  - Total Visitors (unique)
+  - Today's Visitors
+  - Registered Users
+  - Cases Created
+- [x] **Backend Analytics Endpoints**:
+  - `POST /api/analytics/track-visit` — Tracks unique visitors by IP + user agent fingerprint
+  - `GET /api/analytics/visitor-count` — Returns public stats (no auth required)
+- [x] **VisitorCounter Component** — Reusable React component with 3 variants:
+  - `full` — 4 coloured stat cards
+  - `compact` — Single badge with visitor count
+  - `badge` — Tiny inline badge
+- [x] **Placement**: Below hero section with "Join thousands of Australians researching their appeals"
+
 ## Next Priority Tasks
 - [ ] Real-time collaboration/chat for Notes (WebSockets)
 - [ ] Continue backend refactoring — extract remaining routes from server.py (cases, documents, timeline, reports)

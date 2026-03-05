@@ -6,6 +6,7 @@ import axios from "axios";
 import { API } from "../App";
 import AuthModal from "../components/AuthModal";
 import { useTheme } from "../contexts/ThemeContext";
+import VisitorCounter from "../components/VisitorCounter";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -13,18 +14,6 @@ const LandingPage = () => {
   const [showLegalFramework, setShowLegalFramework] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  // Track visit on page load
-  useEffect(() => {
-    const trackVisit = async () => {
-      try {
-        await axios.post(`${API}/track/visit`);
-      } catch (e) {
-        // Silent fail - don't affect user experience
-      }
-    };
-    trackVisit();
-  }, []);
 
   const handleAuthSuccess = (userData) => {
     navigate("/dashboard", { state: { user: userData }, replace: true });
@@ -292,6 +281,18 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* VISITOR COUNTER - Social Proof */}
+      {/* ============================================ */}
+      <section className="py-8 px-6 bg-slate-50 dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-6">
+            <p className="text-sm text-muted-foreground">Join thousands of Australians researching their appeals</p>
+          </div>
+          <VisitorCounter variant="full" />
         </div>
       </section>
 

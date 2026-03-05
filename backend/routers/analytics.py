@@ -14,6 +14,95 @@ router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 # Admin emails
 ADMIN_EMAILS = os.environ.get("ADMIN_EMAILS", "djkingy79@gmail.com").split(",")
 
+
+@router.post("/track-visit")
+async def track_visit(request: Request):
+    """Track a page visit (public endpoint)"""
+    try:
+        # Get visitor info
+        client_ip = request.client.host if request.client else "unknown"
+        user_agent = request.headers.get("user-agent", "unknown")
+        referer = request.headers.get("referer", "")
+        
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        
+        # Create a simple fingerprint for unique visitor tracking
+        visitor_id = f"{client_ip}_{user_agent[:50]}"
+        
+        # Check if this visitor already visited today
+        existing_visit = await db.visits.find_one({
+            "visitor_id": visitor_id,
+            "date": today
+        })
+        
+        if not existing_visit:
+            # New visitor today - record the visit
+            await db.visits.insert_one({
+                "visitor_id": visitor_id,
+                "ip": client_ip,
+                "user_agent": user_agent[:200],
+                "referer": referer[:500] if referer else "",
+                "date": today,
+                "timestamp": datetime.now(timezone.utc).isoformat()
+            })
+            
+            # Update daily counter
+            await db.visit_stats.update_one(
+                {"date": today},
+                {"$inc": {"count": 1, "unique_visitors": 1}},
+                upsert=True
+            )
+            
+            # Update total counter
+            await db.counters.update_one(
+                {"name": "total_visitors"},
+                {"$inc": {"count": 1}},
+                upsert=True
+            )
+        
+        return {"status": "tracked"}
+        
+    except Exception as e:
+        logger.error(f"Visit tracking error: {e}")
+        return {"status": "error"}
+
+
+@router.get("/visitor-count")
+async def get_visitor_count():
+    """Get public visitor count (no auth required)"""
+    try:
+        # Get total unique visitors
+        total_counter = await db.counters.find_one({"name": "total_visitors"}, {"_id": 0})
+        total_visitors = total_counter["count"] if total_counter else 0
+        
+        # Get today's visitors
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        today_stats = await db.visit_stats.find_one({"date": today}, {"_id": 0})
+        today_visitors = today_stats["unique_visitors"] if today_stats else 0
+        
+        # Get registered users count
+        total_users = await db.users.count_documents({})
+        
+        # Get total cases
+        total_cases = await db.cases.count_documents({})
+        
+        return {
+            "total_visitors": total_visitors,
+            "today_visitors": today_visitors,
+            "registered_users": total_users,
+            "cases_created": total_cases
+        }
+        
+    except Exception as e:
+        logger.error(f"Visitor count error: {e}")
+        return {
+            "total_visitors": 0,
+            "today_visitors": 0,
+            "registered_users": 0,
+            "cases_created": 0
+        }
+
+
 @router.get("/dashboard")
 async def get_dashboard_stats(request: Request):
     """Get comprehensive dashboard statistics (admin only)"""
