@@ -174,8 +174,19 @@ const LandingPage = () => {
               <strong className="text-white">The reality is:</strong> from manifest injustice to denial of procedural fairness, 
               from critical elements missed or incorrectly applied at sentencing, to failures by defence counsel, 
               errors by the judge, or simply unsafe and unsatisfactory verdicts — there are <em>many</em> potential 
-              grounds that can occur in criminal matters.
+              grounds that can arise in criminal matters.
             </p>
+            
+            <p className="text-slate-300 text-sm leading-relaxed mb-4">
+              Consider just a few examples: <span className="text-white">judicial bias or errors in directions to the jury</span>, 
+              <span className="text-white">failure to properly apply community standards</span>, 
+              <span className="text-white">prejudicial media coverage influencing jurors</span>, 
+              <span className="text-white">fresh evidence not available at trial</span>, 
+              <span className="text-white">ineffective assistance of counsel</span>, or 
+              <span className="text-white">misapplication of legal principles</span>. 
+              Every person has a fundamental right to a fair trial — and that right extends to appeals.
+            </p>
+
             <p className="text-slate-300 text-sm leading-relaxed mb-4">
               Unless you're a legal expert or have thousands of dollars to seek advice from lawyers and barristers, 
               these issues often go unnoticed. And even legal professionals — usually overcommitted with heavy 
