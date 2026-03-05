@@ -464,10 +464,10 @@ const CaseDetail = ({ user }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-slate-400 mx-auto" />
-          <p className="mt-4 text-slate-600">Loading case...</p>
+          <Loader2 className="w-12 h-12 animate-spin text-muted-foreground mx-auto" />
+          <p className="mt-4 text-muted-foreground">Loading case...</p>
         </div>
       </div>
     );
@@ -475,15 +475,16 @@ const CaseDetail = ({ user }) => {
 
   if (loadError) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center max-w-md">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto" />
-          <h2 className="mt-4 text-xl font-semibold text-slate-900">Error Loading Case</h2>
-          <p className="mt-2 text-slate-600">{loadError}</p>
+          <h2 className="mt-4 text-xl font-semibold text-foreground">Error Loading Case</h2>
+          <p className="mt-2 text-muted-foreground">{loadError}</p>
           <div className="mt-6 flex gap-3 justify-center">
             <Button 
               variant="outline" 
               onClick={() => navigate("/dashboard")}
+              className="rounded-xl"
               data-testid="back-to-dashboard-btn"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -491,6 +492,7 @@ const CaseDetail = ({ user }) => {
             </Button>
             <Button 
               onClick={fetchCaseData}
+              className="rounded-xl"
               data-testid="retry-load-btn"
             >
               Try Again
@@ -502,30 +504,33 @@ const CaseDetail = ({ user }) => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
+      <header className="glass-header sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={() => navigate("/dashboard")}
+              className="rounded-xl"
               data-testid="back-btn"
             >
               <ArrowLeft className="w-4 h-4 mr-1" />
               Back
             </Button>
             <div className="flex items-center gap-2 flex-1">
-              <Scale className="w-5 h-5 text-slate-600" />
-              <span className="text-slate-400">/</span>
-              <span className="font-medium text-slate-900">{caseData?.title}</span>
+              <div className="w-8 h-8 rounded-lg gradient-amber flex items-center justify-center">
+                <Scale className="w-4 h-4 text-white" />
+              </div>
+              <span className="text-muted-foreground">/</span>
+              <span className="font-medium text-foreground">{caseData?.title}</span>
             </div>
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={() => navigate("/help")}
-              className="text-slate-600 hover:text-slate-900"
+              className="text-muted-foreground hover:text-foreground rounded-xl"
               data-testid="help-btn"
             >
               <HelpCircle className="w-4 h-4 mr-1" />
@@ -539,16 +544,16 @@ const CaseDetail = ({ user }) => {
         {/* Case Info */}
         <div className="mb-8">
           <h1 
-            className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight"
+            className="text-3xl md:text-4xl font-bold text-foreground tracking-tight"
             style={{ fontFamily: 'Crimson Pro, serif' }}
             data-testid="case-title"
           >
             {caseData?.title}
           </h1>
-          <div className="flex flex-wrap items-center gap-4 mt-3 text-slate-600">
-            <span className="font-medium">{caseData?.defendant_name}</span>
+          <div className="flex flex-wrap items-center gap-4 mt-3 text-muted-foreground">
+            <span className="font-medium text-foreground">{caseData?.defendant_name}</span>
             {caseData?.case_number && (
-              <span className="font-mono text-sm bg-slate-100 px-2 py-1 rounded">
+              <span className="font-mono text-sm bg-muted px-2 py-1 rounded-lg">
                 {caseData.case_number}
               </span>
             )}
@@ -558,54 +563,54 @@ const CaseDetail = ({ user }) => {
           {caseData?.offence_category && (
             <div className="flex flex-wrap items-center gap-2 mt-3">
               {caseData?.state && (
-                <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 uppercase">
+                <Badge variant="outline" className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800 uppercase rounded-lg">
                   {caseData.state}
                 </Badge>
               )}
-              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 capitalize">
+              <Badge variant="outline" className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800 capitalize rounded-lg">
                 {caseData.offence_category.replace(/_/g, ' ')}
               </Badge>
               {caseData?.offence_type && (
-                <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200">
+                <Badge variant="outline" className="bg-muted text-muted-foreground border-border rounded-lg">
                   {caseData.offence_type}
                 </Badge>
               )}
             </div>
           )}
           {caseData?.summary && (
-            <p className="mt-4 text-slate-600 max-w-3xl">{caseData.summary}</p>
+            <p className="mt-4 text-muted-foreground max-w-3xl">{caseData.summary}</p>
           )}
         </div>
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <TabsList className="bg-slate-100">
-              <TabsTrigger value="documents" data-testid="tab-documents">
+            <TabsList className="bg-muted rounded-xl p-1">
+              <TabsTrigger value="documents" className="rounded-lg" data-testid="tab-documents">
                 <FileText className="w-4 h-4 mr-2" />
                 Documents ({documents.length})
               </TabsTrigger>
-              <TabsTrigger value="timeline" data-testid="tab-timeline">
+              <TabsTrigger value="timeline" className="rounded-lg" data-testid="tab-timeline">
                 <Clock className="w-4 h-4 mr-2" />
                 Timeline ({timeline.length})
               </TabsTrigger>
-              <TabsTrigger value="grounds" data-testid="tab-grounds">
+              <TabsTrigger value="grounds" className="rounded-lg" data-testid="tab-grounds">
                 <Gavel className="w-4 h-4 mr-2" />
                 Grounds ({grounds.length})
               </TabsTrigger>
-              <TabsTrigger value="notes" data-testid="tab-notes">
+              <TabsTrigger value="notes" className="rounded-lg" data-testid="tab-notes">
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Notes ({notes.length})
               </TabsTrigger>
-              <TabsTrigger value="reports" data-testid="tab-reports">
+              <TabsTrigger value="reports" className="rounded-lg" data-testid="tab-reports">
                 <Scale className="w-4 h-4 mr-2" />
                 Reports ({reports.length})
               </TabsTrigger>
-              <TabsTrigger value="legal" data-testid="tab-legal">
+              <TabsTrigger value="legal" className="rounded-lg" data-testid="tab-legal">
                 <BookOpen className="w-4 h-4 mr-2" />
                 Legal Framework
               </TabsTrigger>
-              <TabsTrigger value="progress" data-testid="tab-progress">
+              <TabsTrigger value="progress" className="rounded-lg" data-testid="tab-progress">
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Progress
               </TabsTrigger>
@@ -618,7 +623,7 @@ const CaseDetail = ({ user }) => {
                     onClick={handleGenerateTimeline}
                     disabled={generatingTimeline}
                     variant="outline"
-                    className="bg-purple-50 border-purple-200 text-purple-700 hover:bg-purple-100"
+                    className="bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/40 rounded-xl"
                     data-testid="generate-timeline-btn"
                   >
                     {generatingTimeline ? (
@@ -630,7 +635,7 @@ const CaseDetail = ({ user }) => {
                   </Button>
                   <Button 
                     onClick={() => setShowEventDialog(true)}
-                    className="bg-slate-900 text-white hover:bg-slate-800"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl"
                     data-testid="add-event-btn"
                   >
                     <Plus className="w-4 h-4 mr-2" />
@@ -643,7 +648,7 @@ const CaseDetail = ({ user }) => {
                   <Button 
                     onClick={handleAutoIdentifyGrounds}
                     disabled={autoIdentifying}
-                    className="bg-amber-600 text-white hover:bg-amber-700"
+                    className="bg-amber-600 text-white hover:bg-amber-700 rounded-xl"
                     data-testid="auto-identify-btn"
                   >
                     {autoIdentifying ? (
@@ -658,7 +663,7 @@ const CaseDetail = ({ user }) => {
                       setNewGround({ title: "", description: "", ground_type: "other", strength: "moderate", supporting_evidence: [] });
                       setShowGroundDialog(true);
                     }}
-                    className="bg-slate-900 text-white hover:bg-slate-800"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl"
                     data-testid="add-ground-btn"
                   >
                     <Plus className="w-4 h-4 mr-2" />
@@ -682,15 +687,15 @@ const CaseDetail = ({ user }) => {
           {/* Timeline Tab */}
           <TabsContent value="timeline" className="space-y-4">
             {timeline.length === 0 ? (
-              <Card className="p-12 text-center">
-                <Clock className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              <Card className="p-12 text-center card-elevated">
+                <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   No events yet
                 </h3>
-                <p className="text-slate-600 mb-4">Build a chronological timeline of case events.</p>
+                <p className="text-muted-foreground mb-4">Build a chronological timeline of case events.</p>
                 <Button 
                   onClick={() => setShowEventDialog(true)}
-                  className="bg-slate-900 text-white hover:bg-slate-800"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add First Event
@@ -720,12 +725,12 @@ const CaseDetail = ({ user }) => {
           {/* Grounds of Merit Tab */}
           <TabsContent value="grounds" className="space-y-4">
             {grounds.length === 0 ? (
-              <Card className="p-12 text-center">
-                <Gavel className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              <Card className="p-12 text-center card-elevated">
+                <Gavel className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   No grounds of merit identified
                 </h3>
-                <p className="text-slate-600 mb-4 max-w-md mx-auto">
+                <p className="text-muted-foreground mb-4 max-w-md mx-auto">
                   Use AI to automatically analyze your case materials and identify potential grounds for appeal, 
                   or add grounds manually.
                 </p>
@@ -733,7 +738,7 @@ const CaseDetail = ({ user }) => {
                   <Button 
                     onClick={handleAutoIdentifyGrounds}
                     disabled={autoIdentifying}
-                    className="bg-amber-600 text-white hover:bg-amber-700"
+                    className="bg-amber-600 text-white hover:bg-amber-700 rounded-xl"
                   >
                     {autoIdentifying ? (
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -748,6 +753,7 @@ const CaseDetail = ({ user }) => {
                       setShowGroundDialog(true);
                     }}
                     variant="outline"
+                    className="rounded-xl"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Manually
