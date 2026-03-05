@@ -1,181 +1,188 @@
-<analysis>Analyse the user's request to build a criminal appeal case management application.
-
-**original_problem_statement:** 
-The user wants to create an application designed to assist with criminal appeals, specifically focusing on murder cases under NSW and Australian federal law.
+<analysis>**original_problem_statement:**
+The user, Deb King, wants a web application named Criminal Appeal AI to assist with criminal appeals for murder cases under NSW and Australian federal law.
 
 **PRODUCT REQUIREMENTS:**
-1.  **Document Management:** The app must be able to store, sort, and organize various documents like briefs, case notes, and public case information.
-2.  **Timeline Generation:** It should automatically create and update a timeline of events based on the information provided.
-3.  **Multi-File Upload:** Allow users to upload several documents at once.
-4.  **User Authentication:** The application must have a user login system.
-5.  **AI-Powered Legal Analysis:**
-    *   **Grounds of Merit Identification:** The app needs to analyze the uploaded documents to identify potential grounds of merit for an appeal. It must thoroughly investigate criminal law related to murder, manslaughter, and high court appeals.
-    *   **Cross-Referencing:** The identified grounds must be cross-referenced with the source material from the documents.
-6.  **Reporting System:** The app must provide three types of reports:
-    *   **Quick Report:** A brief summary of the case.
-    *   **Full Report:** A detailed analysis covering the available information, its potential use, the grounds of merit it supports, and references to relevant sections of law.
-    *   **Extensive Log Report:** A comprehensive log of the entire case.
-7.  **Notes and Comments:** Include a feature for lawyers to add notes and comments.
-8.  **Presentation View:** Information should be presentable to a barrister, clearly outlining the grounds of merit, supporting evidence, and legal references.
-9.  **Exporting:** The ability to export reports to PDF.
+1.  **Document Management:** Store, sort, and organize case documents with multi-file upload capabilities.
+2.  **User Authentication:** Secure login system for users.
+3.  **AI-Powered Analysis:**
+    *   **Timeline Generation:** Automatically create a timeline of events from uploaded documents.
+    *   **Grounds of Merit:** Identify potential grounds for appeal from documents.
+    *   **OCR Support:** Extract text from scanned documents and images.
+4.  **Reporting System:** Generate three types of reports (Quick, Full, Extensive Log).
+5.  **Notes and Comments:** Allow lawyers to add and manage case notes.
+6.  **Presentation View:** A clean Barrister View for presenting case information.
+7.  **Exporting:** Export reports to PDF and DOCX.
+8.  **Personalization:** App branded for Debra King, with a personal story about Joshua Homann and Brad Fletcher.
+9.  **User Guide & Professional Summary:** An in-app help page and a one-page summary for legal professionals.
+10. **Mobile App:** The user wants the application to be available as a mobile app (PWA/Capacitor foundation is built).
+11. **Paywall:** Monetize access to detailed Grounds of Merit and premium reports using PayPal.
+12. **New Features Implemented:** Appeal Deadline Tracker, Witness Statement Contradiction Finder, Case Strength Meter, Appeal Checklist System, Resource Directory, and Document Templates.
 
 **User's preferred language**: English
 
 **what currently exists?**
-A full-stack web application has been developed using React, FastAPI, and MongoDB. The application supports Google social login for user authentication. The core functionalities include case creation and management, document uploading (with text extraction for TXT, PDF, and DOCX), and a notes/comments section. The application leverages an AI (GPT-5.2) to automatically identify Grounds of Merit from document content, perform deep-dive investigations on these grounds, and generate three distinct types of case reports. The UI is structured with a dashboard for case overviews and a detailed case view with tabs for Documents, Timeline, Notes, Grounds of Merit, and Reports.
+A full-stack application (React, FastAPI, MongoDB) that fulfills most product requirements. It features Google authentication, case management, document handling with OCR, and AI-powered analysis (timeline, grounds of merit, reports). The application has been converted into a Progressive Web App (PWA) with Capacitor set up for future mobile builds.
+
+A significant backend refactoring was initiated, breaking the monolithic  into a modular structure with routers and services. However, the old  remains the primary entry point to ensure stability. On the frontend, the main  component is still a large monolith, though new component files have been created.
+
+A PayPal paywall has been implemented to monetize access to detailed AI analysis and premium reports. The landing page and overall branding have been updated extensively based on user feedback to be more professional and legally neutral.
 
 **Last working item**:
-- **Last item agent was working:** Implementing multi-file upload functionality. The agent was tasked with modifying the document upload feature to allow users to select and upload multiple files at once, rather than one by one. The goal was to improve user efficiency.
+- **Last item agent was working:** The user reported two critical issues simultaneously: the application Keeps spinning saying authenticating and requested a full entire check of the app. The agent was about to begin investigating the authentication loop.
 - **Status:** IN PROGRESS
 - **Agent Testing Done:** N
-- **Which testing method agent to use?** both
-- **User Testing Done:** N
+- **Which testing method agent to use?** It is recommended to use the  to diagnose the system-wide authentication issue. If that fails, using both frontend and backend testing agents would be appropriate to isolate the problem.
+- **User Testing Done:** N (User reported the issue)
 
 **All Pending/In progress Issue list**:
-- **Issue 1 (P0):** Verify the new multi-file upload functionality.
-- **Issue 2 (P1):** AI features are prone to timeouts and intermittent  errors.
-
-**Issues Detail:**
-- **Issue 1: Verify the new multi-file upload functionality.**
-    - **Attempted fixes:** The agent updated the frontend code in  to handle multiple file selections and updated the upload handler to process files in a loop. The UI for the upload dialog was also modified and visually confirmed.
+- **Issue 1: Authentication Loop (P0)**
+    - **Description:** The application is stuck in an infinite authenticating state, preventing user access. This is a critical blocker.
+    - **Attempted fixes:** None. The issue was reported in the user's last message.
     - **Next debug checklist:**
-        1.  Perform an end-to-end test: Select multiple files of different types (PDF, DOCX, TXT) in the UI.
-        2.  Trigger the upload and monitor the network requests to ensure each file is sent to the backend.
-        3.  Check the backend logs () to confirm successful processing of each file.
-        4.  Verify that all uploaded documents appear correctly in the Documents tab in the  view.
-    - **Why fix this issue and what will be achieved with the fix?** This is the user's latest feature request. Completing it will significantly improve the application's usability for document management.
+        1. Check the browser's developer console for any frontend errors related to authentication tokens, Google Auth, or API calls.
+        2. Examine the  function in  and its usage across all routers.
+        3. Review recent changes in  and  that handle auth state.
+        4. Check backend logs () for any errors during authentication requests.
+    - **Why fix this issue and what will be achieved with the fix?** The app is currently unusable. Fixing this will restore basic functionality.
     - **Status:** IN PROGRESS
     - **Is recurring issue?** N
     - **Should Test frontend/backend/both after fix?** both
 
-- **Issue 2: AI features are prone to timeouts.**
-    - **Attempted fixes:** The agent implemented a retry mechanism ( decorator) on the backend for LLM calls and added better UI feedback on the frontend, including longer  timeouts, loading spinners, and toast notifications to manage user expectations during long-running AI tasks.
-    - **Next debug checklist:**
-        1.  Monitor backend logs for  retry attempts or timeout errors during AI-intensive operations like report generation or grounds identification.
-        2.  Review the prompts in  (, , ) for excessive length or complexity that might be causing timeouts.
-        3.  Consider implementing streaming responses from the backend for long AI analyses to provide partial results to the user faster.
-    - **Why fix this issue and what will be achieved with the fix?** The core value of the application rests on its AI analysis capabilities. Frequent timeouts degrade the user experience and render key features unreliable.
+- **Issue 2: PayPal Paywall Not Appearing (P1)**
+    - **Description:** The user reported that the PayPal payment link does not appear when they click on Grounds. The agent's investigation concluded this is expected behavior because the test case had zero grounds identified; the paywall is designed to appear only when .
+    - **Attempted fixes:** Agent investigated and identified the logic.
+    - **Status:** USER VERIFICATION PENDING
+    - **Is recurring issue?** N
+    - **Should Test frontend/backend/both after fix?** frontend
+
+- **Issue 3: Intermittent Performance Lag (P2)**
+    - **Description:** A recurring issue where the user reports the application lagging. The agent added a database index on  for the  collection as a potential fix, but its effectiveness is unconfirmed.
+    - **Attempted fixes:** Added a new MongoDB index to .
     - **Status:** IN PROGRESS
     - **Is recurring issue?** Y
     - **Should Test frontend/backend/both after fix?** both
 
 **In progress Task List**:
-- **Task 1: Complete and test the multi-file upload feature.**
-    - **Where to resume:** The frontend UI and logic have been updated in . The next step is to perform a full end-to-end test of the functionality.
-    - **What will be achieved with this?** Users will be able to upload multiple documents simultaneously, fulfilling a direct user request and improving workflow efficiency.
+- **Task 1: Frontend Refactoring of  (P1)**
+    - **Where to resume:** The agent created  and  but did not integrate them into . The next step is to refactor  to import and use these new child components, passing state down as props and moving logic into the smaller components.
+    - **What will be achieved with this?** It will break down the 2200+ line monolith, making the frontend easier to maintain, debug, and extend. This is crucial for long-term stability.
     - **Status:** IN PROGRESS
-    - **Should Test frontend/backend/both after fix?** both
+    - **Should Test frontend/backend/both after fix?** frontend
+    - **Blocked on something:** The P0 authentication issue must be resolved first.
 
 **Upcoming and Future Tasks**
 **Upcoming Tasks:**
--   **P1: Implement PDF Export for Reports:** The UI buttons for exporting exist in  and , but the backend and frontend logic to generate and download a PDF is missing.
--   **P1: Implement the Barrister View:** The  page is a placeholder. It needs to be designed as a clean, professional, and read-only presentation layer for legal professionals.
+-   **P1: Complete Backend Refactoring Integration:** The new modular router structure exists but isn't fully utilized by the main FastAPI app instance. The next step is to modify  to import and include the routers from  and decommission the corresponding endpoints from the monolithic file.
+-   **P2: Grounds of Merit Analysis Depth:** An issue from a previous session where the user felt the AI analysis was not thorough. The prompt was improved, but user verification is still pending.
 
 **Future Tasks:**
--   **P2: Integrate a Case Law Database:** Enhance the deep investigation feature by integrating with a legal database for more accurate and verifiable case law citations.
--   **P2: Implement OCR for Scanned Documents:** Add Optical Character Recognition to extract text from image-based PDFs or scanned documents, broadening the scope of analyzable evidence.
--   **P2: Add In-Case Document Search:** Implement a search bar within the case view to allow users to quickly find specific documents or text within documents.
--   **P2: Enhance Collaboration Features:** Improve the notes section by adding replies/threads and @mentions to facilitate team discussions.
+-   **P2: Build and Submit Native Mobile App:** Use the existing Capacitor configuration to build and package the app for iOS and Android.
+-   **P2: Integrate a Case Law Database:** Enhance the AI by connecting to a real legal database.
+-   **P2: Enhance Collaboration Features:** Add replies, threads, and @mentions to the notes section.
 
 **Completed work in this session**
-- **MVP Application Built:** Created the foundational full-stack application with user authentication, case management, and document handling.
-- **Notes & Comments Feature (DONE):** Implemented a complete CRUD system for adding, viewing, editing, and deleting case-specific notes.
-- **Grounds of Merit Feature (DONE):**
-    - Developed AI-powered identification of legal grounds from uploaded documents.
-    - Implemented an AI deep investigation feature for detailed analysis of a specific ground.
-- **Document Text Extraction (DONE):** Built backend logic to automatically extract text content from , , and  files upon upload.
-- **Reporting Functionality (DONE):** Fixed critical bugs related to timeouts and data cross-referencing. Implemented a dialog for generating Quick, Full, and Extensive reports with proper UI feedback.
-- **Critical Bug Fixes (DONE):**
-    - Resolved MongoDB  serialization errors across multiple endpoints.
-    - Mitigated AI timeouts by adding retry logic and frontend feedback.
-    - Fixed UI bugs where the report generation dialog was unresponsive.
-    - Corrected a logic flaw where the grounds identification feature was not properly reading document content.
+- **Fixed Report Generation Bug**: Confirmed that Full and Extensive reports work correctly via direct  tests and the .
+- **Initiated Major Backend Refactoring**: Broke down the monolithic  into a modular structure with , , and  directories, keeping the original  as a stable entry point.
+- **Implemented PayPal Paywall**: Added a full paywall for unlocking AI-generated Grounds of Merit and premium reports. Configured the user's provided PayPal business credentials.
+- **Updated Landing Page and Branding**: Rewrote significant portions of the landing page, including the personal story, features, and disclaimers, to maintain legal neutrality and professionalism as requested by the user.
+- **Created Professional Summary Page**: Added a new  page targeted at legal professionals.
+- **Fixed iOS File Upload Bug**: Modified the file input  attribute to be more compatible with iOS devices.
+- **Removed Legal Aid Branding**: Purged all references to Legal Aid from the codebase and app titles. Guided the user on how to request a deployment URL change from the Emergent platform.
+- **Fixed Deployment Issues**: Resolved an N+1 query pattern and other minor bugs identified by the deployment agent.
+
+**Earlier issues found/mentioned but not fixed**
+- The primary issue is the **incomplete refactoring** of both the backend () and the frontend (), which is the root cause of ongoing instability and is captured in the In progress and Upcoming task lists.
+
+**Known issue recurrence from previous fork**
+- **Issue recurrence in previous fork:** Performance lag.
+- **Recurrence count:** High. The user reported the app was lagging again in this session.
+- **Status:** IN PROGRESS.
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **Frontend:** React, Tailwind CSS, Shadcn/UI
--   **Backend:** FastAPI, Pydantic, Motor (async MongoDB driver)
--   **Database:** MongoDB
--   **AI Integration:**  library for OpenAI GPT-5.2
+- **Frontend:** React, Tailwind CSS, Shadcn/UI
+- **Backend:** FastAPI, Pydantic, Motor (async MongoDB)
+- **Database:** MongoDB
+- **AI:**  for OpenAI GPT-4o
+- **Payments:** PayPal REST SDK
+- **Mobile:** PWA, CapacitorJS
+- **OCR:** Tesseract, Poppler
 
 **key DB schema**
--   **users:** 
--   **cases:** 
--   **documents:** 
--   **timeline_events:** 
--   **notes:** 
--   **grounds_of_merit:** 
--   **reports:** 
+- **payments:** 
+- **grounds:** Now returns a dictionary  where  is empty if not unlocked.
 
 **changes in tech stack**
-- None.
+-  was added to .
+- Frontend logic was adapted to use direct PayPal REST API calls instead of a React library for creating orders.
 
 **All files of reference**
--   **:** Contains the entire backend logic, including all API endpoints, Pydantic models, database interactions, and LLM integration calls. This file has been extensively modified throughout the session.
--   **:** The main frontend component for viewing and interacting with a case. It manages the state and UI for documents, notes, grounds, reports, and their corresponding dialogs. This file has also been heavily modified.
--   **:** A new component created to render the list of identified grounds of merit within the  page.
--   ****, ****, ****, ****: New pages created to build out the application's user flow.
+- : Still the main application file, but with many new endpoints (payments) and modifications for paywalls.
+- , , , : New directories and files for the backend refactoring.
+- : Heavily modified to handle paywall state for grounds of merit and reports. Still a monolith.
+- : Updated to show a paywall or locked content.
+- : New component to handle PayPal payments.
+- : Heavily modified with new branding and content.
+- : New page for legal professionals.
+- : Updated with new title and link.
+- : Updated with PayPal credentials.
 
 **Areas that need refactoring**:
--   **:** This component has become a god component, managing state and logic for numerous features (documents, notes, grounds, reports, timeline). It exceeds 1200 lines and is difficult to maintain. It should be broken down into smaller, self-contained components, with logic extracted into custom hooks (e.g., , ).
--   **:** This single file contains all backend logic. It should be modularized by splitting routes into separate FastAPI  files (e.g., , ) and abstracting database logic into a separate services or repository layer.
+- ** (URGENT):** This 2200+ line component is the biggest source of frontend fragility. It needs to be broken down using the  and  components that were already created.
+- ** (HIGH):** The refactoring was started but not completed. The application logic should be fully migrated to the new router structure to complete the modularization and improve stability.
 
 **key api endpoints**
--   : Create a test user session.
--   : Create a new case.
--   : Fetch details for a specific case.
--   : Upload document(s) to a case.
--   : Re-run text extraction on all documents.
--   : Add a note to a case.
--   : Trigger AI to identify grounds from documents.
--   : Trigger AI for a deep analysis of a ground.
--   : Generate a new report.
+- **Payments:**
+    - : Get prices for all paid features.
+    - : Create a PayPal payment order.
+    - : Capture a completed PayPal payment.
+- **Modified Endpoints:**
+    - : Now returns a count and lock status. The full list is only returned if payment is confirmed.
+    - : Now returns a 402 Payment Required error for premium reports if not paid.
 
 **Critical Info for New Agent**
--   The application's core AI features depend on the  library. These API calls are known to be slow and can time out. Significant effort has been made to add retries on the backend and user-friendly loading/error states on the frontend, but the underlying reliability issue may persist.
--   The two main files,  and , are monolithic and contain a large amount of code. Be cautious when modifying them to avoid introducing regressions. Consider refactoring as a priority if significant new functionality is to be added.
+- **Fix the Blocker First:** The immediate and only priority is to fix the Keeps spinning saying authenticating bug. The application is completely unusable until this is resolved.
+- **Hybrid State:** Be aware that the application is in a fragile, hybrid state. The backend has been partially refactored but the old monolith is still active. The frontend refactor was started but not integrated. Tread carefully when making changes.
+- **Verify Paywall Flow:** After fixing the authentication bug, perform an end-to-end test of the paywall: identify grounds for a case, see the paywall, make a (sandbox) payment, and verify the grounds are unlocked. The user has reported issues here.
 
 **documents and test reports created in this job**
--   
--   
--   
--   
--   
+-  (17/17 backend tests passed, 100% frontend passed)
+-  (17/17 backend tests passed, 100% frontend passed)
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **User:** Could you pls make it u can upload several documents at once in the add docs - **Status: IN PROGRESS**.
-2.  **User:** The reports function not working select what report u want n it does nothing - **Status: COMPLETED**.
-3.  **User:** Failed to identify grounds - **Status: COMPLETED**.
-4.  **User:** Report function not working and the merit still isn’t cross referencing the material - **Status: COMPLETED**.
-5.  **User:** Failing to search documents to find grounds of merit - **Status: COMPLETED**.
-6.  **User:** I also forgot to add a section to investigate the grounds of merit... - **Status: COMPLETED**.
-7.  **User:** Says failed yo load - **Status: COMPLETED**.
-8.  **User:** Please add section for lawyers to add notes and comments - **Status: COMPLETED**.
-9.  **User:** (Clarification) ...google fine multiple cases is fine - **Status: COMPLETED**.
-10. **User:** (Clarification) 1 which do you suggest for the best criminal advice... 4 export pdf... - **Status: COMPLETED**.
+1.  **Can you run an entire check of the app**: User request following a critical bug report.
+2.  **Keeps spinning saying authenticating**: User reporting the current P0 authentication blocker. (PENDING)
+3.  **No it’s sent when I click grounds it just brings the grounds up no PayPal link to pay**: User reporting the paywall isn't appearing as expected. (Agent investigated, pending user verification).
+4.  **Yes please**: User confirming they want an email drafted to support.
+5.  **Can you pls set up the first option I don’t have a domaine**: User asking for help setting up a custom domain without owning one.
+6.  **And the actual deployment link states legal aid in it**: User pointing out the deployment URL itself has the old branding. (Agent explained how to fix this via support).
+7.  **It shouldn’t be referencing legal aid at all the actual link to the app says it to**: User re-iterating the need to remove all Legal Aid branding.
+8.  **Can we change the login page title Legal Aid get rid of it make a better one and I can’t seem to see the disclosure or the one page summary**: User reporting UI/branding issues. (Resolved).
+9.  **Call Deployer Agent and Run Health Check...**: User asking to check deployment readiness.
+10. **It’s lagging and no pay with PayPal coming up**: User reporting performance and payment issues.
 
 **Project Health Check:**
--   **Broken:** No core features are entirely broken.
--   **Mocked:** PDF Export functionality and the Barrister View page are placeholders without backend implementation.
+- **Broken:** User Authentication. The app is stuck in an authentication loop.
+- **Mocked:** None.
 
 **3rd Party Integrations**
--   **OpenAI GPT-5.2:** Used for all AI analysis features. — uses Emergent LLM Key.
--   **Emergent-managed Google Auth:** Used for user login.
+- **OpenAI GPT-4o** — uses Emergent LLM Key
+- **Emergent-managed Google Auth**
+- **PayPal** (Payments) — uses User API Key (Sandbox credentials configured)
+- **Tesseract & Poppler** (for OCR)
 
 **Testing status**
--   **Testing agent used after significant changes:** YES
--   **Troubleshoot agent used after agent stuck in loop:** NO
--   **Test files created:**
-    -   
-    -   
-    -   
--   **Known regressions:** None.
+- **Testing agent used after significant changes:** YES (after backend refactoring, all tests passed).
+- **Troubleshoot agent used after agent stuck in loop:** NO
+- **Test files created:** None
+- **Known regressions:** User Authentication is broken.
 
 **Credentials to test flow:**
-Authentication can be handled by making a  request to the  endpoint to generate a test token. The frontend is configured to use this for development and testing.
+- Frontend login via Google OAuth.
+- Backend API testing can use the  endpoint, but this flow is likely part of the current bug.
+- PayPal sandbox credentials are set in .
 
 **What agent forgot to execute**
--   The agent created UI elements (buttons, pages) for **PDF Export** and **Barrister View** as requested initially but did not implement the underlying functionality. These remain as pending tasks.
--   The **Timeline** feature, part of the original plan, has not received significant development focus compared to other features like Grounds of Merit and Reports. Its functionality is minimal.</analysis>
+- The agent did not fully complete the integration of the refactored components on either the frontend or the backend. While this was a deliberate choice to mitigate risk, it leaves a significant and critical technical debt task unfinished, contributing to the application's fragility.</analysis>
