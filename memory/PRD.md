@@ -611,6 +611,20 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **Landing Page Accuracy Verified** — Deadline tracker with calendar view confirmed to exist
 - [x] **Testing**: iteration_31 (95% pass - all major features verified)
 
+### Session 8 - PayID Email Notifications (Mar 2026) ✅
+- [x] **Email Notifications for PayID Payments** — Automatic email when admin confirms bank transfer:
+  - Professional HTML email template with branding
+  - Shows: Feature name, amount, reference, status
+  - Direct link to user's case
+  - Sent via Resend API
+- [x] **Email Notifications for PayPal Payments** — Automatic email when PayPal payment completes
+- [x] **Email Template Features**:
+  - Branded header with Criminal Appeal AI logo
+  - Success badge confirmation
+  - Payment details summary
+  - "View Your Case" button linking directly to case
+  - Footer with contact info and tagline
+
 ## Next Priority Tasks
 - [ ] Real-time collaboration/chat for Notes (WebSockets)
 - [ ] Continue backend refactoring — extract remaining routes from server.py (cases, documents, timeline, reports)

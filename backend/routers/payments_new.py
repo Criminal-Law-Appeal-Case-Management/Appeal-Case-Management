@@ -9,7 +9,9 @@ from datetime import datetime, timezone
 from config import db, logger
 from auth_utils import get_current_user
 import os
+import asyncio
 import paypalrestsdk
+import resend
 
 router = APIRouter(prefix="/api/payments", tags=["payments"])
 
@@ -29,6 +31,14 @@ PAYID_CONFIG = {
     "reference_prefix": "ACM"
 }
 
+# Resend email configuration
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
+RESEND_CONFIGURED = False
+if RESEND_API_KEY:
+    resend.api_key = RESEND_API_KEY
+    RESEND_CONFIGURED = True
+    logger.info("Resend configured for payment notifications")
+
 # PayPal Configuration
 PAYPAL_CLIENT_ID = os.environ.get('PAYPAL_CLIENT_ID', '')
 PAYPAL_CLIENT_SECRET = os.environ.get('PAYPAL_CLIENT_SECRET', '')
@@ -46,6 +56,109 @@ if PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET:
         logger.info(f"PayPal configured in {PAYPAL_MODE} mode")
     except Exception as e:
         logger.warning(f"PayPal configuration failed: {e}")
+
+
+async def send_payment_confirmation_email(user_email: str, user_name: str, feature_name: str, amount: float, reference: str, case_id: str):
+    """Send email notification when PayID payment is confirmed"""
+    if not RESEND_CONFIGURED:
+        logger.warning("Cannot send payment confirmation - Resend not configured")
+        return False
+    
+    try:
+        # Get the frontend URL for the case link
+        frontend_url = os.environ.get('FRONTEND_URL', 'https://barrister-hub.preview.emergentagent.com')
+        case_link = f"{frontend_url}/cases/{case_id}"
+        
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body {{ font-family: 'Georgia', serif; line-height: 1.6; color: #1e293b; }}
+                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                .header {{ background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%); color: white; padding: 30px; text-align: center; border-radius: 12px 12px 0 0; }}
+                .header h1 {{ margin: 0; font-size: 24px; }}
+                .content {{ background: #ffffff; padding: 30px; border: 1px solid #e2e8f0; }}
+                .success-badge {{ background: #10b981; color: white; padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: bold; margin: 15px 0; }}
+                .details {{ background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+                .details-row {{ display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0; }}
+                .details-row:last-child {{ border-bottom: none; }}
+                .button {{ background: #f59e0b; color: #1e293b; padding: 14px 28px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold; margin: 20px 0; }}
+                .footer {{ background: #f1f5f9; padding: 20px; text-align: center; font-size: 12px; color: #64748b; border-radius: 0 0 12px 12px; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>⚖️ Criminal Appeal AI</h1>
+                    <p style="margin: 10px 0 0 0; opacity: 0.9;">Payment Confirmation</p>
+                </div>
+                <div class="content">
+                    <p>Dear {user_name or 'Valued User'},</p>
+                    
+                    <div style="text-align: center;">
+                        <span class="success-badge">✓ Payment Confirmed</span>
+                    </div>
+                    
+                    <p>Great news! Your bank transfer has been verified and your premium feature is now <strong>unlocked</strong>.</p>
+                    
+                    <div class="details">
+                        <div class="details-row">
+                            <span><strong>Feature:</strong></span>
+                            <span>{feature_name}</span>
+                        </div>
+                        <div class="details-row">
+                            <span><strong>Amount:</strong></span>
+                            <span>${amount:.2f} AUD</span>
+                        </div>
+                        <div class="details-row">
+                            <span><strong>Reference:</strong></span>
+                            <span style="font-family: monospace;">{reference}</span>
+                        </div>
+                        <div class="details-row">
+                            <span><strong>Status:</strong></span>
+                            <span style="color: #10b981; font-weight: bold;">Completed</span>
+                        </div>
+                    </div>
+                    
+                    <p style="text-align: center;">
+                        <a href="{case_link}" class="button">View Your Case →</a>
+                    </p>
+                    
+                    <p>Your {feature_name} is now ready to use. You can access it from your case dashboard.</p>
+                    
+                    <p>Thank you for using Criminal Appeal AI to support your case.</p>
+                    
+                    <p style="margin-top: 30px;">
+                        Best regards,<br>
+                        <strong>Deb King</strong><br>
+                        <em style="color: #64748b;">Criminal Appeal AI</em>
+                    </p>
+                </div>
+                <div class="footer">
+                    <p>This email confirms your payment for premium features on Criminal Appeal AI.</p>
+                    <p>Questions? Reply to this email or contact djkingy79@gmail.com</p>
+                    <p style="margin-top: 15px; font-style: italic;">"One woman's fight for justice"</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        params = {
+            "from": "Appeal Case Manager <onboarding@resend.dev>",
+            "to": [user_email],
+            "subject": f"✓ Payment Confirmed - {feature_name} Unlocked",
+            "html": html_content
+        }
+        
+        await asyncio.to_thread(resend.Emails.send, params)
+        logger.info(f"Payment confirmation email sent to {user_email}")
+        return True
+        
+    except Exception as e:
+        logger.error(f"Failed to send payment confirmation email: {e}")
+        return False
 
 
 class PayPalOrderRequest(BaseModel):
@@ -213,6 +326,19 @@ async def execute_paypal_payment(payment_id: str, payer_id: str, request: Reques
                     "status": "completed",
                     "created_at": datetime.now(timezone.utc).isoformat()
                 })
+                
+                # Send email notification to user
+                payer_user = await db.users.find_one({"user_id": transaction["user_id"]}, {"_id": 0})
+                if payer_user and payer_user.get("email"):
+                    feature_info = FEATURE_PRICES.get(transaction["feature_type"], {})
+                    await send_payment_confirmation_email(
+                        user_email=payer_user["email"],
+                        user_name=payer_user.get("name", ""),
+                        feature_name=feature_info.get("name", transaction["feature_type"]),
+                        amount=transaction["amount"],
+                        reference=payment_id,
+                        case_id=transaction["case_id"]
+                    )
             
             return {
                 "status": "success",
@@ -379,10 +505,25 @@ async def admin_confirm_payid(reference: str, request: Request):
         "created_at": datetime.now(timezone.utc).isoformat()
     })
     
+    # Send email notification to user
+    email_sent = False
+    payer_user = await db.users.find_one({"user_id": transaction["user_id"]}, {"_id": 0})
+    if payer_user and payer_user.get("email"):
+        feature_info = FEATURE_PRICES.get(transaction["feature_type"], {})
+        email_sent = await send_payment_confirmation_email(
+            user_email=payer_user["email"],
+            user_name=payer_user.get("name", ""),
+            feature_name=feature_info.get("name", transaction["feature_type"]),
+            amount=transaction["amount"],
+            reference=reference,
+            case_id=transaction["case_id"]
+        )
+    
     return {
         "status": "confirmed",
         "reference": reference,
-        "message": "Payment confirmed and feature unlocked for user"
+        "message": "Payment confirmed and feature unlocked for user",
+        "email_sent": email_sent
     }
 
 
