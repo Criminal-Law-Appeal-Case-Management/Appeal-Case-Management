@@ -293,8 +293,8 @@ class Payment(BaseModel):
 # Payment pricing configuration
 FEATURE_PRICES = {
     "grounds_of_merit": {"price": 50.00, "name": "Unlock Grounds of Merit Details"},
-    "full_report": {"price": 29.99, "name": "Full Detailed Report"},
-    "extensive_report": {"price": 50.00, "name": "Extensive Log Report"}
+    "full_report": {"price": 29.00, "name": "Full Detailed Report"},
+    "extensive_report": {"price": 39.00, "name": "Extensive Log Report"}
 }
 
 # PayPal Configuration

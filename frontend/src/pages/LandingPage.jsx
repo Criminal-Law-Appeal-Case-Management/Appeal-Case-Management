@@ -698,13 +698,13 @@ const LandingPage = () => {
                   <svg className="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>Quick Summary Report</span>
+                  <span>See number of potential grounds identified</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <svg className="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>See number of potential grounds identified</span>
+                  <span>Quick Summary Report</span>
                 </li>
               </ul>
               <Button
@@ -721,31 +721,44 @@ const LandingPage = () => {
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full">
                 UNLOCK FULL ANALYSIS
               </div>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>Premium</h3>
-                <div className="text-right">
-                  <span className="text-2xl font-bold text-slate-900">$19.99</span>
-                  <span className="text-sm text-slate-500 block">per feature</span>
-                </div>
-              </div>
-              <ul className="space-y-3 text-sm text-slate-700 mb-6">
-                <li className="flex items-start gap-2">
+              <h3 className="text-lg font-bold text-slate-900 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>Premium Features</h3>
+              
+              <ul className="space-y-4 text-sm text-slate-700 mb-6">
+                <li className="flex items-start gap-2 p-3 bg-white rounded-lg border border-amber-200">
                   <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span><strong>Detailed Grounds Analysis</strong> — Full breakdown of each potential ground with legal citations and case law</span>
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <strong>Unlock Grounds of Merit</strong>
+                      <span className="text-amber-700 font-bold">$50</span>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1">See full details of each potential ground, investigate further with legal citations and case law</p>
+                  </div>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2 p-3 bg-white rounded-lg border border-amber-200">
                   <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span><strong>Full Detailed Report</strong> — Comprehensive analysis with recommendations</span>
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <strong>Full Detailed Report</strong>
+                      <span className="text-amber-700 font-bold">$29</span>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1">Comprehensive analysis with recommendations and case law references</p>
+                  </div>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2 p-3 bg-white rounded-lg border border-amber-200">
                   <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span><strong>Extensive Log Report</strong> — Complete documentation with step-by-step appeal guidance</span>
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <strong>Extensive Log Report</strong>
+                      <span className="text-amber-700 font-bold">$39</span>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1">Complete documentation with step-by-step appeal guidance</p>
+                  </div>
                 </li>
               </ul>
               <div className="bg-white rounded-lg p-3 text-center text-sm text-slate-600 mb-4">
