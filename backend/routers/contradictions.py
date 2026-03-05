@@ -178,7 +178,7 @@ If no contradictions are found, return an empty contradictions array with an app
 Important: Return ONLY valid JSON, no additional text."""
 
     try:
-        llm_key = os.environ.get("LLM_KEY", "")
+        llm_key = os.environ.get("EMERGENT_LLM_KEY", "")
         
         chat = LlmChat(
             api_key=llm_key,
@@ -187,7 +187,7 @@ Important: Return ONLY valid JSON, no additional text."""
         ).with_model("openai", "gpt-4o")
         
         response = await chat.send_message(UserMessage(text=prompt))
-        response_text = response.content.strip()
+        response_text = str(response).strip()
         
         # Clean up response if needed
         if response_text.startswith("```json"):

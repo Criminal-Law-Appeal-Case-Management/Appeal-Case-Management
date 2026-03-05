@@ -27,6 +27,74 @@ db = client[os.environ['DB_NAME']]
 # Admin configuration - emails that have admin access
 ADMIN_EMAILS = os.environ.get("ADMIN_EMAILS", "djkingy79@gmail.com").split(",")
 
+# Import offence framework for AI context building
+from offence_framework import OFFENCE_CATEGORIES, AUSTRALIAN_STATES
+
+def get_offence_context(case: dict) -> str:
+    """Build offence-specific context string for AI prompts"""
+    offence_category = case.get('offence_category', 'homicide')
+    offence_type = case.get('offence_type', '')
+    state = case.get('state', 'nsw')
+    
+    category_data = OFFENCE_CATEGORIES.get(offence_category, OFFENCE_CATEGORIES.get('homicide'))
+    state_info = AUSTRALIAN_STATES.get(state, AUSTRALIAN_STATES.get('nsw'))
+    
+    context = f"""
+OFFENCE INFORMATION:
+- Category: {category_data.get('name', 'Unknown')} ({offence_category})
+- Specific Offence: {offence_type if offence_type else 'Not specified'}
+- Jurisdiction: {state_info.get('name', 'New South Wales')} ({state_info.get('abbreviation', 'NSW')})
+- Description: {category_data.get('description', '')}
+
+KEY ELEMENTS TO PROVE:
+{chr(10).join(f"- {elem}" for elem in category_data.get('key_elements', []))}
+
+AVAILABLE DEFENCES:
+{chr(10).join(f"- {defence}" for defence in category_data.get('defences', []))}
+
+RELEVANT {state_info.get('abbreviation', 'NSW')} LEGISLATION:
+"""
+    state_leg_key = f"{state}_legislation"
+    state_legislation = category_data.get(state_leg_key, category_data.get('nsw_legislation', {}))
+    
+    for act_name, sections in state_legislation.items():
+        context += f"\n{act_name}:\n"
+        for section in sections:
+            context += f"  - {section.get('section')}: {section.get('title')}\n"
+    
+    if category_data.get('cth_legislation'):
+        context += "\nRELEVANT FEDERAL/COMMONWEALTH LEGISLATION:\n"
+        for act_name, sections in category_data.get('cth_legislation', {}).items():
+            context += f"\n{act_name}:\n"
+            for section in sections:
+                context += f"  - {section.get('section')}: {section.get('title')}\n"
+    
+    return context
+
+def get_offence_system_prompt(offence_category: str) -> str:
+    """Generate offence-specific system prompt for AI analysis"""
+    category_data = OFFENCE_CATEGORIES.get(offence_category, OFFENCE_CATEGORIES.get('homicide'))
+    category_name = category_data.get('name', 'criminal')
+    
+    legislation_refs = []
+    for act_name, sections in category_data.get('nsw_legislation', {}).items():
+        for section in sections[:5]:
+            legislation_refs.append(f"{section.get('section')} {act_name}")
+    for act_name, sections in category_data.get('cth_legislation', {}).items():
+        for section in sections[:3]:
+            legislation_refs.append(f"{section.get('section')} {act_name}")
+    
+    legislation_str = ", ".join(legislation_refs[:8]) if legislation_refs else "relevant criminal law sections"
+    
+    return f"""You are a senior Australian criminal appeal barrister with 30+ years experience in {category_name.lower()} and serious criminal appeals in NSW. You specialize in {category_name.lower()} offences and have extensive knowledge of {legislation_str}.
+
+YOUR EXPERTISE COVERS:
+- {category_name} offences under NSW and Commonwealth law
+- Key elements: {', '.join(category_data.get('key_elements', ['actus reus', 'mens rea'])[:4])}
+- Available defences: {', '.join(category_data.get('defences', ['self-defence'])[:5])}
+
+You have successfully overturned dozens of wrongful convictions in {category_name.lower()} cases."""
+
 # Create the main app
 app = FastAPI(title="Criminal Appeal AI - Case Management")
 
@@ -3135,8 +3203,10 @@ async def generate_report(case_id: str, report_request: ReportRequest, request: 
     if report_type not in ["quick_summary", "full_detailed", "extensive_log"]:
         raise HTTPException(status_code=400, detail="Invalid report type")
     
-    # Check payment for premium reports
-    if report_type == "full_detailed":
+    # Check payment for premium reports (admin bypasses all payments)
+    is_admin = user.email in ADMIN_EMAILS
+    
+    if report_type == "full_detailed" and not is_admin:
         payment = await db.payments.find_one({
             "case_id": case_id,
             "user_id": user.user_id,
@@ -3154,7 +3224,7 @@ async def generate_report(case_id: str, report_request: ReportRequest, request: 
                 }
             )
     
-    if report_type == "extensive_log":
+    if report_type == "extensive_log" and not is_admin:
         payment = await db.payments.find_one({
             "case_id": case_id,
             "user_id": user.user_id,
