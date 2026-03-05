@@ -201,6 +201,12 @@ const LandingPage = () => {
                   Why I Created This App — Debra King
                 </h3>
                 <div className="space-y-4 text-slate-300 leading-relaxed">
+                  <p className="bg-slate-800 rounded-lg p-3 border border-slate-700">
+                    <strong className="text-amber-400">Important:</strong> I am not a qualified lawyer. I have spent years 
+                    teaching myself about applicable criminal laws — NSW and Australian Federal law — on murder, manslaughter, 
+                    and mens rea. I've become so well-educated that I can recite most sections of the relevant Acts without 
+                    referring to them.
+                  </p>
                   <p>
                     I created this app because I have <strong className="text-white">two best mates who are locked up</strong>, 
                     and I refuse to stand by while the system fails them.
@@ -208,17 +214,20 @@ const LandingPage = () => {
                   <p>
                     <strong className="text-amber-400">Josh Homann</strong> has been incarcerated for over 10 years of a 
                     30-year sentence. Straight after sentencing, he was told he had no grounds for an appeal. I knew I had 
-                    to step up and do something. I've become so knowledgeable on criminal law — NSW and Federal level — on 
-                    murder, manslaughter, and mens rea, that I could represent him in this appeal myself.
+                    to step up and do something.
                   </p>
                   <p>
                     <strong className="text-amber-400">Brad Fletcher</strong> has been on remand for over 2 years, 
                     still awaiting trial.
                   </p>
-                  <p className="text-white font-medium">
-                    This app exists because too many people are failed by a system that's supposed to protect them. 
-                    If I can help identify grounds for appeal that might otherwise be missed, then maybe I can help 
-                    others like Josh and Brad.
+                  <p>
+                    I've spent years manually searching through case files, comparing and assessing appeals to understand 
+                    what made them successful or unsuccessful. I put <strong className="text-white">blood, sweat, and tears</strong> into 
+                    this for the huge love I have for my mates.
+                  </p>
+                  <p className="text-white font-medium italic border-l-4 border-amber-500 pl-4">
+                    "I just wanted to create something that could possibly assist others without them having to spend years 
+                    working this out themselves. I'm sure this will help lawyers at all levels too."
                   </p>
                 </div>
               </div>
