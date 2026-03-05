@@ -17,6 +17,7 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
   const [mode, setMode] = useState("login"); // login or register
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showGoogleHint, setShowGoogleHint] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -63,10 +64,20 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
       onClose();
     } catch (error) {
       const message = error.response?.data?.detail || "Authentication failed. Please try again.";
-      toast.error(message);
       
-      if (message.includes("already registered")) {
+      // Handle specific error cases with clearer messages
+      if (message.includes("Google login") || message.includes("Google")) {
+        toast.error("This email is linked to Google. Please close this and use 'Sign in with Google' instead.", {
+          duration: 5000
+        });
+        setShowGoogleHint(true);
+      } else if (message.includes("already registered") || message.includes("already exists")) {
+        toast.error("This email is already registered. Try signing in instead.");
         setMode("login");
+      } else if (message.includes("Invalid email or password") || message.includes("invalid")) {
+        toast.error("Invalid email or password. Please check your credentials.");
+      } else {
+        toast.error(message);
       }
     } finally {
       setLoading(false);
@@ -76,6 +87,7 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
   const resetForm = () => {
     setFormData({ email: "", password: "", name: "" });
     setErrors({});
+    setShowGoogleHint(false);
   };
 
   const switchMode = () => {
@@ -96,6 +108,14 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+          {showGoogleHint && (
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800">
+                <strong>This email uses Google login.</strong> Please close this dialog and click "Sign in with Google" to continue.
+              </p>
+            </div>
+          )}
+          
           {mode === "register" && (
             <div>
               <Label htmlFor="name" className="flex items-center gap-2">
