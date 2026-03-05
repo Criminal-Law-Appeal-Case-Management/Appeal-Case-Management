@@ -1,10 +1,11 @@
-import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin, ExternalLink } from "lucide-react";
+import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin, ExternalLink, Moon, Sun } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API } from "../App";
 import AuthModal from "../components/AuthModal";
+import { useTheme } from "../contexts/ThemeContext";
 import {
   Accordion,
   AccordionContent,
@@ -14,6 +15,7 @@ import {
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
   const [showLegalFramework, setShowLegalFramework] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -58,15 +60,22 @@ const LandingPage = () => {
             <Link to="/success-stories" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
               Success Stories
             </Link>
+            <Link to="/faq" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
+              FAQ
+            </Link>
+            <Link to="/lawyers" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
+              Find Lawyers
+            </Link>
             <Link to="/glossary" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
               Legal Terms
             </Link>
-            <Link to="/contact" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
-              Contact
-            </Link>
-            <Link to="/terms" className="hidden md:block text-slate-400 hover:text-white text-sm transition-colors">
-              Terms
-            </Link>
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-slate-400 hover:text-white transition-colors"
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
             <Button 
               onClick={() => setShowAuthModal(true)}
               data-testid="login-btn"
@@ -1450,9 +1459,11 @@ const LandingPage = () => {
           <div className="flex items-center gap-6 text-sm text-slate-500">
             <Link to="/statistics" className="hover:text-slate-900">Statistics</Link>
             <Link to="/success-stories" className="hover:text-slate-900">Success Stories</Link>
+            <Link to="/faq" className="hover:text-slate-900">FAQ</Link>
+            <Link to="/lawyers" className="hover:text-slate-900">Find Lawyers</Link>
             <Link to="/glossary" className="hover:text-slate-900">Legal Terms</Link>
             <Link to="/contact" className="hover:text-slate-900">Contact</Link>
-            <Link to="/terms" className="hover:text-slate-900">Terms & Privacy</Link>
+            <Link to="/terms" className="hover:text-slate-900">Terms</Link>
           </div>
           <p className="text-xs text-red-600 font-medium text-center md:text-right">
             Australian Law Only • Not legal advice

@@ -397,6 +397,13 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **Key Insights section** highlighting trends
 - [x] **Navigation links** added to header and footer
 
+### New Pages & Features ✅ (Dec 2025)
+- [x] **FAQ Page** (`/faq`) - Searchable FAQ with 6 categories, 20+ questions
+- [x] **Lawyer Directory** (`/lawyers`) - Legal Aid, Bar Association, Law Society links for all 8 states
+- [x] **Dark Mode Toggle** - Moon/Sun icon in header, persists in localStorage
+- [x] **Drag & Drop Upload** - Enhanced document upload with drag/drop zone
+- [x] **Updated Navigation** - FAQ, Find Lawyers links in header and footer
+
 ### Compare Your Case Feature ✅ (Dec 2025)
 - [x] **New API endpoint** `/api/cases/{case_id}/comparison`
 - [x] **CaseComparison component** in Progress tab showing:

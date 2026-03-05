@@ -58,6 +58,7 @@ const DocumentsSection = ({
   const [uploadCategory, setUploadCategory] = useState("other");
   const [uploadDescription, setUploadDescription] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0 });
   
   const [searchQuery, setSearchQuery] = useState("");
@@ -443,23 +444,70 @@ const DocumentsSection = ({
             <DialogTitle style={{ fontFamily: 'Crimson Pro, serif' }}>Upload Documents</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="files">Select Files</Label>
-              <Input
+            {/* Drag & Drop Zone */}
+            <div
+              className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                isDragging 
+                  ? 'border-amber-500 bg-amber-50' 
+                  : 'border-slate-300 hover:border-slate-400'
+              }`}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDragging(true);
+              }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setIsDragging(false);
+                const files = Array.from(e.dataTransfer.files);
+                setUploadFiles(prev => [...prev, ...files]);
+              }}
+            >
+              <input
                 id="files"
                 type="file"
                 multiple
                 accept=".pdf,.docx,.doc,.txt,.png,.jpg,.jpeg"
                 onChange={(e) => setUploadFiles(Array.from(e.target.files || []))}
-                className="mt-1"
+                className="hidden"
                 data-testid="upload-file-input"
               />
-              {uploadFiles.length > 0 && (
-                <p className="text-sm text-slate-600 mt-2">
+              <label htmlFor="files" className="cursor-pointer">
+                <FileUp className={`w-10 h-10 mx-auto mb-3 ${isDragging ? 'text-amber-500' : 'text-slate-400'}`} />
+                <p className="text-sm font-medium text-slate-700">
+                  {isDragging ? 'Drop files here' : 'Drag & drop files here'}
+                </p>
+                <p className="text-xs text-slate-500 mt-1">
+                  or <span className="text-amber-600 hover:underline">browse</span> to select
+                </p>
+                <p className="text-xs text-slate-400 mt-2">
+                  PDF, DOCX, TXT, PNG, JPG supported
+                </p>
+              </label>
+            </div>
+            
+            {/* Selected Files */}
+            {uploadFiles.length > 0 && (
+              <div className="bg-slate-50 rounded-lg p-3">
+                <p className="text-sm font-medium text-slate-700 mb-2">
                   {uploadFiles.length} file(s) selected
                 </p>
-              )}
-            </div>
+                <div className="space-y-1 max-h-32 overflow-y-auto">
+                  {uploadFiles.map((file, idx) => (
+                    <div key={idx} className="flex items-center justify-between text-xs bg-white rounded px-2 py-1">
+                      <span className="truncate text-slate-600">{file.name}</span>
+                      <button
+                        onClick={() => setUploadFiles(files => files.filter((_, i) => i !== idx))}
+                        className="text-slate-400 hover:text-red-500 ml-2"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
             <div>
               <Label htmlFor="category">Category</Label>
               <Select value={uploadCategory} onValueChange={setUploadCategory}>

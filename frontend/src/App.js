@@ -20,6 +20,9 @@ import ContactPage from "./pages/ContactPage";
 import LegalGlossary from "./pages/LegalGlossary";
 import SuccessStories from "./pages/SuccessStories";
 import Statistics from "./pages/Statistics";
+import FAQPage from "./pages/FAQPage";
+import LawyerDirectory from "./pages/LawyerDirectory";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
@@ -223,19 +226,29 @@ function AppRouter() {
         path="/statistics"
         element={<Statistics />}
       />
+      <Route
+        path="/faq"
+        element={<FAQPage />}
+      />
+      <Route
+        path="/lawyers"
+        element={<LawyerDirectory />}
+      />
     </Routes>
   );
 }
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <AppRouter />
-        <Toaster position="top-right" richColors />
-        <InstallPrompt />
-      </BrowserRouter>
-    </div>
+    <ThemeProvider>
+      <div className="App">
+        <BrowserRouter>
+          <AppRouter />
+          <Toaster position="top-right" richColors />
+          <InstallPrompt />
+        </BrowserRouter>
+      </div>
+    </ThemeProvider>
   );
 }
 
