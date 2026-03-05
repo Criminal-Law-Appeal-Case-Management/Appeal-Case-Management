@@ -309,9 +309,9 @@ const ReportsSection = ({
           setShowPaymentModal(false);
           setPendingReportType(null);
         }}
-        onSuccess={handlePaymentSuccess}
-        purchaseType={pendingReportType === 'extensive_log' ? 'extensive_report' : 'full_report'}
-        amount={pendingReportType === 'extensive_log' ? 39.00 : 29.00}
+        onPaymentSuccess={handlePaymentSuccess}
+        featureType={pendingReportType === 'extensive_log' ? 'extensive_report' : 'full_report'}
+        price={pendingReportType === 'extensive_log' ? 39.00 : 29.00}
         caseId={caseId}
       />
     </>
