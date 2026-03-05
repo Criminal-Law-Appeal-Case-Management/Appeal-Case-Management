@@ -334,7 +334,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Created `/app/frontend/src/components/DocumentsSection.jsx` - Document upload, list, search, OCR
   - Created `/app/frontend/src/components/NotesSection.jsx` - Notes management with categories
   - Updated `/app/frontend/src/components/ReportsSection.jsx` - Report generation and viewing
-  - Components are ready for integration to reduce CaseDetail.jsx from 2293 lines
+  - **INTEGRATED into CaseDetail.jsx** - Reduced from 2294 to 1209 lines (Dec 2025)
 
 ### Criminal Law & Human Rights Resources ✅ (Mar 2026)
 - [x] **Criminal Legislation by State** - Direct links to:
@@ -355,6 +355,29 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - WA eCourts, Tasmanian Cases, NT Cases, ACT Judgments
   - High Court & Federal Court of Australia
   - AustLII main search
+
+### CaseDetail.jsx Refactoring Complete ✅ (Dec 2025)
+- [x] **Reduced from 2294 lines to 1209 lines** (~47% reduction)
+- [x] **Integrated Section Components**:
+  - `DocumentsSection.jsx` - Handles document upload, listing, search, OCR
+  - `NotesSection.jsx` - Manages notes CRUD, categories, pinning
+  - `ReportsSection.jsx` - Report generation with payment integration
+- [x] **Cleaned Up Unused Code**:
+  - Removed 10+ unused state variables
+  - Removed 15+ unused handler functions
+  - Removed unused imports (ScrollArea, ScanLine, etc.)
+- [x] **Testing Verified**: All 7 tabs working (Documents, Timeline, Grounds, Notes, Reports, Legal Framework, Progress)
+- [x] **Test Report**: `/app/test_reports/iteration_16.json`
+
+## Next Priority Tasks
+- [ ] Email/Password Authentication - Backend complete, needs "Forgot Password" feature (blocked on Resend API key)
+- [ ] Contact Form Email Notifications (blocked on Resend API key)
+- [ ] Continue backend `server.py` modularization
+
+## Backlog
+- [ ] Build and submit native mobile app (Capacitor ready)
+- [ ] Enhanced collaboration features (replies, threads, @mentions in notes)
+- [ ] Replace placeholder content in "Success Stories" page
 
 
 
