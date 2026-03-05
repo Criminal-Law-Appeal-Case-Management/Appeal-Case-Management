@@ -619,14 +619,10 @@ const LandingPage = () => {
             </p>
             
             <p className="text-slate-300 text-sm leading-relaxed mb-4">
-              Consider just a few examples:{" "}
-              <span className="text-white">judicial bias or errors in directions to the jury</span>,{" "}
-              <span className="text-white">failure to properly apply community standards</span>,{" "}
-              <span className="text-white">prejudicial media coverage influencing jurors</span>,{" "}
-              <span className="text-white">fresh evidence not available at trial</span>,{" "}
-              <span className="text-white">ineffective assistance of counsel</span>, or{" "}
-              <span className="text-white">misapplication of legal principles</span>.{" "}
-              Every person has a fundamental right to a fair trial — and that right extends to appeals.
+              Consider just a few examples: judicial bias or errors in directions to the jury, failure to properly 
+              apply community standards, prejudicial media coverage influencing jurors, fresh evidence not available 
+              at trial, ineffective assistance of counsel, or misapplication of legal principles. Every person has 
+              a fundamental right to a fair trial — and that right extends to appeals.
             </p>
 
             <p className="text-slate-300 text-sm leading-relaxed mb-4">
