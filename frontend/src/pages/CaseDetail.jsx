@@ -43,6 +43,8 @@ import NotesSection from "../components/NotesSection";
 import ReportsSection from "../components/ReportsSection";
 import CaseComparison from "../components/CaseComparison";
 import ContradictionFinder from "../components/ContradictionFinder";
+import QuickExport from "../components/QuickExport";
+import DocumentBundler from "../components/DocumentBundler";
 
 const EVENT_TYPES = [
   // Pre-trial
@@ -537,6 +539,8 @@ const CaseDetail = ({ user }) => {
               <HelpCircle className="w-4 h-4 mr-1" />
               Help
             </Button>
+            <QuickExport caseId={caseId} caseTitle={caseData?.title} />
+            <DocumentBundler caseId={caseId} documents={documents} />
           </div>
         </div>
       </header>

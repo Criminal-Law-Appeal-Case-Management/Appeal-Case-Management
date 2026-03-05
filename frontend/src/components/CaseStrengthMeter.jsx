@@ -3,7 +3,7 @@ import axios from "axios";
 import { API } from "../App";
 import { 
   TrendingUp, AlertCircle, FileText, Clock, CheckCircle2,
-  ChevronRight
+  ChevronRight, Gavel, Shield, Sparkles
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
@@ -29,11 +29,13 @@ const CaseStrengthMeter = ({ caseId }) => {
 
   if (loading) {
     return (
-      <Card>
+      <Card className="bg-card border-border">
         <CardContent className="p-6">
           <div className="animate-pulse space-y-4">
-            <div className="h-4 bg-slate-200 rounded w-1/3"></div>
-            <div className="h-8 bg-slate-200 rounded"></div>
+            <div className="h-4 bg-muted rounded w-1/3"></div>
+            <div className="h-24 bg-muted rounded-full w-24 mx-auto"></div>
+            <div className="h-4 bg-muted rounded"></div>
+            <div className="h-4 bg-muted rounded"></div>
           </div>
         </CardContent>
       </Card>
@@ -42,104 +44,141 @@ const CaseStrengthMeter = ({ caseId }) => {
 
   if (!strength) return null;
 
-  const getColorClass = (color) => {
-    switch (color) {
-      case "green": return "text-emerald-600 bg-emerald-100";
-      case "amber": return "text-amber-600 bg-amber-100";
-      case "orange": return "text-orange-600 bg-orange-100";
-      case "red": return "text-red-600 bg-red-100";
-      default: return "text-slate-600 bg-slate-100";
-    }
+  const getScoreGradient = (score) => {
+    if (score >= 75) return "from-emerald-500 to-emerald-600";
+    if (score >= 50) return "from-amber-500 to-amber-600";
+    if (score >= 25) return "from-orange-500 to-orange-600";
+    return "from-red-500 to-red-600";
   };
 
-  const getProgressColor = (score) => {
+  const getScoreBg = (score) => {
+    if (score >= 75) return "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400";
+    if (score >= 50) return "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400";
+    if (score >= 25) return "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400";
+    return "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400";
+  };
+
+  const getProgressBg = (score) => {
     if (score >= 75) return "bg-emerald-500";
     if (score >= 50) return "bg-amber-500";
     if (score >= 25) return "bg-orange-500";
     return "bg-red-500";
   };
 
+  const breakdownItems = [
+    {
+      label: "Grounds of Merit",
+      icon: Gavel,
+      score: strength.breakdown.grounds.score,
+      detail: `${strength.breakdown.grounds.strong} strong, ${strength.breakdown.grounds.moderate} moderate, ${strength.breakdown.grounds.weak} weak`
+    },
+    {
+      label: "Documentation",
+      icon: FileText,
+      score: strength.breakdown.documentation.score,
+      detail: `${strength.breakdown.documentation.with_text}/${strength.breakdown.documentation.total_docs} docs with extracted text`
+    },
+    {
+      label: "Timeline",
+      icon: Clock,
+      score: strength.breakdown.timeline.score,
+      detail: `${strength.breakdown.timeline.event_count} events documented`
+    },
+    {
+      label: "Preparation",
+      icon: CheckCircle2,
+      score: strength.breakdown.preparation.score,
+      detail: `${strength.breakdown.preparation.completed}/${strength.breakdown.preparation.total} checklist items`
+    }
+  ];
+
   return (
-    <Card data-testid="case-strength-meter">
+    <Card className="bg-card border-border shadow-sm" data-testid="case-strength-meter">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-slate-600" />
-          Case Strength
+        <CardTitle className="text-lg flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
+            <TrendingUp className="w-4 h-4 text-white" />
+          </div>
+          Case Strength Meter
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Overall Score */}
-        <div className="text-center py-4">
-          <div className={`inline-flex items-center justify-center w-24 h-24 rounded-full ${getColorClass(strength.rating_color)}`}>
-            <span className="text-3xl font-bold">{strength.overall_score}</span>
+      <CardContent className="space-y-6">
+        {/* Overall Score - Circular Display */}
+        <div className="flex flex-col items-center py-4">
+          <div className="relative">
+            {/* Outer ring */}
+            <div className={`w-32 h-32 rounded-full bg-gradient-to-br ${getScoreGradient(strength.overall_score)} p-1 shadow-lg`}>
+              <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
+                <div className="text-center">
+                  <span className="text-4xl font-bold text-foreground">{strength.overall_score}</span>
+                  <span className="text-lg text-muted-foreground">/100</span>
+                </div>
+              </div>
+            </div>
+            {/* Sparkle indicator */}
+            {strength.overall_score >= 75 && (
+              <div className="absolute -top-1 -right-1 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+            )}
           </div>
-          <p className={`mt-2 font-semibold ${getColorClass(strength.rating_color).split(' ')[0]}`}>
+          <p className={`mt-3 px-4 py-1.5 rounded-full text-sm font-semibold ${getScoreBg(strength.overall_score)}`}>
             {strength.rating}
           </p>
         </div>
 
-        {/* Breakdown */}
-        <div className="space-y-3">
-          <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-slate-600">Grounds of Merit</span>
-              <span className="font-medium">{strength.breakdown.grounds.score}%</span>
+        {/* Breakdown Bars */}
+        <div className="space-y-4">
+          {breakdownItems.map((item, index) => (
+            <div key={index} className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <item.icon className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm font-medium text-foreground">{item.label}</span>
+                </div>
+                <span className={`text-sm font-bold ${getScoreBg(item.score).split(' ')[0]} px-2 py-0.5 rounded-md ${getScoreBg(item.score)}`}>
+                  {item.score}%
+                </span>
+              </div>
+              <div className="h-2.5 bg-muted rounded-full overflow-hidden">
+                <div 
+                  className={`h-full rounded-full transition-all duration-500 ${getProgressBg(item.score)}`}
+                  style={{ width: `${item.score}%` }}
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">{item.detail}</p>
             </div>
-            <Progress value={strength.breakdown.grounds.score} className="h-2" />
-            <p className="text-xs text-slate-500 mt-1">
-              {strength.breakdown.grounds.strong} strong, {strength.breakdown.grounds.moderate} moderate, {strength.breakdown.grounds.weak} weak
-            </p>
-          </div>
-
-          <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-slate-600">Documentation</span>
-              <span className="font-medium">{strength.breakdown.documentation.score}%</span>
-            </div>
-            <Progress value={strength.breakdown.documentation.score} className="h-2" />
-            <p className="text-xs text-slate-500 mt-1">
-              {strength.breakdown.documentation.with_text}/{strength.breakdown.documentation.total_docs} docs with extracted text
-            </p>
-          </div>
-
-          <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-slate-600">Timeline</span>
-              <span className="font-medium">{strength.breakdown.timeline.score}%</span>
-            </div>
-            <Progress value={strength.breakdown.timeline.score} className="h-2" />
-            <p className="text-xs text-slate-500 mt-1">
-              {strength.breakdown.timeline.event_count} events documented
-            </p>
-          </div>
-
-          <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-slate-600">Preparation Progress</span>
-              <span className="font-medium">{strength.breakdown.preparation.score}%</span>
-            </div>
-            <Progress value={strength.breakdown.preparation.score} className="h-2" />
-            <p className="text-xs text-slate-500 mt-1">
-              {strength.breakdown.preparation.completed}/{strength.breakdown.preparation.total} checklist items completed
-            </p>
-          </div>
+          ))}
         </div>
 
         {/* Recommendations */}
         {strength.recommendations.length > 0 && (
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-4">
-            <p className="text-sm font-medium text-amber-800 mb-2 flex items-center gap-1">
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
+            <p className="text-sm font-semibold text-amber-800 dark:text-amber-200 mb-3 flex items-center gap-2">
               <AlertCircle className="w-4 h-4" />
-              Recommendations
+              Recommendations to Improve
             </p>
-            <ul className="text-sm text-amber-700 space-y-1">
+            <ul className="space-y-2">
               {strength.recommendations.map((rec, i) => (
-                <li key={i} className="flex items-start gap-2">
+                <li key={i} className="flex items-start gap-2 text-sm text-amber-700 dark:text-amber-300">
                   <ChevronRight className="w-4 h-4 shrink-0 mt-0.5" />
                   {rec}
                 </li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {/* Success indicator */}
+        {strength.overall_score >= 75 && (
+          <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4 text-center">
+            <Shield className="w-8 h-8 text-emerald-600 dark:text-emerald-400 mx-auto mb-2" />
+            <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">
+              Strong Appeal Potential
+            </p>
+            <p className="text-xs text-emerald-700 dark:text-emerald-300 mt-1">
+              Your case preparation is looking solid. Consider consulting with a barrister.
+            </p>
           </div>
         )}
       </CardContent>

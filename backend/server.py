@@ -4333,6 +4333,10 @@ app.include_router(compare_router)
 from routers.contradictions import router as contradictions_router
 app.include_router(contradictions_router)
 
+# Include export router
+from routers.export import router as export_router
+app.include_router(export_router)
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
