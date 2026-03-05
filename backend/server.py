@@ -24,6 +24,9 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
+# Admin configuration - emails that have admin access
+ADMIN_EMAILS = os.environ.get("ADMIN_EMAILS", "djkingy79@gmail.com").split(",")
+
 # Create the main app
 app = FastAPI(title="Criminal Appeal AI - Case Management")
 
@@ -402,9 +405,8 @@ async def get_visit_stats(request: Request):
     try:
         user = await get_current_user(request)
         
-        # Only allow specific admin emails
-        admin_emails = ["kikakuntalong@gmail.com"]  # Deb's admin email
-        if user.email not in admin_emails:
+        # Only allow admin emails (configured in ADMIN_EMAILS env var)
+        if user.email not in ADMIN_EMAILS:
             raise HTTPException(status_code=403, detail="Admin access required")
         
         total_visits = await db.visits.count_documents({})
@@ -518,8 +520,7 @@ async def submit_contact_form(contact: ContactMessage):
 async def get_contact_messages(request: Request):
     """Get all contact messages (admin only)"""
     user = await get_current_user(request)
-    admin_emails = ["kikakuntalong@gmail.com"]
-    if user.email not in admin_emails:
+    if user.email not in ADMIN_EMAILS:
         raise HTTPException(status_code=403, detail="Admin access required")
     
     messages = await db.contact_messages.find({}, {"_id": 0}).sort("timestamp", -1).to_list(100)
@@ -534,8 +535,7 @@ async def get_contact_messages(request: Request):
 async def mark_message_read(message_id: str, request: Request):
     """Mark a message as read"""
     user = await get_current_user(request)
-    admin_emails = ["kikakuntalong@gmail.com"]
-    if user.email not in admin_emails:
+    if user.email not in ADMIN_EMAILS:
         raise HTTPException(status_code=403, detail="Admin access required")
     
     await db.contact_messages.update_one(
@@ -579,8 +579,7 @@ async def submit_success_story(submission: SuccessStorySubmission):
 async def get_submitted_stories(request: Request):
     """Get all submitted stories (admin only)"""
     user = await get_current_user(request)
-    admin_emails = ["kikakuntalong@gmail.com"]
-    if user.email not in admin_emails:
+    if user.email not in ADMIN_EMAILS:
         raise HTTPException(status_code=403, detail="Admin access required")
     
     stories = await db.success_stories.find({}, {"_id": 0}).sort("timestamp", -1).to_list(100)

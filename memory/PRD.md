@@ -324,5 +324,39 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **Landing Page** - New "Search Real Court Decisions" section with all state links
 - [x] **Legal Framework Viewer** - Case law links integrated into Legal Framework tab
 
+### Refactoring & Technical Improvements ✅ (Mar 2026)
+- [x] **Admin Email Moved to Environment Variable**:
+  - `ADMIN_EMAILS` env var in `/app/backend/.env`
+  - Supports comma-separated list for multiple admins
+  - Default fallback to `djkingy79@gmail.com`
+
+- [x] **Component Extraction from CaseDetail.jsx**:
+  - Created `/app/frontend/src/components/DocumentsSection.jsx` - Document upload, list, search, OCR
+  - Created `/app/frontend/src/components/NotesSection.jsx` - Notes management with categories
+  - Updated `/app/frontend/src/components/ReportsSection.jsx` - Report generation and viewing
+  - Components are ready for integration to reduce CaseDetail.jsx from 2293 lines
+
+### Criminal Law & Human Rights Resources ✅ (Mar 2026)
+- [x] **Criminal Legislation by State** - Direct links to:
+  - NSW: Crimes Act 1900, Criminal Appeal Act 1912, Evidence Act 1995
+  - VIC: Crimes Act 1958, Criminal Procedure Act 2009
+  - QLD: Criminal Code Act 1899, Evidence Act 1977
+  - SA: Criminal Law Consolidation Act 1935
+  - WA: Criminal Code Act 1913, Criminal Appeals Act 2004
+  - CTH: Criminal Code Act 1995, Evidence Act 1995, Judiciary Act 1903
+
+- [x] **Human Rights Framework** - Links to:
+  - International: ICCPR, UDHR, Convention Against Torture
+  - Australian: Victoria Charter, ACT Human Rights Act, QLD Human Rights Act
+  - Fair Trial Rights summary (before/during trial + after conviction)
+
+- [x] **Case Law Research** - Links to all state court databases:
+  - NSW Caselaw, Victorian Cases (AustLII), QLD Caselaw, SA Judgments
+  - WA eCourts, Tasmanian Cases, NT Cases, ACT Judgments
+  - High Court & Federal Court of Australia
+  - AustLII main search
+
+
+
 
 

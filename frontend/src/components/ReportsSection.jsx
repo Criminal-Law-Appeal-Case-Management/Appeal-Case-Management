@@ -2,10 +2,12 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { 
-  FileText, Plus, Trash2, Loader2, Download, Eye, ChevronRight
+  FileText, Loader2, Clock, ChevronDown, ChevronRight, Trash2
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
+import { Badge } from "./ui/badge";
+import { ScrollArea } from "./ui/scroll-area";
 import {
   Dialog,
   DialogContent,
@@ -14,67 +16,86 @@ import {
   DialogFooter,
 } from "./ui/dialog";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
-import { Label } from "./ui/label";
-import { Badge } from "./ui/badge";
-import { ScrollArea } from "./ui/scroll-area";
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "./ui/collapsible";
 import { API } from "../App";
+import PaymentModal from "./PaymentModal";
 
 const REPORT_TYPES = [
-  { value: "quick_summary", label: "Quick Summary", description: "2-3 paragraph overview" },
-  { value: "full_detailed", label: "Full Detailed", description: "Comprehensive legal analysis" },
-  { value: "extensive_log", label: "Extensive Log", description: "Complete documentation with all evidence" }
+  { 
+    value: "quick_summary", 
+    label: "Quick Summary", 
+    description: "A brief overview of key points (2-3 paragraphs)",
+    price: 29.00,
+    priceId: "full_report"
+  },
+  { 
+    value: "full_detailed", 
+    label: "Full Detailed Report", 
+    description: "Comprehensive analysis with case citations and legal framework",
+    price: 29.00,
+    priceId: "full_report"
+  },
+  { 
+    value: "extensive_log", 
+    label: "Extensive Log Report", 
+    description: "Complete documentation with chronology and all evidence analysis",
+    price: 39.00,
+    priceId: "extensive_report"
+  }
 ];
 
-const formatDateTime = (dateString) => {
-  if (!dateString) return "";
-  return new Date(dateString).toLocaleString('en-AU', { 
-    day: 'numeric', month: 'short', year: 'numeric',
-    hour: '2-digit', minute: '2-digit'
-  });
-};
-
-const getReportTypeColor = (type) => {
-  const colors = {
-    quick_summary: "bg-green-100 text-green-800 border-green-200",
-    full_detailed: "bg-blue-100 text-blue-800 border-blue-200",
-    extensive_log: "bg-purple-100 text-purple-800 border-purple-200"
-  };
-  return colors[type] || "bg-slate-100 text-slate-800 border-slate-200";
-};
-
-export default function ReportsSection({ 
+const ReportsSection = ({ 
   caseId, 
   reports, 
-  setReports,
-  onRefresh 
-}) {
+  setReports, 
+  onReportsChange,
+  documents 
+}) => {
   const [showReportDialog, setShowReportDialog] = useState(false);
-  const [reportType, setReportType] = useState("quick_summary");
+  const [selectedReportType, setSelectedReportType] = useState(null);
   const [generatingReport, setGeneratingReport] = useState(false);
-  const [selectedReport, setSelectedReport] = useState(null);
-  const [exportingPdf, setExportingPdf] = useState(null);
-  const [exportingDocx, setExportingDocx] = useState(null);
+  const [expandedReports, setExpandedReports] = useState({});
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [pendingReportType, setPendingReportType] = useState(null);
 
-  const handleGenerateReport = async () => {
+  const handleGenerateReport = async (reportType) => {
+    if (documents.length === 0) {
+      toast.error("Please upload documents before generating a report");
+      return;
+    }
+    
+    // Check if user has already paid for this report type
+    const existingReport = reports.find(r => r.report_type === reportType);
+    if (existingReport) {
+      // Already generated this type, just regenerate
+      generateReport(reportType);
+      return;
+    }
+    
+    // Need to pay first
+    setPendingReportType(reportType);
+    setShowPaymentModal(true);
+  };
+
+  const generateReport = async (reportType) => {
     setGeneratingReport(true);
+    setShowReportDialog(false);
+    
     try {
-      const response = await axios.post(`${API}/cases/${caseId}/reports/generate`, {
-        report_type: reportType
-      }, { timeout: 180000 });
+      const response = await axios.post(
+        `${API}/cases/${caseId}/reports/generate`,
+        { report_type: reportType },
+        { timeout: 180000 }
+      );
       
-      setReports([response.data, ...reports]);
       toast.success("Report generated successfully");
-      setShowReportDialog(false);
-      setSelectedReport(response.data);
+      if (onReportsChange) onReportsChange();
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        toast.error("Report generation timed out. Please try again.");
+        toast.info("Report generation is taking longer than expected. Please refresh in a moment.");
       } else {
         toast.error("Failed to generate report");
       }
@@ -83,276 +104,217 @@ export default function ReportsSection({
     }
   };
 
+  const handlePaymentSuccess = () => {
+    setShowPaymentModal(false);
+    if (pendingReportType) {
+      generateReport(pendingReportType);
+      setPendingReportType(null);
+    }
+  };
+
   const handleDeleteReport = async (reportId) => {
-    if (!window.confirm("Delete this report?")) return;
+    if (!confirm("Delete this report?")) return;
+    
     try {
       await axios.delete(`${API}/cases/${caseId}/reports/${reportId}`);
       setReports(reports.filter(r => r.report_id !== reportId));
-      if (selectedReport?.report_id === reportId) {
-        setSelectedReport(null);
-      }
       toast.success("Report deleted");
     } catch (error) {
       toast.error("Failed to delete report");
     }
   };
 
-  const handleExportPDF = async (reportId) => {
-    setExportingPdf(reportId);
-    try {
-      const response = await axios.get(`${API}/cases/${caseId}/reports/${reportId}/export-pdf`, {
-        responseType: 'blob',
-        timeout: 60000
-      });
-      
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `report-${reportId}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-      toast.success("PDF downloaded");
-    } catch (error) {
-      toast.error("Failed to export PDF");
-    } finally {
-      setExportingPdf(null);
-    }
+  const toggleReportExpand = (reportId) => {
+    setExpandedReports(prev => ({
+      ...prev,
+      [reportId]: !prev[reportId]
+    }));
   };
 
-  const handleExportDOCX = async (reportId) => {
-    setExportingDocx(reportId);
-    try {
-      const response = await axios.get(`${API}/cases/${caseId}/reports/${reportId}/export-docx`, {
-        responseType: 'blob',
-        timeout: 60000
-      });
-      
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `report-${reportId}.docx`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-      toast.success("Word document downloaded");
-    } catch (error) {
-      toast.error("Failed to export DOCX");
-    } finally {
-      setExportingDocx(null);
-    }
+  const getReportTypeLabel = (type) => {
+    return REPORT_TYPES.find(t => t.value === type)?.label || type;
   };
 
   return (
-    <div className="space-y-4">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+    <>
+      {/* Action Button */}
+      <div className="flex justify-end mb-4">
         <Button 
           onClick={() => setShowReportDialog(true)}
+          disabled={generatingReport}
           className="bg-slate-900 text-white hover:bg-slate-800"
           data-testid="generate-report-btn"
         >
-          <Plus className="w-4 h-4 mr-2" />
-          Generate Report
+          {generatingReport ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Generating...
+            </>
+          ) : (
+            <>
+              <FileText className="w-4 h-4 mr-2" />
+              Generate Report
+            </>
+          )}
         </Button>
       </div>
 
-      {/* Reports Grid */}
+      {/* Reports List */}
       {reports.length === 0 ? (
-        <Card className="p-12 text-center" data-testid="no-reports-message">
+        <Card className="p-12 text-center">
           <FileText className="w-12 h-12 text-slate-300 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-slate-900 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-            No reports generated
+            No reports yet
           </h3>
-          <p className="text-slate-600 mb-4">Generate AI-powered reports analyzing your case documents.</p>
+          <p className="text-slate-600 mb-4">
+            Generate AI-powered reports to analyze your case documents.
+          </p>
           <Button 
             onClick={() => setShowReportDialog(true)}
+            disabled={generatingReport}
             className="bg-slate-900 text-white hover:bg-slate-800"
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <FileText className="w-4 h-4 mr-2" />
             Generate First Report
           </Button>
         </Card>
       ) : (
-        <div className="grid lg:grid-cols-2 gap-4">
-          {/* Report List */}
-          <div className="space-y-3">
-            <h3 className="font-semibold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Generated Reports ({reports.length})
-            </h3>
-            {reports.map((report) => (
-              <Card 
-                key={report.report_id} 
-                className={`card-hover cursor-pointer group ${selectedReport?.report_id === report.report_id ? 'border-slate-900 bg-slate-50' : ''}`}
-                onClick={() => setSelectedReport(report)}
-                data-testid={`report-${report.report_id}`}
+        <div className="space-y-4">
+          {reports.map((report) => (
+            <Card key={report.report_id} className="overflow-hidden">
+              <Collapsible
+                open={expandedReports[report.report_id]}
+                onOpenChange={() => toggleReportExpand(report.report_id)}
               >
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Badge variant="outline" className={getReportTypeColor(report.report_type)}>
-                          {REPORT_TYPES.find(t => t.value === report.report_type)?.label || report.report_type}
-                        </Badge>
-                      </div>
-                      <h4 className="font-medium text-slate-900">{report.title}</h4>
-                      <p className="text-xs text-slate-500 mt-1">
-                        Generated {formatDateTime(report.generated_at)}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleExportPDF(report.report_id);
-                        }}
-                        disabled={exportingPdf === report.report_id}
-                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                        data-testid={`export-pdf-${report.report_id}`}
-                      >
-                        {exportingPdf === report.report_id ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
+                <CollapsibleTrigger asChild>
+                  <CardContent className="p-4 cursor-pointer hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        {expandedReports[report.report_id] ? (
+                          <ChevronDown className="w-5 h-5 text-slate-400" />
                         ) : (
-                          <Download className="w-4 h-4" />
+                          <ChevronRight className="w-5 h-5 text-slate-400" />
                         )}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteReport(report.report_id);
-                        }}
-                        className="opacity-0 group-hover:opacity-100 text-red-600 hover:text-red-700 hover:bg-red-50"
-                        data-testid={`delete-report-${report.report_id}`}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                      <ChevronRight className="w-4 h-4 text-slate-400" />
+                        <div>
+                          <h4 className="font-semibold text-slate-900">
+                            {getReportTypeLabel(report.report_type)}
+                          </h4>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Clock className="w-3 h-3 text-slate-400" />
+                            <span className="text-xs text-slate-500">
+                              {new Date(report.created_at).toLocaleDateString('en-AU', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
+                          AI Generated
+                        </Badge>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteReport(report.report_id);
+                          }}
+                          className="text-slate-400 hover:text-red-600"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
+                  </CardContent>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="px-4 pb-4 border-t border-slate-100 pt-4">
+                    <ScrollArea className="max-h-[500px]">
+                      <div className="prose prose-sm max-w-none">
+                        <div className="whitespace-pre-wrap text-slate-700 text-sm leading-relaxed">
+                          {report.content}
+                        </div>
+                      </div>
+                    </ScrollArea>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Report Preview */}
-          {selectedReport && (
-            <Card className="h-fit sticky top-4">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <Badge variant="outline" className={getReportTypeColor(selectedReport.report_type)}>
-                      {REPORT_TYPES.find(t => t.value === selectedReport.report_type)?.label}
-                    </Badge>
-                    <h3 className="font-semibold text-slate-900 mt-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                      {selectedReport.title}
-                    </h3>
-                    <p className="text-xs text-slate-500">
-                      {formatDateTime(selectedReport.generated_at)}
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleExportPDF(selectedReport.report_id)}
-                      disabled={exportingPdf === selectedReport.report_id}
-                      data-testid="export-selected-pdf"
-                    >
-                      {exportingPdf === selectedReport.report_id ? (
-                        <Loader2 className="w-4 h-4 mr-1 animate-spin" />
-                      ) : (
-                        <Download className="w-4 h-4 mr-1" />
-                      )}
-                      PDF
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleExportDOCX(selectedReport.report_id)}
-                      disabled={exportingDocx === selectedReport.report_id}
-                      data-testid="export-selected-docx"
-                    >
-                      {exportingDocx === selectedReport.report_id ? (
-                        <Loader2 className="w-4 h-4 mr-1 animate-spin" />
-                      ) : (
-                        <Download className="w-4 h-4 mr-1" />
-                      )}
-                      Word
-                    </Button>
-                  </div>
-                </div>
-                <ScrollArea className="h-96">
-                  <div className="prose prose-slate prose-sm max-w-none">
-                    <div className="whitespace-pre-wrap text-sm leading-relaxed">
-                      {selectedReport.content?.analysis || "No content available"}
-                    </div>
-                  </div>
-                </ScrollArea>
-              </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
             </Card>
-          )}
+          ))}
         </div>
       )}
 
-      {/* Generate Report Dialog */}
+      {/* Report Type Selection Dialog */}
       <Dialog open={showReportDialog} onOpenChange={setShowReportDialog}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle style={{ fontFamily: 'Crimson Pro, serif' }}>Generate Report</DialogTitle>
+            <DialogTitle style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Generate Report
+            </DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label>Report Type</Label>
-              <Select value={reportType} onValueChange={setReportType}>
-                <SelectTrigger className="mt-1" data-testid="report-type-select">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {REPORT_TYPES.map(type => (
-                    <SelectItem key={type.value} value={type.value}>
-                      <div>
-                        <span className="font-medium">{type.label}</span>
-                        <p className="text-xs text-slate-500">{type.description}</p>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="space-y-3">
             <p className="text-sm text-slate-600">
-              AI will analyze all uploaded documents and generate a comprehensive report based on the selected type.
-              This may take 1-2 minutes.
+              Select the type of report you'd like to generate:
             </p>
+            {REPORT_TYPES.map((type) => (
+              <div
+                key={type.value}
+                onClick={() => setSelectedReportType(type.value)}
+                className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                  selectedReportType === type.value 
+                    ? 'border-slate-900 bg-slate-50' 
+                    : 'border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-slate-900">{type.label}</h4>
+                    <p className="text-sm text-slate-600 mt-1">{type.description}</p>
+                  </div>
+                  <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+                    ${type.price.toFixed(2)} AUD
+                  </Badge>
+                </div>
+              </div>
+            ))}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowReportDialog(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setShowReportDialog(false)}>
+              Cancel
+            </Button>
             <Button 
-              onClick={handleGenerateReport}
-              disabled={generatingReport}
+              onClick={() => handleGenerateReport(selectedReportType)}
+              disabled={!selectedReportType || generatingReport}
               className="bg-slate-900 text-white hover:bg-slate-800"
-              data-testid="generate-report-submit"
             >
               {generatingReport ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <FileText className="w-4 h-4 mr-2" />
-                  Generate
-                </>
-              )}
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : null}
+              Generate Report
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => {
+          setShowPaymentModal(false);
+          setPendingReportType(null);
+        }}
+        onSuccess={handlePaymentSuccess}
+        purchaseType={pendingReportType === 'extensive_log' ? 'extensive_report' : 'full_report'}
+        amount={pendingReportType === 'extensive_log' ? 39.00 : 29.00}
+        caseId={caseId}
+      />
+    </>
   );
-}
+};
+
+export default ReportsSection;
