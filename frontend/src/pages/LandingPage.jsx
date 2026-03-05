@@ -652,6 +652,121 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <section className="py-16 px-6 bg-white border-t border-slate-200">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-amber-700 font-semibold text-xs uppercase tracking-widest mb-3">Pricing</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Simple, Affordable Access
+            </h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">
+              Basic features are free. Pay only for detailed analysis when you need it — a fraction of what lawyers charge.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Free Tier */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>Free</h3>
+                <span className="text-2xl font-bold text-slate-900">$0</span>
+              </div>
+              <ul className="space-y-3 text-sm text-slate-600 mb-6">
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Create and manage cases</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Upload unlimited documents</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>AI-generated timeline of events</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Appeal progress checklist</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Quick Summary Report</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>See number of potential grounds identified</span>
+                </li>
+              </ul>
+              <Button
+                onClick={handleLogin}
+                variant="outline"
+                className="w-full border-slate-300 text-slate-700 hover:bg-slate-100"
+              >
+                Get Started Free
+              </Button>
+            </div>
+
+            {/* Paid Features */}
+            <div className="bg-amber-50 border-2 border-amber-400 rounded-xl p-6 relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                UNLOCK FULL ANALYSIS
+              </div>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>Premium</h3>
+                <div className="text-right">
+                  <span className="text-2xl font-bold text-slate-900">$19.99</span>
+                  <span className="text-sm text-slate-500 block">per feature</span>
+                </div>
+              </div>
+              <ul className="space-y-3 text-sm text-slate-700 mb-6">
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span><strong>Detailed Grounds Analysis</strong> — Full breakdown of each potential ground with legal citations and case law</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span><strong>Full Detailed Report</strong> — Comprehensive analysis with recommendations</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span><strong>Extensive Log Report</strong> — Complete documentation with step-by-step appeal guidance</span>
+                </li>
+              </ul>
+              <div className="bg-white rounded-lg p-3 text-center text-sm text-slate-600 mb-4">
+                <p><strong className="text-slate-900">Compare:</strong> A lawyer consultation costs $300-$500+</p>
+                <p className="text-xs text-slate-500 mt-1">This gives you a starting point for a fraction of the cost</p>
+              </div>
+              <p className="text-xs text-slate-500 text-center">
+                Secure payment via PayPal
+              </p>
+            </div>
+          </div>
+
+          <p className="text-center text-xs text-slate-500 mt-6">
+            * Premium features are per-case. Pay once, access that analysis forever.
+          </p>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-16 px-6">
         <div className="max-w-2xl mx-auto text-center">
