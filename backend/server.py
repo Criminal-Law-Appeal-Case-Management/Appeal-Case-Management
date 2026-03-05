@@ -4436,6 +4436,157 @@ async def get_public_statistics():
         }
     }
 
+@api_router.get("/cases/{case_id}/comparison")
+async def get_case_comparison(case_id: str, request: Request):
+    """Compare your case against similar cases (same offence type/state)"""
+    user = await get_current_user(request)
+    
+    # Get the current case
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    offence_category = case.get("offence_category", "homicide")
+    state = case.get("state", "nsw")
+    
+    # Get stats for similar cases (same offence category)
+    similar_offence_count = await db.cases.count_documents({"offence_category": offence_category})
+    
+    # Get stats for same state
+    same_state_count = await db.cases.count_documents({"state": state})
+    
+    # Get stats for exact match (same offence AND state)
+    exact_match_count = await db.cases.count_documents({
+        "offence_category": offence_category,
+        "state": state
+    })
+    
+    # Get your case's document count
+    your_docs = await db.documents.count_documents({"case_id": case_id})
+    
+    # Get average documents for similar cases
+    doc_pipeline = [
+        {"$match": {"offence_category": offence_category}},
+        {"$lookup": {
+            "from": "documents",
+            "localField": "case_id",
+            "foreignField": "case_id",
+            "as": "docs"
+        }},
+        {"$project": {"doc_count": {"$size": "$docs"}}},
+        {"$group": {"_id": None, "avg_docs": {"$avg": "$doc_count"}}}
+    ]
+    avg_docs_result = await db.cases.aggregate(doc_pipeline).to_list(1)
+    avg_docs = round(avg_docs_result[0]["avg_docs"], 1) if avg_docs_result else 0
+    
+    # Get your grounds count
+    your_grounds = await db.grounds_of_merit.count_documents({"case_id": case_id})
+    
+    # Get average grounds for similar cases
+    grounds_pipeline = [
+        {"$match": {"offence_category": offence_category}},
+        {"$lookup": {
+            "from": "grounds_of_merit",
+            "localField": "case_id",
+            "foreignField": "case_id",
+            "as": "grounds"
+        }},
+        {"$project": {"ground_count": {"$size": "$grounds"}}},
+        {"$group": {"_id": None, "avg_grounds": {"$avg": "$ground_count"}}}
+    ]
+    avg_grounds_result = await db.cases.aggregate(grounds_pipeline).to_list(1)
+    avg_grounds = round(avg_grounds_result[0]["avg_grounds"], 1) if avg_grounds_result else 0
+    
+    # Get your reports count
+    your_reports = await db.reports.count_documents({"case_id": case_id})
+    
+    # Get most common grounds for this offence type
+    common_grounds_pipeline = [
+        {"$lookup": {
+            "from": "cases",
+            "localField": "case_id",
+            "foreignField": "case_id",
+            "as": "case_info"
+        }},
+        {"$unwind": "$case_info"},
+        {"$match": {"case_info.offence_category": offence_category}},
+        {"$group": {"_id": "$ground_type", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}},
+        {"$limit": 5}
+    ]
+    common_grounds = await db.grounds_of_merit.aggregate(common_grounds_pipeline).to_list(5)
+    
+    # Ground type labels
+    ground_type_labels = {
+        "procedural_error": "Procedural Error",
+        "fresh_evidence": "Fresh Evidence",
+        "incompetent_counsel": "Incompetent Counsel",
+        "sentencing_error": "Sentencing Error",
+        "jury_misdirection": "Jury Misdirection",
+        "jury_irregularity": "Jury Irregularity",
+        "insufficient_evidence": "Insufficient Evidence",
+        "judicial_error": "Judicial Error",
+        "miscarriage_of_justice": "Miscarriage of Justice",
+        "ineffective_counsel": "Ineffective Counsel",
+        "constitutional_violation": "Constitutional Violation",
+        "prosecutorial_misconduct": "Prosecutorial Misconduct",
+        "evidence_error": "Evidence Error",
+        "other": "Other"
+    }
+    
+    offence_labels = {
+        "homicide": "Homicide",
+        "assault": "Assault",
+        "sexual_offences": "Sexual Offences",
+        "robbery_theft": "Robbery & Theft",
+        "drug_offences": "Drug Offences",
+        "fraud_dishonesty": "Fraud & Dishonesty",
+        "firearms_weapons": "Firearms & Weapons",
+        "domestic_violence": "Domestic Violence",
+        "public_order": "Public Order",
+        "terrorism": "Terrorism",
+        "driving_offences": "Driving Offences"
+    }
+    
+    state_labels = {
+        "nsw": "New South Wales",
+        "vic": "Victoria",
+        "qld": "Queensland",
+        "sa": "South Australia",
+        "wa": "Western Australia",
+        "tas": "Tasmania",
+        "nt": "Northern Territory",
+        "act": "ACT"
+    }
+    
+    return {
+        "your_case": {
+            "offence_category": offence_labels.get(offence_category, offence_category),
+            "state": state_labels.get(state, state),
+            "documents": your_docs,
+            "grounds_identified": your_grounds,
+            "reports_generated": your_reports
+        },
+        "similar_cases": {
+            "same_offence_count": similar_offence_count,
+            "same_state_count": same_state_count,
+            "exact_match_count": exact_match_count,
+            "avg_documents": avg_docs,
+            "avg_grounds": avg_grounds
+        },
+        "comparison": {
+            "documents_vs_avg": "above" if your_docs > avg_docs else ("below" if your_docs < avg_docs else "average"),
+            "documents_diff": round(your_docs - avg_docs, 1),
+            "grounds_vs_avg": "above" if your_grounds > avg_grounds else ("below" if your_grounds < avg_grounds else "average"),
+            "grounds_diff": round(your_grounds - avg_grounds, 1)
+        },
+        "common_grounds_for_offence": [
+            {"type": ground_type_labels.get(g["_id"], g["_id"]), "count": g["count"]}
+            for g in common_grounds if g["_id"]
+        ],
+        "recommendations": []
+    }
+
 # ============ HEALTH CHECK ============
 
 @api_router.get("/")

@@ -41,6 +41,7 @@ import LegalFrameworkViewer from "../components/LegalFrameworkViewer";
 import DocumentsSection from "../components/DocumentsSection";
 import NotesSection from "../components/NotesSection";
 import ReportsSection from "../components/ReportsSection";
+import CaseComparison from "../components/CaseComparison";
 
 const EVENT_TYPES = [
   // Pre-trial
@@ -811,6 +812,9 @@ const CaseDetail = ({ user }) => {
               {/* Deadline Tracker */}
               <DeadlineTracker caseId={caseId} />
             </div>
+            
+            {/* Case Comparison */}
+            <CaseComparison caseId={caseId} />
             
             {/* Appeal Checklist */}
             <AppealChecklist caseId={caseId} />

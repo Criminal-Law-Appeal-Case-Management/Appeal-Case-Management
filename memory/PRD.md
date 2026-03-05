@@ -397,6 +397,16 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **Key Insights section** highlighting trends
 - [x] **Navigation links** added to header and footer
 
+### Compare Your Case Feature ✅ (Dec 2025)
+- [x] **New API endpoint** `/api/cases/{case_id}/comparison`
+- [x] **CaseComparison component** in Progress tab showing:
+  - Similar cases count (same offence, same state, exact match)
+  - Your documents vs average comparison
+  - Your grounds vs average comparison
+  - Most common grounds for your offence type
+  - Personalized insights and recommendations
+- [x] **Visual indicators** (above/below average badges)
+
 ### Landing Page Design Cleanup ✅ (Dec 2025)
 - [x] **Criminal Law by State** section converted to **collapsible accordions**
 - [x] Each state (NSW, VIC, QLD, SA, WA, CTH) is now a clickable dropdown
