@@ -2,20 +2,27 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API } from "../App";
+import { toast } from "sonner";
 import {
   Users, Briefcase, FileText, TrendingUp, Activity, MessageCircle,
-  Heart, Calendar, Eye, ArrowUp, ArrowDown, BarChart3
+  Heart, Calendar, Eye, ArrowUp, ArrowDown, BarChart3, CreditCard,
+  CheckCircle, Clock, DollarSign, Building2, Loader2
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
   const [error, setError] = useState("");
+  const [pendingPayments, setPendingPayments] = useState([]);
+  const [confirmingRef, setConfirmingRef] = useState(null);
 
   useEffect(() => {
     fetchStats();
+    fetchPendingPayments();
   }, []);
 
   const fetchStats = async () => {
@@ -34,6 +41,32 @@ const AdminDashboard = () => {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchPendingPayments = async () => {
+    try {
+      const response = await axios.get(`${API}/payments/payid/pending`, {
+        withCredentials: true
+      });
+      setPendingPayments(response.data.pending_payments || []);
+    } catch (err) {
+      console.log("Could not fetch pending payments");
+    }
+  };
+
+  const confirmPayment = async (reference) => {
+    setConfirmingRef(reference);
+    try {
+      await axios.post(`${API}/payments/payid/admin-confirm/${reference}`, {}, {
+        withCredentials: true
+      });
+      toast.success("Payment confirmed! Feature unlocked for user.");
+      fetchPendingPayments();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || "Failed to confirm payment");
+    } finally {
+      setConfirmingRef(null);
     }
   };
 
@@ -289,6 +322,93 @@ const AdminDashboard = () => {
               </div>
             </div>
             <p className="text-xs text-muted-foreground mt-4 text-center">Last 14 days</p>
+          </CardContent>
+        </Card>
+
+        {/* Pending PayID Payments Section */}
+        <Card className="mt-8" data-testid="pending-payments-section">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Building2 className="w-5 h-5 text-emerald-600" />
+                  Pending PayID Payments
+                </CardTitle>
+                <CardDescription>Bank transfers awaiting verification</CardDescription>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={fetchPendingPayments}
+                className="shrink-0"
+              >
+                Refresh
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {pendingPayments.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <CheckCircle className="w-12 h-12 mx-auto mb-3 text-emerald-600 opacity-50" />
+                <p>No pending payments to verify</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {pendingPayments.map((payment) => (
+                  <div 
+                    key={payment.reference} 
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <span className="font-mono font-bold text-foreground">{payment.reference}</span>
+                        <Badge variant={payment.status === "pending_verification" ? "default" : "secondary"}>
+                          {payment.status === "pending_verification" ? (
+                            <><Clock className="w-3 h-3 mr-1" /> Awaiting Verification</>
+                          ) : (
+                            <><Clock className="w-3 h-3 mr-1" /> Pending</>
+                          )}
+                        </Badge>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm text-muted-foreground">
+                        <div>
+                          <span className="text-xs opacity-75">Amount:</span>
+                          <p className="font-semibold text-foreground">${payment.amount} AUD</p>
+                        </div>
+                        <div>
+                          <span className="text-xs opacity-75">Feature:</span>
+                          <p className="text-foreground">{payment.feature_type?.replace(/_/g, ' ')}</p>
+                        </div>
+                        <div>
+                          <span className="text-xs opacity-75">Case:</span>
+                          <p className="text-foreground truncate">{payment.case_id?.slice(0, 8)}...</p>
+                        </div>
+                        <div>
+                          <span className="text-xs opacity-75">Created:</span>
+                          <p className="text-foreground">{new Date(payment.created_at).toLocaleDateString()}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <Button
+                      onClick={() => confirmPayment(payment.reference)}
+                      disabled={confirmingRef === payment.reference}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white shrink-0"
+                      data-testid={`confirm-payment-${payment.reference}`}
+                    >
+                      {confirmingRef === payment.reference ? (
+                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Confirming...</>
+                      ) : (
+                        <><CheckCircle className="w-4 h-4 mr-2" /> Confirm Payment</>
+                      )}
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg text-xs text-amber-800 dark:text-amber-200">
+              <strong>How to verify:</strong> Check your bank statement for incoming transfers with the reference code shown. 
+              Once you confirm receipt, click "Confirm Payment" to unlock the feature for the user.
+            </div>
           </CardContent>
         </Card>
 

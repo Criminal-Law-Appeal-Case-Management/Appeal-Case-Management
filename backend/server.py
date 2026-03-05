@@ -4100,8 +4100,9 @@ app.include_router(contradictions_router)
 from routers.export import router as export_router
 app.include_router(export_router)
 
-# Payment router (PayPal) - configured in routers/payments.py
-# Stripe was removed per user request
+# Include new payment router (PayPal + PayID)
+from routers.payments_new import router as payments_new_router
+app.include_router(payments_new_router)
 
 app.add_middleware(
     CORSMiddleware,
