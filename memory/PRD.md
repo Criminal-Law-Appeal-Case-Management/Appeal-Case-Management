@@ -515,20 +515,43 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] Reduces visual clutter - users only expand what they need
 
 ## Next Priority Tasks
-- [ ] Continue backend modularization (server.py still 4338 lines - target: move more to routers)
-- [ ] Email features - Forgot Password, Contact Form (blocked on Resend API key)
+- [ ] Convert tabbed pages (LegalResourcesPage, ContactsPage) to scrollable single-page view
+- [ ] Complete backend refactoring - remove duplicate routes from server.py
+- [ ] Finalize PayPal backend payment processing
 
-## Backend Modularization Progress
-- **server.py**: Reduced from 4614 → 4338 lines
-- **New Router**: `/app/backend/routers/statistics.py` (statistics + case comparison)
-- **Existing Routers** (not yet integrated, contain duplicate code):
-  - `auth.py` - Google OAuth
-  - `cases.py` - Case CRUD
-  - `documents.py` - Document management
-  - `notes.py` - Notes management
-  - `timeline.py` - Timeline events
-  - `deadlines.py` - Deadline tracking
-  - `resources.py` - Legal resources
+## Backlog
+- [ ] Build and submit native mobile app (Capacitor ready)
+- [ ] Enhanced collaboration features (replies, threads, @mentions in notes)
+- [ ] Backend refactoring - continue modularizing server.py
+- [ ] Deadline Tracker with Calendar integration
+- [ ] Real-time collaboration/chat
+
+### Bug Fixes & Improvements (Mar 2026 - Session 4) ✅
+- [x] **Google Sign-in Button Restored** - Added "Sign in with Google" button to AuthModal
+  - Uses Emergent Auth at `auth.emergentagent.com`
+  - Proper redirect URL derived dynamically from `window.location.origin`
+  - OR divider between Google and email/password login
+  - data-testid="google-signin-btn" for testing
+  - File: `frontend/src/components/AuthModal.jsx`
+
+- [x] **How To Use Page Updated with Real Screenshots** - Complete rewrite with actual app photos
+  - 8 real screenshots taken of: Sign-in modal, Dashboard, Case Detail, Timeline, Grounds, Contradictions, Progress, Reports
+  - Screenshots stored in `/app/frontend/public/images/howto/`
+  - Step-by-step instructions with tips for each step
+  - Added Legal Framework link to page header nav
+  - File: `frontend/src/pages/HowToUsePage.jsx`
+
+- [x] **Landing Page Navigation Improved** - All content cards now clickable
+  - Linked 9 previously unlinked cards: Forms, Contacts, Glossary, Statistics, Success Stories, Lawyers, How To Use, FAQ, Legal Research Hub
+  - Mobile menu: Added highlighted amber links for "How To Use" and "Legal Framework"
+  - File: `frontend/src/pages/LandingPage.jsx`
+
+- [x] **Testing**: All 24 tests passed (`/app/test_reports/iteration_23.json`)
+  - Google Sign-in: Button visible, correct redirect URL
+  - How To Use: All 8 screenshots loaded, 10 steps visible
+  - Legal Framework: All 4 tabs working, all states covered
+  - Landing page: 9 clickable card links verified
+  - Mobile menu: Highlighted links verified
 
 ### Landing Page Reorganization (Dec 2025) ✅
 - [x] **Section Order Reorganized** - Per user request, Landing Page now follows this structure:
@@ -546,12 +569,11 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **Testing**: All sections verified in correct order (`/app/test_reports/iteration_22.json`)
   - Hero (Y=289px) → See It In Action (Y=978px) → Legislation (Y=6032px) → Caselaw (Y=7222px) → Pricing (Y=7925px) → You Have Options (Y=8776px)
 
-## Backlog
+## Backlog (Bottom)
 - [ ] Build and submit native mobile app (Capacitor ready)
 - [ ] Enhanced collaboration features (replies, threads, @mentions in notes)
-- [ ] Backend refactoring - continue modularizing server.py
 - [ ] Deadline Tracker with Calendar integration
-- [ ] Email functionality (requires Resend API key from user)
+- [ ] Real-time collaboration/chat for Notes section
 
 
 
