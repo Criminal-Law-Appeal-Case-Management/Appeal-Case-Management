@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Scale, Users, Eye, FolderOpen, TrendingUp, ArrowLeft } from "lucide-react";
+import { Scale, Users, Eye, FolderOpen, TrendingUp, ArrowLeft, Shield, Moon, Sun, Menu, X, Calendar } from "lucide-react";
 import { Button } from "../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { API } from "../App";
 import { toast } from "sonner";
+import { useTheme } from "../contexts/ThemeContext";
 
 const AdminStats = () => {
+  const { theme, toggleTheme } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -36,18 +40,30 @@ const AdminStats = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading admin statistics...</p>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-600 font-medium mb-4">{error}</p>
-          <Button onClick={() => navigate("/dashboard")} variant="outline">
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-6">
+          <div className="w-20 h-20 bg-red-100 dark:bg-red-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <Shield className="w-10 h-10 text-red-600 dark:text-red-400" />
+          </div>
+          <h2 className="text-2xl font-bold text-foreground mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Access Denied
+          </h2>
+          <p className="text-muted-foreground mb-6">{error}</p>
+          <Button 
+            onClick={() => navigate("/dashboard")} 
+            className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-8 py-5 font-semibold"
+          >
             Go to Dashboard
           </Button>
         </div>
@@ -55,106 +71,180 @@ const AdminStats = () => {
     );
   }
 
+  const maxDailyCount = Math.max(...(stats?.daily_stats?.map(d => d.count) || [1]));
+
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background" style={{ fontFamily: 'Manrope, sans-serif' }}>
       {/* Header */}
-      <header className="bg-slate-900 px-6 py-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Scale className="w-7 h-7 text-amber-500" />
-            <span className="text-lg font-semibold text-white" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Admin Statistics
+      <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <Link to="/dashboard" className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
+              <Scale className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Admin Dashboard
             </span>
+          </Link>
+          <div className="hidden md:flex items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            >
+              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            <Button 
+              onClick={() => navigate("/dashboard")} 
+              variant="outline" 
+              className="border-slate-600 text-slate-300 hover:bg-slate-800 rounded-lg"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Button>
           </div>
-          <Button 
-            onClick={() => navigate("/dashboard")} 
-            variant="outline" 
-            className="border-slate-600 text-slate-300 hover:bg-slate-800"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Dashboard
-          </Button>
+          <button className="md:hidden p-2 text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-slate-800 border-t border-slate-700 px-6 py-4 space-y-3">
+            <button onClick={toggleTheme} className="flex items-center gap-2 py-2 text-slate-300 hover:text-white w-full">
+              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {theme === "dark" ? "Light Mode" : "Dark Mode"}
+            </button>
+            <button 
+              onClick={() => navigate("/dashboard")} 
+              className="flex items-center gap-2 py-2 text-amber-500 hover:text-amber-400 w-full"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              Back to Dashboard
+            </button>
+          </div>
+        )}
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-10">
-        <h1 className="text-2xl font-bold text-slate-900 mb-8" style={{ fontFamily: 'Crimson Pro, serif' }}>
-          Site Analytics
-        </h1>
+      {/* Hero Section */}
+      <section className="relative py-12 px-6 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920" 
+            alt=""
+            className="w-full h-full object-cover opacity-5 dark:opacity-[0.02]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+        </div>
+        
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="flex items-center gap-4 mb-2">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/30">
+              <TrendingUp className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest">Admin Only</p>
+              <h1 className="text-3xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Site Analytics
+              </h1>
+            </div>
+          </div>
+        </div>
+      </section>
 
+      <main className="max-w-6xl mx-auto px-6 pb-16">
         {/* Stats Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-10">
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Eye className="w-6 h-6 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-slate-500">Total Page Views</p>
-                <p className="text-3xl font-bold text-slate-900">{stats?.total_visits?.toLocaleString() || 0}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <Users className="w-6 h-6 text-green-600" />
-              </div>
-              <div>
-                <p className="text-sm text-slate-500">Registered Users</p>
-                <p className="text-3xl font-bold text-slate-900">{stats?.total_users?.toLocaleString() || 0}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
-                <FolderOpen className="w-6 h-6 text-amber-600" />
-              </div>
-              <div>
-                <p className="text-sm text-slate-500">Total Cases Created</p>
-                <p className="text-3xl font-bold text-slate-900">{stats?.total_cases?.toLocaleString() || 0}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Daily Stats */}
-        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-          <div className="flex items-center gap-2 mb-6">
-            <TrendingUp className="w-5 h-5 text-slate-600" />
-            <h2 className="text-lg font-semibold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Last 7 Days
-            </h2>
-          </div>
-          
-          <div className="space-y-3">
-            {stats?.daily_stats?.map((day, index) => (
-              <div key={day.date} className="flex items-center gap-4">
-                <span className="text-sm text-slate-500 w-24">{day.date}</span>
-                <div className="flex-1 bg-slate-100 rounded-full h-6 overflow-hidden">
-                  <div 
-                    className="bg-amber-500 h-full rounded-full transition-all duration-500"
-                    style={{ 
-                      width: `${Math.min(100, (day.count / Math.max(...stats.daily_stats.map(d => d.count || 1))) * 100)}%`,
-                      minWidth: day.count > 0 ? '20px' : '0'
-                    }}
-                  ></div>
+          <Card className="bg-card border-border shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center">
+                  <Eye className="w-7 h-7 text-blue-600 dark:text-blue-400" />
                 </div>
-                <span className="text-sm font-medium text-slate-700 w-16 text-right">
-                  {day.count} visits
-                </span>
+                <div>
+                  <p className="text-sm text-muted-foreground font-medium">Total Page Views</p>
+                  <p className="text-3xl font-bold text-foreground">{stats?.total_visits?.toLocaleString() || 0}</p>
+                </div>
               </div>
-            ))}
-          </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-card border-border shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center">
+                  <Users className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground font-medium">Registered Users</p>
+                  <p className="text-3xl font-bold text-foreground">{stats?.total_users?.toLocaleString() || 0}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-card border-border shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center">
+                  <FolderOpen className="w-7 h-7 text-amber-600 dark:text-amber-400" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground font-medium">Total Cases Created</p>
+                  <p className="text-3xl font-bold text-foreground">{stats?.total_cases?.toLocaleString() || 0}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        <p className="text-center text-xs text-slate-500 mt-8">
+        {/* Daily Stats Chart */}
+        <Card className="bg-card border-border shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-xl font-semibold text-foreground flex items-center gap-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                <Calendar className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              Last 7 Days Activity
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {stats?.daily_stats?.map((day, index) => (
+                <div key={day.date} className="flex items-center gap-4">
+                  <span className="text-sm text-muted-foreground w-28 font-medium">{day.date}</span>
+                  <div className="flex-1 bg-muted rounded-full h-8 overflow-hidden">
+                    <div 
+                      className="bg-gradient-to-r from-amber-500 to-amber-600 h-full rounded-full flex items-center justify-end pr-3 transition-all duration-500"
+                      style={{ 
+                        width: `${Math.max((day.count / maxDailyCount) * 100, day.count > 0 ? 10 : 0)}%`,
+                        minWidth: day.count > 0 ? '40px' : '0'
+                      }}
+                    >
+                      {day.count > 0 && (
+                        <span className="text-xs font-semibold text-white">{day.count}</span>
+                      )}
+                    </div>
+                  </div>
+                  <span className="text-sm font-medium text-muted-foreground w-20 text-right">
+                    {day.count} visits
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <p className="text-center text-sm text-muted-foreground mt-8">
           Stats update in real-time as visitors access the site
         </p>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 dark:bg-slate-950 px-6 py-8 border-t border-slate-800">
+        <div className="max-w-6xl mx-auto text-center">
+          <p className="text-slate-400 text-sm">
+            © 2025 Appeal Case Manager. Admin Dashboard.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };

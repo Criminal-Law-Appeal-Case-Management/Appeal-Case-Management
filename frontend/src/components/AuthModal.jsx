@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { Loader2, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
+import { Loader2, Mail, Lock, User, Eye, EyeOff, Scale, Shield } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -97,124 +97,147 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle 
-            className="text-2xl font-bold text-center"
-            style={{ fontFamily: 'Crimson Pro, serif' }}
-          >
-            {mode === "login" ? "Sign In" : "Create Account"}
-          </DialogTitle>
-        </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          {showGoogleHint && (
-            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-              <p className="text-sm text-blue-800">
-                <strong>This email uses Google login.</strong> Please close this dialog and click "Sign in with Google" to continue.
-              </p>
-            </div>
-          )}
-          
-          {mode === "register" && (
-            <div>
-              <Label htmlFor="name" className="flex items-center gap-2">
-                <User className="w-4 h-4 text-slate-500" />
-                Full Name
-              </Label>
-              <Input
-                id="name"
-                type="text"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Your full name"
-                className={`mt-1 ${errors.name ? 'border-red-500' : ''}`}
-                data-testid="auth-name-input"
-              />
-              {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
-            </div>
-          )}
-          
-          <div>
-            <Label htmlFor="email" className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-slate-500" />
-              Email Address
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              placeholder="your@email.com"
-              className={`mt-1 ${errors.email ? 'border-red-500' : ''}`}
-              data-testid="auth-email-input"
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden bg-card border-border">
+        {/* Header with branding */}
+        <div className="bg-gradient-to-r from-slate-900 to-indigo-950 px-6 py-8 text-center relative overflow-hidden">
+          {/* Background pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <img 
+              src="https://images.unsplash.com/photo-1589578527966-fdac0f44566c?crop=entropy&cs=srgb&fm=jpg&q=85&w=600" 
+              alt=""
+              className="w-full h-full object-cover"
             />
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
           </div>
-          
-          <div>
-            <Label htmlFor="password" className="flex items-center gap-2">
-              <Lock className="w-4 h-4 text-slate-500" />
-              Password
-            </Label>
-            <div className="relative">
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                placeholder="••••••••"
-                className={`mt-1 pr-10 ${errors.password ? 'border-red-500' : ''}`}
-                data-testid="auth-password-input"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
+          <div className="relative z-10">
+            <div className="w-14 h-14 rounded-2xl bg-amber-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-600/30">
+              <Scale className="w-7 h-7 text-white" />
             </div>
-            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
-          </div>
-          
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-slate-900 text-white hover:bg-slate-800"
-            data-testid="auth-submit-btn"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                {mode === "login" ? "Signing in..." : "Creating account..."}
-              </>
-            ) : (
-              mode === "login" ? "Sign In" : "Create Account"
-            )}
-          </Button>
-        </form>
-        
-        <div className="mt-4 text-center">
-          <p className="text-sm text-slate-600">
-            {mode === "login" ? "Don't have an account?" : "Already have an account?"}
-            <button
-              type="button"
-              onClick={switchMode}
-              className="ml-1 text-blue-600 hover:text-blue-800 font-medium"
+            <DialogTitle 
+              className="text-2xl font-bold text-white mb-1"
+              style={{ fontFamily: 'Crimson Pro, serif' }}
             >
-              {mode === "login" ? "Sign up" : "Sign in"}
-            </button>
-          </p>
+              {mode === "login" ? "Welcome Back" : "Join Appeal Manager"}
+            </DialogTitle>
+            <p className="text-slate-400 text-sm">
+              {mode === "login" ? "Sign in to manage your cases" : "Create your account to get started"}
+            </p>
+          </div>
         </div>
         
-        <div className="mt-4 pt-4 border-t border-slate-200">
-          <p className="text-xs text-slate-500 text-center">
-            By signing in, you agree to our{" "}
-            <a href="/terms" className="text-blue-600 hover:underline">Terms of Service</a>
-            {" "}and{" "}
-            <a href="/terms" className="text-blue-600 hover:underline">Privacy Policy</a>
-          </p>
+        <div className="p-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {showGoogleHint && (
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-xl">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                  <strong>This email uses Google login.</strong> Please close this dialog and click "Sign in with Google" to continue.
+                </p>
+              </div>
+            )}
+            
+            {mode === "register" && (
+              <div>
+                <Label htmlFor="name" className="flex items-center gap-2 text-foreground font-medium">
+                  <User className="w-4 h-4 text-amber-600" />
+                  Full Name
+                </Label>
+                <Input
+                  id="name"
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="Your full name"
+                  className={`mt-1.5 rounded-xl ${errors.name ? 'border-red-500 focus:ring-red-500' : ''}`}
+                  data-testid="auth-name-input"
+                />
+                {errors.name && <p className="text-red-500 text-xs mt-1.5">{errors.name}</p>}
+              </div>
+            )}
+            
+            <div>
+              <Label htmlFor="email" className="flex items-center gap-2 text-foreground font-medium">
+                <Mail className="w-4 h-4 text-amber-600" />
+                Email Address
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                placeholder="your@email.com"
+                className={`mt-1.5 rounded-xl ${errors.email ? 'border-red-500 focus:ring-red-500' : ''}`}
+                data-testid="auth-email-input"
+              />
+              {errors.email && <p className="text-red-500 text-xs mt-1.5">{errors.email}</p>}
+            </div>
+            
+            <div>
+              <Label htmlFor="password" className="flex items-center gap-2 text-foreground font-medium">
+                <Lock className="w-4 h-4 text-amber-600" />
+                Password
+              </Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  placeholder="••••••••"
+                  className={`mt-1.5 pr-10 rounded-xl ${errors.password ? 'border-red-500 focus:ring-red-500' : ''}`}
+                  data-testid="auth-password-input"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              {errors.password && <p className="text-red-500 text-xs mt-1.5">{errors.password}</p>}
+            </div>
+            
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl py-5 font-semibold shadow-lg shadow-amber-600/20"
+              data-testid="auth-submit-btn"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  {mode === "login" ? "Signing in..." : "Creating account..."}
+                </>
+              ) : (
+                mode === "login" ? "Sign In" : "Create Account"
+              )}
+            </Button>
+          </form>
+          
+          <div className="mt-6 text-center">
+            <p className="text-sm text-muted-foreground">
+              {mode === "login" ? "Don't have an account?" : "Already have an account?"}
+              <button
+                type="button"
+                onClick={switchMode}
+                className="ml-1 text-amber-600 hover:text-amber-700 font-semibold transition-colors"
+              >
+                {mode === "login" ? "Sign up" : "Sign in"}
+              </button>
+            </p>
+          </div>
+          
+          <div className="mt-6 pt-4 border-t border-border">
+            <div className="flex items-center justify-center gap-2 text-muted-foreground mb-3">
+              <Shield className="w-4 h-4" />
+              <span className="text-xs font-medium">Your data is secure</span>
+            </div>
+            <p className="text-xs text-muted-foreground text-center">
+              By signing in, you agree to our{" "}
+              <a href="/terms" className="text-amber-600 hover:underline">Terms of Service</a>
+              {" "}and{" "}
+              <a href="/terms" className="text-amber-600 hover:underline">Privacy Policy</a>
+            </p>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

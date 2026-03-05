@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Scale, ArrowLeft, Star, Quote, Send, CheckCircle, Heart } from "lucide-react";
+import { Scale, ArrowLeft, Star, Quote, Send, CheckCircle, Heart, Moon, Sun, Menu, X } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { API } from "../App";
 import { toast } from "sonner";
+import { useTheme } from "../contexts/ThemeContext";
 
 // Featured success stories
 const successStories = [
@@ -53,6 +54,8 @@ const successStories = [
 ];
 
 const SuccessStories = () => {
+  const { theme, toggleTheme } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -86,37 +89,71 @@ const SuccessStories = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background" style={{ fontFamily: 'Manrope, sans-serif' }}>
       {/* Header */}
-      <header className="bg-slate-900 px-6 py-4">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Scale className="w-7 h-7 text-amber-500" />
-            <span className="text-lg font-semibold text-white" style={{ fontFamily: 'Crimson Pro, serif' }}>
+      <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
+              <Scale className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: 'Crimson Pro, serif' }}>
               Appeal Case Manager
             </span>
-          </div>
-          <Link to="/">
-            <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
-            </Button>
           </Link>
+          <div className="hidden md:flex items-center gap-4">
+            <Link to="/glossary" className="text-slate-400 hover:text-white text-sm transition-colors">Legal Terms</Link>
+            <Link to="/faq" className="text-slate-400 hover:text-white text-sm transition-colors">FAQ</Link>
+            <Link to="/contact" className="text-slate-400 hover:text-white text-sm transition-colors">Contact</Link>
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            >
+              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            <Link to="/">
+              <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800 rounded-lg">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+            </Link>
+          </div>
+          <button className="md:hidden p-2 text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-slate-800 border-t border-slate-700 px-6 py-4 space-y-3">
+            <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
+            <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
+            <Link to="/contact" className="block py-2 text-slate-300 hover:text-white">Contact</Link>
+            <Link to="/" className="block py-2 text-amber-500 hover:text-amber-400">Back to Home</Link>
+          </div>
+        )}
       </header>
 
-      {/* Hero */}
-      <section className="bg-slate-900 px-6 py-12 border-b border-slate-800">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-1 mb-4">
+      {/* Hero Section */}
+      <section className="relative py-16 px-6 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920" 
+            alt=""
+            className="w-full h-full object-cover opacity-5 dark:opacity-[0.02]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+        </div>
+        
+        <div className="max-w-5xl mx-auto relative z-10 text-center">
+          <div className="flex items-center justify-center gap-1 mb-6">
             {[1,2,3,4,5].map(i => (
-              <Star key={i} className="w-5 h-5 text-amber-500 fill-amber-500" />
+              <Star key={i} className="w-6 h-6 text-amber-500 fill-amber-500" />
             ))}
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Real Stories, Real Hope</p>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Success Stories
           </h1>
-          <p className="text-slate-400 max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Real stories from families who found hope when they thought there was none. 
             These are people just like you who refused to give up.
           </p>
@@ -124,40 +161,40 @@ const SuccessStories = () => {
       </section>
 
       {/* Stories */}
-      <main className="max-w-4xl mx-auto px-6 py-12">
+      <main className="max-w-5xl mx-auto px-6 pb-16">
         <div className="space-y-8">
           {successStories.map((story) => (
             <div 
               key={story.id}
-              className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+              className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden hover:shadow-md transition-shadow"
             >
-              <div className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center shrink-0">
-                    <Quote className="w-6 h-6 text-amber-600" />
+              <div className="p-6 md:p-8">
+                <div className="flex items-start gap-4 md:gap-6">
+                  <div className="w-14 h-14 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center shrink-0">
+                    <Quote className="w-7 h-7 text-amber-600 dark:text-amber-400" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-slate-700 leading-relaxed mb-4">
+                    <p className="text-foreground leading-relaxed mb-6">
                       "{story.story}"
                     </p>
                     <div className="flex flex-wrap items-center gap-4 text-sm">
                       <div>
-                        <span className="font-semibold text-slate-900">{story.name}</span>
-                        <span className="text-slate-500"> • {story.relationship}</span>
-                        <span className="text-slate-400"> • {story.location}</span>
+                        <span className="font-semibold text-foreground">{story.name}</span>
+                        <span className="text-muted-foreground"> • {story.relationship}</span>
+                        <span className="text-muted-foreground/70"> • {story.location}</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="bg-green-50 border-t border-green-100 px-6 py-3">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 text-green-700">
-                    <CheckCircle className="w-4 h-4" />
-                    <span className="font-medium text-sm">{story.outcome}</span>
+              <div className="bg-emerald-50 dark:bg-emerald-900/20 border-t border-emerald-100 dark:border-emerald-800 px-6 md:px-8 py-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
+                    <CheckCircle className="w-5 h-5" />
+                    <span className="font-semibold text-sm">{story.outcome}</span>
                   </div>
                   {story.timeframe && (
-                    <span className="text-xs text-green-600 bg-green-100 px-2 py-1 rounded">
+                    <span className="text-xs text-emerald-600 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/40 px-3 py-1.5 rounded-lg font-medium">
                       {story.timeframe}
                     </span>
                   )}
@@ -168,8 +205,8 @@ const SuccessStories = () => {
         </div>
 
         {/* Disclaimer */}
-        <div className="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-          <p className="text-sm text-amber-800">
+        <div className="mt-10 p-5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl">
+          <p className="text-sm text-amber-800 dark:text-amber-200">
             <strong>Note:</strong> These stories are shared by real users with their consent. 
             Individual results vary. This tool does not guarantee any outcome. 
             All legal matters should be reviewed by a qualified legal professional.
@@ -177,14 +214,16 @@ const SuccessStories = () => {
         </div>
 
         {/* Share Your Story */}
-        <div className="mt-12 text-center">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <Heart className="w-5 h-5 text-red-500" />
-            <h2 className="text-xl font-bold text-slate-900" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Share Your Story
-            </h2>
+        <div className="mt-16 text-center">
+          <div className="flex justify-center mb-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-lg shadow-red-500/30">
+              <Heart className="w-7 h-7 text-white" />
+            </div>
           </div>
-          <p className="text-slate-600 mb-6 max-w-xl mx-auto">
+          <h2 className="text-2xl font-bold text-foreground mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Share Your Story
+          </h2>
+          <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
             Has this tool helped you or your family? Your story could give hope to someone 
             who's going through what you went through.
           </p>
@@ -192,63 +231,70 @@ const SuccessStories = () => {
           {!showSubmitForm ? (
             <Button 
               onClick={() => setShowSubmitForm(true)}
-              className="bg-amber-600 text-white hover:bg-amber-700"
+              className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-8 py-5 font-semibold shadow-lg shadow-amber-600/20"
             >
               Share My Story
             </Button>
           ) : submitted ? (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6 max-w-md mx-auto">
-              <CheckCircle className="w-10 h-10 text-green-500 mx-auto mb-3" />
-              <h3 className="font-semibold text-green-800 mb-2">Thank You!</h3>
-              <p className="text-green-700 text-sm">
+            <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-8 max-w-md mx-auto">
+              <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/40 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <h3 className="font-semibold text-emerald-800 dark:text-emerald-200 text-lg mb-2">Thank You!</h3>
+              <p className="text-emerald-700 dark:text-emerald-300">
                 Your story has been submitted. We'll review it and may feature it to help inspire others.
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-xl p-6 max-w-lg mx-auto text-left space-y-4">
+            <form onSubmit={handleSubmit} className="bg-card border border-border rounded-2xl p-8 max-w-lg mx-auto text-left space-y-5 shadow-sm">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Your First Name *</label>
+                <label className="block text-sm font-medium text-foreground mb-1.5">Your First Name *</label>
                 <Input
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   placeholder="e.g., Sarah"
+                  className="rounded-xl"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Your Email *</label>
+                <label className="block text-sm font-medium text-foreground mb-1.5">Your Email *</label>
                 <Input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   placeholder="We'll only use this to contact you"
+                  className="rounded-xl"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Your Relationship</label>
+                <label className="block text-sm font-medium text-foreground mb-1.5">Your Relationship</label>
                 <Input
                   value={formData.relationship}
                   onChange={(e) => setFormData({...formData, relationship: e.target.value})}
                   placeholder="e.g., Wife, Mother, Friend"
+                  className="rounded-xl"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Your Story *</label>
+                <label className="block text-sm font-medium text-foreground mb-1.5">Your Story *</label>
                 <Textarea
                   value={formData.story}
                   onChange={(e) => setFormData({...formData, story: e.target.value})}
                   placeholder="Tell us how this tool helped you..."
-                  rows={4}
+                  rows={5}
+                  className="rounded-xl"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Outcome</label>
+                <label className="block text-sm font-medium text-foreground mb-1.5">Outcome</label>
                 <Input
                   value={formData.outcome}
                   onChange={(e) => setFormData({...formData, outcome: e.target.value})}
                   placeholder="e.g., Appeal successful, New evidence found"
+                  className="rounded-xl"
                 />
               </div>
-              <div className="flex items-start gap-2">
+              <div className="flex items-start gap-3 bg-muted/50 p-4 rounded-xl">
                 <input
                   type="checkbox"
                   id="consent"
@@ -256,16 +302,20 @@ const SuccessStories = () => {
                   onChange={(e) => setFormData({...formData, consent: e.target.checked})}
                   className="mt-1"
                 />
-                <label htmlFor="consent" className="text-sm text-slate-600">
+                <label htmlFor="consent" className="text-sm text-muted-foreground">
                   I consent to having my story (first name and story only) shared publicly to help others. 
                   My email will never be shared. *
                 </label>
               </div>
-              <div className="flex gap-3">
-                <Button type="submit" disabled={loading} className="flex-1 bg-amber-600 hover:bg-amber-700 text-white">
+              <div className="flex gap-3 pt-2">
+                <Button 
+                  type="submit" 
+                  disabled={loading} 
+                  className="flex-1 bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl py-5 font-semibold"
+                >
                   {loading ? "Submitting..." : "Submit Story"}
                 </Button>
-                <Button type="button" variant="outline" onClick={() => setShowSubmitForm(false)}>
+                <Button type="button" variant="outline" onClick={() => setShowSubmitForm(false)} className="rounded-xl">
                   Cancel
                 </Button>
               </div>
@@ -275,16 +325,16 @@ const SuccessStories = () => {
       </main>
 
       {/* Footer CTA */}
-      <section className="bg-slate-900 px-6 py-10">
+      <section className="bg-slate-900 dark:bg-slate-950 px-6 py-12 border-t border-slate-800">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <h2 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Ready to Start Your Journey?
           </h2>
-          <p className="text-slate-400 mb-6">
+          <p className="text-slate-400 mb-8">
             You don't have to do this alone. Let the tool help you find what might have been missed.
           </p>
           <Link to="/">
-            <Button className="bg-amber-600 text-white hover:bg-amber-700">
+            <Button className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-8 py-5 font-semibold shadow-lg shadow-amber-600/20">
               Get Started Free
             </Button>
           </Link>
