@@ -6,7 +6,7 @@ import {
   Scale, ArrowLeft, FileText, Clock, Plus,
   Loader2, AlertCircle, Sparkles, Gavel,
   HelpCircle, TrendingUp, CheckSquare, BookOpen,
-  MessageSquare, Users
+  MessageSquare, Users, Search
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -42,6 +42,7 @@ import DocumentsSection from "../components/DocumentsSection";
 import NotesSection from "../components/NotesSection";
 import ReportsSection from "../components/ReportsSection";
 import CaseComparison from "../components/CaseComparison";
+import ContradictionFinder from "../components/ContradictionFinder";
 
 const EVENT_TYPES = [
   // Pre-trial
@@ -610,6 +611,10 @@ const CaseDetail = ({ user }) => {
                 <BookOpen className="w-4 h-4 mr-2" />
                 Legal Framework
               </TabsTrigger>
+              <TabsTrigger value="contradictions" className="rounded-lg" data-testid="tab-contradictions">
+                <Search className="w-4 h-4 mr-2" />
+                Contradictions
+              </TabsTrigger>
               <TabsTrigger value="progress" className="rounded-lg" data-testid="tab-progress">
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Progress
@@ -807,6 +812,11 @@ const CaseDetail = ({ user }) => {
               offenceType={caseData?.offence_type}
               state={caseData?.state}
             />
+          </TabsContent>
+
+          {/* Contradictions Tab */}
+          <TabsContent value="contradictions" className="space-y-6">
+            <ContradictionFinder caseId={caseId} documents={documents} />
           </TabsContent>
 
           {/* Progress Tab */}

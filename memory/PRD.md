@@ -228,6 +228,26 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [ ] Report comparison view
 - [ ] Document version history
 
+### New Features (Mar 2026 - Session 2) ✅
+- [x] **Compare Cases Feature** - New page at `/compare` with two modes:
+  - My Cases: Compare 2-5 of your own cases side-by-side
+  - Platform Patterns: View anonymized aggregate insights from all users
+  - Filters by offence category, state, and ground type
+  - Success factors analysis showing what correlates with strong appeals
+  - Backend: `/app/backend/routers/compare.py`
+  - Frontend: `/app/frontend/src/pages/CompareCasesPage.jsx`
+
+- [x] **Contradiction Finder (Enhanced)** - New tab in Case Detail:
+  - AI-powered scan of documents, notes, and timeline for inconsistencies
+  - Detects: witness statement contradictions, timeline issues, evidence conflicts
+  - Severity levels: Critical, Significant, Minor
+  - Specific quotes and recommendations for each finding
+  - Scan history with ability to compare past scans
+  - Backend: `/app/backend/routers/contradictions.py`
+  - Frontend: `/app/frontend/src/components/ContradictionFinder.jsx`
+
+- [x] **Dashboard Navigation Update** - Added Compare Cases link to sidebar
+
 ## Technical Debt (Priority)
 - [x] **Backend Refactoring** - Created modular structure (COMPLETE - NO REGRESSIONS)
   - ✅ `/app/backend/models/__init__.py` - All Pydantic models extracted

@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { 
   Scale, Plus, FileText, Clock, MoreVertical, 
   LogOut, FolderOpen, Search, User, HelpCircle, Users, BookOpen,
-  FileCheck, Moon, Sun, Menu, X, Home, Gavel, ChevronRight
+  FileCheck, Moon, Sun, Menu, X, Home, Gavel, ChevronRight, GitCompare
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -176,6 +176,10 @@ const Dashboard = ({ user }) => {
           <Link to="/glossary" className="sidebar-item" data-testid="nav-glossary">
             <BookOpen className="w-5 h-5" />
             <span className="font-medium">Legal Glossary</span>
+          </Link>
+          <Link to="/compare" className="sidebar-item" data-testid="nav-compare">
+            <GitCompare className="w-5 h-5" />
+            <span className="font-medium">Compare Cases</span>
           </Link>
           <Link to="/faq" className="sidebar-item" data-testid="nav-faq">
             <HelpCircle className="w-5 h-5" />

@@ -4325,6 +4325,14 @@ app.include_router(api_router)
 from routers.statistics import router as statistics_router
 app.include_router(statistics_router)
 
+# Include compare cases router
+from routers.compare import router as compare_router
+app.include_router(compare_router)
+
+# Include contradictions router
+from routers.contradictions import router as contradictions_router
+app.include_router(contradictions_router)
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,

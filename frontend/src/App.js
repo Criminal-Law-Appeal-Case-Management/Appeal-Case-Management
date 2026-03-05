@@ -23,6 +23,7 @@ import Statistics from "./pages/Statistics";
 import FAQPage from "./pages/FAQPage";
 import LawyerDirectory from "./pages/LawyerDirectory";
 import FormTemplates from "./pages/FormTemplates";
+import CompareCasesPage from "./pages/CompareCasesPage";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -238,6 +239,14 @@ function AppRouter() {
       <Route
         path="/forms"
         element={<FormTemplates />}
+      />
+      <Route
+        path="/compare"
+        element={
+          <ProtectedRoute>
+            {({ user }) => <CompareCasesPage user={user} />}
+          </ProtectedRoute>
+        }
       />
     </Routes>
   );
