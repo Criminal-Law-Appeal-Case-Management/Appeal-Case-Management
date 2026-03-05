@@ -218,6 +218,9 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **Glass Morphism Effects** - Backdrop blur on headers and modals
 - [x] **Legal-themed Graphics** - Scales of justice, gavel imagery throughout
 - [x] **Testing Verified** - All redesigned pages tested (test_reports/iteration_19.json)
+- [x] **New Features Tested** - Compare Cases and Contradiction Finder (test_reports/iteration_20.json)
+  - Backend: 20/20 API tests passed
+  - Frontend: All features working correctly
 
 
 
