@@ -222,6 +222,10 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Backend: 20/20 API tests passed
   - Frontend: All features working correctly
 
+- [x] **Export Features Tested** - Quick Export, Document Bundler, Enhanced Case Strength Meter (test_reports/iteration_21.json)
+  - Backend: 11/13 API tests passed (85%)
+  - Frontend: 100% - All new features verified
+
 
 
 ## Future Enhancements
@@ -250,6 +254,31 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Frontend: `/app/frontend/src/components/ContradictionFinder.jsx`
 
 - [x] **Dashboard Navigation Update** - Added Compare Cases link to sidebar
+
+- [x] **Quick Export (Appeal Package) ✅** - Full ZIP with everything + editable DOCX
+  - ZIP contains: all docs, timeline, grounds, notes, reports, AI analysis
+  - 5 editable legal templates pre-filled with case data:
+    - Notice of Intention to Appeal
+    - Application for Leave to Appeal
+    - Written Submissions Template
+    - Fresh Evidence Affidavit
+    - Chronology of Proceedings
+  - Backend: `/app/backend/routers/export.py`
+  - Frontend: `/app/frontend/src/components/QuickExport.jsx`
+
+- [x] **Document Bundler ✅** - Bundle multiple docs into single PDF
+  - Select documents to include
+  - Auto-generate table of contents
+  - Includes AI analysis notes
+  - Backend: Added to `/app/backend/routers/export.py`
+  - Frontend: `/app/frontend/src/components/DocumentBundler.jsx`
+
+- [x] **Enhanced Case Strength Meter ✅** - Visual scoring system
+  - Circular score display (0-100)
+  - Color-coded rating badge
+  - 4 breakdown categories: Grounds, Documentation, Timeline, Preparation
+  - Recommendations to improve score
+  - Frontend: Updated `/app/frontend/src/components/CaseStrengthMeter.jsx`
 
 ## Technical Debt (Priority)
 - [x] **Backend Refactoring** - Created modular structure (COMPLETE - NO REGRESSIONS)
