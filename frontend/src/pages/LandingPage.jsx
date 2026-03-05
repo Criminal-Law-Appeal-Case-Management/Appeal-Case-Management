@@ -278,44 +278,61 @@ const LandingPage = () => {
             </p>
           </div>
 
-          <div className="space-y-16">
+          <div className="space-y-20">
             
             {/* Sample 1: Case Dashboard with Documents */}
-            <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <span className="text-amber-600 font-semibold text-xs uppercase tracking-wider">Step 1</span>
-                <h3 className="text-xl font-bold text-slate-900 mt-2 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg">
+                    <Upload className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="text-amber-600 dark:text-amber-500 font-bold text-sm uppercase tracking-wider">Step 1</span>
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mt-2 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   Upload Your Case Documents
                 </h3>
-                <p className="text-slate-600 text-sm leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed">
                   Create a case and upload all relevant documents — transcripts, evidence, court records, witness statements. 
                   The system automatically extracts text using OCR and organises everything in one place. You can categorise 
                   documents by type for easy reference.
                 </p>
+                {/* Small gavel image */}
+                <div className="mt-6 flex items-center gap-4">
+                  <img 
+                    src="https://images.unsplash.com/photo-1589307904488-7d60ff29c975?crop=entropy&cs=srgb&fm=jpg&q=85&w=100&h=100&fit=crop" 
+                    alt="Gavel"
+                    className="w-16 h-16 rounded-xl object-cover shadow-md"
+                  />
+                  <p className="text-sm text-muted-foreground italic">Supports PDF, DOCX, images & scanned documents</p>
+                </div>
               </div>
-              <div className="bg-slate-100 rounded-lg p-4 border border-slate-200">
-                <div className="bg-white rounded border border-slate-200 shadow-sm">
-                  <div className="bg-slate-800 text-white px-4 py-2 rounded-t text-sm font-medium">Case: R v Smith [2024]</div>
-                  <div className="p-4 space-y-2">
-                    <div className="flex items-center gap-3 p-2 bg-slate-50 rounded text-sm">
-                      <FileText className="w-4 h-4 text-blue-600" />
-                      <span className="flex-1">Trial_Transcript_Day1.pdf</span>
-                      <span className="text-xs text-slate-500">Transcript</span>
+              <div className="bg-card rounded-2xl p-6 border border-border shadow-xl">
+                <div className="bg-card rounded-xl border border-border shadow-sm">
+                  <div className="bg-slate-800 dark:bg-slate-900 text-white px-4 py-3 rounded-t-xl text-sm font-medium flex items-center gap-2">
+                    <Scale className="w-4 h-4 text-amber-500" />
+                    Case: R v Smith [2024]
+                  </div>
+                  <div className="p-4 space-y-3">
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl text-sm hover:bg-muted transition-colors">
+                      <FileText className="w-5 h-5 text-blue-600" />
+                      <span className="flex-1 font-medium">Trial_Transcript_Day1.pdf</span>
+                      <span className="text-xs text-muted-foreground bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded">Transcript</span>
                     </div>
-                    <div className="flex items-center gap-3 p-2 bg-slate-50 rounded text-sm">
-                      <FileText className="w-4 h-4 text-green-600" />
-                      <span className="flex-1">Witness_Statement_Jones.pdf</span>
-                      <span className="text-xs text-slate-500">Evidence</span>
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl text-sm hover:bg-muted transition-colors">
+                      <FileText className="w-5 h-5 text-green-600" />
+                      <span className="flex-1 font-medium">Witness_Statement_Jones.pdf</span>
+                      <span className="text-xs text-muted-foreground bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded">Evidence</span>
                     </div>
-                    <div className="flex items-center gap-3 p-2 bg-slate-50 rounded text-sm">
-                      <FileText className="w-4 h-4 text-amber-600" />
-                      <span className="flex-1">Sentencing_Remarks.pdf</span>
-                      <span className="text-xs text-slate-500">Court Document</span>
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl text-sm hover:bg-muted transition-colors">
+                      <FileText className="w-5 h-5 text-amber-600" />
+                      <span className="flex-1 font-medium">Sentencing_Remarks.pdf</span>
+                      <span className="text-xs text-muted-foreground bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded">Court Document</span>
                     </div>
-                    <div className="flex items-center gap-3 p-2 bg-slate-50 rounded text-sm">
-                      <FileText className="w-4 h-4 text-purple-600" />
-                      <span className="flex-1">Defence_Closing_Submission.pdf</span>
-                      <span className="text-xs text-slate-500">Brief</span>
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl text-sm hover:bg-muted transition-colors">
+                      <FileText className="w-5 h-5 text-purple-600" />
+                      <span className="flex-1 font-medium">Defence_Closing_Submission.pdf</span>
+                      <span className="text-xs text-muted-foreground bg-purple-100 dark:bg-purple-900/30 px-2 py-1 rounded">Brief</span>
                     </div>
                   </div>
                 </div>
@@ -323,68 +340,104 @@ const LandingPage = () => {
             </div>
 
             {/* Sample 2: Timeline of Events */}
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="order-2 md:order-1 bg-slate-100 rounded-lg p-4 border border-slate-200">
-                <div className="bg-white rounded border border-slate-200 shadow-sm p-4">
-                  <div className="text-sm font-semibold text-slate-800 mb-4">Timeline of Events</div>
-                  <div className="relative pl-6 border-l-2 border-amber-500 space-y-4">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="order-2 md:order-1 bg-card rounded-2xl p-6 border border-border shadow-xl">
+                <div className="bg-card rounded-xl border border-border shadow-sm p-5">
+                  <div className="text-base font-semibold text-foreground mb-5 flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-amber-600" />
+                    Timeline of Events
+                  </div>
+                  <div className="relative pl-8 border-l-3 border-amber-500 space-y-5">
                     <div className="relative">
-                      <div className="absolute -left-8 w-4 h-4 bg-amber-500 rounded-full border-2 border-white"></div>
-                      <div className="text-xs text-amber-600 font-medium">15 March 2023</div>
-                      <div className="text-sm font-medium text-slate-900">Incident Occurred</div>
-                      <div className="text-xs text-slate-500">Altercation at residence, 42 Smith St</div>
+                      <div className="absolute -left-10 w-5 h-5 bg-amber-500 rounded-full border-3 border-white shadow"></div>
+                      <div className="text-xs text-amber-600 dark:text-amber-500 font-semibold">15 March 2023</div>
+                      <div className="text-sm font-semibold text-foreground">Incident Occurred</div>
+                      <div className="text-xs text-muted-foreground">Altercation at residence, 42 Smith St</div>
                     </div>
                     <div className="relative">
-                      <div className="absolute -left-8 w-4 h-4 bg-amber-500 rounded-full border-2 border-white"></div>
-                      <div className="text-xs text-amber-600 font-medium">16 March 2023</div>
-                      <div className="text-sm font-medium text-slate-900">Arrest Made</div>
-                      <div className="text-xs text-slate-500">Defendant taken into custody</div>
+                      <div className="absolute -left-10 w-5 h-5 bg-amber-500 rounded-full border-3 border-white shadow"></div>
+                      <div className="text-xs text-amber-600 dark:text-amber-500 font-semibold">16 March 2023</div>
+                      <div className="text-sm font-semibold text-foreground">Arrest Made</div>
+                      <div className="text-xs text-muted-foreground">Defendant taken into custody</div>
                     </div>
                     <div className="relative">
-                      <div className="absolute -left-8 w-4 h-4 bg-amber-500 rounded-full border-2 border-white"></div>
-                      <div className="text-xs text-amber-600 font-medium">22 August 2023</div>
-                      <div className="text-sm font-medium text-slate-900">Trial Commenced</div>
-                      <div className="text-xs text-slate-500">NSW Supreme Court, Justice Williams</div>
+                      <div className="absolute -left-10 w-5 h-5 bg-amber-500 rounded-full border-3 border-white shadow"></div>
+                      <div className="text-xs text-amber-600 dark:text-amber-500 font-semibold">22 August 2023</div>
+                      <div className="text-sm font-semibold text-foreground">Trial Commenced</div>
+                      <div className="text-xs text-muted-foreground">NSW Supreme Court, Justice Williams</div>
                     </div>
                     <div className="relative">
-                      <div className="absolute -left-8 w-4 h-4 bg-red-500 rounded-full border-2 border-white"></div>
-                      <div className="text-xs text-red-600 font-medium">5 September 2023</div>
-                      <div className="text-sm font-medium text-slate-900">Verdict & Sentencing</div>
-                      <div className="text-xs text-slate-500">Guilty — 18 years imprisonment</div>
+                      <div className="absolute -left-10 w-5 h-5 bg-red-500 rounded-full border-3 border-white shadow"></div>
+                      <div className="text-xs text-red-600 dark:text-red-400 font-semibold">5 September 2023</div>
+                      <div className="text-sm font-semibold text-foreground">Verdict & Sentencing</div>
+                      <div className="text-xs text-muted-foreground">Guilty — 18 years imprisonment</div>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="order-1 md:order-2">
-                <span className="text-amber-600 font-semibold text-xs uppercase tracking-wider">Step 2</span>
-                <h3 className="text-xl font-bold text-slate-900 mt-2 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg">
+                    <Clock className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="text-amber-600 dark:text-amber-500 font-bold text-sm uppercase tracking-wider">Step 2</span>
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mt-2 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   AI-Generated Timeline
                 </h3>
-                <p className="text-slate-600 text-sm leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed">
                   The system analyses your documents and automatically builds a chronological timeline of key events. 
                   This helps visualise the sequence of what happened — from the incident through arrest, trial, and sentencing. 
                   You can also add events manually and link them to specific documents.
                 </p>
+                {/* Courthouse image */}
+                <div className="mt-6">
+                  <img 
+                    src="https://images.unsplash.com/photo-1662516201865-8633915e668a?crop=entropy&cs=srgb&fm=jpg&q=85&w=400&h=200&fit=crop" 
+                    alt="Courthouse"
+                    className="w-full h-32 rounded-xl object-cover shadow-lg border border-border"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Sample 3: Grounds of Merit Identified */}
-            <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <span className="text-amber-600 font-semibold text-xs uppercase tracking-wider">Step 3</span>
-                <h3 className="text-xl font-bold text-slate-900 mt-2 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shadow-lg">
+                    <Scale className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="text-amber-600 dark:text-amber-500 font-bold text-sm uppercase tracking-wider">Step 3</span>
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mt-2 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   Potential Grounds Identified
                 </h3>
-                <p className="text-slate-600 text-sm leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed">
                   The AI analyses your case documents against known appeal grounds under NSW and Federal law. 
                   It flags potential issues such as procedural errors, misdirections to the jury, or elements 
                   that may not have been properly established. Each ground shows its strength and relevant legal sections.
                   Click "Investigate" to see detailed analysis.
                 </p>
+                {/* Scales image */}
+                <div className="mt-6 flex items-center gap-4">
+                  <img 
+                    src="https://images.unsplash.com/photo-1764113697577-b5899b9a339d?crop=entropy&cs=srgb&fm=jpg&q=85&w=100&h=100&fit=crop" 
+                    alt="Lady Justice"
+                    className="w-20 h-20 rounded-xl object-cover shadow-md"
+                  />
+                  <div className="text-sm text-muted-foreground">
+                    <p className="font-semibold text-foreground">AI-Powered Analysis</p>
+                    <p>Identifies potential grounds based on your jurisdiction's law</p>
+                  </div>
+                </div>
               </div>
-              <div className="bg-slate-100 rounded-lg p-4 border border-slate-200">
-                <div className="bg-white rounded border border-slate-200 shadow-sm p-4 space-y-3">
-                  <div className="text-sm font-semibold text-slate-800 mb-2">Potential Grounds of Merit (3 Found)</div>
+              <div className="bg-card rounded-2xl p-6 border border-border shadow-xl">
+                <div className="bg-card rounded-xl border border-border shadow-sm p-5 space-y-4">
+                  <div className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-emerald-600" />
+                    Potential Grounds of Merit (3 Found)
+                  </div>
                   
                   <div className="border border-amber-200 bg-amber-50 rounded-lg p-3">
                     <div className="flex items-start justify-between">
