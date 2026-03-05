@@ -126,7 +126,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 ## Database Schema
 - **users**: user_id, email, name, google_id
 - **user_sessions**: session_token, user_id, expires_at
-- **cases**: case_id, user_id, title, defendant_name, case_number, court
+- **cases**: case_id, user_id, title, defendant_name, case_number, court, offence_category, offence_type
 - **documents**: document_id, case_id, filename, content_text, ocr_extracted
 - **timeline_events**: event_id, case_id, title, event_date, event_type, event_category, significance, perspective, is_contested, contested_details, linked_documents, participants, related_grounds, source_citation, inconsistency_notes
 - **notes**: note_id, case_id, title, content, category, is_pinned
@@ -211,3 +211,42 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Verified with comprehensive backend testing (17/17 tests passed)
   - AI calls use GPT-4o via Emergent LLM Key with retry logic
   - Test reports: `/app/test_reports/iteration_9.json`, `/app/test_reports/iteration_10.json`
+
+### All Criminal Offence Types Support ✅ (Mar 2026)
+- [x] **Expanded Beyond Murder/Manslaughter** - Now supports ALL criminal offence categories:
+  - Homicide (Murder, Manslaughter, Attempted Murder, Dangerous Driving Causing Death)
+  - Assault & Violence (Common Assault, ABH, GBH, Wounding, Affray, Intimidation)
+  - Sexual Offences (Sexual Assault, Aggravated Sexual Assault, Sexual Touching, Child Offences)
+  - Robbery & Theft (Armed Robbery, Theft, Receiving Stolen Property, Break and Enter)
+  - Drug Offences (Possession, Supply, Trafficking, Importation, Manufacturing)
+  - Fraud & Dishonesty (Fraud, Forgery, Identity Theft, Money Laundering)
+  - Firearms & Weapons (Unauthorised Possession, Prohibited Weapons, Trafficking)
+  - Domestic Violence (DV Assault, Stalking, Intimidation, AVO Contravention)
+  - Public Order Offences (Riot, Affray, Offensive Conduct, Resist Arrest)
+  - Terrorism Offences (Terrorist Acts, Membership, Financing, Foreign Incursion)
+  - Driving Offences (Dangerous Driving, Drink/Drug Driving, Driving While Disqualified)
+
+- [x] **Dynamic Legal Framework** - Each offence category includes:
+  - NSW legislation with specific section references
+  - Commonwealth/Federal legislation where applicable
+  - Available defences specific to offence type
+  - Key elements that must be proven
+  
+- [x] **AI Analysis Uses Offence Context** - All AI features now dynamically adjust:
+  - Auto-identify grounds uses offence-specific system prompts
+  - Deep investigation references correct legislation
+  - Report generation tailored to offence type
+  
+- [x] **UI Enhancements**:
+  - Dashboard: Offence category selector when creating new case
+  - Dashboard: Dynamic offence type dropdown based on selected category
+  - Case Detail: Displays offence category and type badges
+  - Landing Page: Shows all supported offence types
+
+- [x] **API Endpoints**:
+  - `GET /api/offence-categories` - Returns all 11 categories with offences
+  - `GET /api/offence-framework` - Returns complete legal framework
+  - `GET /api/offence-framework/{category}` - Returns detailed framework for specific category
+
+- [x] **Testing**: All tests passed (`/app/test_reports/iteration_13.json`)
+
