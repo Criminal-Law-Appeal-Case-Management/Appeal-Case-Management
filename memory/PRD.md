@@ -682,7 +682,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Smoke screenshot captured after implementation
   - Testing agent report: `/app/test_reports/iteration_32.json`
   - Frontend: 100% pass; backend guardrails confirmed
-  - Iteration 33/35 follow-up: ReportView now has premium top summary + TOC + full in-browser readability (no forced PDF)
+  - Iteration 34 follow-up: Full report upgraded to extensive-level depth, extensive report expanded with mandatory comparative-sentencing/common-grounds/options tables + explicit sentence-reduction scenarios; ReportView redesigned with markdown table rendering + readiness gauge; ReportsSection collapsible warning resolved.
 ## Next Priority Tasks
 - [ ] User verification pass on upgraded report quality and barrister presentation quality (content depth sign-off)
 - [ ] Real-time collaboration/chat for Notes (WebSockets)
