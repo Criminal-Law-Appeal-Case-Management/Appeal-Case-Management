@@ -902,157 +902,390 @@ const LandingPage = () => {
                   Generate AI-Powered Reports
                 </h3>
                 <p className="text-slate-600 dark:text-slate-400 text-sm max-w-2xl mx-auto">
-                  Our AI generates <strong>barrister-quality legal analysis</strong> with similar cases, legislation links, and complete appeal filing guides. Three report types to match your needs:
+                  Our AI generates <strong>barrister-quality legal analysis</strong> with similar cases, legislation links, and complete appeal filing guides. Here's exactly what each report looks like:
                 </p>
               </div>
 
               <div className="space-y-8">
                 
-                {/* Quick Summary Report - FREE */}
+                {/* ========== QUICK SUMMARY REPORT SAMPLE ========== */}
                 <div className="bg-gradient-to-r from-green-50 to-white dark:from-green-900/20 dark:to-slate-900 rounded-xl border border-green-200 dark:border-green-800 overflow-hidden">
                   <div className="bg-green-600 text-white px-6 py-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 bg-white rounded-full"></div>
                       <span className="font-semibold">QUICK SUMMARY REPORT</span>
+                      <span className="text-green-200 text-sm">— Sample Preview</span>
                     </div>
                     <span className="bg-green-500 px-3 py-1 rounded-full text-sm font-bold">FREE</span>
                   </div>
                   <div className="p-6">
-                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-5 shadow-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                      <div className="border-b border-slate-200 dark:border-slate-700 pb-4 mb-4">
-                        <h4 className="text-lg font-bold text-slate-900 dark:text-white">What You Get:</h4>
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-6 text-sm">
-                        <div>
-                          <ul className="text-slate-600 dark:text-slate-400 space-y-2 text-xs">
-                            <li className="flex items-start gap-2"><span className="text-green-500">✓</span> Case overview with key facts</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500">✓</span> Grounds preview (count + strongest)</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500">✓</span> Appeal viability assessment</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500">✓</span> Immediate action recommendations</li>
-                          </ul>
-                        </div>
-                        <div>
-                          <ul className="text-slate-600 dark:text-slate-400 space-y-2 text-xs">
-                            <li className="flex items-start gap-2"><span className="text-green-500">✓</span> Critical deadline reminders</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500">✓</span> Key evidence highlights</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500">✓</span> Teaser of similar cases</li>
-                            <li className="flex items-start gap-2"><span className="text-amber-500">★</span> <em className="text-amber-600">Upgrade prompts for full analysis</em></li>
-                          </ul>
+                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                      {/* Report Header */}
+                      <div className="bg-slate-900 text-white p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-xs text-slate-400 uppercase tracking-wider">Quick Summary Report</p>
+                            <h4 className="text-lg font-bold">R v Thompson [2024] NSWDC 847</h4>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-xs text-slate-400">Generated</p>
+                            <p className="text-sm">5 March 2026</p>
+                          </div>
                         </div>
                       </div>
-                      <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 bg-green-50 dark:bg-green-900/20 -mx-5 -mb-5 px-5 py-4 rounded-b-lg">
-                        <p className="text-xs text-green-800 dark:text-green-200 font-semibold">
-                          Perfect for: Initial case assessment, deciding whether to pursue an appeal, understanding your options.
-                        </p>
+                      
+                      {/* Report Content */}
+                      <div className="p-5 space-y-4">
+                        {/* Case Overview */}
+                        <div>
+                          <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b border-slate-200 pb-2 mb-2">CASE OVERVIEW</h5>
+                          <div className="grid grid-cols-2 gap-2 text-xs">
+                            <p><span className="text-slate-500">Defendant:</span> <strong>Michael Thompson</strong></p>
+                            <p><span className="text-slate-500">Offence:</span> <strong>Aggravated Assault</strong></p>
+                            <p><span className="text-slate-500">Verdict:</span> <strong className="text-red-600">Guilty</strong></p>
+                            <p><span className="text-slate-500">Sentence:</span> <strong>4 years (NPP 2.5 years)</strong></p>
+                            <p><span className="text-slate-500">Court:</span> <strong>NSW District Court</strong></p>
+                            <p><span className="text-slate-500">Documents:</span> <strong>8 files analysed</strong></p>
+                          </div>
+                        </div>
+
+                        {/* Grounds Preview */}
+                        <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border border-amber-200 dark:border-amber-700">
+                          <h5 className="font-bold text-amber-800 dark:text-amber-200 text-sm mb-2">GROUNDS IDENTIFIED: 3</h5>
+                          <div className="space-y-1 text-xs">
+                            <p className="flex items-center gap-2">
+                              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                              <strong>Strongest:</strong> Inadequate jury direction on self-defence
+                            </p>
+                            <p className="flex items-center gap-2 text-slate-500">
+                              <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                              Ground 2: <span className="italic">Unlock full report to view</span>
+                            </p>
+                            <p className="flex items-center gap-2 text-slate-500">
+                              <span className="w-2 h-2 bg-slate-400 rounded-full"></span>
+                              Ground 3: <span className="italic">Unlock full report to view</span>
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Appeal Viability */}
+                        <div>
+                          <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b border-slate-200 pb-2 mb-2">APPEAL VIABILITY</h5>
+                          <div className="flex items-center gap-3">
+                            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
+                              <span className="text-white font-bold text-lg">72%</span>
+                            </div>
+                            <div className="text-xs">
+                              <p className="font-semibold text-green-700 dark:text-green-400">MODERATE-STRONG PROSPECTS</p>
+                              <p className="text-slate-600 dark:text-slate-400">Based on identified grounds and similar case outcomes</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Deadline Warning */}
+                        <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-3 border border-red-200 dark:border-red-700">
+                          <p className="text-xs text-red-800 dark:text-red-200 font-semibold flex items-center gap-2">
+                            <span className="text-lg">⚠️</span>
+                            DEADLINE: Notice of Appeal must be filed within 28 days of sentence (by 2 April 2026)
+                          </p>
+                        </div>
+
+                        {/* Upgrade Prompt */}
+                        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-4 text-white text-center">
+                          <p className="font-semibold text-sm mb-1">Want the full analysis?</p>
+                          <p className="text-xs opacity-90">Upgrade to see all grounds, similar cases, legislation references, and step-by-step filing guide</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Full Detailed Report - $29 */}
+                {/* ========== FULL DETAILED REPORT SAMPLE ========== */}
                 <div className="bg-gradient-to-r from-blue-50 to-white dark:from-blue-900/20 dark:to-slate-900 rounded-xl border border-blue-200 dark:border-blue-800 overflow-hidden">
                   <div className="bg-blue-600 text-white px-6 py-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 bg-white rounded-full"></div>
                       <span className="font-semibold">FULL DETAILED REPORT</span>
-                      <span className="text-blue-200 text-sm">— Barrister-quality analysis</span>
+                      <span className="text-blue-200 text-sm">— Sample Preview</span>
                     </div>
                     <span className="bg-blue-500 px-3 py-1 rounded-full text-sm font-bold">$29 AUD</span>
                   </div>
                   <div className="p-6">
-                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-5 shadow-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                      <div className="border-b border-slate-200 dark:border-slate-700 pb-4 mb-4">
-                        <h4 className="text-lg font-bold text-slate-900 dark:text-white">10 Detailed Sections Including:</h4>
-                      </div>
-                      
-                      <div className="space-y-4 text-sm">
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
-                            <h5 className="font-bold text-blue-800 dark:text-blue-200 mb-2">Similar Cases Analysis</h5>
-                            <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
-                              <li>• 4-6 relevant NSW appeal cases</li>
-                              <li>• Direct links to AustLII decisions</li>
-                              <li>• Success rates and outcomes</li>
-                              <li>• Key arguments that worked</li>
-                            </ul>
+                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                      {/* Report Header */}
+                      <div className="bg-gradient-to-r from-slate-900 to-blue-900 text-white p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-xs text-blue-300 uppercase tracking-wider">Full Detailed Report</p>
+                            <h4 className="text-lg font-bold">R v Thompson [2024] NSWDC 847</h4>
+                            <p className="text-sm text-slate-300">Comprehensive Appeal Analysis</p>
                           </div>
-                          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4">
-                            <h5 className="font-bold text-amber-800 dark:text-amber-200 mb-2">Complete Appeal Filing Guide</h5>
-                            <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
-                              <li>• Step-by-step for YOUR court level</li>
-                              <li>• Required forms with links</li>
-                              <li>• Filing fees and locations</li>
-                              <li>• Time limits and extensions</li>
-                            </ul>
+                          <div className="text-right">
+                            <p className="text-2xl font-bold text-blue-300">72/100</p>
+                            <p className="text-xs text-slate-400">Case Strength</p>
                           </div>
                         </div>
-                        <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-4">
-                          <h5 className="font-bold text-slate-800 dark:text-slate-200 mb-2">Also Includes:</h5>
-                          <div className="grid md:grid-cols-3 gap-2 text-xs text-slate-600 dark:text-slate-400">
-                            <p>✓ Full ground analysis</p>
-                            <p>✓ Legislation references</p>
-                            <p>✓ Evidence assessment</p>
-                            <p>✓ Strategic recommendations</p>
-                            <p>✓ Presentation advice</p>
-                            <p>✓ Barrister View export</p>
+                      </div>
+                      
+                      {/* Table of Contents */}
+                      <div className="bg-slate-50 dark:bg-slate-700 p-3 border-b border-slate-200 dark:border-slate-600">
+                        <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">CONTENTS (10 Sections)</p>
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-1 text-xs text-slate-600 dark:text-slate-400">
+                          <span>1. Overview</span>
+                          <span>2. Grounds</span>
+                          <span>3. Evidence</span>
+                          <span>4. Similar Cases</span>
+                          <span>5. Legislation</span>
+                          <span>6. Timeline</span>
+                          <span>7. Strategy</span>
+                          <span>8. Filing Guide</span>
+                          <span>9. Deadlines</span>
+                          <span>10. Recommendations</span>
+                        </div>
+                      </div>
+
+                      {/* Report Content */}
+                      <div className="p-5 space-y-5">
+                        {/* Ground 1 - Full Detail */}
+                        <div>
+                          <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b-2 border-blue-500 pb-2 mb-3">
+                            GROUND 1: INADEQUATE JURY DIRECTION — <span className="text-green-600">STRONG</span>
+                          </h5>
+                          <p className="text-xs text-slate-700 dark:text-slate-300 mb-3">
+                            The trial judge's direction on self-defence under s.418 Crimes Act 1900 (NSW) was materially inadequate. 
+                            At page 47 of the summing up, His Honour stated only that "the defendant claims he was defending himself" 
+                            without explaining the elements the jury must consider: (a) whether the defendant believed conduct was 
+                            necessary; and (b) whether the response was reasonable in the circumstances as the defendant perceived them.
+                          </p>
+                          
+                          <div className="grid md:grid-cols-2 gap-3">
+                            <div className="bg-blue-50 dark:bg-blue-900/20 rounded p-3">
+                              <p className="text-xs font-bold text-blue-800 dark:text-blue-200 mb-2">RELEVANT LEGISLATION</p>
+                              <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
+                                <li>• s.418 Crimes Act 1900 (NSW) — Self-defence</li>
+                                <li>• s.419 Crimes Act 1900 (NSW) — Onus of proof</li>
+                                <li>• s.420 Crimes Act 1900 (NSW) — Excessive self-defence</li>
+                              </ul>
+                            </div>
+                            <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded p-3">
+                              <p className="text-xs font-bold text-emerald-800 dark:text-emerald-200 mb-2">SUPPORTING EVIDENCE</p>
+                              <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
+                                <li>• Summing up transcript pp.45-52</li>
+                                <li>• CCTV footage showing initial aggressor</li>
+                                <li>• Witness statement (Sarah Collins)</li>
+                              </ul>
+                            </div>
                           </div>
+                        </div>
+
+                        {/* Similar Cases */}
+                        <div>
+                          <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b-2 border-blue-500 pb-2 mb-3">
+                            SIMILAR SUCCESSFUL APPEALS (4 Cases)
+                          </h5>
+                          <div className="space-y-2">
+                            <div className="flex items-start gap-3 p-2 bg-slate-50 dark:bg-slate-700 rounded text-xs">
+                              <span className="text-green-600 font-bold">✓</span>
+                              <div>
+                                <p className="font-semibold text-slate-900 dark:text-white">Katarzynski v R [2002] NSWCCA 420</p>
+                                <p className="text-slate-600 dark:text-slate-400">Appeal allowed — inadequate self-defence direction. "The jury must be told what to look for."</p>
+                                <a href="#" className="text-blue-600 hover:underline">Read full decision on AustLII →</a>
+                              </div>
+                            </div>
+                            <div className="flex items-start gap-3 p-2 bg-slate-50 dark:bg-slate-700 rounded text-xs">
+                              <span className="text-green-600 font-bold">✓</span>
+                              <div>
+                                <p className="font-semibold text-slate-900 dark:text-white">R v Patel [2019] NSWCCA 103</p>
+                                <p className="text-slate-600 dark:text-slate-400">Conviction quashed — failure to direct on partial defence. Similar fact pattern.</p>
+                                <a href="#" className="text-blue-600 hover:underline">Read full decision on AustLII →</a>
+                              </div>
+                            </div>
+                            <p className="text-xs text-slate-500 italic">+ 2 more cases in full report...</p>
+                          </div>
+                        </div>
+
+                        {/* Filing Guide Preview */}
+                        <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-700">
+                          <h5 className="font-bold text-amber-800 dark:text-amber-200 text-sm mb-3">APPEAL FILING GUIDE — NSW District Court to CCA</h5>
+                          <div className="grid md:grid-cols-2 gap-4 text-xs">
+                            <div>
+                              <p className="font-semibold text-slate-800 dark:text-slate-200 mb-1">Step 1: Notice of Intention</p>
+                              <p className="text-slate-600 dark:text-slate-400">File Form 74C within 28 days at NSW Court of Criminal Appeal Registry, Queens Square, Sydney</p>
+                            </div>
+                            <div>
+                              <p className="font-semibold text-slate-800 dark:text-slate-200 mb-1">Step 2: Obtain Transcripts</p>
+                              <p className="text-slate-600 dark:text-slate-400">Request from Reporting Services: approx $7.50/page. Priority available for custody matters.</p>
+                            </div>
+                          </div>
+                          <p className="text-xs text-amber-700 dark:text-amber-300 mt-3 italic">Full 8-step guide included in report...</p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Extensive Log Report - $39 */}
+                {/* ========== EXTENSIVE LOG REPORT SAMPLE ========== */}
                 <div className="bg-gradient-to-r from-purple-50 to-white dark:from-purple-900/20 dark:to-slate-900 rounded-xl border border-purple-200 dark:border-purple-800 overflow-hidden">
                   <div className="bg-purple-600 text-white px-6 py-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 bg-white rounded-full"></div>
                       <span className="font-semibold">EXTENSIVE LOG REPORT</span>
-                      <span className="text-purple-200 text-sm">— Forensic-level analysis</span>
+                      <span className="text-purple-200 text-sm">— Sample Preview</span>
                     </div>
                     <span className="bg-purple-500 px-3 py-1 rounded-full text-sm font-bold">$39 AUD</span>
                   </div>
                   <div className="p-6">
-                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-5 shadow-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                      <div className="border-b border-slate-200 dark:border-slate-700 pb-4 mb-4">
-                        <h4 className="text-lg font-bold text-slate-900 dark:text-white">14 Comprehensive Sections — A Barrister's Primary Working Document</h4>
-                      </div>
-                      
-                      <div className="grid md:grid-cols-2 gap-4 text-xs mb-4">
-                        <div className="space-y-3">
-                          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3">
-                            <p className="font-semibold text-purple-800 dark:text-purple-200">8-12 Similar Cases</p>
-                            <p className="text-slate-600 dark:text-slate-400">Full AustLII links to read complete decisions</p>
+                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                      {/* Report Header - Premium */}
+                      <div className="bg-gradient-to-r from-purple-900 via-slate-900 to-indigo-900 text-white p-5">
+                        <div className="flex items-center justify-between mb-3">
+                          <div>
+                            <p className="text-xs text-purple-300 uppercase tracking-wider">Extensive Log Report — Forensic Analysis</p>
+                            <h4 className="text-xl font-bold">R v Thompson [2024] NSWDC 847</h4>
+                            <p className="text-sm text-slate-300">Complete Appeal Documentation & Strategy</p>
                           </div>
-                          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3">
-                            <p className="font-semibold text-purple-800 dark:text-purple-200">Witness Credibility Analysis</p>
-                            <p className="text-slate-600 dark:text-slate-400">AI assessment of testimony reliability</p>
-                          </div>
-                          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3">
-                            <p className="font-semibold text-purple-800 dark:text-purple-200">Sentencing Comparison</p>
-                            <p className="text-slate-600 dark:text-slate-400">How does this sentence compare to similar cases?</p>
+                          <div className="text-right">
+                            <div className="bg-white/10 rounded-lg p-3">
+                              <p className="text-3xl font-bold text-purple-300">72</p>
+                              <p className="text-xs text-slate-400">Strength Score</p>
+                            </div>
                           </div>
                         </div>
-                        <div className="space-y-3">
-                          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3">
-                            <p className="font-semibold text-purple-800 dark:text-purple-200">Appeal Strategy</p>
-                            <p className="text-slate-600 dark:text-slate-400">Oral & written submission advice</p>
-                          </div>
-                          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3">
-                            <p className="font-semibold text-purple-800 dark:text-purple-200">Filing Guide for ALL Courts</p>
-                            <p className="text-slate-600 dark:text-slate-400">Local Court → District → Supreme → High Court</p>
-                          </div>
-                          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3">
-                            <p className="font-semibold text-purple-800 dark:text-purple-200">Risk Assessment & Costs</p>
-                            <p className="text-slate-600 dark:text-slate-400">Estimated legal fees and success probability</p>
-                          </div>
+                        <div className="flex gap-4 text-xs">
+                          <span className="bg-purple-800 px-2 py-1 rounded">14 Sections</span>
+                          <span className="bg-purple-800 px-2 py-1 rounded">8 Documents</span>
+                          <span className="bg-purple-800 px-2 py-1 rounded">12 Similar Cases</span>
+                          <span className="bg-purple-800 px-2 py-1 rounded">23 Timeline Events</span>
+                        </div>
+                      </div>
+                      
+                      {/* Extended TOC */}
+                      <div className="bg-slate-50 dark:bg-slate-700 p-3 border-b border-slate-200 dark:border-slate-600">
+                        <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">COMPLETE TABLE OF CONTENTS</p>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-1 text-xs text-slate-600 dark:text-slate-400">
+                          <span>1. Executive Summary</span>
+                          <span>2. Case Background</span>
+                          <span>3. Complete Timeline</span>
+                          <span>4. Document Analysis</span>
+                          <span>5. Ground 1: Full</span>
+                          <span>6. Ground 2: Full</span>
+                          <span>7. Ground 3: Full</span>
+                          <span>8. Similar Cases (12)</span>
+                          <span>9. Legislation</span>
+                          <span>10. Witness Analysis</span>
+                          <span>11. Sentencing Comparison</span>
+                          <span>12. Appeal Strategy</span>
+                          <span>13. Filing Guide (All Courts)</span>
+                          <span>14. Risk Assessment</span>
                         </div>
                       </div>
 
-                      <div className="bg-gradient-to-r from-purple-100 to-amber-100 dark:from-purple-900/30 dark:to-amber-900/30 rounded-lg p-4 border border-purple-200 dark:border-purple-700">
-                        <p className="text-xs text-slate-700 dark:text-slate-300 font-semibold text-center">
-                          This is the report to hand to your barrister. Comprehensive enough to form the basis of legal submissions.
-                        </p>
+                      {/* Report Content */}
+                      <div className="p-5 space-y-5">
+                        {/* Witness Credibility Analysis */}
+                        <div>
+                          <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b-2 border-purple-500 pb-2 mb-3">
+                            SECTION 10: WITNESS CREDIBILITY ANALYSIS
+                          </h5>
+                          <div className="space-y-3">
+                            <div className="p-3 bg-slate-50 dark:bg-slate-700 rounded">
+                              <div className="flex items-start justify-between">
+                                <div>
+                                  <p className="font-semibold text-sm text-slate-900 dark:text-white">Prosecution Witness: James Martin</p>
+                                  <p className="text-xs text-slate-500">Security guard, eyewitness to incident</p>
+                                </div>
+                                <span className="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded font-semibold">CREDIBILITY: QUESTIONABLE</span>
+                              </div>
+                              <div className="mt-2 text-xs text-slate-600 dark:text-slate-400">
+                                <p><strong>Issues Identified:</strong></p>
+                                <ul className="list-disc ml-4 mt-1 space-y-1">
+                                  <li>Statement given 3 weeks after incident (delayed recall)</li>
+                                  <li>Viewing angle obstructed by pillar (CCTV confirms)</li>
+                                  <li>Prior inconsistent statement to police at scene</li>
+                                  <li>Employment relationship with complainant's employer</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Sentencing Comparison */}
+                        <div>
+                          <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b-2 border-purple-500 pb-2 mb-3">
+                            SECTION 11: SENTENCING COMPARISON
+                          </h5>
+                          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
+                            <p className="text-xs text-slate-700 dark:text-slate-300 mb-3">
+                              Analysis of 15 comparable assault cases in NSW (2022-2024):
+                            </p>
+                            <div className="grid grid-cols-3 gap-4 text-center">
+                              <div>
+                                <p className="text-2xl font-bold text-slate-900 dark:text-white">2.8 yrs</p>
+                                <p className="text-xs text-slate-500">Average sentence</p>
+                              </div>
+                              <div>
+                                <p className="text-2xl font-bold text-red-600">4 yrs</p>
+                                <p className="text-xs text-slate-500">Your sentence</p>
+                              </div>
+                              <div>
+                                <p className="text-2xl font-bold text-amber-600">+43%</p>
+                                <p className="text-xs text-slate-500">Above average</p>
+                              </div>
+                            </div>
+                            <p className="text-xs text-purple-800 dark:text-purple-200 mt-3 font-semibold">
+                              ⚠️ Potential sentencing disparity identified — grounds for severity appeal
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Appeal Strategy */}
+                        <div>
+                          <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b-2 border-purple-500 pb-2 mb-3">
+                            SECTION 12: RECOMMENDED APPEAL STRATEGY
+                          </h5>
+                          <div className="grid md:grid-cols-2 gap-4">
+                            <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border border-green-200">
+                              <p className="font-bold text-green-800 dark:text-green-200 text-xs mb-2">PRIMARY ARGUMENT</p>
+                              <p className="text-xs text-slate-700 dark:text-slate-300">
+                                Lead with Ground 1 (jury direction). Strongest precedent support. 
+                                Cite Katarzynski at [45]-[52] for the approved direction format.
+                              </p>
+                            </div>
+                            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200">
+                              <p className="font-bold text-blue-800 dark:text-blue-200 text-xs mb-2">WRITTEN SUBMISSIONS</p>
+                              <p className="text-xs text-slate-700 dark:text-slate-300">
+                                Structure: (1) Error identified, (2) Materiality of error, (3) Miscarriage 
+                                resulted. Keep under 20 pages. Focus on transcript references.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Risk Assessment */}
+                        <div className="bg-gradient-to-r from-purple-100 to-indigo-100 dark:from-purple-900/30 dark:to-indigo-900/30 rounded-lg p-4 border border-purple-200 dark:border-purple-700">
+                          <h5 className="font-bold text-purple-900 dark:text-purple-200 text-sm mb-3">SECTION 14: RISK ASSESSMENT & COST ESTIMATE</h5>
+                          <div className="grid md:grid-cols-3 gap-4 text-xs">
+                            <div className="text-center">
+                              <p className="text-2xl font-bold text-green-600">65-75%</p>
+                              <p className="text-slate-600 dark:text-slate-400">Success probability</p>
+                            </div>
+                            <div className="text-center">
+                              <p className="text-2xl font-bold text-amber-600">$15-25k</p>
+                              <p className="text-slate-600 dark:text-slate-400">Est. legal costs</p>
+                            </div>
+                            <div className="text-center">
+                              <p className="text-2xl font-bold text-purple-600">4-6 mo</p>
+                              <p className="text-slate-600 dark:text-slate-400">Timeline to hearing</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* This is premium */}
+                        <div className="text-center pt-4 border-t border-slate-200 dark:border-slate-700">
+                          <p className="text-xs text-slate-500 italic">
+                            This is exactly what you receive — a complete barrister's working document ready to hand to legal counsel
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
