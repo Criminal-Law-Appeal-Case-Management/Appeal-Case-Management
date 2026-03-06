@@ -82,6 +82,13 @@
 - Added mini "Back to top" controls between major landing sections with smooth scroll
 - Validation: frontend testing agent pass (`iteration_37.json`) + final sanity pass all green
 
+## 2026-03 — Session 20 (No-Dropdown Navigation + Visibility Pass)
+- Removed landing desktop dropdown menu pattern; promoted key destinations to always-visible top nav links
+- Ensured high-value pages are directly visible: See It In Action, Appeal Statistics, Legal Resources, Success Stories, FAQ, About
+- Made appeal statistics critical content visible by default (removed collapse/dropdown behaviour from access-crisis section)
+- Centred major headings/subheadings on Appeal Statistics and How It Works for cleaner reading flow
+- Validation: `iteration_38.json` pass + final frontend sanity pass complete
+
 ## 2026-03 — Session 11 (Premium Report + Barrister Overhaul)
 - AI report prompts reworked for hybrid legal/plain-English depth
 - Removed costs + witness contradiction/credibility sections from report content requirements
