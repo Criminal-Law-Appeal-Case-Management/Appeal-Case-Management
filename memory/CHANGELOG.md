@@ -55,6 +55,12 @@
   - Long crisis analysis block made collapsible for readability
 - Validation: frontend test pass with working filters, section structure, and page rendering
 
+## 2026-03 — Session 16 (Legal Directory State-Focused Simplification)
+- Set legal directory default to state-focused mode (NSW) with national support included to reduce clutter on first load
+- Added unified state-view banner and condensed section presentation when a specific state filter is active
+- Kept all legal contacts/resources in merged one-page experience and retained advice-help descriptors
+- Validation: UX checks confirm improved scannability and stable rendering
+
 ## 2026-03 — Session 11 (Premium Report + Barrister Overhaul)
 - AI report prompts reworked for hybrid legal/plain-English depth
 - Removed costs + witness contradiction/credibility sections from report content requirements

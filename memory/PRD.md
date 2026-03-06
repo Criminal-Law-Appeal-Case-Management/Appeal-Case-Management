@@ -651,6 +651,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - Added cross-page AU-English proofreading sweep (FAQ, Statistics, Compare Cases, Case Detail labels, Form Templates, Landing glossary copy) with regression checks passing.
 - Performance hotfix shipped for lag during grounds investigation/report generation: bounded AI context budgets + faster grounds models + clearer long-run UX feedback.
 - Legal directory and appeal statistics readability overhaul delivered: merged legal resources/contacts flow, state-ordered filtering, clearer advice-help descriptions, and reorganised statistics hierarchy with prominent appeal-rate spotlight.
+- Legal directory further simplified into state-focused default mode with national support included, reducing first-load clutter while retaining all listings.
 
 ## Technical Debt (Current)
 - `server.py` remains monolithic and should be modularized into focused routers/services.
