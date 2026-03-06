@@ -43,6 +43,18 @@
 - Increased client timeout windows for heavy analysis routes to reduce premature timeout errors
 - Validation: health checks + endpoint smoke tests + report/ground generation checks passed
 
+## 2026-03 — Session 15 (Legal Directory + Statistics Readability Refresh)
+- Merged legal contacts/resources experience to a single canonical page (`/legal-resources`)
+- Added state filter and state-order rendering on legal directory cards to reduce scrolling fatigue
+- Kept all listings and added clearer "How they can help with legal advice" card labelling
+- Redirects updated: `/legal-contacts` and `/contacts` now route to merged legal resources page
+- Reworked Appeal Statistics visual hierarchy:
+  - Larger headline
+  - Prominent 0.012% spotlight box near top
+  - Section labels and clearer sectional structure
+  - Long crisis analysis block made collapsible for readability
+- Validation: frontend test pass with working filters, section structure, and page rendering
+
 ## 2026-03 — Session 11 (Premium Report + Barrister Overhaul)
 - AI report prompts reworked for hybrid legal/plain-English depth
 - Removed costs + witness contradiction/credibility sections from report content requirements
