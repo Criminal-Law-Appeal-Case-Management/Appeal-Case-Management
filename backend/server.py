@@ -3171,11 +3171,11 @@ List 2-3 Australian appeal decisions with:
 Give: Strong / Moderate / Needs Further Development + concise reasoning.
 
 ## WHAT THE FULL REPORT ($29) ADDS
-- full section-by-section legal framework mapping
-- deeper precedent analysis with decision links
-- ground-by-ground tactical roadmap
-- filing pathway guidance by court level
-- hearing strategy and submission structure
+- same-depth premium analysis standard as extensive tier
+- comparative sentencing table with reduction pathways
+- common grounds benchmark table for this offence type
+- full options matrix (quash, retrial, downgrade, sentence reduction, dismissal)
+- aggressive hearing strategy and submission playbook
 
 IMPORTANT:
 - No cost discussion.
@@ -3185,159 +3185,169 @@ IMPORTANT:
     elif report_type == "full_detailed":
         system_prompt = f"""{base_system}
 {report_guardrails}
-You are generating a PAID Full Detailed Report ($29 AUD). It must read like a barrister-grade brief plus clear client guidance."""
+You are generating a PAID Full Detailed Report ($29 AUD). This must be as detailed as the extensive tier, with assertive appellate strategy, professional courtroom framing, and plain-English action notes."""
         user_prompt = f"""Create a FULL DETAILED LEGAL ANALYSIS REPORT for this {category_name.lower()} appeal case.
 
 {case_context}
 
-Minimum 3200 words. Structure your response EXACTLY as follows:
+Minimum 6200 words. This report must feel premium, strategic, and hearing-ready. Use this exact structure:
 
 ## TABLE OF CONTENTS
-Numbered list of all section headings exactly as they appear below.
+Numbered list matching every heading below.
 
-## 1. EXECUTIVE BRIEF (LEGAL + PLAIN ENGLISH)
-4-6 paragraphs combining professional legal framing with plain-English implications for the applicant.
+## 1. EXECUTIVE COMMAND BRIEF
+High-impact summary of strongest grounds, jurisdiction posture, likely pathways to relief, and urgency items.
 
-## 2. CASE THEORY MAP
-Set out prosecution theory, defence theory, and where appellate pressure points emerge.
+## 2. FORENSIC CASE CHRONOLOGY
+Chronological reconstruction with event date, source anchor, and legal significance.
 
-## 3. CHRONOLOGY WITH LEGAL INFLECTION POINTS
-Chronological timeline with events tied to legal significance and potential grounds.
+## 3. DOCUMENT EVIDENCE DIGEST
+For each document/source: key extracts, reliability context, probative value, and appellate relevance.
 
-## 4. EVIDENCE SYNTHESIS BY SOURCE
-For each major document/source:
-- source summary
-- key quoted extracts
-- probative value
-- appellate relevance
+## 4. GROUNDS OF MERIT PORTFOLIO
+For each viable ground provide legal threshold, supporting material, likely Crown response, aggressive defence reply strategy, and viability rating.
 
-## 5. GROUND-BY-GROUND APPEAL ANALYSIS
-For each viable ground:
-- Legal test and threshold
-- Relevant legislation (section + Act + jurisdiction)
-- Supporting material anchors
-- Likely Crown response
-- Defence reply strategy
-- Priority rating and next tactical step
+## 5. COMPARATIVE SENTENCING TABLE (MANDATORY)
+Provide a markdown table with at least 8 comparable outcomes.
+Required columns:
+| Case | Offence | Original Sentence / NPP | Appeal Outcome | Revised Sentence / NPP | Reduction (Years + %) | Key Reason |
 
-## 6. APPLICABLE LEGAL FRAMEWORK (DETAILED)
-Map all key Acts/sections and explain exactly how each applies to this matter.
+## 6. COMMON APPEAL GROUNDS FOR THIS OFFENCE TYPE (MANDATORY)
+Provide a markdown table showing which grounds are most common for this crime category.
+Required columns:
+| Common Ground | Frequency in Comparable Appeals | Typical Success Pattern | Best Supporting Evidence |
 
-## 7. SENTENCING BENCHMARK COMPARISON
-Compare sentence posture against sentencing principles and comparable appellate outcomes.
+## 7. OUTCOME OPTIONS AVAILABLE (MANDATORY)
+First provide a markdown table with:
+| Option | Legal Threshold | Likelihood in This Matter | Core Evidence Trigger | Practical Result |
 
-## 8. PRECEDENT TABLE (6-8 CASES)
-For each precedent include:
-- citation
-- facts in one line
-- hearing outcome
-- principle extracted
-- AustLII-format decision path
+Then provide detailed analysis for each option, including these pathways:
+- Conviction quashed
+- Retrial ordered
+- Conviction substituted/downgraded (for example, murder to manslaughter where legally sustainable)
+- Sentence reduced as manifestly excessive
+- Appeal dismissed
 
-## 9. APPEAL PATHWAY BY COURT LEVEL
-For Local/Magistrates, District, Supreme/CCA pathways include:
-- filing sequence
-- forms/documents required
-- deadlines
-- registry/lodgement channel
+When discussing sentence reduction pathways, show explicit before/after formatting when possible:
+Original sentence/NPP -> revised sentence/NPP (for example 30/22.5 -> 18/11).
 
-## 10. WRITTEN + ORAL SUBMISSION BLUEPRINT
-Provide practical structure for written submissions and oral submissions, including sequencing of arguments.
+## 8. PRECEDENT OUTCOME MATRIX (10-12 CASES)
+For each case include citation, factual similarity, hearing outcome, extracted principle, and AustLII-style decision path.
 
-## 11. EVIDENTIARY GAPS & REMEDIATION PLAN
-Identify missing material and provide a step-by-step remediation checklist.
+## 9. STATUTORY + DOCTRINAL FRAMEWORK MAP
+Section-level mapping of all key Acts and appellate principles applicable to this matter.
 
-## 12. 28-DAY ACTION PLAN
-Day-by-day/phase-by-phase action plan with urgency labels.
+## 10. COURT PATHWAY OPERATIONS PLAYBOOK
+For all relevant court levels provide filing sequence, documents/forms, deadlines, and extension-of-time route.
+
+## 11. AGGRESSIVE SUBMISSIONS BLUEPRINT
+Provide both written and oral submission strategy with argument sequence, authority placement, likely bench questions, and response lines.
+
+## 12. EVIDENTIARY GAPS + REMEDIATION CHECKLIST
+Specific missing material and exact remediation steps with urgency priority.
+
+## 13. 72-HOUR, 7-DAY, 28-DAY ACTION PLAN
+Priority-ordered actions with dependencies and objective of each step.
+
+## 14. CLIENT PLAIN-ENGLISH BRIEF
+Translate the technical outcome into plain-English next steps and realistic scenarios.
 
 IMPORTANT:
+- Use markdown headings and markdown tables exactly where requested.
 - No cost discussion.
 - No witness contradiction or witness credibility section.
-- Quote from supplied material where possible.
+- Quote supplied material where possible.
 - Keep analysis jurisdiction-specific to {state_info.get('name', 'NSW')} and relevant Commonwealth law."""
 
     else:  # extensive_log
         system_prompt = f"""{base_system}
 {report_guardrails}
-You are generating the PREMIUM Extensive Log Report ($39 AUD). This must function as a primary barrister working file: exhaustive, structured, and hearing-ready."""
+You are generating the PREMIUM Extensive Log Report ($39 AUD). This must exceed barrister expectations: highly aggressive strategy, exhaustive legal mapping, and courtroom-ready execution detail."""
         user_prompt = f"""Create an EXTENSIVE LOG REPORT for this {category_name.lower()} appeal case.
 
 {case_context}
 
-Minimum 5200 words. Be exhaustive and highly structured. Use this exact format:
+Minimum 7800 words. Exhaustive depth required. Use this exact structure:
 
 ## TABLE OF CONTENTS
-Numbered list matching every section heading below.
+Numbered list matching every heading below.
 
 ## 1. EXECUTIVE COMMAND BRIEF
-Comprehensive overview, core appellate thesis, strongest routes to relief, and immediate urgency items.
+Dominant appellate thesis, strongest relief pathway, fallback pathway, and urgency risks.
 
 ## 2. COMPLETE FORENSIC CHRONOLOGY
-Date-sequenced reconstruction with source anchors and legal implications for each stage.
+Date-sequenced reconstruction with source references, legal inflection points, and unresolved timeline gaps.
 
-## 3. DOCUMENT FORENSIC DIGEST
-For each document/source include:
-- origin and reliability context
-- key extracts (quoted)
-- legal significance
-- evidentiary limitations
+## 3. DOCUMENT FORENSIC DOSSIER
+Per document/source: extract highlights, reliability context, legal significance, and evidentiary limitations.
 
-## 4. CORROBORATION & RELIABILITY MATRIX
-Map where evidence converges/diverges, what is verified, what remains uncertain, and what corroboration is required.
+## 4. CORROBORATION + EVIDENCE RELIABILITY GRID
+Where evidence converges/diverges, what is corroborated, what is uncertain, and what proof is still needed.
 
 ## 5. COMPREHENSIVE GROUNDS PORTFOLIO
-Evaluate all plausible grounds, each with:
-- legal threshold
-- supporting anchors
-- contrary material
-- appellate viability score (reasoned)
-- tactical next step
+All plausible grounds with threshold, supporting anchors, contrary material, success conditions, and tactical deployment order.
 
-## 6. STATUTORY & DOCTRINAL MAP
-Full legislation map with section-level commentary and practical use in submissions.
+## 6. COMPARATIVE SENTENCING TABLE (MANDATORY, EXPANDED)
+Provide a markdown table with at least 12 comparable appellate outcomes.
+Required columns:
+| Case | Offence | Original Sentence / NPP | Appeal Outcome | Revised Sentence / NPP | Reduction (Years + %) | Key Reason |
 
-## 7. PRECEDENT OUTCOME MATRIX (8-12 CASES)
-For each case provide citation, fact pattern, hearing outcome, governing principle, and AustLII-style decision path.
+## 7. COMMON GROUNDS BENCHMARK TABLE FOR THIS OFFENCE (MANDATORY)
+Provide a markdown table showing crime-specific ground prevalence and outcome trend.
+Required columns:
+| Common Ground | Approx. Prevalence | Success Trend | Typical Failure Reason | Best Evidence Trigger |
 
-## 8. SENTENCING COMPARISON ANALYSIS
-Analyse sentence positioning, standard principles, comparable appellate outcomes, and resentencing indicators.
+## 8. FULL OPTIONS AVAILABLE REPORT (MANDATORY)
+First provide a markdown options matrix:
+| Option | Legal Threshold | Trigger Facts Required | Likelihood in This Matter | Typical Remedy |
 
-## 9. COURT-PATHWAY OPERATIONS GUIDE
-Operational filing guidance for all relevant court levels:
-- required forms/documents
-- sequencing
-- deadlines
-- lodgement channels
-- extension-of-time pathway
+Then provide detailed scenario modelling for each option:
+- Conviction quashed
+- Retrial ordered
+- Conviction downgraded/substituted (for example murder to manslaughter where evidentiary basis supports substitution)
+- Sentence excessive and reduced
+- Appeal dismissed
 
-## 10. WRITTEN SUBMISSIONS MASTER OUTLINE
-Produce a robust written outline with argument order, authorities placement, and evidentiary references.
+For sentence reduction modelling, include explicit before/after expressions where possible:
+Original sentence/NPP -> revised sentence/NPP (example: 30/22.5 -> 18/11), with legal rationale for each reduction path.
 
-## 11. ORAL SUBMISSIONS HEARING SCRIPT
-Provide an oral run-sheet: opening, issue framing, authority sequence, anticipated bench questions, and closing orders sought.
+## 9. PRECEDENT OUTCOME MATRIX (12-15 CASES)
+For each authority include citation, comparable facts, hearing outcome, governing principle, and AustLII-style decision path.
 
-## 12. EVIDENCE PREPARATION CHECKLIST
-What must be assembled for appeal books/annexures and how to index critical passages.
+## 10. STATUTORY + DOCTRINAL MASTER MAP
+Complete section-level map of Acts, appellate principles, and doctrine application in this matter.
 
-## 13. RISK & SCENARIO ANALYSIS
-Best-case / mid-case / downside scenarios, triggers, and mitigation steps.
+## 11. COURT-PATHWAY OPERATIONS GUIDE
+Operational filing playbook across all relevant court levels, including extension-of-time contingencies.
 
-## 14. PRIORITISED 72-HOUR, 7-DAY, 28-DAY PLAN
-Numbered tasks with urgency and dependencies.
+## 12. WRITTEN SUBMISSIONS MASTER OUTLINE
+Argument architecture, authority sequencing, and evidence anchoring for a high-impact written brief.
 
-## 15. STRATEGIC COMMUNICATION PACK
-Two layers:
-- Counsel-facing technical summary
-- Client-facing plain-English explanation
+## 13. ORAL HEARING SCRIPT + BENCH QUESTION PLAYBOOK
+Structured oral strategy with anticipated judicial interventions and controlled response lines.
 
-## 16. APPENDIX OF AUTHORITIES & REFERENCES
-Consolidated list of statutes, sections, precedents, and source anchors used in the report.
+## 14. EVIDENCE PREPARATION + ANNEXURE CHECKLIST
+Exactly what to assemble for appeal books/annexures and how to index key passages.
+
+## 15. RISK, SCENARIO, AND CONTINGENCY ANALYSIS
+Best-case / base-case / downside pathways and mitigation triggers.
+
+## 16. PRIORITISED 72-HOUR, 7-DAY, 28-DAY EXECUTION PLAN
+Action list with dependencies and expected legal impact per step.
+
+## 17. STRATEGIC COMMUNICATION PACK
+Two outputs:
+- Counsel-facing technical briefing
+- Client-facing plain-English pathway summary
+
+## 18. APPENDIX OF AUTHORITIES + SOURCE REFERENCES
+Consolidated list of statutes, sections, precedents, and source anchors.
 
 IMPORTANT:
+- Use markdown headings and markdown tables exactly where requested.
 - No cost discussion.
 - No witness contradiction or witness credibility section.
-- Prefer specificity over generic commentary.
-- Every major conclusion should point back to material in the case context."""
+- Every major conclusion must tie back to case material or clearly marked assumptions."""
 
     # Call OpenAI via Emergent
     api_key = os.environ.get('EMERGENT_LLM_KEY')

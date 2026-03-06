@@ -26,7 +26,7 @@ const REPORT_TYPES = [
   { 
     value: "quick_summary", 
     label: "Quick Summary", 
-    description: "A brief overview of key points (2-3 paragraphs)",
+    description: "Rapid triage brief with key grounds preview and immediate next steps",
     price: 0,
     priceId: null,
     isFree: true
@@ -34,7 +34,7 @@ const REPORT_TYPES = [
   { 
     value: "full_detailed", 
     label: "Full Detailed Report", 
-    description: "Comprehensive analysis with case citations and legal framework",
+    description: "Barrister-grade deep dossier with comparative sentencing and full options matrix",
     price: 29.00,
     priceId: "full_report",
     isFree: false
@@ -42,7 +42,7 @@ const REPORT_TYPES = [
   { 
     value: "extensive_log", 
     label: "Extensive Log Report", 
-    description: "Complete documentation with chronology and all evidence analysis",
+    description: "Master litigation brief with expanded precedent modelling and hearing script",
     price: 39.00,
     priceId: "extensive_report",
     isFree: false

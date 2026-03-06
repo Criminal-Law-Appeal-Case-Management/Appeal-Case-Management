@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   Scale,
   ArrowLeft,
@@ -12,7 +14,10 @@ import {
   FileText,
   ListOrdered,
   Gavel,
-  ChevronRight
+  ChevronRight,
+  Sparkles,
+  ShieldCheck,
+  TrendingUp,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -20,9 +25,7 @@ import { API } from "../App";
 
 const titleFromSnake = (value) => {
   if (!value) return "Not specified";
-  return value
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+  return value.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 };
 
 const extractSentenceSummary = (analysis = "") => {
@@ -37,9 +40,7 @@ const extractSentenceSummary = (analysis = "") => {
 
 const parseAnalysisSections = (analysis = "") => {
   const text = analysis.replace(/\r\n/g, "\n").trim();
-  if (!text) {
-    return [];
-  }
+  if (!text) return [];
 
   const lines = text.split("\n");
   const sections = [];
@@ -75,13 +76,45 @@ const parseAnalysisSections = (analysis = "") => {
   });
 
   pushSection();
-
-  if (sections.length === 0) {
-    return [{ id: "report-section-1", title: "Analysis", content: text }];
-  }
-
-  return sections;
+  return sections.length > 0 ? sections : [{ id: "report-section-1", title: "Analysis", content: text }];
 };
+
+const getReadiness = (score) => {
+  if (score >= 75) {
+    return { label: "Filing-Ready", tone: "text-emerald-700", bar: "bg-emerald-500", note: "Strong appellate pathway with actionable grounds." };
+  }
+  if (score >= 50) {
+    return { label: "Evidence Gap", tone: "text-amber-700", bar: "bg-amber-500", note: "Promising grounds present, but supporting material should be strengthened." };
+  }
+  return { label: "Urgent Build", tone: "text-rose-700", bar: "bg-rose-500", note: "Substantial preparation required before filing strategy is finalised." };
+};
+
+const MarkdownBlock = ({ text, testId }) => (
+  <ReactMarkdown
+    remarkPlugins={[remarkGfm]}
+    components={{
+      h1: ({ children }) => <h1 className="text-xl font-bold mt-6 mb-3 text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>{children}</h1>,
+      h2: ({ children }) => <h2 className="text-lg font-bold mt-5 mb-3 text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>{children}</h2>,
+      h3: ({ children }) => <h3 className="text-base font-semibold mt-4 mb-2 text-slate-900">{children}</h3>,
+      p: ({ children }) => <p className="text-slate-700 leading-7 mb-3">{children}</p>,
+      ul: ({ children }) => <ul className="list-disc ml-5 mb-3 space-y-1 text-slate-700">{children}</ul>,
+      ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 space-y-1 text-slate-700">{children}</ol>,
+      li: ({ children }) => <li className="leading-7">{children}</li>,
+      blockquote: ({ children }) => <blockquote className="border-l-4 border-indigo-300 pl-4 italic text-slate-700 my-3">{children}</blockquote>,
+      table: ({ children }) => (
+        <div className="overflow-x-auto rounded-lg border border-slate-200 my-4" data-testid={`${testId}-table-wrapper`}>
+          <table className="min-w-full text-sm">{children}</table>
+        </div>
+      ),
+      thead: ({ children }) => <thead className="bg-slate-100">{children}</thead>,
+      th: ({ children }) => <th className="px-3 py-2 text-left font-semibold text-slate-800 border-b border-slate-200">{children}</th>,
+      td: ({ children }) => <td className="px-3 py-2 align-top text-slate-700 border-b border-slate-100">{children}</td>,
+      code: ({ children }) => <code className="text-xs bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">{children}</code>,
+    }}
+  >
+    {text}
+  </ReactMarkdown>
+);
 
 const ReportView = () => {
   const { caseId, reportId } = useParams();
@@ -130,7 +163,6 @@ const ReportView = () => {
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
-
       toast.success("PDF downloaded successfully!");
     } catch (error) {
       toast.error("Failed to export PDF.");
@@ -152,7 +184,6 @@ const ReportView = () => {
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
-
       toast.success("Word document downloaded successfully!");
     } catch (error) {
       toast.error("Failed to export Word document.");
@@ -171,9 +202,9 @@ const ReportView = () => {
   };
 
   const reportTypeConfig = {
-    quick_summary: { label: "Quick Summary", cls: "bg-blue-50 text-blue-700 border-blue-200" },
-    full_detailed: { label: "Full Detailed Analysis", cls: "bg-amber-50 text-amber-700 border-amber-200" },
-    extensive_log: { label: "Extensive Log Report", cls: "bg-purple-50 text-purple-700 border-purple-200" },
+    quick_summary: { label: "Quick Summary", cls: "bg-blue-100 text-blue-800 border-blue-200" },
+    full_detailed: { label: "Full Detailed Analysis", cls: "bg-amber-100 text-amber-800 border-amber-200" },
+    extensive_log: { label: "Extensive Log Report", cls: "bg-purple-100 text-purple-800 border-purple-200" },
   };
 
   const analysisText = report?.content?.analysis || "";
@@ -184,6 +215,7 @@ const ReportView = () => {
   const strongGrounds = grounds.filter((g) => g.strength === "strong").length;
   const moderateGrounds = grounds.filter((g) => g.strength === "moderate").length;
   const caseStrength = Math.min(100, strongGrounds * 30 + moderateGrounds * 18 + Math.min(documentsCount * 2, 20) + Math.min(eventsCount, 10));
+  const readiness = getReadiness(caseStrength);
 
   const sentenceSummary = extractSentenceSummary(analysisText);
   const offenceLabel = caseData?.offence_type || titleFromSnake(caseData?.offence_category);
@@ -203,16 +235,30 @@ const ReportView = () => {
     );
   }
 
+  const summaryItems = [
+    { label: "Accused", value: caseData?.defendant_name || "N/A", icon: ShieldCheck, testId: "report-summary-accused" },
+    { label: "Sentence", value: sentenceSummary, icon: Scale, testId: "report-summary-sentence" },
+    { label: "Crime / Offence", value: offenceLabel, icon: Gavel, testId: "report-summary-offence" },
+    { label: "Grounds of Merit", value: String(grounds.length), icon: Sparkles, testId: "report-summary-grounds" },
+    { label: "Case Strength", value: `${caseStrength}/100`, icon: TrendingUp, testId: "report-summary-strength" },
+    {
+      label: "Court & State",
+      value: `${caseData?.court || "Court N/A"} • ${(caseData?.state || "NSW").toUpperCase()}`,
+      icon: Scale,
+      testId: "report-summary-court-state",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-slate-100">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-40 no-print">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between gap-3">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,#eef2ff_0%,#f8fafc_40%,#f1f5f9_100%)]">
+      <header className="bg-white/95 backdrop-blur border-b border-slate-200 sticky top-0 z-40 no-print" data-testid="report-header">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
             <Button variant="ghost" size="sm" onClick={() => navigate(`/cases/${caseId}`)} data-testid="back-btn">
               <ArrowLeft className="w-4 h-4 mr-1" />
               Back to Case
             </Button>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <Button
                 variant="outline"
                 size="sm"
@@ -245,50 +291,55 @@ const ReportView = () => {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-8">
-        <div className="bg-white border border-slate-200 shadow-xl rounded-2xl p-8 md:p-10" data-testid="report-content">
-          <div className="text-center mb-10 pb-8 border-b border-slate-200">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Scale className="w-8 h-8 text-slate-900" />
-              <span className="text-2xl font-bold text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>
-                Appeal Case Manager
-              </span>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div className="bg-white border border-slate-200 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.35)] rounded-3xl p-5 sm:p-8 md:p-10" data-testid="report-content">
+          <div className="text-center mb-8 pb-8 border-b border-slate-200">
+            <div className="inline-flex items-center justify-center gap-3 mb-4 px-4 py-2 rounded-full bg-slate-100 border border-slate-200" data-testid="report-brand-pill">
+              <Scale className="w-5 h-5 text-slate-900" />
+              <span className="text-sm font-semibold text-slate-900">Appeal Case Manager</span>
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-4" style={{ fontFamily: "Crimson Pro, serif" }} data-testid="report-title">
+            <h1 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4" style={{ fontFamily: "Crimson Pro, serif" }} data-testid="report-title">
               {report?.title}
             </h1>
-            <div className="flex items-center justify-center gap-4 flex-wrap">
+            <div className="flex items-center justify-center gap-3 flex-wrap">
               <Badge variant="outline" className={reportTypeConfig[report?.report_type]?.cls || reportTypeConfig.quick_summary.cls} data-testid="report-type-badge">
                 {reportTypeConfig[report?.report_type]?.label || report?.report_type}
               </Badge>
-              <span className="text-sm text-slate-500" data-testid="report-generated-date">
-                Generated: {formatDate(report?.generated_at)}
-              </span>
+              <span className="text-sm text-slate-500" data-testid="report-generated-date">Generated: {formatDate(report?.generated_at)}</span>
             </div>
           </div>
 
-          <section
-            className="mb-10 rounded-2xl border border-indigo-200 bg-gradient-to-r from-indigo-50 via-white to-amber-50 p-6"
-            data-testid="report-top-summary-box"
-          >
+          <section className="mb-8 rounded-2xl border border-indigo-200 bg-gradient-to-r from-indigo-50 via-white to-amber-50 p-5 sm:p-6" data-testid="report-top-summary-box">
             <div className="flex items-center gap-2 mb-4">
-              <Gavel className="w-5 h-5 text-indigo-700" />
+              <Sparkles className="w-5 h-5 text-indigo-700" />
               <h2 className="text-lg font-bold text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>
-                Case Command Summary
+                Command Summary
               </h2>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-              <SummaryPill label="Accused" value={caseData?.defendant_name || "N/A"} testId="report-summary-accused" />
-              <SummaryPill label="Sentence" value={sentenceSummary} testId="report-summary-sentence" />
-              <SummaryPill label="Crime / Offence" value={offenceLabel} testId="report-summary-offence" />
-              <SummaryPill label="Grounds of Merit" value={String(grounds.length)} testId="report-summary-grounds" />
-              <SummaryPill label="Case Strength" value={`${caseStrength}/100`} testId="report-summary-strength" />
-              <SummaryPill label="Court & State" value={`${caseData?.court || "Court N/A"} • ${(caseData?.state || "NSW").toUpperCase()}`} testId="report-summary-court-state" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {summaryItems.map((item) => (
+                <SummaryPill key={item.label} label={item.label} value={item.value} icon={item.icon} testId={item.testId} />
+              ))}
+            </div>
+
+            <div className="mt-5 rounded-xl border border-slate-200 bg-white p-4" data-testid="appeal-readiness-gauge">
+              <div className="flex items-center justify-between gap-3 mb-2">
+                <p className="text-xs uppercase tracking-wide text-slate-500">Appeal Readiness Gauge</p>
+                <p className={`text-sm font-semibold ${readiness.tone}`} data-testid="appeal-readiness-label">{readiness.label}</p>
+              </div>
+              <div className="h-2.5 bg-slate-200 rounded-full overflow-hidden" data-testid="appeal-readiness-bar-track">
+                <div
+                  className={`h-full ${readiness.bar} transition-all duration-700`}
+                  style={{ width: `${caseStrength}%` }}
+                  data-testid="appeal-readiness-bar"
+                />
+              </div>
+              <p className="text-xs text-slate-600 mt-2" data-testid="appeal-readiness-note">{readiness.note}</p>
             </div>
           </section>
 
           {sections.length > 0 && (
-            <section className="mb-10 rounded-2xl border border-slate-200 p-5 bg-slate-50" data-testid="report-table-of-contents">
+            <section className="mb-8 rounded-2xl border border-slate-200 p-5 bg-slate-50" data-testid="report-table-of-contents">
               <div className="flex items-center gap-2 mb-3">
                 <ListOrdered className="w-4 h-4 text-slate-700" />
                 <h3 className="font-semibold text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>
@@ -311,9 +362,9 @@ const ReportView = () => {
             </section>
           )}
 
-          <section className="space-y-6" data-testid="report-full-analysis-section">
+          <section className="space-y-5" data-testid="report-full-analysis-section">
             {sections.map((section, idx) => (
-              <article key={section.id} id={section.id} className="rounded-xl border border-slate-200 p-5 bg-white">
+              <article key={section.id} id={section.id} className="rounded-2xl border border-slate-200 p-4 sm:p-6 bg-gradient-to-b from-white to-slate-50/40 shadow-sm">
                 <div className="flex items-center gap-2 mb-3 pb-3 border-b border-slate-200">
                   <div className="w-7 h-7 rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold flex items-center justify-center">
                     {idx + 1}
@@ -322,12 +373,14 @@ const ReportView = () => {
                     {section.title}
                   </h3>
                 </div>
-                <div className="text-slate-700 leading-relaxed whitespace-pre-wrap" data-testid={`report-section-content-${idx + 1}`}>
-                  {section.content}
+
+                <div className="text-slate-700" data-testid={`report-section-content-${idx + 1}`}>
+                  <MarkdownBlock text={section.content} testId={`report-section-md-${idx + 1}`} />
                 </div>
+
                 <button
                   onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                  className="mt-4 inline-flex items-center gap-1 text-xs text-indigo-700 hover:text-indigo-900"
+                  className="mt-2 inline-flex items-center gap-1 text-xs text-indigo-700 hover:text-indigo-900"
                   data-testid={`report-back-to-top-${idx + 1}`}
                 >
                   <ChevronRight className="w-3 h-3 rotate-[-90deg]" />
@@ -337,10 +390,9 @@ const ReportView = () => {
             ))}
           </section>
 
-          <footer className="mt-14 pt-8 border-t border-slate-200 text-center text-sm text-slate-500" data-testid="report-footer">
+          <footer className="mt-12 pt-8 border-t border-slate-200 text-center text-sm text-slate-500" data-testid="report-footer">
             <p>This is a full in-browser report view — no PDF download required to read all sections.</p>
-            <p className="font-medium">Prepared for: Deb King, Glenmore Park 2745</p>
-            <p className="italic">One woman's fight for justice — seeking truth for Joshua Homann, failed by the system</p>
+            <p className="font-medium">Prepared by Appeal Case Manager for legal review support.</p>
           </footer>
         </div>
       </main>
@@ -356,9 +408,12 @@ const ReportView = () => {
   );
 };
 
-const SummaryPill = ({ label, value, testId }) => (
+const SummaryPill = ({ label, value, icon: Icon, testId }) => (
   <div className="rounded-xl border border-slate-200 bg-white p-3" data-testid={testId}>
-    <p className="text-[11px] uppercase tracking-wide text-slate-500 mb-1">{label}</p>
+    <div className="flex items-center gap-2 mb-1.5">
+      <Icon className="w-4 h-4 text-indigo-600" />
+      <p className="text-[11px] uppercase tracking-wide text-slate-500">{label}</p>
+    </div>
     <p className="text-sm font-semibold text-slate-900 break-words">{value}</p>
   </div>
 );
