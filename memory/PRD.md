@@ -648,6 +648,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - Landing, report, and barrister-content polish updates (AU spelling pass, dropdown/footer-link alignment, upgraded barrister showcase messaging, and extensive-report barrister dossier requirements) are logged in `CHANGELOG.md` (latest session).
 - Verification status: `iteration_36.json` (feature/content pass) + backend regression iteration 39 (ready).
 - AU-English enforcement pass completed across key user-facing strings; endpoint contracts retained where API naming uses legacy `/analyze` path segments.
+- Added cross-page AU-English proofreading sweep (FAQ, Statistics, Compare Cases, Case Detail labels, Form Templates, Landing glossary copy) with regression checks passing.
 
 ## Technical Debt (Current)
 - `server.py` remains monolithic and should be modularized into focused routers/services.

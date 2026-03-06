@@ -31,6 +31,7 @@
 ## 2026-03 — Session 13 (AU-English Enforcement Pass)
 - Enforced Australian-English spelling in key user-facing strings (e.g., organise/analysing/analyse)
 - Updated remaining US-spelling copy in templates/error text where safe
+- Extended proofreading across Landing, FAQ, Statistics, Compare Cases, Case Detail labels, Form Templates, and glossary/legal resources wording
 - Preserved API route contracts that use `/analyze` naming for compatibility
 - Validation: landing + backend quick regression checks passed
 
