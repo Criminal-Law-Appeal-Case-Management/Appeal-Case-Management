@@ -62,8 +62,24 @@ const LandingPage = () => {
                 <Link to="/lawyers" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
                   Lawyer Directory
                 </Link>
-                <Link to="/forms" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-b-lg">
+                <Link to="/forms" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
                   Forms & Templates
+                </Link>
+                <div className="border-t border-slate-700 my-1" />
+                <Link to="/about" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  About
+                </Link>
+                <Link to="/success-stories" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  Success Stories
+                </Link>
+                <Link to="/glossary" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  Legal Terms
+                </Link>
+                <Link to="/contact" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                  Contact
+                </Link>
+                <Link to="/terms" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-b-lg">
+                  Terms & Privacy
                 </Link>
               </div>
             </div>
@@ -154,6 +170,8 @@ const LandingPage = () => {
               <Link to="/how-to-use" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">How To Use The App</Link>
               <Link to="/legal-framework" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">Legal Framework & Legislation</Link>
               <Link to="/caselaw-search" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">Live Caselaw Search</Link>
+              <Link to="/success-stories" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">Success Stories</Link>
+              <Link to="/glossary" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">Legal Terms</Link>
             </div>
             <div className="flex items-center gap-3 pt-2">
               <button onClick={toggleTheme} className="p-2 text-slate-300 hover:text-white">
@@ -186,7 +204,7 @@ const LandingPage = () => {
         <div className="absolute inset-0 z-0">
           <img 
             src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/3f6a0144e6ddce5a8eb6a1e25b25974fca11bfd9515dbad29662cab81313d84b.png" 
-            alt="Australian Courtroom"
+            alt="Australian courtroom bench with appeal case documents"
             className="w-full h-full object-cover opacity-20 dark:opacity-10"
             loading="eager"
             onError={(e) => { e.target.style.display = 'none'; }}
@@ -208,7 +226,7 @@ const LandingPage = () => {
                 Criminal Appeal Research Tool
               </h1>
               <p className="text-lg text-muted-foreground mb-6 max-w-xl">
-                Organise case documents, generate timelines, and identify potential appeal issues across all Australian jurisdictions.
+                Organise case documents, generate timelines, and produce premium appeal reports with comparative sentencing tables, options matrices, and barrister-ready strategy notes across all Australian jurisdictions.
               </p>
               
               {/* State Badges */}
@@ -261,7 +279,7 @@ const LandingPage = () => {
               <div className="relative max-w-md mx-auto lg:max-w-none">
                 <img 
                   src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/6fe186d3d7a5b01e3d3c6076c0a6aefc22c07aea5667124e0978d927d9c58335.png" 
-                  alt="Gavel and Law Books"
+                  alt="Barrister desk with gavel, authorities bundle, and appeal brief"
                   className="rounded-3xl shadow-2xl w-full object-cover h-[280px] sm:h-[350px] lg:h-[450px] border-4 border-white/20"
                   loading="eager"
                   onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80'; }}
@@ -406,7 +424,7 @@ const LandingPage = () => {
         <div className="absolute inset-0 z-0">
           <img 
             src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/e20c677eb0c9cdb1ef84e9e79a9f3bbd37795a24bfbe29e4d8cfe78da35bf516.png" 
-            alt="Handcuffs and Justice"
+            alt="Court custody scene representing high-stakes criminal appeal review"
             className="w-full h-full object-cover opacity-10"
             loading="lazy"
             onError={(e) => { e.target.style.display = 'none'; }}
@@ -600,7 +618,7 @@ const LandingPage = () => {
                 <h3 className="font-bold text-white text-lg">Reports & Export</h3>
               </div>
               <p className="text-slate-400 text-sm mb-3">
-                Generate detailed reports with legal citations, export to PDF/DOCX, create appeal bundles, and use Barrister View for presentations.
+                Generate premium reports with legal citations, comparative sentencing tables, relief options matrices, export to PDF/DOCX, and use Barrister View for conference-ready presentations.
               </p>
               <div className="text-orange-500 text-xs font-medium">
                 ✓ Professional formatting • Barrister View • Document bundling
@@ -692,7 +710,7 @@ const LandingPage = () => {
             <FeatureCard icon={BarChart3} title="Find Issues" desc="Flag potential appeal grounds" />
             <FeatureCard icon={FileCheck} title="Generate Reports" desc="Structured case summaries" />
             <FeatureCard icon={FileText} title="OCR Extraction" desc="Text from scanned documents" />
-            <FeatureCard icon={Presentation} title="Barrister View" desc="Professional presentation mode" />
+            <FeatureCard icon={Presentation} title="Barrister View" desc="Conference-ready hearing deck" />
             <FeatureCard icon={ListChecks} title="Progress Tracker" desc="Track appeal process steps" />
             <FeatureCard icon={Shield} title="Secure Storage" desc="Your data, your control" />
           </div>
@@ -720,10 +738,10 @@ const LandingPage = () => {
                 <div className="mt-6 flex items-center gap-4">
                   <img 
                     src="https://images.unsplash.com/photo-1589307904488-7d60ff29c975?crop=entropy&cs=srgb&fm=jpg&q=85&w=100&h=100&fit=crop" 
-                    alt="Gavel"
+                    alt="Barrister gavel and legal brief"
                     className="w-16 h-16 rounded-xl object-cover shadow-md"
                   />
-                  <p className="text-sm text-muted-foreground italic">Supports PDF, DOCX, images & scanned documents</p>
+                  <p className="text-sm text-muted-foreground italic">Supports PDF, DOCX, images, scanned exhibits, and briefing bundles</p>
                 </div>
               </div>
               <div className="bg-card rounded-2xl p-6 border border-border shadow-xl">
@@ -813,7 +831,7 @@ const LandingPage = () => {
                 <div className="mt-6">
                   <img 
                     src="https://images.unsplash.com/photo-1662516201865-8633915e668a?crop=entropy&cs=srgb&fm=jpg&q=85&w=400&h=200&fit=crop" 
-                    alt="Courthouse"
+                    alt="Australian courthouse exterior for appeal hearing context"
                     className="w-full h-32 rounded-xl object-cover shadow-lg border border-border"
                   />
                 </div>
@@ -842,12 +860,12 @@ const LandingPage = () => {
                 <div className="mt-6 flex items-center gap-4">
                   <img 
                     src="https://images.unsplash.com/photo-1764113697577-b5899b9a339d?crop=entropy&cs=srgb&fm=jpg&q=85&w=100&h=100&fit=crop" 
-                    alt="Lady Justice"
+                    alt="Lady Justice statue representing appeal grounds review"
                     className="w-20 h-20 rounded-xl object-cover shadow-md"
                   />
                   <div className="text-sm text-muted-foreground">
                     <p className="font-semibold text-foreground">AI-Powered Analysis</p>
-                    <p>Identifies potential grounds based on your jurisdiction's law</p>
+                    <p>Identifies potential grounds using your jurisdiction’s legislation and appeal precedents</p>
                   </div>
                 </div>
               </div>
@@ -1417,10 +1435,27 @@ const LandingPage = () => {
                       <p className="text-slate-600">Quash + retrial alternative</p>
                     </div>
                   </div>
+                  <div className="mb-3 rounded-md border border-slate-200 overflow-hidden text-[11px]">
+                    <div className="bg-slate-100 px-2 py-1.5 font-semibold text-slate-700">Comparative Sentencing Snapshot</div>
+                    <div className="px-2 py-1.5 text-slate-700 grid grid-cols-3 gap-2 border-t border-slate-100">
+                      <span className="font-medium">Original</span>
+                      <span className="font-medium">Revised</span>
+                      <span className="font-medium">Reduction</span>
+                    </div>
+                    <div className="px-2 py-1.5 text-slate-600 grid grid-cols-3 gap-2 border-t border-slate-100">
+                      <span>30 / 22.5</span>
+                      <span>18 / 11</span>
+                      <span className="text-emerald-700 font-semibold">40%</span>
+                    </div>
+                  </div>
                   <div className="space-y-2 text-xs">
                     <div className="p-2 rounded-md bg-slate-50 border border-slate-100">
                       <p className="font-semibold text-slate-800">Authorities Bundle</p>
                       <p className="text-slate-600 mt-0.5">Crimes Act 1900 (NSW) s 18, Evidence Act 1995 s 137, Markarian, House v The King</p>
+                    </div>
+                    <div className="p-2 rounded-md bg-rose-50 border border-rose-100">
+                      <p className="font-semibold text-rose-900">Relief Options Matrix</p>
+                      <p className="text-slate-600 mt-0.5">Quash • Retrial • Downgrade to manslaughter • Sentence reduction • Dismissal risk</p>
                     </div>
                     <div className="p-2 rounded-md bg-slate-50 border border-slate-100">
                       <p className="font-semibold text-slate-800">Oral Run-Sheet</p>
@@ -1432,10 +1467,10 @@ const LandingPage = () => {
               <div className="order-1 md:order-2">
                 <span className="text-amber-600 font-semibold text-xs uppercase tracking-wider">For Legal Professionals</span>
                 <h3 className="text-xl font-bold text-foreground mt-2 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                  Barrister View That Feels Hearing-Ready
+                  Barrister View Built for Conference and Hearing
                 </h3>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                  Not just a pretty printout. Barrister View turns your report into a courtroom briefing deck: lead grounds, statutes, authorities, chronology pressure points, and an oral submission sequence your counsel can use immediately.
+                  Not just a pretty printout. Barrister View turns your report into a courtroom briefing deck: lead grounds, statutory map, comparative sentencing pathways, relief options, chronology pressure points, and an oral submissions sequence your counsel can use immediately.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div className="rounded-lg border border-border p-3 bg-card">
@@ -1443,8 +1478,8 @@ const LandingPage = () => {
                     <p className="text-muted-foreground">Technical legal framing + plain-English notes for family and clients.</p>
                   </div>
                   <div className="rounded-lg border border-border p-3 bg-card">
-                    <p className="font-semibold text-foreground mb-1">Export-ready</p>
-                    <p className="text-muted-foreground">PDF and Word outputs for counsel review, filing prep, and conference handover.</p>
+                    <p className="font-semibold text-foreground mb-1">Third Paid Report Advantage</p>
+                    <p className="text-muted-foreground">Extensive Log now includes barrister conference notes, options matrix, and comparative sentencing tracks.</p>
                   </div>
                 </div>
               </div>
@@ -1627,7 +1662,7 @@ const LandingPage = () => {
                       <strong>Extensive Log Report</strong>
                       <span className="text-amber-700 dark:text-amber-400 font-bold">$39</span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">Complete documentation with step-by-step appeal guidance</p>
+                    <p className="text-xs text-muted-foreground mt-1">Complete barrister conference dossier with comparative sentencing tables, offence-specific common grounds matrix, and full relief options report</p>
                   </div>
                 </li>
               </ul>
@@ -1653,7 +1688,7 @@ const LandingPage = () => {
         <div className="absolute inset-0 z-0">
           <img 
             src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/8b44435fd117a9b64ee15135358c94668930cdd6015f5bad0cab217fd77610b5.png" 
-            alt="Prison bars with light"
+            alt="Court corridor and custody bars symbolising the appeal journey"
             className="w-full h-full object-cover opacity-20"
             loading="lazy"
             onError={(e) => { e.target.style.display = 'none'; }}

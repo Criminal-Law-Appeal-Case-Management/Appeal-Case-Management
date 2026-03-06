@@ -1378,7 +1378,7 @@ Return your response as a JSON array of events, ordered chronologically. Example
 
 Only include events you can clearly identify from the documents. Be thorough - extract ALL dates and events mentioned."""
 
-    user_prompt = f"""Analyze these documents and extract a complete chronological timeline of all events.
+    user_prompt = f"""Analyse these documents and extract a complete chronological timeline of all events.
 
 {doc_context}
 
@@ -1512,12 +1512,12 @@ async def analyze_timeline(case_id: str, request: Request):
     emergent_api_key = os.environ.get('EMERGENT_LLM_KEY')
     
     system_prompt = """You are an expert criminal appeals analyst specializing in NSW and Australian federal law.
-Analyze this timeline of events and provide detailed insights for an appeal case.
+Analyse this timeline of events and provide detailed insights for an appeal case.
 
 Your analysis must include:
 1. TIMELINE GAPS: Identify any suspicious gaps or missing periods that should have documentation
 2. INCONSISTENCIES: Find contradictions between events or illogical sequences
-3. PROSECUTION VS DEFENCE: Identify which events favor prosecution vs defence
+3. PROSECUTION VS DEFENCE: Identify which events favour prosecution vs defence
 4. CONTESTED FACTS: Flag events that appear disputed or have conflicting accounts
 5. APPEAL RELEVANCE: Link events to potential grounds of appeal
 6. KEY DATES: Highlight critical dates and any statute of limitation concerns
@@ -1538,7 +1538,7 @@ Return a JSON object with this structure:
     events_text = json.dumps(events, indent=2, default=str)
     grounds_text = json.dumps(grounds, indent=2, default=str) if grounds else "No grounds identified yet"
     
-    user_prompt = f"""Analyze this criminal case timeline for an appeal:
+    user_prompt = f"""Analyse this criminal case timeline for an appeal:
 
 TIMELINE EVENTS:
 {events_text}
@@ -3152,7 +3152,7 @@ IMPORTANT: If grounds are listed in "ALREADY IDENTIFIED GROUNDS", do NOT duplica
 {context}
 
 INSTRUCTIONS:
-1. Analyze EVERY document provided - read the full content carefully
+1. Analyse EVERY document provided - read the full content carefully
 2. Compare witness statements for inconsistencies
 3. Identify ANY procedural irregularities
 4. Look for evidence that may have been improperly handled or excluded
@@ -3649,7 +3649,15 @@ Two outputs:
 - Counsel-facing technical briefing
 - Client-facing plain-English pathway summary
 
-## 18. APPENDIX OF AUTHORITIES + SOURCE REFERENCES
+## 18. BARRISTER CONFERENCE DOSSIER (MANDATORY)
+Provide a barrister-ready conference pack containing:
+- Lead theory of appeal in 8-12 lines
+- 10-minute oral conference outline
+- Bench question anticipation list with model response lines
+- Authorities shortlist (primary + fallback)
+- Orders sought: primary order + fallback order
+
+## 19. APPENDIX OF AUTHORITIES + SOURCE REFERENCES
 Consolidated list of statutes, sections, precedents, and source anchors.
 
 IMPORTANT:

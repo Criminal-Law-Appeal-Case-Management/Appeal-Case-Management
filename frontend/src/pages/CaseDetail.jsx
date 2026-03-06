@@ -288,7 +288,7 @@ const CaseDetail = ({ user }) => {
     }
     
     setGeneratingTimeline(true);
-    toast.info("Analyzing documents to generate timeline... This may take 30-60 seconds.");
+    toast.info("Analysing documents to generate timeline... This may take 30-60 seconds.");
     
     try {
       const response = await axios.post(`${API}/cases/${caseId}/timeline/auto-generate`, {}, {
@@ -321,7 +321,7 @@ const CaseDetail = ({ user }) => {
     }
     
     setAnalyzingTimeline(true);
-    toast.info("Analyzing timeline for gaps, inconsistencies, and insights...");
+    toast.info("Analysing timeline for gaps, inconsistencies, and insights...");
     
     try {
       const response = await axios.post(`${API}/cases/${caseId}/timeline/analyze`, {}, {

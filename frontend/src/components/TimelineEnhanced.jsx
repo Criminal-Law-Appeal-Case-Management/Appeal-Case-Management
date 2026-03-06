@@ -271,7 +271,7 @@ const Timeline = ({
             disabled={analyzing || events.length < 2}
             data-testid="analyze-timeline-btn"
           >
-            {analyzing ? "Analyzing..." : "AI Analysis"}
+            {analyzing ? "Analysing..." : "AI Analysis"}
           </Button>
           <Button
             variant="outline"
