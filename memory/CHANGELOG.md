@@ -69,6 +69,13 @@
 - Updated landing Learn dropdown and mobile menu links to include new page
 - Validation: routing and UI checks passed with no regressions
 
+## 2026-03 — Session 18 (Presentation Tightening + Success Stories Layout)
+- Success Stories redesigned into compact multi-column cards (desktop 3-up), with explicit heading above each comment and preserved detail/outcome data
+- Landing Resources dropdown tidied (merged legal resources/contacts entry, duplicate removed)
+- Landing resources section updated to reflect merged flow and new How It Works page
+- Landing footer reorganised into clearer grouped sections with updated links
+- Validation: full frontend presentation checks passed, no regressions
+
 ## 2026-03 — Session 11 (Premium Report + Barrister Overhaul)
 - AI report prompts reworked for hybrid legal/plain-English depth
 - Removed costs + witness contradiction/credibility sections from report content requirements
