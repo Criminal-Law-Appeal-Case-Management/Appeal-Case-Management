@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 import PageCTA from "../components/PageCTA";
 import { Scale, ArrowLeft, Building, Users, Phone, Globe, ExternalLink, MapPin, Moon, Sun, Menu, X, Shield, Gavel, FileText, AlertTriangle, Lightbulb } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 
+const DirectoryFilterContext = createContext({ stateFilter: "all" });
+
 const LegalResourcesPage = () => {
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [stateFilter, setStateFilter] = useState("all");
 
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -89,6 +92,33 @@ const LegalResourcesPage = () => {
 
       <section className="sticky top-[72px] z-30 bg-background/95 backdrop-blur border-b border-border" data-testid="legal-resources-quick-nav-wrapper">
         <div className="max-w-5xl mx-auto px-6 py-3">
+          <div className="flex flex-wrap items-center gap-3 mb-2">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide" htmlFor="state-filter-select">
+              Filter by state
+            </label>
+            <select
+              id="state-filter-select"
+              value={stateFilter}
+              onChange={(e) => setStateFilter(e.target.value)}
+              className="h-9 rounded-lg border border-border bg-card px-3 text-sm text-foreground"
+              data-testid="legal-resources-state-filter"
+            >
+              <option value="all">All states & national</option>
+              <option value="NATIONAL">National / Multi-state</option>
+              <option value="NSW">NSW</option>
+              <option value="VIC">VIC</option>
+              <option value="QLD">QLD</option>
+              <option value="SA">SA</option>
+              <option value="WA">WA</option>
+              <option value="TAS">TAS</option>
+              <option value="NT">NT</option>
+              <option value="ACT">ACT</option>
+            </select>
+            <p className="text-xs text-muted-foreground" data-testid="legal-resources-state-filter-help">
+              Services are automatically shown in state order.
+            </p>
+          </div>
+
           <div className="flex gap-2 overflow-x-auto pb-1" data-testid="legal-resources-quick-nav">
             {tabs.map((tab) => {
               const Icon = tab.icon;
@@ -108,6 +138,7 @@ const LegalResourcesPage = () => {
         </div>
       </section>
 
+      <DirectoryFilterContext.Provider value={{ stateFilter }}>
       <main className="max-w-5xl mx-auto px-6 py-8 space-y-12">
 
         {/* ============ SECTION: You Have Options ============ */}
@@ -1308,6 +1339,7 @@ const LegalResourcesPage = () => {
         </div>
 
       </main>
+      </DirectoryFilterContext.Provider>
 
       {/* Footer */}
       <footer className="bg-slate-900 px-6 py-8 border-t border-slate-800 mt-12">
@@ -1326,6 +1358,39 @@ const LegalResourcesPage = () => {
 
 // Resource Card Component
 const ResourceCard = ({ title, state, phone, website, description, color, highlight }) => {
+  const { stateFilter } = useContext(DirectoryFilterContext);
+
+  const normaliseState = (value) => {
+    const raw = (value || "").toUpperCase();
+    if (!raw || raw === "VARIOUS" || raw === "MULTI-STATE" || raw === "NATIONAL") return "NATIONAL";
+    if (raw.includes("NSW")) return "NSW";
+    if (raw.includes("VIC")) return "VIC";
+    if (raw.includes("QLD")) return "QLD";
+    if (raw.includes("SA")) return "SA";
+    if (raw.includes("WA")) return "WA";
+    if (raw.includes("TAS")) return "TAS";
+    if (raw.includes("NT")) return "NT";
+    if (raw.includes("ACT")) return "ACT";
+    return "NATIONAL";
+  };
+
+  const stateOrder = {
+    NATIONAL: 0,
+    NSW: 1,
+    VIC: 2,
+    QLD: 3,
+    SA: 4,
+    WA: 5,
+    TAS: 6,
+    NT: 7,
+    ACT: 8,
+  };
+
+  const normalisedState = normaliseState(state);
+  if (stateFilter !== "all" && normalisedState !== stateFilter) {
+    return null;
+  }
+
   const colorClasses = {
     blue: "bg-blue-600",
     purple: "bg-purple-600",
@@ -1340,7 +1405,10 @@ const ResourceCard = ({ title, state, phone, website, description, color, highli
   };
 
   return (
-    <div className={`bg-card border ${highlight ? 'border-amber-400 dark:border-amber-600 border-2' : 'border-border'} rounded-xl p-5 hover:shadow-md transition-shadow`}>
+    <div
+      className={`bg-card border ${highlight ? 'border-amber-400 dark:border-amber-600 border-2' : 'border-border'} rounded-xl p-5 hover:shadow-md transition-shadow`}
+      style={{ order: stateOrder[normalisedState] ?? 99 }}
+    >
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-center gap-3">
           <div className={`w-10 h-10 ${colorClasses[color]} rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0`}>

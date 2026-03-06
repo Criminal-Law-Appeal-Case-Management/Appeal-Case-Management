@@ -176,23 +176,41 @@ const AppealStatisticsPage = () => {
               <BarChart3 className="w-7 h-7 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <h1 className="text-4xl md:text-6xl font-bold mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Australian Appeal Statistics
           </h1>
           <p className="text-slate-400 max-w-2xl mx-auto">
             Real data on criminal appeals across Australia — how many are lodged, how many succeed, 
             and what grounds are most commonly used.
           </p>
+          <p className="text-amber-300 text-sm mt-4" data-testid="appeal-stats-hero-subheading">
+            Structured by clear sections so you can quickly understand what each statistic means.
+          </p>
         </div>
       </section>
 
       <main className="max-w-5xl mx-auto px-6 py-8">
 
+        {/* Headline Snapshot */}
+        <section className="mb-10" data-testid="appeal-rate-spotlight-section">
+          <div className="rounded-2xl border-2 border-red-300 dark:border-red-700 bg-gradient-to-r from-red-50 via-white to-amber-50 dark:from-red-900/20 dark:via-slate-900/20 dark:to-amber-900/20 p-6 md:p-8">
+            <p className="text-xs uppercase tracking-wider text-red-700 dark:text-red-300 font-semibold mb-2">Appeal Access Snapshot</p>
+            <p className="text-5xl md:text-6xl font-black text-red-700 dark:text-red-300 leading-none" style={{ fontFamily: 'Crimson Pro, serif' }} data-testid="appeal-rate-spotlight-value">
+              0.012%
+            </p>
+            <p className="text-sm text-slate-700 dark:text-slate-300 mt-3 max-w-3xl" data-testid="appeal-rate-spotlight-description">
+              Approximate proportion of defendants who proceed to appeal based on available data. This highlights how difficult it is for most people to access appeal pathways.
+            </p>
+          </div>
+        </section>
+
         {/* National Overview */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-foreground mb-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold mb-2">Section 1</p>
+          <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
             National Overview (2024)
           </h2>
+          <p className="text-sm text-muted-foreground mb-6">Key national figures and context before state-by-state breakdowns.</p>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <StatCard 
@@ -232,13 +250,15 @@ const AppealStatisticsPage = () => {
           </div>
 
           {/* ACCESS TO JUSTICE ANALYSIS */}
-          <div className="mt-8 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 border-2 border-red-300 dark:border-red-700 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-red-900 dark:text-red-200 mb-3 flex items-center gap-2">
-              <AlertTriangle className="w-6 h-6" />
-              The Appeal Access Crisis: Why So Few People Exercise Their Rights
-            </h3>
-            
-            <div className="space-y-4 text-sm text-red-900 dark:text-red-100">
+          <details className="mt-8 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 border-2 border-red-300 dark:border-red-700 rounded-xl p-6" data-testid="appeal-access-crisis-details">
+            <summary className="cursor-pointer list-none">
+              <h3 className="text-lg font-bold text-red-900 dark:text-red-200 flex items-center gap-2">
+                <AlertTriangle className="w-6 h-6" />
+                The Appeal Access Crisis: Why So Few People Exercise Their Rights (tap to expand)
+              </h3>
+            </summary>
+
+            <div className="space-y-4 text-sm text-red-900 dark:text-red-100 mt-4">
               <div className="bg-white/60 dark:bg-slate-900/30 rounded-lg p-4 border border-red-200 dark:border-red-800">
                 <p className="font-bold text-base mb-2">📊 The Shocking Reality: Less than 0.02% Appeal Rate</p>
                 <p>
@@ -347,14 +367,16 @@ const AppealStatisticsPage = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </details>
         </section>
 
         {/* State by State */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-foreground mb-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold mb-2">Section 2</p>
+          <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
             State by State Statistics
           </h2>
+          <p className="text-sm text-muted-foreground mb-6">Compare filings, success rates, and timeframes by jurisdiction.</p>
 
           {/* State Tabs */}
           <div className="flex flex-wrap gap-2 mb-6">
@@ -414,7 +436,8 @@ const AppealStatisticsPage = () => {
 
         {/* Common Grounds of Appeal */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-foreground mb-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold mb-2">Section 3</p>
+          <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Most Common Grounds of Appeal
           </h2>
           <p className="text-muted-foreground text-sm mb-6">
@@ -447,7 +470,8 @@ const AppealStatisticsPage = () => {
 
         {/* Complaints About Lawyers */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-foreground mb-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold mb-2">Section 4</p>
+          <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Top Complaints About Lawyers
           </h2>
           <p className="text-muted-foreground text-sm mb-6">
@@ -478,7 +502,8 @@ const AppealStatisticsPage = () => {
 
         {/* Key Insights */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-foreground mb-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold mb-2">Section 5</p>
+          <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Key Insights
           </h2>
 
@@ -511,7 +536,8 @@ const AppealStatisticsPage = () => {
 
         {/* Historical Trends */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-foreground mb-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold mb-2">Section 6</p>
+          <h2 className="text-xl font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Historical Trends
           </h2>
           
