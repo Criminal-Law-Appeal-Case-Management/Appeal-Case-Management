@@ -3440,26 +3440,26 @@ async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str, agg
             "ground_deep_chars": 0,
         },
         "full_detailed": {
-            "per_doc_chars": 2600,
-            "total_doc_chars": 22000,
-            "timeline_limit": 140,
-            "notes_limit": 80,
-            "note_chars": 480,
-            "grounds_limit": 70,
-            "ground_desc_chars": 650,
-            "ground_analysis_chars": 420,
-            "ground_deep_chars": 0,
-        },
-        "extensive_log": {
-            "per_doc_chars": 3600,
-            "total_doc_chars": 32000,
+            "per_doc_chars": 3800,
+            "total_doc_chars": 38000,
             "timeline_limit": 220,
             "notes_limit": 120,
             "note_chars": 700,
-            "grounds_limit": 100,
+            "grounds_limit": 110,
             "ground_desc_chars": 900,
-            "ground_analysis_chars": 650,
-            "ground_deep_chars": 900,
+            "ground_analysis_chars": 700,
+            "ground_deep_chars": 0,
+        },
+        "extensive_log": {
+            "per_doc_chars": 5200,
+            "total_doc_chars": 56000,
+            "timeline_limit": 320,
+            "notes_limit": 180,
+            "note_chars": 950,
+            "grounds_limit": 150,
+            "ground_desc_chars": 1300,
+            "ground_analysis_chars": 1000,
+            "ground_deep_chars": 1600,
         },
     }
     limits = context_limits.get(report_type, context_limits["quick_summary"])
@@ -3604,7 +3604,7 @@ You are generating a PAID Full Detailed Report ($29 AUD). This must be as detail
 
 {case_context}
 
-Target range 2600-3600 words. This report must feel premium, strategic, and hearing-ready. Use this exact structure:
+Target range 4200-6200 words. This report must feel premium, strategic, and hearing-ready. Use this exact structure:
 
 ## TABLE OF CONTENTS
 Numbered list matching every heading below.
@@ -3681,7 +3681,7 @@ You are generating the PREMIUM Extensive Log Report ($39 AUD). This must exceed 
 
 {case_context}
 
-Target range 4200-5600 words. Exhaustive depth required. Use this exact structure:
+Target range 7000-9500 words. Exhaustive depth required. Use this exact structure:
 
 ## TABLE OF CONTENTS
 Numbered list matching every heading below.
@@ -3796,7 +3796,7 @@ AGGRESSIVE MODE (USER-REQUESTED):
             if report_type == "quick_summary":
                 model_name = "gpt-4o-mini"
             else:
-                model_name = "gpt-4o" if attempt < 2 else "gpt-4o-mini"
+                model_name = "gpt-4o" if attempt < 3 else "gpt-4o-mini"
 
             chat = LlmChat(
                 api_key=api_key,
