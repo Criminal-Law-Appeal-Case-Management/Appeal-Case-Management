@@ -262,46 +262,52 @@ const SuccessStories = () => {
       </section>
 
       {/* Stories */}
-      <main className="max-w-5xl mx-auto px-6 pb-16">
-        <div className="space-y-8">
+      <main className="max-w-7xl mx-auto px-6 pb-16">
+        <section className="mb-8" data-testid="success-stories-grid-section">
+          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-2">Featured Stories</p>
+          <h2 className="text-2xl font-bold text-foreground mb-1" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Real outcomes, organised for quick reading
+          </h2>
+          <p className="text-sm text-muted-foreground">Each story keeps full detail, with a clear heading and compact reading format.</p>
+        </section>
+
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5" data-testid="success-stories-grid">
           {successStories.map((story) => (
-            <div 
+            <article
               key={story.id}
-              className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+              className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col"
+              data-testid={`success-story-card-${story.id}`}
             >
-              <div className="p-6 md:p-8">
-                <div className="flex items-start gap-4 md:gap-6">
-                  <div className="w-14 h-14 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center shrink-0">
-                    <Quote className="w-7 h-7 text-amber-600 dark:text-amber-400" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-foreground leading-relaxed mb-6">
-                      "{story.story}"
-                    </p>
-                    <div className="flex flex-wrap items-center gap-4 text-sm">
-                      <div>
-                        <span className="font-semibold text-foreground">{story.name}</span>
-                        <span className="text-muted-foreground"> • {story.relationship}</span>
-                        <span className="text-muted-foreground/70"> • {story.location}</span>
-                      </div>
-                    </div>
-                  </div>
+              <div className="p-4 border-b border-border bg-muted/30">
+                <p className="text-[11px] uppercase tracking-wide text-amber-600 dark:text-amber-400 font-semibold mb-1">Story Heading</p>
+                <h3 className="text-sm font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }} data-testid={`success-story-heading-${story.id}`}>
+                  {story.name} — {story.relationship} ({story.location})
+                </h3>
+              </div>
+
+              <div className="p-4 flex-1">
+                <div className="flex items-start gap-2 mb-2">
+                  <Quote className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                  <p className="text-xs text-foreground leading-relaxed max-h-52 overflow-y-auto pr-1" data-testid={`success-story-comment-${story.id}`}>
+                    "{story.story}"
+                  </p>
                 </div>
               </div>
-              <div className="bg-emerald-50 dark:bg-emerald-900/20 border-t border-emerald-100 dark:border-emerald-800 px-6 md:px-8 py-4">
-                <div className="flex flex-wrap items-center justify-between gap-3">
+
+              <div className="bg-emerald-50 dark:bg-emerald-900/20 border-t border-emerald-100 dark:border-emerald-800 px-4 py-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
-                    <CheckCircle className="w-5 h-5" />
-                    <span className="font-semibold text-sm">{story.outcome}</span>
+                    <CheckCircle className="w-4 h-4" />
+                    <span className="font-semibold text-xs">{story.outcome}</span>
                   </div>
                   {story.timeframe && (
-                    <span className="text-xs text-emerald-600 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/40 px-3 py-1.5 rounded-lg font-medium">
+                    <span className="text-[11px] text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/40 px-2.5 py-1 rounded-lg font-medium">
                       {story.timeframe}
                     </span>
                   )}
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
 

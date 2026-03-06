@@ -1,4 +1,4 @@
-import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin, Moon, Sun, Menu, X, Briefcase, BookOpen, Heart, MessageCircle, Download, Book, HelpCircle, TrendingUp } from "lucide-react";
+import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin, Moon, Sun, Menu, X, Briefcase, BookOpen, Heart, MessageCircle, Download, Book, HelpCircle, TrendingUp, PlayCircle } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -48,10 +48,7 @@ const LandingPage = () => {
               </button>
               <div className="absolute top-full left-0 mt-2 w-56 bg-slate-800 rounded-lg shadow-xl border border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                 <Link to="/legal-resources" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-t-lg">
-                  Legal Resources
-                </Link>
-                <Link to="/legal-resources" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  Contacts Directory
+                  Legal Resources & Contacts
                 </Link>
                 <Link to="/legal-framework" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
                   Legal Frameworks
@@ -161,10 +158,10 @@ const LandingPage = () => {
             <Link to="/appeal-statistics" className="block py-2 text-slate-300 hover:text-white">Statistics</Link>
             <Link to="/success-stories" className="block py-2 text-slate-300 hover:text-white">Success Stories</Link>
             <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
-            <Link to="/legal-resources" className="block py-2 text-slate-300 hover:text-white">Legal Resources</Link>
-            <Link to="/legal-resources" className="block py-2 text-slate-300 hover:text-white">Contacts Directory</Link>
+            <Link to="/legal-resources" className="block py-2 text-slate-300 hover:text-white">Legal Resources & Contacts</Link>
             <Link to="/forms" className="block py-2 text-slate-300 hover:text-white">Forms</Link>
             <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
+            <Link to="/how-it-works" className="block py-2 text-slate-300 hover:text-white">How It Works</Link>
             <Link to="/legal-framework" className="block py-2 text-slate-300 hover:text-white">Legal Framework</Link>
             <Link to="/about" className="block py-2 text-slate-300 hover:text-white">About</Link>
             <Link to="/contact" className="block py-2 text-slate-300 hover:text-white">Contact</Link>
@@ -1501,14 +1498,14 @@ const LandingPage = () => {
           <div className="text-center mb-10">
             <p className="text-blue-700 dark:text-blue-400 font-semibold text-xs uppercase tracking-widest mb-3">Legal Resources & Research</p>
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Everything You Need to Research Your Appeal
+              Resources, Contacts & Research In One Flow
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Access legislation, case law, legal frameworks, and help resources all in one place.
+              Access legal contacts, legislation, case law, legal frameworks, and process guidance in one organised structure.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             {/* Legal Frameworks Card */}
             <Link to="/legal-framework" className="group">
               <div className="bg-card border-2 border-border hover:border-blue-600 dark:hover:border-blue-400 rounded-xl p-8 h-full transition-all hover:shadow-lg">
@@ -1548,6 +1545,26 @@ const LandingPage = () => {
                 </p>
                 <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-medium">
                   <span>Search Case Law</span>
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
+
+            <Link to="/how-it-works" className="group">
+              <div className="bg-card border-2 border-border hover:border-indigo-600 dark:hover:border-indigo-400 rounded-xl p-8 h-full transition-all hover:shadow-lg">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 bg-indigo-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <PlayCircle className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                    How It Works
+                  </h3>
+                </div>
+                <p className="text-muted-foreground mb-4">
+                  See the full workflow in action with report prices directly underneath and a direct button to start your case.
+                </p>
+                <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-medium">
+                  <span>See Workflow + Prices</span>
                   <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
@@ -1738,7 +1755,7 @@ const LandingPage = () => {
 
       {/* Footer - Minimal */}
       <footer className="py-8 px-6 border-t border-border bg-muted/50 dark:bg-muted/20">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6 items-start">
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center gap-2">
               <Scale className="w-5 h-5 text-muted-foreground" />
@@ -1746,17 +1763,26 @@ const LandingPage = () => {
             </div>
             <span className="text-muted-foreground text-xs mt-1">Founded by Debra King</span>
           </div>
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <Link to="/about" className="hover:text-foreground">About</Link>
-            <Link to="/success-stories" className="hover:text-foreground">Success Stories</Link>
-            <Link to="/glossary" className="hover:text-foreground">Legal Terms</Link>
-            <Link to="/legal-resources" className="hover:text-foreground">Resources</Link>
-            <Link to="/contact" className="hover:text-foreground">Contact</Link>
-            <Link to="/terms" className="hover:text-foreground">Terms & Privacy</Link>
+
+          <div>
+            <p className="text-xs uppercase tracking-wide text-muted-foreground font-semibold mb-2">Explore</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-muted-foreground">
+              <Link to="/how-it-works" className="hover:text-foreground">How It Works</Link>
+              <Link to="/success-stories" className="hover:text-foreground">Success Stories</Link>
+              <Link to="/appeal-statistics" className="hover:text-foreground">Appeal Statistics</Link>
+              <Link to="/glossary" className="hover:text-foreground">Legal Terms</Link>
+              <Link to="/legal-resources" className="hover:text-foreground">Resources & Contacts</Link>
+              <Link to="/contact" className="hover:text-foreground">Contact</Link>
+            </div>
           </div>
-          <p className="text-xs text-red-600 dark:text-red-400 font-medium text-center md:text-right">
-            Australian Law Only • Not legal advice
-          </p>
+
+          <div className="text-center md:text-right">
+            <p className="text-xs uppercase tracking-wide text-muted-foreground font-semibold mb-2">Legal</p>
+            <Link to="/terms" className="text-sm text-muted-foreground hover:text-foreground">Terms & Privacy</Link>
+            <p className="text-xs text-red-600 dark:text-red-400 font-medium mt-3">
+              Australian Law Only • Not legal advice
+            </p>
+          </div>
         </div>
       </footer>
     </div>
