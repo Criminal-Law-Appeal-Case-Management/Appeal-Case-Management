@@ -3940,6 +3940,70 @@ async def get_reports(case_id: str, request: Request):
     
     return reports
 
+
+@api_router.get("/reports/embedded-legacy", response_model=dict)
+async def get_embedded_legacy_reports(request: Request, limit: int = 3):
+    """Return strongest historical reports for embedding/reference in UI."""
+    user = await get_current_user(request)
+
+    all_reports = await db.reports.find(
+        {"user_id": user.user_id},
+        {
+            "_id": 0,
+            "report_id": 1,
+            "case_id": 1,
+            "report_type": 1,
+            "title": 1,
+            "generated_at": 1,
+            "content.analysis": 1,
+        },
+    ).sort("generated_at", -1).to_list(400)
+
+    def analysis_len(item: dict) -> int:
+        return len((item.get("content") or {}).get("analysis", ""))
+
+    valid_types = ["quick_summary", "full_detailed", "extensive_log"]
+    by_length = [r for r in all_reports if r.get("report_type") in valid_types and analysis_len(r) > 1200]
+    by_length.sort(key=analysis_len, reverse=True)
+
+    selected = []
+    seen_types = set()
+
+    for report in by_length:
+        rtype = report.get("report_type")
+        if rtype in seen_types:
+            continue
+        seen_types.add(rtype)
+        selected.append(report)
+        if len(selected) >= limit:
+            break
+
+    if len(selected) < limit:
+        selected_ids = {r.get("report_id") for r in selected}
+        for report in by_length:
+            if report.get("report_id") in selected_ids:
+                continue
+            selected.append(report)
+            if len(selected) >= limit:
+                break
+
+    embedded = []
+    for report in selected[:limit]:
+        analysis = (report.get("content") or {}).get("analysis", "")
+        embedded.append(
+            {
+                "report_id": report.get("report_id"),
+                "case_id": report.get("case_id"),
+                "report_type": report.get("report_type"),
+                "title": report.get("title"),
+                "generated_at": report.get("generated_at"),
+                "analysis": analysis,
+                "analysis_length": len(analysis),
+            }
+        )
+
+    return {"reports": embedded}
+
 @api_router.get("/cases/{case_id}/reports/{report_id}", response_model=dict)
 async def get_report(case_id: str, report_id: str, request: Request):
     """Get a specific report"""

@@ -122,6 +122,7 @@ const ReportView = () => {
   const [report, setReport] = useState(null);
   const [caseData, setCaseData] = useState(null);
   const [grounds, setGrounds] = useState([]);
+  const [legacyReports, setLegacyReports] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -138,6 +139,13 @@ const ReportView = () => {
       setReport(reportRes.data);
       setCaseData(caseRes.data);
       setGrounds(groundsRes.data?.grounds || []);
+
+      try {
+        const legacyRes = await axios.get(`${API}/reports/embedded-legacy`);
+        setLegacyReports(legacyRes.data?.reports || []);
+      } catch (legacyError) {
+        setLegacyReports([]);
+      }
     } catch (error) {
       toast.error("Failed to load report");
       navigate(`/cases/${caseId}`);
@@ -394,6 +402,54 @@ const ReportView = () => {
               </article>
             ))}
           </section>
+
+          {legacyReports.length > 0 && (
+            <section className="mt-10 rounded-2xl border-2 border-amber-300 bg-amber-50/40 p-5 sm:p-6" data-testid="embedded-legacy-reports-section">
+              <div className="mb-4">
+                <p className="text-xs uppercase tracking-widest text-amber-700 font-semibold mb-1">Recovered Reports</p>
+                <h3 className="text-xl font-bold text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>
+                  Embedded High-Detail Reports From Your History
+                </h3>
+                <p className="text-sm text-slate-700 mt-1">
+                  We found your strongest previous reports and embedded them here so the quality/detail is not lost.
+                </p>
+              </div>
+
+              <div className="space-y-4" data-testid="embedded-legacy-reports-list">
+                {legacyReports.map((legacy, idx) => (
+                  <article key={`${legacy.report_id}-${idx}`} className="rounded-xl border border-amber-200 bg-white p-4">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                      <div>
+                        <h4 className="text-sm font-bold text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>
+                          {legacy.title || "Recovered Report"}
+                        </h4>
+                        <p className="text-xs text-slate-500">Generated: {formatDate(legacy.generated_at)}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className={reportTypeConfig[legacy.report_type]?.cls || reportTypeConfig.quick_summary.cls}>
+                          {reportTypeConfig[legacy.report_type]?.label || legacy.report_type}
+                        </Badge>
+                        {legacy.case_id && legacy.report_id && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => navigate(`/cases/${legacy.case_id}/reports/${legacy.report_id}`)}
+                            data-testid={`open-embedded-legacy-${legacy.report_id}`}
+                          >
+                            Open Original
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="max-h-[360px] overflow-y-auto pr-2 border-t border-slate-100 pt-3" data-testid={`embedded-legacy-content-${legacy.report_id}`}>
+                      <MarkdownBlock text={legacy.analysis || ""} testId={`embedded-legacy-md-${legacy.report_id}`} />
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
 
           <footer className="mt-12 pt-8 border-t border-slate-200 text-center text-sm text-slate-500" data-testid="report-footer">
             <p>This is a full in-browser report view — no PDF download required to read all sections.</p>
