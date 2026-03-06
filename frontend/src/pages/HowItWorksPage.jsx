@@ -170,8 +170,8 @@ const HowItWorksPage = () => {
           </Link>
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-6" data-testid="how-it-works-pricing-section">
-          <h2 className="text-xl font-bold text-foreground mb-4 text-center" style={{ fontFamily: "Crimson Pro, serif" }}>
+        <section className="rounded-2xl border border-border bg-card p-6 text-center" data-testid="how-it-works-pricing-section">
+          <h2 className="text-xl font-bold text-foreground mb-4" style={{ fontFamily: "Crimson Pro, serif" }}>
             Report Prices
           </h2>
           <div className="grid md:grid-cols-3 gap-4">

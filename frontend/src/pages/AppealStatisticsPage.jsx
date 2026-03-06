@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import { Scale, ArrowLeft, Moon, Sun, Menu, X, BarChart3, TrendingUp, TrendingDown, AlertTriangle, CheckCircle, XCircle, Clock, FileText, Users, Gavel, PieChart } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
@@ -412,22 +412,20 @@ const AppealStatisticsPage = () => {
               </thead>
               <tbody>
                 {Object.entries(stateStats).map(([key, state]) => (
-                  <Fragment key={key}>
-                    <tr className="border-b border-border hover:bg-muted/50">
-                      <td className="p-3 font-medium">{state.name}</td>
-                      <td className="p-3 text-center">{state.filings2024}</td>
-                      <td className="p-3 text-center">
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          state.successRate >= 25 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' :
-                          state.successRate >= 20 ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
-                          'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                        }`}>
-                          {state.successRate}%
-                        </span>
-                      </td>
-                      <td className="p-3 text-center">{state.avgMonths} months</td>
-                    </tr>
-                  </Fragment>
+                  <tr key={key} className="border-b border-border hover:bg-muted/50">
+                    <td className="p-3 font-medium">{state.name}</td>
+                    <td className="p-3 text-center">{state.filings2024}</td>
+                    <td className="p-3 text-center">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${
+                        state.successRate >= 25 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' :
+                        state.successRate >= 20 ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
+                        'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                      }`}>
+                        {state.successRate}%
+                      </span>
+                    </td>
+                    <td className="p-3 text-center">{state.avgMonths} months</td>
+                  </tr>
                 ))}
               </tbody>
             </table>
