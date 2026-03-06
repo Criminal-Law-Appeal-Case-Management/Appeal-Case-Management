@@ -1,4 +1,4 @@
-import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin, Moon, Sun, Menu, X, Briefcase, BookOpen, Heart, MessageCircle, Download, Book, HelpCircle, TrendingUp, PlayCircle } from "lucide-react";
+import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin, Moon, Sun, Menu, X, Briefcase, BookOpen, Heart, MessageCircle, Download, Book, HelpCircle, TrendingUp, PlayCircle, ArrowUp } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -19,8 +19,12 @@ const LandingPage = () => {
     navigate("/dashboard", { state: { user: userData }, replace: true });
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <div className="min-h-screen bg-background" style={{ fontFamily: 'Manrope, sans-serif' }}>
+    <div id="landing-top" className="min-h-screen bg-background" style={{ fontFamily: 'Manrope, sans-serif' }}>
       {/* Auth Modal */}
       <AuthModal 
         isOpen={showAuthModal} 
@@ -307,6 +311,8 @@ const LandingPage = () => {
         </div>
       </section>
 
+      <SectionBackToTop onClick={scrollToTop} testId="landing-back-to-top-after-hero" />
+
       {/* ============================================ */}
       {/* APP OVERVIEW - What This Tool Does */}
       {/* ============================================ */}
@@ -416,6 +422,8 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      <SectionBackToTop onClick={scrollToTop} testId="landing-back-to-top-after-experience" />
 
       {/* ============================================ */}
       {/* COMPLETE APP CAPABILITIES - At A Glance */}
@@ -679,6 +687,8 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      <SectionBackToTop onClick={scrollToTop} testId="landing-back-to-top-after-resources" />
 
       {/* ============================================ */}
       {/* SECTION 2: SEE IT IN ACTION (with Features merged) */}
@@ -1490,6 +1500,8 @@ const LandingPage = () => {
         </div>
       </section>
 
+      <SectionBackToTop onClick={scrollToTop} testId="landing-back-to-top-after-pricing" />
+
       {/* ============================================ */}
       {/* SECTION 3: LEGAL RESOURCES & RESEARCH */}
       {/* ============================================ */}
@@ -1572,6 +1584,8 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      <SectionBackToTop onClick={scrollToTop} testId="landing-back-to-top-after-about" />
 
       {/* ============================================ */}
       {/* SECTION 5: PRICING */}
@@ -1790,6 +1804,19 @@ const LandingPage = () => {
 };
 
 // Simple Feature Card Component - Enhanced
+const SectionBackToTop = ({ onClick, testId }) => (
+  <div className="py-4 text-center border-t border-border/40 bg-background/60" data-testid={testId}>
+    <button
+      onClick={onClick}
+      className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700"
+      data-testid={`${testId}-button`}
+    >
+      <ArrowUp className="w-3.5 h-3.5" />
+      Back to top
+    </button>
+  </div>
+);
+
 const FeatureCard = ({ icon: Icon, title, desc }) => (
   <div className="bg-card border border-border rounded-2xl p-6 hover:shadow-xl hover:border-amber-500/30 hover:-translate-y-1 transition-all duration-300 group">
     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/20 dark:from-amber-500/10 dark:to-amber-600/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">

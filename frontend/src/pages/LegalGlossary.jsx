@@ -585,6 +585,7 @@ const LegalGlossary = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedTerms, setExpandedTerms] = useState({});
   const [activeCategory, setActiveCategory] = useState("all");
+  const [viewDensity, setViewDensity] = useState("compact");
 
   const getAllTerms = () => {
     let allTerms = [];
@@ -692,6 +693,13 @@ const LegalGlossary = () => {
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-6 pb-16">
+        <section className="mb-6" data-testid="glossary-content-intro">
+          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">Glossary Navigator</p>
+          <h2 className="text-xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Scan terms quickly or read in full detail
+          </h2>
+        </section>
+
         {/* Search Bar */}
         <div className="relative mb-8 max-w-xl mx-auto">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -703,6 +711,31 @@ const LegalGlossary = () => {
             className="pl-12 py-6 text-base rounded-xl border-2 focus:border-amber-500"
             data-testid="glossary-search"
           />
+        </div>
+
+        <div className="flex items-center justify-center gap-2 mb-8" data-testid="glossary-density-toggle">
+          <button
+            onClick={() => setViewDensity("compact")}
+            className={`px-4 py-2 rounded-lg text-xs font-semibold border transition-colors ${
+              viewDensity === "compact"
+                ? "bg-amber-600 text-white border-amber-600"
+                : "bg-card text-muted-foreground border-border hover:border-amber-500"
+            }`}
+            data-testid="glossary-density-compact"
+          >
+            Compact View
+          </button>
+          <button
+            onClick={() => setViewDensity("expanded")}
+            className={`px-4 py-2 rounded-lg text-xs font-semibold border transition-colors ${
+              viewDensity === "expanded"
+                ? "bg-amber-600 text-white border-amber-600"
+                : "bg-card text-muted-foreground border-border hover:border-amber-500"
+            }`}
+            data-testid="glossary-density-expanded"
+          >
+            Expanded View
+          </button>
         </div>
 
         {/* Category Cards */}
@@ -763,7 +796,7 @@ const LegalGlossary = () => {
         )}
 
         {/* Terms List */}
-        <div className="space-y-4">
+        <div className={viewDensity === "compact" ? "grid xl:grid-cols-2 gap-3" : "space-y-4"} data-testid="glossary-terms-list">
           {filteredTerms.map((item, index) => (
             <div 
               key={`${item.term}-${index}`}
@@ -771,11 +804,11 @@ const LegalGlossary = () => {
             >
               <button
                 onClick={() => toggleExpand(item.term)}
-                className="w-full text-left p-5 flex items-start justify-between gap-4"
+                className={`w-full text-left flex items-start justify-between gap-4 ${viewDensity === "compact" ? "p-4" : "p-5"}`}
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-bold text-lg text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                    <h3 className={`font-bold text-foreground ${viewDensity === "compact" ? "text-base" : "text-lg"}`} style={{ fontFamily: 'Crimson Pro, serif' }}>
                       {item.term}
                     </h3>
                     {item.latin && (
@@ -787,7 +820,7 @@ const LegalGlossary = () => {
                       </span>
                     )}
                   </div>
-                  <p className="text-muted-foreground">{item.simple}</p>
+                  <p className={`text-muted-foreground ${viewDensity === "compact" ? "text-sm" : "text-base"}`}>{item.simple}</p>
                 </div>
                 <div className={`p-2 rounded-lg transition-colors ${expandedTerms[item.term] ? 'bg-amber-100 dark:bg-amber-900/30' : 'bg-muted'}`}>
                   {expandedTerms[item.term] ? (
@@ -799,11 +832,11 @@ const LegalGlossary = () => {
               </button>
               
               {expandedTerms[item.term] && (
-                <div className="px-5 pb-5">
-                  <div className="bg-muted/50 rounded-xl p-5 border-l-4 border-amber-500 space-y-4">
+                <div className={`${viewDensity === "compact" ? "px-4 pb-4" : "px-5 pb-5"}`}>
+                  <div className={`bg-muted/50 rounded-xl border-l-4 border-amber-500 space-y-4 ${viewDensity === "compact" ? "p-4" : "p-5"}`}>
                     <div>
                       <h4 className="text-sm font-semibold text-foreground mb-2">Detailed Explanation</h4>
-                      <p className="text-muted-foreground leading-relaxed">{item.detailed}</p>
+                      <p className="text-muted-foreground text-sm leading-relaxed">{item.detailed}</p>
                     </div>
                     {item.example && (
                       <div className="pt-3 border-t border-border">
