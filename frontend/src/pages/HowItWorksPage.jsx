@@ -130,6 +130,13 @@ const HowItWorksPage = () => {
       </section>
 
       <main className="max-w-6xl mx-auto px-6 py-10 space-y-12">
+        <section className="text-center" data-testid="how-it-works-flow-heading">
+          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">Process Flow</p>
+          <h2 className="text-2xl font-bold text-foreground" style={{ fontFamily: "Crimson Pro, serif" }}>
+            Follow the exact steps from upload to hearing-ready output
+          </h2>
+        </section>
+
         <section className="grid md:grid-cols-2 gap-6" data-testid="how-it-works-flow-grid">
           {flowSteps.map((step) => {
             const Icon = step.icon;
@@ -147,8 +154,8 @@ const HowItWorksPage = () => {
           })}
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-6" data-testid="how-it-works-demo-section">
-          <div className="flex items-center gap-2 mb-3">
+        <section className="rounded-2xl border border-border bg-card p-6 text-center" data-testid="how-it-works-demo-section">
+          <div className="flex items-center justify-center gap-2 mb-3">
             <Sparkles className="w-5 h-5 text-indigo-600" />
             <h2 className="text-xl font-bold text-foreground" style={{ fontFamily: "Crimson Pro, serif" }}>
               See It In Action
@@ -164,7 +171,7 @@ const HowItWorksPage = () => {
         </section>
 
         <section className="rounded-2xl border border-border bg-card p-6" data-testid="how-it-works-pricing-section">
-          <h2 className="text-xl font-bold text-foreground mb-4" style={{ fontFamily: "Crimson Pro, serif" }}>
+          <h2 className="text-xl font-bold text-foreground mb-4 text-center" style={{ fontFamily: "Crimson Pro, serif" }}>
             Report Prices
           </h2>
           <div className="grid md:grid-cols-3 gap-4">

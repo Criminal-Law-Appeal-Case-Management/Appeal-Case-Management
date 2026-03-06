@@ -1,4 +1,4 @@
-import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, ChevronDown, Users, MapPin, Moon, Sun, Menu, X, Briefcase, BookOpen, Heart, MessageCircle, Download, Book, HelpCircle, TrendingUp, PlayCircle, ArrowUp } from "lucide-react";
+import { Scale, FileText, Clock, Shield, Upload, BarChart3, FileCheck, ChevronRight, AlertTriangle, Presentation, ListChecks, Users, MapPin, Moon, Sun, Menu, X, Briefcase, BookOpen, Heart, MessageCircle, Download, Book, HelpCircle, TrendingUp, PlayCircle, ArrowUp } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -44,96 +44,24 @@ const LandingPage = () => {
             </span>
           </div>
           <div className="hidden md:flex items-center gap-4">
-            {/* Resources Dropdown */}
-            <div className="relative group">
-              <button className="text-slate-400 hover:text-white text-sm transition-colors flex items-center gap-1">
-                Resources
-                <ChevronDown className="w-4 h-4" />
-              </button>
-              <div className="absolute top-full left-0 mt-2 w-56 bg-slate-800 rounded-lg shadow-xl border border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                <Link to="/legal-resources" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-t-lg">
-                  Legal Resources & Contacts
-                </Link>
-                <Link to="/legal-framework" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  Legal Frameworks
-                </Link>
-                <Link to="/caselaw-search" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  Caselaw Search
-                </Link>
-                <Link to="/lawyers" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  Lawyer Directory
-                </Link>
-                <Link to="/forms" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  Forms & Templates
-                </Link>
-                <div className="border-t border-slate-700 my-1" />
-                <Link to="/about" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  About
-                </Link>
-                <Link to="/success-stories" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  Success Stories
-                </Link>
-                <Link to="/glossary" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  Legal Terms
-                </Link>
-                <Link to="/contact" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  Contact
-                </Link>
-                <Link to="/terms" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-b-lg">
-                  Terms & Privacy
-                </Link>
-              </div>
-            </div>
-
-            {/* Learn Dropdown */}
-            <div className="relative group">
-              <button className="text-slate-400 hover:text-white text-sm transition-colors flex items-center gap-1">
-                Learn
-                <ChevronDown className="w-4 h-4" />
-              </button>
-              <div className="absolute top-full left-0 mt-2 w-56 bg-slate-800 rounded-lg shadow-xl border border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                <Link to="/how-it-works" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-t-lg">
-                  How It Works
-                </Link>
-                <Link to="/how-to-use" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  How To Use
-                </Link>
-                <Link to="/glossary" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  Legal Glossary
-                </Link>
-                <Link to="/faq" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  FAQ
-                </Link>
-                <Link to="/appeal-statistics" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  Appeal Statistics
-                </Link>
-                <Link to="/success-stories" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-b-lg">
-                  Success Stories
-                </Link>
-              </div>
-            </div>
-
-            {/* About Dropdown */}
-            <div className="relative group">
-              <button className="text-slate-400 hover:text-white text-sm transition-colors flex items-center gap-1">
-                About
-                <ChevronDown className="w-4 h-4" />
-              </button>
-              <div className="absolute top-full left-0 mt-2 w-56 bg-slate-800 rounded-lg shadow-xl border border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                <Link to="/about" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-t-lg">
-                  Our Story
-                </Link>
-                <Link to="/contact" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  Contact Us
-                </Link>
-                <Link to="/professional-summary" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
-                  For Legal Professionals
-                </Link>
-                <Link to="/terms" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-b-lg">
-                  Terms & Privacy
-                </Link>
-              </div>
-            </div>
+            <Link to="/how-it-works" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-how-it-works-link">
+              See It In Action
+            </Link>
+            <Link to="/appeal-statistics" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-appeal-statistics-link">
+              Appeal Statistics
+            </Link>
+            <Link to="/legal-resources" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-legal-resources-link">
+              Legal Resources
+            </Link>
+            <Link to="/success-stories" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-success-stories-link">
+              Success Stories
+            </Link>
+            <Link to="/faq" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-faq-link">
+              FAQ
+            </Link>
+            <Link to="/about" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-about-link">
+              About
+            </Link>
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
