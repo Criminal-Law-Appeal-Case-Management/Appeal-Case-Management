@@ -89,6 +89,15 @@
 - Centred major headings/subheadings on Appeal Statistics and How It Works for cleaner reading flow
 - Validation: `iteration_38.json` pass + final frontend sanity pass complete
 
+## 2026-03 — Session 21 (Report Generation Reliability + Aggressive Footer)
+- Fixed admin detection reliability by normalising admin email checks (`is_admin_user`) across unlock/payment paths
+- Improved report generation reliability with adaptive model fallback strategy (`gpt-4o` then `gpt-4o-mini`)
+- Reduced extremely high paid-report target ranges to practical premium ranges to lower timeout risk while preserving structure depth
+- Added explicit bottom section when aggressive mode is enabled:
+  - `AGGRESSIVE RELIEF OPTIONS — QUICK REFERENCE`
+- Improved frontend error feedback to show backend report-generation detail messages instead of generic errors
+- Validation: backend report-generation stability checks passed and aggressive section confirmed present
+
 ## 2026-03 — Session 11 (Premium Report + Barrister Overhaul)
 - AI report prompts reworked for hybrid legal/plain-English depth
 - Removed costs + witness contradiction/credibility sections from report content requirements

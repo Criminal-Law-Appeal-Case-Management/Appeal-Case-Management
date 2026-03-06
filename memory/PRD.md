@@ -656,6 +656,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - Tightened overall presentation: success stories moved to compact 3-column card layout with heading-above-comment format, and landing navigation/footer/resource sections updated to reflect merged pages and new flow.
 - Continued polish: glossary now supports compact/expanded reading density (compact default) and landing now includes section-level back-to-top controls for long-scroll usability.
 - Visibility pass completed: landing nav uses direct links (no desktop dropdown dependency), stats critical content is always visible, and headings on stats/how-it-works are centred for clearer flow.
+- Report generation reliability hotfix completed: adaptive model fallback, normalised admin unlock checks, and guaranteed aggressive options section appended at report bottom when enabled.
 
 ## Technical Debt (Current)
 - `server.py` remains monolithic and should be modularized into focused routers/services.
