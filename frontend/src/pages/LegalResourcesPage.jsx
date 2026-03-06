@@ -1387,7 +1387,11 @@ const ResourceCard = ({ title, state, phone, website, description, color, highli
   };
 
   const normalisedState = normaliseState(state);
-  if (stateFilter !== "all" && normalisedState !== stateFilter) {
+  if (stateFilter === "NATIONAL") {
+    if (normalisedState !== "NATIONAL") {
+      return null;
+    }
+  } else if (stateFilter !== "all" && normalisedState !== stateFilter && normalisedState !== "NATIONAL") {
     return null;
   }
 
