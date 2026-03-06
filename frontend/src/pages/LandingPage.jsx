@@ -188,6 +188,8 @@ const LandingPage = () => {
             src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/3f6a0144e6ddce5a8eb6a1e25b25974fca11bfd9515dbad29662cab81313d84b.png" 
             alt="Australian Courtroom"
             className="w-full h-full object-cover opacity-20 dark:opacity-10"
+            loading="eager"
+            onError={(e) => { e.target.style.display = 'none'; }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
         </div>
@@ -255,15 +257,17 @@ const LandingPage = () => {
             </div>
             
             {/* Right - Hero Image */}
-            <div className="hidden lg:block relative">
-              <div className="relative">
+            <div className="relative mt-8 lg:mt-0">
+              <div className="relative max-w-md mx-auto lg:max-w-none">
                 <img 
                   src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/6fe186d3d7a5b01e3d3c6076c0a6aefc22c07aea5667124e0978d927d9c58335.png" 
                   alt="Gavel and Law Books"
-                  className="rounded-3xl shadow-2xl w-full object-cover h-[450px] border-4 border-white/20"
+                  className="rounded-3xl shadow-2xl w-full object-cover h-[280px] sm:h-[350px] lg:h-[450px] border-4 border-white/20"
+                  loading="eager"
+                  onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80'; }}
                 />
-                {/* Floating Card */}
-                <div className="absolute -bottom-6 -left-6 bg-card p-5 rounded-2xl shadow-xl border border-border">
+                {/* Floating Card - hidden on small mobile */}
+                <div className="hidden sm:block absolute -bottom-6 -left-6 bg-card p-5 rounded-2xl shadow-xl border border-border">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
                       <BarChart3 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
@@ -275,7 +279,7 @@ const LandingPage = () => {
                   </div>
                 </div>
                 {/* Floating Badge */}
-                <div className="absolute -top-4 -right-4 bg-amber-600 text-white px-4 py-2 rounded-xl shadow-lg text-sm font-semibold">
+                <div className="absolute -top-4 -right-4 bg-amber-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl shadow-lg text-xs sm:text-sm font-semibold">
                   AI-Powered
                 </div>
               </div>
@@ -404,6 +408,8 @@ const LandingPage = () => {
             src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/e20c677eb0c9cdb1ef84e9e79a9f3bbd37795a24bfbe29e4d8cfe78da35bf516.png" 
             alt="Handcuffs and Justice"
             className="w-full h-full object-cover opacity-10"
+            loading="lazy"
+            onError={(e) => { e.target.style.display = 'none'; }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-900/95 via-slate-900/90 to-slate-900" />
         </div>
@@ -1350,6 +1356,8 @@ const LandingPage = () => {
             src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/8b44435fd117a9b64ee15135358c94668930cdd6015f5bad0cab217fd77610b5.png" 
             alt="Prison bars with light"
             className="w-full h-full object-cover opacity-20"
+            loading="lazy"
+            onError={(e) => { e.target.style.display = 'none'; }}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-900" />
         </div>

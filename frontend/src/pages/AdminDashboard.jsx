@@ -155,6 +155,41 @@ const AdminDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         
+        {/* Live Visitor Stats - Prominent Section */}
+        <Card className="mb-8 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border-indigo-200 dark:border-indigo-800">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Eye className="w-5 h-5 text-indigo-600" />
+              Live Visitor Statistics
+            </CardTitle>
+            <CardDescription>Real-time tracking of app visitors</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-indigo-200 dark:border-indigo-700">
+                <Eye className="w-6 h-6 text-indigo-600 mx-auto mb-2" />
+                <p className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">{stats.visits?.total || 0}</p>
+                <p className="text-xs text-indigo-600 dark:text-indigo-400">Total Visitors</p>
+              </div>
+              <div className="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-emerald-200 dark:border-emerald-700">
+                <Users className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
+                <p className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">{stats.visits?.last_7d || 0}</p>
+                <p className="text-xs text-emerald-600 dark:text-emerald-400">Last 7 Days</p>
+              </div>
+              <div className="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-amber-200 dark:border-amber-700">
+                <TrendingUp className="w-6 h-6 text-amber-600 mx-auto mb-2" />
+                <p className="text-2xl font-bold text-amber-700 dark:text-amber-300">{stats.visits?.last_30d || 0}</p>
+                <p className="text-xs text-amber-600 dark:text-amber-400">Last 30 Days</p>
+              </div>
+              <div className="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-purple-200 dark:border-purple-700">
+                <Activity className="w-6 h-6 text-purple-600 mx-auto mb-2" />
+                <p className="text-2xl font-bold text-purple-700 dark:text-purple-300">{stats.users?.total || 0}</p>
+                <p className="text-xs text-purple-600 dark:text-purple-400">Registered Users</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Key Metrics Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
