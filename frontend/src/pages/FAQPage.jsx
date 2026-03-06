@@ -347,7 +347,14 @@ const FAQPage = () => {
       </section>
 
       {/* FAQ Content */}
-      <main className="max-w-4xl mx-auto px-6 pb-16">
+      <main className="max-w-5xl mx-auto px-6 pb-16">
+        <section className="mb-6" data-testid="faq-content-intro">
+          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">Quick Answers</p>
+          <h2 className="text-xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Browse by category or expand individual questions
+          </h2>
+        </section>
+
         {filteredFaqs.length === 0 ? (
           <Card className="p-12 text-center">
             <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
@@ -355,7 +362,7 @@ const FAQPage = () => {
             <p className="text-muted-foreground text-sm mt-2">Try a different search term</p>
           </Card>
         ) : (
-          <div className="space-y-10">
+          <div className="space-y-8">
             {filteredFaqs.map((category, categoryIndex) => (
               <div key={categoryIndex}>
                 {/* Category Header with Image */}
@@ -393,7 +400,7 @@ const FAQPage = () => {
                       >
                         <button
                           onClick={() => toggleItem(categoryIndex, questionIndex)}
-                          className="w-full px-6 py-5 flex items-center justify-between text-left"
+                          className="w-full px-5 py-4 flex items-center justify-between text-left"
                           data-testid={`faq-${categoryIndex}-${questionIndex}`}
                         >
                           <span className="font-medium text-foreground pr-4">{item.q}</span>
@@ -406,9 +413,9 @@ const FAQPage = () => {
                           </div>
                         </button>
                         {isOpen && (
-                          <div className="px-6 pb-5">
-                            <div className="bg-muted/50 rounded-xl p-5 border-l-4 border-amber-500">
-                              <p className="text-muted-foreground leading-relaxed">{item.a}</p>
+                          <div className="px-5 pb-4">
+                            <div className="bg-muted/50 rounded-xl p-4 border-l-4 border-amber-500">
+                              <p className="text-muted-foreground text-sm leading-relaxed">{item.a}</p>
                             </div>
                           </div>
                         )}
