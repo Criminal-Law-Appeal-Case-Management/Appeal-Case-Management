@@ -3136,6 +3136,9 @@ You are generating a FREE Quick Summary. Deliver real legal value, then clearly 
 
 Write 900-1400 words. Structure your response EXACTLY as follows:
 
+## TABLE OF CONTENTS
+List each section heading in order using a numbered list.
+
 ## CASE SNAPSHOT
 3-4 concise paragraphs: defendant, offence posture, jurisdiction, sentence, key procedural dates, and what material was reviewed.
 
@@ -3188,6 +3191,9 @@ You are generating a PAID Full Detailed Report ($29 AUD). It must read like a ba
 {case_context}
 
 Minimum 3200 words. Structure your response EXACTLY as follows:
+
+## TABLE OF CONTENTS
+Numbered list of all section headings exactly as they appear below.
 
 ## 1. EXECUTIVE BRIEF (LEGAL + PLAIN ENGLISH)
 4-6 paragraphs combining professional legal framing with plain-English implications for the applicant.
@@ -3259,6 +3265,9 @@ You are generating the PREMIUM Extensive Log Report ($39 AUD). This must functio
 {case_context}
 
 Minimum 5200 words. Be exhaustive and highly structured. Use this exact format:
+
+## TABLE OF CONTENTS
+Numbered list matching every section heading below.
 
 ## 1. EXECUTIVE COMMAND BRIEF
 Comprehensive overview, core appellate thesis, strongest routes to relief, and immediate urgency items.

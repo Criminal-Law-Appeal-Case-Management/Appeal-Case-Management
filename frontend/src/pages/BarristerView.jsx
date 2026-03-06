@@ -158,6 +158,21 @@ const BarristerView = ({ user }) => {
     });
   };
 
+  const formatOffenceLabel = (value) => {
+    if (!value) return "Not specified";
+    return value.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  };
+
+  const extractSentenceSummary = (analysis = "") => {
+    const byLabel = analysis.match(/sentence[^\n:]*[:\-]\s*([^\n\.]{6,140})/i);
+    if (byLabel?.[1]) return byLabel[1].trim();
+
+    const byDuration = analysis.match(/([0-9]+(?:\.[0-9]+)?\s*(?:year|years|month|months)[^\n\.]{0,90})/i);
+    if (byDuration?.[1]) return byDuration[1].trim();
+
+    return "Not clearly stated in report";
+  };
+
   // Parse and structure the analysis for legal brief format
   const parseAnalysis = (content) => {
     if (!content?.analysis) return { sections: [] };
@@ -271,6 +286,8 @@ const BarristerView = ({ user }) => {
   const keyEvents = getKeyEvents();
   const strongGrounds = grounds.filter(g => g.strength === 'strong');
   const moderateGrounds = grounds.filter(g => g.strength === 'moderate');
+  const sentenceSummary = extractSentenceSummary(report?.content?.analysis || "");
+  const offenceSummary = caseData?.offence_type || formatOffenceLabel(caseData?.offence_category);
   const leadGround = strongGrounds[0] || grounds[0] || null;
   const authorityMap = new Map();
   grounds.forEach((ground) => {
@@ -477,6 +494,44 @@ const BarristerView = ({ user }) => {
                 >
                   Executive Summary
                 </h2>
+              </div>
+
+              <div
+                className="mb-6 rounded-2xl border border-indigo-200 dark:border-indigo-800 bg-gradient-to-r from-indigo-50 via-white to-amber-50 dark:from-indigo-900/20 dark:via-slate-800 dark:to-amber-900/10 p-5"
+                data-testid="barrister-top-summary-box"
+              >
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                  <SummaryMetric
+                    label="Accused"
+                    value={caseData?.defendant_name || "N/A"}
+                    testId="barrister-summary-accused"
+                  />
+                  <SummaryMetric
+                    label="Sentence"
+                    value={sentenceSummary}
+                    testId="barrister-summary-sentence"
+                  />
+                  <SummaryMetric
+                    label="Crime / Offence"
+                    value={offenceSummary}
+                    testId="barrister-summary-offence"
+                  />
+                  <SummaryMetric
+                    label="Grounds of Merit"
+                    value={String(grounds.length)}
+                    testId="barrister-summary-grounds"
+                  />
+                  <SummaryMetric
+                    label="Case Strength"
+                    value={`${caseStrength}/100`}
+                    testId="barrister-summary-strength"
+                  />
+                  <SummaryMetric
+                    label="Court / State"
+                    value={`${caseData?.court || "Court N/A"} • ${(caseData?.state || "NSW").toUpperCase()}`}
+                    testId="barrister-summary-court-state"
+                  />
+                </div>
               </div>
               
               <div className="grid md:grid-cols-3 gap-6">
@@ -1039,5 +1094,12 @@ const BarristerView = ({ user }) => {
     </div>
   );
 };
+
+const SummaryMetric = ({ label, value, testId }) => (
+  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/90 p-3" data-testid={testId}>
+    <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">{label}</p>
+    <p className="text-sm font-semibold text-slate-900 dark:text-white break-words">{value}</p>
+  </div>
+);
 
 export default BarristerView;

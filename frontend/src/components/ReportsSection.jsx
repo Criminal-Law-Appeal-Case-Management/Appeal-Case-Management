@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
-import { 
-  FileText, Loader2, Clock, ChevronDown, ChevronRight, Trash2, Download, Gavel, Presentation
+import {
+  FileText, Loader2, Clock, ChevronDown, ChevronRight, Trash2, Download, Presentation, Eye
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { ScrollArea } from "./ui/scroll-area";
 import {
   Dialog,
   DialogContent,
@@ -66,7 +64,6 @@ const ReportsSection = ({
   const [expandedReports, setExpandedReports] = useState({});
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [pendingReportType, setPendingReportType] = useState(null);
-  const nav = useNavigate();
 
   const handleExportPDF = async (reportId) => {
     try {
@@ -233,97 +230,117 @@ const ReportsSection = ({
         </Card>
       ) : (
         <div className="space-y-4">
-          {reports.map((report) => (
-            <Card key={report.report_id} className="overflow-hidden">
-              <Collapsible
-                open={expandedReports[report.report_id]}
-                onOpenChange={() => toggleReportExpand(report.report_id)}
-              >
-                <CollapsibleTrigger asChild>
-                  <CardContent className="p-4 cursor-pointer hover:bg-slate-50 transition-colors">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        {expandedReports[report.report_id] ? (
-                          <ChevronDown className="w-5 h-5 text-slate-400" />
-                        ) : (
-                          <ChevronRight className="w-5 h-5 text-slate-400" />
-                        )}
-                        <div>
-                          <h4 className="font-semibold text-slate-900">
-                            {getReportTypeLabel(report.report_type)}
-                          </h4>
-                          <div className="flex items-center gap-2 mt-1">
-                            <Clock className="w-3 h-3 text-slate-400" />
-                            <span className="text-xs text-slate-500">
-                              {new Date(report.generated_at || report.created_at).toLocaleDateString('en-AU', {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                              })}
-                            </span>
+          {reports.map((report) => {
+            const reportText = typeof report.content === 'string'
+              ? report.content
+              : report.content?.analysis || 'No analysis available';
+            return (
+              <Card key={report.report_id} className="overflow-hidden">
+                <Collapsible
+                  open={expandedReports[report.report_id]}
+                  onOpenChange={() => toggleReportExpand(report.report_id)}
+                >
+                  <CollapsibleTrigger asChild>
+                    <CardContent className="p-4 cursor-pointer hover:bg-slate-50 transition-colors">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          {expandedReports[report.report_id] ? (
+                            <ChevronDown className="w-5 h-5 text-slate-400" />
+                          ) : (
+                            <ChevronRight className="w-5 h-5 text-slate-400" />
+                          )}
+                          <div>
+                            <h4 className="font-semibold text-slate-900">
+                              {getReportTypeLabel(report.report_type)}
+                            </h4>
+                            <div className="flex items-center gap-2 mt-1">
+                              <Clock className="w-3 h-3 text-slate-400" />
+                              <span className="text-xs text-slate-500">
+                                {new Date(report.generated_at || report.created_at).toLocaleDateString('en-AU', {
+                                  day: 'numeric',
+                                  month: 'short',
+                                  year: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
+                            AI Generated
+                          </Badge>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteReport(report.report_id);
+                            }}
+                            className="text-slate-400 hover:text-red-600"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="px-4 pb-4 border-t border-slate-100 pt-4">
+                      <div className="space-y-4" data-testid={`report-inline-full-${report.report_id}`}>
+                        <div className="rounded-lg bg-indigo-50 border border-indigo-200 p-3" data-testid={`report-inline-summary-${report.report_id}`}>
+                          <p className="text-xs text-indigo-700 font-semibold uppercase tracking-wide mb-1">In-browser full view</p>
+                          <p className="text-sm text-slate-700">
+                            This report is fully readable below. You can also open the professional full page view.
+                          </p>
+                        </div>
+
+                        <div className="rounded-lg border border-slate-200 p-3 bg-white" data-testid={`report-inline-content-${report.report_id}`}>
+                          <div className="whitespace-pre-wrap text-slate-700 text-sm leading-relaxed">
+                            {reportText}
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
-                          AI Generated
-                        </Badge>
+
+                      <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-slate-100">
                         <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteReport(report.report_id);
-                          }}
-                          className="text-slate-400 hover:text-red-600"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => navigate(`/cases/${caseId}/reports/${report.report_id}`)}
+                          className="text-slate-700"
+                          data-testid={`view-report-btn-${report.report_id}`}
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Eye className="w-4 h-4 mr-1.5" />
+                          Full Report Page
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => navigate(`/cases/${caseId}/reports/${report.report_id}/barrister`)}
+                          className="text-slate-700"
+                          data-testid={`barrister-view-btn-${report.report_id}`}
+                        >
+                          <Presentation className="w-4 h-4 mr-1.5" />
+                          Barrister View
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleExportPDF(report.report_id)}
+                          className="text-slate-700"
+                          data-testid={`export-pdf-btn-${report.report_id}`}
+                        >
+                          <Download className="w-4 h-4 mr-1.5" />
+                          Export PDF
                         </Button>
                       </div>
                     </div>
-                  </CardContent>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <div className="px-4 pb-4 border-t border-slate-100 pt-4">
-                    <ScrollArea className="max-h-[500px]">
-                      <div className="prose prose-sm max-w-none">
-                        <div className="whitespace-pre-wrap text-slate-700 text-sm leading-relaxed">
-                          {typeof report.content === 'string' 
-                            ? report.content 
-                            : report.content?.analysis || 'No analysis available'}
-                        </div>
-                      </div>
-                    </ScrollArea>
-                    {/* Action Buttons */}
-                    <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-slate-100">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => nav(`/cases/${caseId}/reports/${report.report_id}/barrister`)}
-                        className="text-slate-700"
-                        data-testid={`barrister-view-btn-${report.report_id}`}
-                      >
-                        <Presentation className="w-4 h-4 mr-1.5" />
-                        Barrister View
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleExportPDF(report.report_id)}
-                        className="text-slate-700"
-                        data-testid={`export-pdf-btn-${report.report_id}`}
-                      >
-                        <Download className="w-4 h-4 mr-1.5" />
-                        Export PDF
-                      </Button>
-                    </div>
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            </Card>
-          ))}
+                  </CollapsibleContent>
+                </Collapsible>
+              </Card>
+            );
+          })}
         </div>
       )}
 
