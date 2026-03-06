@@ -30,7 +30,6 @@ import HowToUsePage from "./pages/HowToUsePage";
 import AppealStatisticsPage from "./pages/AppealStatisticsPage";
 import CaselawSearchPage from "./pages/CaselawSearchPage";
 import LegalFrameworkPage from "./pages/LegalFrameworkPage";
-import ContactsPage from "./pages/ContactsPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -284,11 +283,11 @@ function AppRouter() {
       />
       <Route
         path="/legal-contacts"
-        element={<ContactsPage />}
+        element={<Navigate to="/legal-resources" replace />}
       />
       <Route
         path="/contacts"
-        element={<Navigate to="/legal-contacts" replace />}
+        element={<Navigate to="/legal-resources" replace />}
       />
       <Route
         path="/forgot-password"

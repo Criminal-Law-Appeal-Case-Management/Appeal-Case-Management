@@ -75,10 +75,14 @@ const LegalResourcesPage = () => {
             </div>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
-            Legal Resources Directory
+            Legal Resources & Contacts Directory
           </h1>
           <p className="text-slate-400 max-w-2xl mx-auto">
-            Comprehensive directory of legal assistance, courts, law societies, and complaint bodies across all Australian states and territories.
+            One merged directory for legal resources and legal contacts across all Australian states and territories.
+            Each listing explains what type of legal advice or support the service can help with.
+          </p>
+          <p className="text-xs text-amber-300 mt-3" data-testid="legal-resources-merged-note">
+            This page now combines the previous Legal Contacts and Legal Resources information.
           </p>
         </div>
       </section>
@@ -1345,6 +1349,7 @@ const ResourceCard = ({ title, state, phone, website, description, color, highli
           <h3 className="font-bold text-foreground text-sm leading-tight">{title}</h3>
         </div>
       </div>
+      <p className="text-muted-foreground text-[11px] uppercase tracking-wide mb-1.5">How they can help with legal advice</p>
       <p className="text-muted-foreground text-xs mb-3">{description}</p>
       <div className="space-y-2 text-sm">
         {phone && phone !== "N/A" && (
