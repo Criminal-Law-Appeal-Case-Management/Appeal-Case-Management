@@ -35,6 +35,14 @@
 - Preserved API route contracts that use `/analyze` naming for compatibility
 - Validation: landing + backend quick regression checks passed
 
+## 2026-03 — Session 14 (Grounds/Report Performance Optimisation)
+- Reduced AI prompt payload size for grounds auto-identify, single-ground investigation, and report generation using bounded context budgets
+- Added document/timeline/notes truncation metadata in prompt assembly to keep responses faster on large matters
+- Switched grounds auto-identify + ground investigation model calls to `gpt-4o-mini` for faster turnaround
+- Improved frontend user feedback for long operations (clear speed-mode toasts + timeout messaging)
+- Increased client timeout windows for heavy analysis routes to reduce premature timeout errors
+- Validation: health checks + endpoint smoke tests + report/ground generation checks passed
+
 ## 2026-03 — Session 11 (Premium Report + Barrister Overhaul)
 - AI report prompts reworked for hybrid legal/plain-English depth
 - Removed costs + witness contradiction/credibility sections from report content requirements

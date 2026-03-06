@@ -135,19 +135,20 @@ const ReportsSection = ({
   const generateReport = async (reportType) => {
     setGeneratingReport(true);
     setShowReportDialog(false);
+    toast.info("Generating report with optimised evidence context. Large cases may still take a few minutes.");
     
     try {
       const response = await axios.post(
         `${API}/cases/${caseId}/reports/generate`,
         { report_type: reportType, aggressive_mode: aggressiveMode },
-        { timeout: 180000 }
+        { timeout: 240000 }
       );
       
       toast.success("Report generated successfully");
       if (onReportsChange) onReportsChange();
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        toast.info("Report generation is taking longer than expected. Please refresh in a moment.");
+        toast.info("Report generation timed out. Please retry — processing is now prioritised for speed.");
       } else {
         toast.error("Failed to generate report");
       }

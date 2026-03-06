@@ -474,6 +474,52 @@ def extract_mentions(text: str) -> List[str]:
     return sorted(list(set([m for m in mentions if m])))
 
 
+def build_document_context(
+    documents: List[dict],
+    *,
+    per_doc_char_limit: int,
+    total_char_budget: int,
+    include_description: bool = True,
+    content_heading: str = "CONTENT"
+) -> dict:
+    """Build a bounded document context block to keep AI calls responsive."""
+    blocks = []
+    consumed_chars = 0
+    included_docs = 0
+
+    for doc in documents:
+        if consumed_chars >= total_char_budget:
+            break
+
+        remaining = total_char_budget - consumed_chars
+        allowed_chars = min(per_doc_char_limit, remaining)
+        content = (doc.get("content_text") or "").strip()
+        snippet = content[:allowed_chars] if content else ""
+        consumed_chars += len(snippet)
+        included_docs += 1
+
+        block = f"--- DOCUMENT: {doc.get('filename')} [{doc.get('category', 'other')}] ---\n"
+        if include_description and doc.get("description"):
+            block += f"Description: {doc.get('description')}\n"
+
+        if snippet:
+            block += f"{content_heading}:\n{snippet}\n"
+            if len(content) > len(snippet):
+                block += f"[... trimmed {len(content) - len(snippet)} characters for speed ...]\n"
+        else:
+            block += f"{content_heading}: [No text content extracted]\n"
+
+        blocks.append(block)
+
+    omitted_docs = max(0, len(documents) - included_docs)
+    return {
+        "text": "\n".join(blocks),
+        "included_docs": included_docs,
+        "omitted_docs": omitted_docs,
+        "consumed_chars": consumed_chars,
+    }
+
+
 async def get_presence_snapshot(case_id: str) -> List[dict]:
     case_connections = notes_ws_connections.get(case_id, {})
     if not case_connections:
@@ -2861,7 +2907,7 @@ async def investigate_ground_of_merit(case_id: str, ground_id: str, request: Req
     offence_context = get_offence_context(case)
     category_data = OFFENCE_CATEGORIES.get(offence_category, OFFENCE_CATEGORIES.get('homicide'))
     
-    # Build comprehensive context with FULL document content
+    # Build comprehensive context with bounded document content for responsiveness
     context = f"""
 === CASE INFORMATION ===
 Title: {case.get('title', 'Unknown')}
@@ -2879,30 +2925,36 @@ Current Strength: {ground.get('strength')}
 Supporting Evidence Listed: {', '.join(ground.get('supporting_evidence', []))}
 
 """
+
+    doc_context = build_document_context(
+        documents,
+        per_doc_char_limit=2200,
+        total_char_budget=18000,
+        include_description=False,
+        content_heading="CONTENT"
+    )
     
-    # Include FULL document content
+    # Include bounded document content
     if documents:
-        context += f"=== CASE DOCUMENTS ({len(documents)} files) - SEARCH THESE FOR EVIDENCE ===\n"
-        for doc in documents:
-            context += f"\n--- DOCUMENT: {doc.get('filename')} [{doc.get('category')}] ---\n"
-            content = doc.get('content_text', '')
-            if content:
-                context += f"FULL CONTENT:\n{content[:5000]}\n"
-                if len(content) > 5000:
-                    context += f"[... {len(content) - 5000} more characters ...]\n"
-            else:
-                context += "[No text content]\n"
+        context += f"=== CASE DOCUMENTS ({doc_context['included_docs']} included / {len(documents)} total) - SEARCH THESE FOR EVIDENCE ===\n"
+        context += doc_context["text"] + "\n"
+        if doc_context["omitted_docs"] > 0:
+            context += f"[Note: {doc_context['omitted_docs']} document(s) omitted from prompt for speed optimisation.]\n"
     
     if timeline:
-        context += f"\n=== TIMELINE ({len(timeline)} events) ===\n"
-        for event in timeline:
-            context += f"- {event.get('event_date')}: {event.get('title')} - {event.get('description', '')[:200]}\n"
+        timeline_limit = 100
+        timeline_slice = timeline[:timeline_limit]
+        context += f"\n=== TIMELINE ({len(timeline_slice)} included / {len(timeline)} total events) ===\n"
+        for event in timeline_slice:
+            context += f"- {event.get('event_date')}: {event.get('title')} - {event.get('description', '')[:180]}\n"
+        if len(timeline) > timeline_limit:
+            context += f"[... {len(timeline) - timeline_limit} additional timeline events omitted for speed ...]\n"
 
     # Use offence-specific system prompt
     system_prompt = get_offence_system_prompt(offence_category)
     system_prompt += """
 
-IMPORTANT: You must search through ALL the document content provided and cite specific evidence.
+IMPORTANT: You must search through the provided document content and cite specific evidence.
 Quote directly from documents to support your analysis."""
 
     # Build dynamic law section examples based on offence type
@@ -2954,7 +3006,7 @@ REQUIRED ANALYSIS (search the documents above for evidence):
                 api_key=api_key,
                 session_id=f"ground_{ground_id}_{uuid.uuid4().hex[:8]}",
                 system_message=system_prompt
-            ).with_model("openai", "gpt-4o")
+            ).with_model("openai", "gpt-4o-mini")
             
             response = await chat.send_message(UserMessage(text=user_prompt))
             break
@@ -3053,7 +3105,7 @@ async def auto_identify_grounds(case_id: str, request: Request):
     offence_category = case.get('offence_category', 'homicide')
     offence_context = get_offence_context(case)
     
-    # Build comprehensive context with full document content
+    # Build comprehensive context with bounded document content for responsiveness
     context = f"""
 CRIMINAL APPEAL CASE ANALYSIS
 
@@ -3067,6 +3119,14 @@ CASE DETAILS:
 
 {offence_context}
 """
+
+    doc_context = build_document_context(
+        documents,
+        per_doc_char_limit=2200,
+        total_char_budget=20000,
+        include_description=True,
+        content_heading="CONTENT"
+    )
     
     # Include existing grounds so AI doesn't duplicate them
     if existing_grounds:
@@ -3077,40 +3137,36 @@ CASE DETAILS:
             context += f"  Status: {g.get('status')}, Strength: {g.get('strength')}\n"
         context += "\n"
     
-    # Include substantial document content for AI to analyze
+    # Include substantial but bounded document content for AI to analyse
     if documents:
-        context += f"=== CASE DOCUMENTS ({len(documents)} files) ===\n\n"
-        for doc in documents:
-            context += f"--- DOCUMENT: {doc.get('filename')} ---\n"
-            context += f"Category: {doc.get('category', 'other')}\n"
-            if doc.get('description'):
-                context += f"Description: {doc.get('description')}\n"
-            
-            # Include up to 5000 chars of content per document for thorough analysis
-            content = doc.get('content_text', '')
-            if content:
-                context += f"CONTENT:\n{content[:5000]}\n"
-                if len(content) > 5000:
-                    context += f"[... {len(content) - 5000} more characters ...]\n"
-            else:
-                context += "CONTENT: [No text content extracted - may be image/scan]\n"
-            context += "\n"
+        context += f"=== CASE DOCUMENTS ({doc_context['included_docs']} included / {len(documents)} total files) ===\n\n"
+        context += doc_context["text"] + "\n"
+        if doc_context["omitted_docs"] > 0:
+            context += f"[Note: {doc_context['omitted_docs']} document(s) omitted from prompt for speed optimisation.]\n\n"
     else:
         context += "NO DOCUMENTS UPLOADED YET - Analysis based on case summary only.\n\n"
 
     if timeline:
-        context += f"=== TIMELINE OF EVENTS ({len(timeline)} events) ===\n"
-        for event in timeline:
+        timeline_limit = 120
+        timeline_slice = timeline[:timeline_limit]
+        context += f"=== TIMELINE OF EVENTS ({len(timeline_slice)} included / {len(timeline)} total events) ===\n"
+        for event in timeline_slice:
             context += f"- {event.get('event_date', 'Unknown date')} [{event.get('event_type', 'event')}]: {event.get('title')}\n"
             if event.get('description'):
                 context += f"  Details: {event.get('description')}\n"
+        if len(timeline) > timeline_limit:
+            context += f"[... {len(timeline) - timeline_limit} additional events omitted for speed ...]\n"
         context += "\n"
 
     if notes:
-        context += f"=== LEGAL NOTES & OBSERVATIONS ({len(notes)} notes) ===\n"
-        for note in notes:
+        notes_limit = 80
+        notes_slice = notes[:notes_limit]
+        context += f"=== LEGAL NOTES & OBSERVATIONS ({len(notes_slice)} included / {len(notes)} total notes) ===\n"
+        for note in notes_slice:
             context += f"- [{note.get('category', 'general')}] {note.get('title')}:\n"
-            context += f"  {note.get('content', '')[:500]}\n"
+            context += f"  {note.get('content', '')[:300]}\n"
+        if len(notes) > notes_limit:
+            context += f"[... {len(notes) - notes_limit} additional notes omitted for speed ...]\n"
         context += "\n"
 
     # Use offence-specific system prompt
@@ -3121,8 +3177,8 @@ CASE DETAILS:
 YOUR TASK: Conduct an EXHAUSTIVE, METICULOUS analysis of ALL provided case documents to identify EVERY possible ground of appeal. Leave no stone unturned.
 
 ANALYSIS APPROACH - You MUST:
-1. READ EVERY DOCUMENT THOROUGHLY - Extract all relevant facts, dates, witness statements, and evidence
-2. CROSS-REFERENCE between documents - Look for contradictions, inconsistencies, and gaps
+1. READ ALL PROVIDED MATERIAL THOROUGHLY - Extract all relevant facts, dates, witness statements, and evidence
+2. CROSS-REFERENCE between materials - Look for contradictions, inconsistencies, and gaps
 3. IDENTIFY PROCEDURAL ISSUES - Did police/prosecution follow correct procedures?
 4. EXAMINE EVIDENCE HANDLING - Was evidence properly obtained, stored, disclosed?
 5. REVIEW WITNESS TESTIMONY - Look for unreliable identification, coached witnesses, inconsistent statements
@@ -3198,7 +3254,7 @@ BE THOROUGH. Identify ALL potential grounds. The appellant's freedom may depend 
                 api_key=api_key,
                 session_id=f"auto_identify_{case_id}_{uuid.uuid4().hex[:8]}",
                 system_message=system_prompt
-            ).with_model("openai", "gpt-4o")
+            ).with_model("openai", "gpt-4o-mini")
             
             response = await chat.send_message(UserMessage(text=user_prompt))
             break
@@ -3364,7 +3420,45 @@ async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str, agg
     state = case.get('state', 'nsw')
     state_info = AUSTRALIAN_STATES.get(state, AUSTRALIAN_STATES.get('nsw'))
     
-    # Prepare comprehensive context for AI with FULL document content
+    # Context limits tuned to keep report generation responsive on large cases
+    context_limits = {
+        "quick_summary": {
+            "per_doc_chars": 1600,
+            "total_doc_chars": 12000,
+            "timeline_limit": 80,
+            "notes_limit": 50,
+            "note_chars": 260,
+            "grounds_limit": 40,
+            "ground_desc_chars": 240,
+            "ground_analysis_chars": 280,
+            "ground_deep_chars": 0,
+        },
+        "full_detailed": {
+            "per_doc_chars": 2600,
+            "total_doc_chars": 22000,
+            "timeline_limit": 140,
+            "notes_limit": 80,
+            "note_chars": 480,
+            "grounds_limit": 70,
+            "ground_desc_chars": 650,
+            "ground_analysis_chars": 420,
+            "ground_deep_chars": 0,
+        },
+        "extensive_log": {
+            "per_doc_chars": 3600,
+            "total_doc_chars": 32000,
+            "timeline_limit": 220,
+            "notes_limit": 120,
+            "note_chars": 700,
+            "grounds_limit": 100,
+            "ground_desc_chars": 900,
+            "ground_analysis_chars": 650,
+            "ground_deep_chars": 900,
+        },
+    }
+    limits = context_limits.get(report_type, context_limits["quick_summary"])
+
+    # Prepare comprehensive context for AI with bounded document content
     case_context = f"""
 === CASE INFORMATION ===
 Title: {case.get('title', 'N/A')}
@@ -3376,51 +3470,56 @@ Summary: {case.get('summary', 'N/A')}
 
 {offence_context}
 """
+
+    doc_context = build_document_context(
+        documents,
+        per_doc_char_limit=limits["per_doc_chars"],
+        total_char_budget=limits["total_doc_chars"],
+        include_description=True,
+        content_heading="CONTENT"
+    )
     
-    # Include FULL document content for cross-referencing
+    # Include bounded document content for cross-referencing
     if documents:
-        case_context += f"=== CASE DOCUMENTS ({len(documents)} files) ===\n"
-        for doc in documents:
-            case_context += f"\n--- DOCUMENT: {doc.get('filename')} [{doc.get('category', 'other')}] ---\n"
-            if doc.get('description'):
-                case_context += f"Description: {doc.get('description')}\n"
-            content = doc.get('content_text', '')
-            if content:
-                # Limit content per document based on report type
-                max_chars = 3000 if report_type == "quick_summary" else 6000 if report_type == "full_detailed" else 10000
-                case_context += f"CONTENT:\n{content[:max_chars]}\n"
-                if len(content) > max_chars:
-                    case_context += f"[... {len(content) - max_chars} more characters ...]\n"
-            else:
-                case_context += "CONTENT: [No text extracted]\n"
+        case_context += f"=== CASE DOCUMENTS ({doc_context['included_docs']} included / {len(documents)} total files) ===\n"
+        case_context += doc_context["text"] + "\n"
+        if doc_context["omitted_docs"] > 0:
+            case_context += f"[Note: {doc_context['omitted_docs']} document(s) omitted from prompt for speed optimisation.]\n"
     else:
         case_context += "=== NO DOCUMENTS UPLOADED ===\n"
 
     if timeline:
-        case_context += f"\n=== TIMELINE OF EVENTS ({len(timeline)} events) ===\n"
-        for event in timeline:
+        timeline_slice = timeline[:limits["timeline_limit"]]
+        case_context += f"\n=== TIMELINE OF EVENTS ({len(timeline_slice)} included / {len(timeline)} total events) ===\n"
+        for event in timeline_slice:
             case_context += f"- {event.get('event_date', 'Unknown')}: [{event.get('event_type')}] {event.get('title')}\n"
             if event.get('description'):
                 case_context += f"  Details: {event.get('description')}\n"
+        if len(timeline) > limits["timeline_limit"]:
+            case_context += f"[... {len(timeline) - limits['timeline_limit']} additional events omitted for speed ...]\n"
 
     if notes:
-        case_context += f"\n=== LEGAL NOTES ({len(notes)} notes) ===\n"
-        for note in notes:
-            max_note = 300 if report_type == "quick_summary" else 1000
-            case_context += f"- [{note.get('category')}] {note.get('title')}: {note.get('content', '')[:max_note]}\n"
+        notes_slice = notes[:limits["notes_limit"]]
+        case_context += f"\n=== LEGAL NOTES ({len(notes_slice)} included / {len(notes)} total notes) ===\n"
+        for note in notes_slice:
+            case_context += f"- [{note.get('category')}] {note.get('title')}: {note.get('content', '')[:limits['note_chars']]}\n"
+        if len(notes) > limits["notes_limit"]:
+            case_context += f"[... {len(notes) - limits['notes_limit']} additional notes omitted for speed ...]\n"
 
     if grounds:
-        case_context += f"\n=== IDENTIFIED GROUNDS OF MERIT ({len(grounds)} grounds) ===\n"
-        for g in grounds:
+        grounds_slice = grounds[:limits["grounds_limit"]]
+        case_context += f"\n=== IDENTIFIED GROUNDS OF MERIT ({len(grounds_slice)} included / {len(grounds)} total grounds) ===\n"
+        for g in grounds_slice:
             case_context += f"- [{g.get('ground_type')}] {g.get('title')} (Strength: {g.get('strength')})\n"
-            desc_limit = 300 if report_type == "quick_summary" else 1000
-            case_context += f"  {g.get('description', '')[:desc_limit]}\n"
+            case_context += f"  {g.get('description', '')[:limits['ground_desc_chars']]}\n"
             if report_type != "quick_summary" and g.get('analysis'):
-                case_context += f"  Analysis: {g.get('analysis', '')[:500]}\n"
-            if report_type == "extensive_log" and g.get('deep_analysis'):
+                case_context += f"  Analysis: {g.get('analysis', '')[:limits['ground_analysis_chars']]}\n"
+            if limits["ground_deep_chars"] > 0 and g.get('deep_analysis'):
                 deep = g.get('deep_analysis', '')
                 if isinstance(deep, str):
-                    case_context += f"  Deep Analysis: {deep[:1000]}\n"
+                    case_context += f"  Deep Analysis: {deep[:limits['ground_deep_chars']]}\n"
+        if len(grounds) > limits["grounds_limit"]:
+            case_context += f"[... {len(grounds) - limits['grounds_limit']} additional grounds omitted for speed ...]\n"
 
     # Define prompts based on report type with offence-specific language
     base_system = get_offence_system_prompt(offence_category)

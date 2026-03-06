@@ -649,6 +649,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - Verification status: `iteration_36.json` (feature/content pass) + backend regression iteration 39 (ready).
 - AU-English enforcement pass completed across key user-facing strings; endpoint contracts retained where API naming uses legacy `/analyze` path segments.
 - Added cross-page AU-English proofreading sweep (FAQ, Statistics, Compare Cases, Case Detail labels, Form Templates, Landing glossary copy) with regression checks passing.
+- Performance hotfix shipped for lag during grounds investigation/report generation: bounded AI context budgets + faster grounds models + clearer long-run UX feedback.
 
 ## Technical Debt (Current)
 - `server.py` remains monolithic and should be modularized into focused routers/services.

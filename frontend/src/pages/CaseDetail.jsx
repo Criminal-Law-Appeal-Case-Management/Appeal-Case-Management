@@ -384,16 +384,17 @@ const CaseDetail = ({ user }) => {
 
   const handleInvestigateGround = async (groundId) => {
     setInvestigatingGround(groundId);
+    toast.info("Investigating this ground with speed optimisation. Large matters can still take up to 2-3 minutes.");
     try {
       const response = await axios.post(`${API}/cases/${caseId}/grounds/${groundId}/investigate`, {}, {
-        timeout: 120000 // 2 minute timeout for AI analysis
+        timeout: 180000 // 3 minute timeout for complex AI analysis
       });
       setGrounds(grounds.map(g => g.ground_id === groundId ? response.data : g));
       toast.success("Deep investigation complete!");
     } catch (error) {
       console.error("Investigate error:", error);
       if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
-        toast.error("Investigation is taking too long. Please try again.");
+        toast.error("Investigation timed out. Please retry — the system now prioritises key evidence for faster results.");
       } else {
         toast.error("Failed to investigate ground. Please try again.");
       }
@@ -416,9 +417,10 @@ const CaseDetail = ({ user }) => {
 
   const handleAutoIdentifyGrounds = async () => {
     setAutoIdentifying(true);
+    toast.info("Analysing grounds with an optimised evidence window for faster response.");
     try {
       const response = await axios.post(`${API}/cases/${caseId}/grounds/auto-identify`, {}, {
-        timeout: 120000 // 2 minute timeout for AI analysis
+        timeout: 180000 // 3 minute timeout for AI analysis
       });
       
       const { identified_count, skipped_duplicates, existing_grounds, unlock_required, unlock_price } = response.data;
@@ -448,7 +450,7 @@ const CaseDetail = ({ user }) => {
     } catch (error) {
       console.error("Auto-identify error:", error);
       if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
-        toast.error("Analysis is taking too long. Please try again.");
+        toast.error("Ground analysis timed out. Please retry — long files are now processed in a faster, prioritised mode.");
       } else {
         toast.error("Failed to auto-identify grounds. Please try again.");
       }
