@@ -91,7 +91,10 @@ const LandingPage = () => {
                 <ChevronDown className="w-4 h-4" />
               </button>
               <div className="absolute top-full left-0 mt-2 w-56 bg-slate-800 rounded-lg shadow-xl border border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                <Link to="/how-to-use" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-t-lg">
+                <Link to="/how-it-works" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-t-lg">
+                  How It Works
+                </Link>
+                <Link to="/how-to-use" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
                   How To Use
                 </Link>
                 <Link to="/glossary" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
@@ -167,6 +170,7 @@ const LandingPage = () => {
             <Link to="/contact" className="block py-2 text-slate-300 hover:text-white">Contact</Link>
             <Link to="/terms" className="block py-2 text-slate-300 hover:text-white">Terms & Privacy</Link>
             <div className="border-t border-slate-700 pt-3 mt-3">
+              <Link to="/how-it-works" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">How It Works + Pricing</Link>
               <Link to="/how-to-use" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">How To Use The App</Link>
               <Link to="/legal-framework" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">Legal Framework & Legislation</Link>
               <Link to="/caselaw-search" className="block py-2 text-amber-400 hover:text-amber-300 font-medium">Live Caselaw Search</Link>

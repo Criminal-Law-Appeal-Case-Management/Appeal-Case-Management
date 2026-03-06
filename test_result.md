@@ -2940,3 +2940,249 @@ Criminal law, family law, civil law services for eligible NSW residents.
 **Verdict: All 4 validation requirements passed. The legal resources organisation update is working correctly with NSW default state filter, merged directory confirmed, national support included where relevant, and legal advice helper labels visible on all cards for easier scanning. No obvious UX issues detected.**
 
 ---
+
+
+
+
+# Test Results - How It Works Page Organisation Update Validation (Iteration 50)
+
+## Test Date
+2026-03-06
+
+## Test Scope
+Comprehensive validation of new page organisation update on https://appeal-analyzer-1.preview.emergentagent.com:
+1. New standalone page `/how-it-works` exists and loads
+2. Page includes process flow, report pricing section, and 'Start Your Case Now' button
+3. Landing Learn dropdown includes 'How It Works'
+4. Existing `/how-to-use` page still remains available (nothing deleted)
+
+---
+
+## Test Results Summary
+
+### ✅ ALL 4 VALIDATION TESTS PASSED
+
+---
+
+## Detailed Test Results
+
+### 1. New Standalone Page /how-it-works Exists and Loads ✅
+
+**Page Navigation:**
+- ✅ Successfully navigated to https://appeal-analyzer-1.preview.emergentagent.com/how-it-works
+- ✅ Page loads without any error overlays or runtime errors
+- ✅ No React error boundaries triggered
+- ✅ Clean page load with proper rendering
+
+**Hero Section:**
+- ✅ Hero heading found: "How It Works — See It In Action"
+- ✅ Hero description present with data-testid="how-it-works-hero-description"
+- ✅ Description text: "Watch the full process from document upload to barrister-ready output, then choose the report tier that fits your case."
+- ✅ PlayCircle icon displayed in amber background
+- ✅ Gradient background styling (slate-900 to slate-800)
+
+**Status:** ✅ PASS - New standalone /how-it-works page exists and loads correctly
+
+---
+
+### 2. Page Content - Process Flow, Report Pricing, Start Your Case Now ✅
+
+**Process Flow (4 Steps):**
+- ✅ Process flow grid found with data-testid="how-it-works-flow-grid"
+- ✅ Visual verification shows all 4 flow steps rendered correctly:
+  1. ✅ "1. Upload your case material" - with Upload icon
+     - Description: "Add transcripts, exhibits, sentencing remarks, briefs, and timeline records."
+  2. ✅ "2. Analyse grounds and legal issues" - with Search icon
+     - Description: "AI highlights potential grounds, legal pressure points, and strategic pathways."
+  3. ✅ "3. Generate premium reports" - with FileCheck icon
+     - Description: "Create report tiers with structure, precedents, and court-ready planning detail."
+  4. ✅ "4. Present in Barrister View" - with Presentation icon
+     - Description: "Use hearing-focused layouts, strategy summaries, and printable legal briefing format."
+- ✅ All steps render in 2-column grid layout (md:grid-cols-2)
+- ✅ Proper card styling with hover effects
+
+**Report Pricing Section:**
+- ✅ Pricing section found with data-testid="how-it-works-pricing-section"
+- ✅ Section heading: "Report Prices"
+- ✅ All 3 pricing tiers present:
+  1. ✅ Quick Summary: **Free**
+     - data-testid="how-it-works-pricing-quick-summary"
+     - Note: "Fast overview, early issue spotting, immediate next actions."
+     - Styling: Blue border and background
+  2. ✅ Full Detailed Report: **$29 AUD**
+     - data-testid="how-it-works-pricing-full-detailed-report"
+     - Note: "Premium legal analysis with strategic framing and filing guidance."
+     - Styling: Amber border and background
+  3. ✅ Extensive Log Report: **$39 AUD**
+     - data-testid="how-it-works-pricing-extensive-log-report"
+     - Note: "Barrister-level depth with comparative sentencing and options matrix."
+     - Styling: Purple border and background
+- ✅ Pricing tiers displayed in 3-column grid (md:grid-cols-3)
+
+**Start Your Case Now Button:**
+- ✅ Start case section found with data-testid="how-it-works-start-case-section"
+- ✅ Section heading: "Ready to begin?"
+- ✅ Description text: "Start your case now and move through the exact workflow above."
+- ✅ Button found with data-testid="how-it-works-start-case-btn"
+- ✅ Button text: "Start Your Case Now"
+- ✅ Button links to /dashboard
+- ✅ Prominent amber border styling (border-2 border-amber-300)
+- ✅ Amber background (bg-amber-50 dark:bg-amber-900/20)
+
+**Additional Sections:**
+- ✅ "See It In Action" section present with data-testid="how-it-works-demo-section"
+- ✅ Link to full tutorial: "Open full step-by-step tutorial" → /how-to-use
+- ✅ data-testid="how-it-works-full-tutorial-link" present
+
+**Status:** ✅ PASS - Page includes all required content (process flow, report pricing, Start Your Case Now button)
+
+---
+
+### 3. Landing Learn Dropdown Includes 'How It Works' ✅
+
+**Learn Dropdown Structure:**
+- ✅ Landing page navigation header found
+- ✅ Learn dropdown button present with ChevronDown icon
+- ✅ Dropdown menu opens on hover (group-hover CSS transition)
+
+**Dropdown Menu Links (6 total):**
+1. ✅ **How It Works** → /how-it-works (NEW - Priority position at top)
+2. ✅ How To Use → /how-to-use
+3. ✅ Legal Glossary → /glossary
+4. ✅ FAQ → /faq
+5. ✅ Appeal Statistics → /appeal-statistics
+6. ✅ Success Stories → /success-stories
+
+**Code Implementation (LandingPage.jsx lines 94-96):**
+```javascript
+<Link to="/how-it-works" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-t-lg">
+  How It Works
+</Link>
+```
+
+**Key Findings:**
+- ✅ "How It Works" is positioned as **first item** in Learn dropdown
+- ✅ Uses rounded-t-lg styling (first item in dropdown)
+- ✅ Proper hover states and transitions
+- ✅ Link is visible and accessible in navigation
+
+**Status:** ✅ PASS - Landing Learn dropdown includes 'How It Works' as the first item
+
+---
+
+### 4. Existing /how-to-use Page Still Remains Available ✅
+
+**Page Navigation:**
+- ✅ Successfully navigated to https://appeal-analyzer-1.preview.emergentagent.com/how-to-use
+- ✅ Page loads without any error overlays or runtime errors
+- ✅ No breaking changes detected
+
+**Page Content Verification:**
+- ✅ Page heading found: "How to Use the App"
+- ✅ Hero description: "A step-by-step guide with screenshots to help you get the most out of Appeal Case Manager. Follow these steps to organise your case and identify potential appeal grounds."
+- ✅ "Before You Start" section present with amber warning styling
+- ✅ Step-by-step guide sections intact
+- ✅ All page functionality working correctly
+
+**Code Verification:**
+- ✅ Route configured in App.js (lines 270-272):
+  ```javascript
+  <Route
+    path="/how-to-use"
+    element={<HowToUsePage />}
+  />
+  ```
+- ✅ HowToUsePage.jsx file exists at /app/frontend/src/pages/HowToUsePage.jsx
+- ✅ No code deletions or modifications detected
+
+**Relationship Between Pages:**
+- ✅ /how-it-works page includes link to /how-to-use: "Open full step-by-step tutorial"
+- ✅ Both pages serve complementary purposes:
+  - `/how-it-works`: Quick overview with process flow and pricing (marketing-focused)
+  - `/how-to-use`: Detailed step-by-step tutorial with screenshots (user guide)
+- ✅ Both pages listed in Learn dropdown for easy access
+
+**Status:** ✅ PASS - Existing /how-to-use page remains fully available with no deletions
+
+---
+
+## Console & Network Analysis
+
+**Console Logs:**
+- ✅ Total console errors: 0
+- ✅ Total console warnings: 0
+- ✅ ServiceWorker registration successful
+- ℹ️ Minor: CDN rum request failed (cosmetic, does not affect functionality)
+- ✅ No React errors or warnings
+- ✅ Clean execution throughout all tests
+
+**Network:**
+- ✅ All page resources loaded successfully
+- ✅ All navigation transitions working correctly
+- ✅ No broken links or 404 errors
+- ✅ Page load times acceptable
+
+---
+
+## Screenshots Captured
+
+1. `test1_how_it_works_page.png` - /how-it-works page with hero section and process flow
+2. `test2_pricing_section.png` - Report pricing section with 3 tiers
+3. `test2_start_case_button.png` - Start Your Case Now section
+4. `test3_learn_dropdown.png` - Landing page with Learn dropdown open showing "How It Works"
+5. `test4_how_to_use_page.png` - /how-to-use page confirming it still exists
+
+---
+
+## Test Environment
+
+- **URL:** https://appeal-analyzer-1.preview.emergentagent.com
+- **Viewport:** Desktop 1920x1080
+- **Browser:** Chromium (Playwright)
+- **Test Type:** Comprehensive UI Navigation + Content Verification
+- **Pages Tested:** /, /how-it-works, /how-to-use
+
+---
+
+## Summary
+
+✅ **ALL 4 VALIDATION TESTS PASSED - 4/4**
+
+**Pass/Fail Results:**
+1. ✅ PASS - New standalone page /how-it-works exists and loads correctly
+2. ✅ PASS - Page includes process flow (4 steps), report pricing (3 tiers), and 'Start Your Case Now' button
+3. ✅ PASS - Landing Learn dropdown includes 'How It Works' as first item
+4. ✅ PASS - Existing /how-to-use page still remains available with no deletions
+
+**Key Findings:**
+
+**New How It Works Page:**
+- ✓ Successfully created as standalone page at /how-it-works
+- ✓ Clear marketing-focused page with process overview
+- ✓ All 4 workflow steps rendered correctly with icons and descriptions
+- ✓ Complete pricing information for all 3 report tiers (Free, $29, $39)
+- ✓ Prominent call-to-action: "Start Your Case Now" button linking to dashboard
+- ✓ Includes link to detailed /how-to-use tutorial page
+
+**Navigation Integration:**
+- ✓ "How It Works" added as **first item** in Learn dropdown menu
+- ✓ Positioned above "How To Use" for logical flow (overview before details)
+- ✓ Proper hover states and accessibility
+- ✓ Clean integration with existing navigation structure
+
+**No Regressions:**
+- ✓ Existing /how-to-use page fully intact and functional
+- ✓ No code deletions or breaking changes
+- ✓ Both pages serve complementary purposes
+- ✓ Clean console with zero errors or warnings
+- ✓ All navigation links working correctly
+
+**User Experience:**
+- ✓ Clear separation between overview (/how-it-works) and detailed tutorial (/how-to-use)
+- ✓ Users can get quick pricing/workflow overview before diving into detailed steps
+- ✓ Prominent "Start Your Case Now" CTA after showing process and pricing
+- ✓ Link between pages for easy navigation
+
+**Verdict: Page organisation update successfully implemented. New /how-it-works page provides clear process overview with pricing, properly integrated into Learn dropdown, and existing /how-to-use page remains fully available. All 4 requirements validated with no regressions.**
+
+---

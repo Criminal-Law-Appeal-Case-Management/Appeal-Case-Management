@@ -27,6 +27,7 @@ import CompareCasesPage from "./pages/CompareCasesPage";
 import AboutPage from "./pages/AboutPage";
 import LegalResourcesPage from "./pages/LegalResourcesPage";
 import HowToUsePage from "./pages/HowToUsePage";
+import HowItWorksPage from "./pages/HowItWorksPage";
 import AppealStatisticsPage from "./pages/AppealStatisticsPage";
 import CaselawSearchPage from "./pages/CaselawSearchPage";
 import LegalFrameworkPage from "./pages/LegalFrameworkPage";
@@ -268,6 +269,10 @@ function AppRouter() {
       <Route
         path="/how-to-use"
         element={<HowToUsePage />}
+      />
+      <Route
+        path="/how-it-works"
+        element={<HowItWorksPage />}
       />
       <Route
         path="/appeal-statistics"
