@@ -28,6 +28,12 @@
   - Testing report: `/app/test_reports/iteration_35.json`
   - Frontend sanity pass: success
 
+## 2026-03 — Session 13 (AU-English Enforcement Pass)
+- Enforced Australian-English spelling in key user-facing strings (e.g., organise/analysing/analyse)
+- Updated remaining US-spelling copy in templates/error text where safe
+- Preserved API route contracts that use `/analyze` naming for compatibility
+- Validation: landing + backend quick regression checks passed
+
 ## 2026-03 — Session 11 (Premium Report + Barrister Overhaul)
 - AI report prompts reworked for hybrid legal/plain-English depth
 - Removed costs + witness contradiction/credibility sections from report content requirements
