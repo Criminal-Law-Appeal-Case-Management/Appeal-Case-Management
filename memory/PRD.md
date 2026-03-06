@@ -670,6 +670,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - [x] **BarristerView Page Upgraded** (`frontend/src/pages/BarristerView.jsx`):
   - Added **Hearing Strategy Snapshot** section with dynamic lead-ground and run-sheet
   - Added **Authorities & Precedent Pack** section sourced from ground legislation and similar cases
+  - Added premium **top summary box** (accused, sentence, offence, grounds, strength, court/state)
   - Preserved export/print workflow while improving courtroom-readiness presentation
 - [x] **Admin Access UX Hardening** (`frontend/src/pages/Dashboard.jsx` + `frontend/src/App.js`):
   - Normalized admin email comparison (`trim().toLowerCase()`) + `is_admin` support
@@ -677,12 +678,11 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Protected `/admin/dashboard` route via `ProtectedRoute`
 - [x] **Legal Resources Completion Pass** (`frontend/src/pages/LegalResourcesPage.jsx`):
   - Added sticky quick-nav tab bar for all major legal resource sections (scroll-to-section navigation)
-
 - [x] **Testing Completed**:
   - Smoke screenshot captured after implementation
   - Testing agent report: `/app/test_reports/iteration_32.json`
   - Frontend: 100% pass; backend guardrails confirmed
-
+  - Iteration 33/35 follow-up: ReportView now has premium top summary + TOC + full in-browser readability (no forced PDF)
 ## Next Priority Tasks
 - [ ] User verification pass on upgraded report quality and barrister presentation quality (content depth sign-off)
 - [ ] Real-time collaboration/chat for Notes (WebSockets)
