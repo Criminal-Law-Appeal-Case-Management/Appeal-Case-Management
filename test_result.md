@@ -1,4 +1,118 @@
-# Test Results - Frontend Validation (Iteration 33)
+# Test Results - Backend Regression Validation (Iteration 34)
+
+## Test Date
+2026-03-06
+
+## Test Scope
+Backend regression checks against https://appeal-analyzer-1.preview.emergentagent.com/api focused on latest report overhaul:
+1. Health endpoint availability validation via /api/health
+2. Auth-protected report endpoint authentication enforcement 
+3. Code-level verification of updated report prompt guardrails excluding costs and witness contradiction sections
+4. Core public endpoints functionality verification (/states, /offence-categories, /payments/prices)
+
+---
+
+## Test Results Summary
+
+### ✅ ALL BACKEND TESTS PASSED - NO REGRESSIONS DETECTED
+
+---
+
+## Detailed Test Results
+
+### 1. Health Endpoint Validation ✅
+
+**API Health Check (/api/health):**
+- ✅ Endpoint responding correctly (HTTP 200)
+- ✅ Returns valid JSON with {"status": "healthy", "timestamp": "..."}
+- ✅ Response time within acceptable limits
+- ✅ Proper health check functionality confirmed
+
+**Status:** ✅ PASS - Backend health endpoint fully functional
+
+---
+
+### 2. Authentication Protection Validation ✅
+
+**Auth-Protected Report Generation (POST /api/cases/{case_id}/reports/generate):**
+- ✅ Correctly rejects unauthenticated requests (HTTP 401)
+- ✅ Proper authentication enforcement in place
+- ✅ No unauthorized access to report generation functionality
+- ✅ Security controls working as expected
+
+**Status:** ✅ PASS - Authentication properly enforced for protected endpoints
+
+---
+
+### 3. Report Prompt Guardrails Verification ✅
+
+**Code-Level Analysis of Updated Report Prompts:**
+- ✅ Cost exclusion guardrail implemented: "DO NOT include cost estimates, fee ranges, funding commentary, or budget analysis"
+- ✅ Witness contradiction exclusion guardrail implemented: "DO NOT include witness contradiction sections or witness credibility scoring sections"  
+- ✅ MANDATORY GUARDRAILS section present in server.py
+- ✅ Guardrails apply to all report types (quick_summary, full_detailed, extensive_log)
+- ✅ Latest report overhaul successfully excludes problematic sections
+
+**Verified Guardrail Text:**
+```
+MANDATORY GUARDRAILS:
+- DO NOT include cost estimates, fee ranges, funding commentary, or budget analysis.
+- DO NOT include witness contradiction sections or witness credibility scoring sections.
+```
+
+**Status:** ✅ PASS - Updated report prompt guardrails correctly exclude costs and witness contradiction/credibility sections
+
+---
+
+### 4. Public Endpoints Functionality ✅
+
+**Australian States Endpoint (/api/states):**
+- ✅ Returns HTTP 200 status
+- ✅ Provides valid JSON response with "states" array
+- ✅ Contains all Australian states and territories data
+- ✅ No breaking changes detected
+
+**Offence Categories Endpoint (/api/offence-categories):**
+- ✅ Returns HTTP 200 status  
+- ✅ Provides valid JSON response with "categories" array
+- ✅ Contains complete offence framework data
+- ✅ No breaking changes detected
+
+**Payment Prices Endpoint (/api/payments/prices):**
+- ✅ Returns HTTP 200 status
+- ✅ Provides valid JSON response with pricing data
+- ✅ Includes required pricing information for features
+- ✅ PayPal configuration status available
+- ✅ No breaking changes detected
+
+**Status:** ✅ PASS - All core public endpoints fully functional with no regressions
+
+---
+
+## Backend Regression Test Summary
+
+**Test Configuration:**
+- Target: https://appeal-analyzer-1.preview.emergentagent.com/api
+- Test Suite: backend_test.py
+- Total Tests: 8
+- All Tests Passed: ✅ 8/8
+
+**Key Findings:**
+- ✅ Health endpoint fully operational
+- ✅ Authentication protection working correctly
+- ✅ Updated report guardrails successfully implemented  
+- ✅ All public landing page endpoints functioning without regressions
+- ✅ No breaking changes detected in latest report overhaul
+
+**Severity Assessment:**
+- 🟢 **No Critical Issues**
+- 🟢 **No High Priority Issues** 
+- 🟢 **No Medium Priority Issues**
+- 🟢 **No Breaking Changes**
+
+---
+
+## Previous Test Results - Frontend Validation (Iteration 33)
 
 ## Test Date
 2026-03-06
