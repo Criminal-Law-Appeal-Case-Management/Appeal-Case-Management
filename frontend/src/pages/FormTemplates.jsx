@@ -44,7 +44,7 @@ const FORM_CATEGORIES = [
       { id: "appeal-grounds", name: "Grounds of Appeal", description: "Document setting out the legal grounds for your appeal" },
       { id: "leave-to-appeal", name: "Application for Leave to Appeal", description: "Request permission to appeal to a higher court" },
       { id: "extension-of-time", name: "Extension of Time Application", description: "Request to extend the deadline for lodging an appeal (CRITICAL if 28 days have passed)" },
-      { id: "appeal-book-index", name: "Appeal Book Index", description: "Index template for organizing appeal documents" },
+      { id: "appeal-book-index", name: "Appeal Book Index", description: "Index template for organising appeal documents" },
       { id: "transcript-request", name: "Request for Court Transcripts", description: "Formal request for trial transcripts (essential for appeal preparation)" },
       { id: "exhibit-request", name: "Request for Exhibits", description: "Request access to trial exhibits and evidence" },
       { id: "appeal-case-stated", name: "Case Stated Application", description: "Request a question of law be referred to higher court" },

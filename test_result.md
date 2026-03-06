@@ -1,3 +1,111 @@
+# Test Results - AU-English Spelling Verification (Iteration 40)
+
+## Test Date
+2026-03-06
+
+## Test Scope
+Quick verification after AU-English spelling lock pass on https://appeal-analyzer-1.preview.emergentagent.com:
+1. Landing page still renders correctly
+2. Hero section uses 'Organise' (AU spelling)
+3. No obvious US spelling regressions in key updated UI messages
+4. No console/runtime errors
+
+---
+
+## Test Results Summary
+
+### ✅ ALL AU-ENGLISH SPELLING VERIFICATION TESTS PASSED
+
+---
+
+## Detailed Test Results
+
+### 1. Landing Page Renders ✅
+
+**Page Load Test:**
+- ✅ Page navigation completed successfully
+- ✅ No error overlays detected
+- ✅ Hero heading present: "Criminal Appeal Research Tool"
+- ✅ All page elements render correctly
+
+**Status:** ✅ PASS - Landing page renders correctly
+
+---
+
+### 2. Hero Section Uses 'Organise' (AU Spelling) ✅
+
+**AU Spelling Verification:**
+- ✅ Hero text confirmed: "Organise case documents, generate timelines, and produce premium appeal reports with comparative sentencing tables, options matrices, and barrister-ready strategy notes across all Australian jurisdictions."
+- ✅ Secondary text also uses AU spelling: "This application helps you organise, analyse, and research criminal appeals..."
+- ✅ Both 'Organise' and 'organise' forms correctly use AU spelling
+- ✅ 'analyse' (AU spelling) also confirmed
+
+**Status:** ✅ PASS - Hero section correctly uses AU-English spelling
+
+---
+
+### 3. US Spelling Regressions Check ✅
+
+**US Spelling Scan Results:**
+- ✅ No instances of 'organize' or 'Organize' (US) found
+- ✅ No instances of 'recognized' or 'Recognized' (US) found
+- ✅ No instances of 'analyzing' or 'Analyzing' (US) found
+- ✅ No instances of 'specialized' or 'Specialized' (US) found
+
+**AU Spelling Consistency:**
+- ✅ 'organise' (AU) - Present
+- ✅ 'analyse' (AU) - Present
+- ✅ 'symbolising' (AU) - Present
+
+**Status:** ✅ PASS - No US spelling regressions detected, AU spelling consistent throughout
+
+---
+
+### 4. Console/Runtime Errors Check ✅
+
+**Error Detection:**
+- ✅ No React error overlays detected
+- ✅ No webpack error overlays detected
+- ✅ No error messages in DOM
+- ✅ Clean console output with no errors or warnings
+
+**Status:** ✅ PASS - No console or runtime errors detected
+
+---
+
+## Screenshots Captured
+
+1. `au_spelling_verification.png` - Landing page hero section with AU spelling visible
+
+---
+
+## Test Environment
+
+- **URL:** https://appeal-analyzer-1.preview.emergentagent.com
+- **Viewport:** Desktop 1920x1080
+- **Browser:** Chromium (Playwright)
+- **Test Type:** UI Content Verification + Console Monitoring
+
+---
+
+## Summary
+
+✅ **ALL 4 VERIFICATION TESTS PASSED**
+
+**Key Findings:**
+1. ✅ Landing page renders correctly without errors
+2. ✅ Hero section uses 'Organise' (AU spelling) in main and secondary text
+3. ✅ No US spelling regressions detected ('organize', 'recognize', 'analyze', 'specialize' not found)
+4. ✅ AU spelling consistency maintained ('organise', 'analyse', 'symbolising')
+5. ✅ Zero console/runtime errors - clean execution
+
+**Verdict: AU-English spelling lock is working correctly with no regressions.**
+
+---
+
+---
+
+
 # Test Results - Backend Regression Check After Latest Prompt/Content Changes (Iteration 39)
 
 ## Test Date

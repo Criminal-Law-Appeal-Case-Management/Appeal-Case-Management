@@ -227,7 +227,7 @@ Important: Return ONLY valid JSON, no additional text."""
         logger.error(f"Failed to parse AI response: {e}")
         raise HTTPException(
             status_code=500, 
-            detail="Failed to analyze documents. Please try again."
+            detail="Failed to analyse documents. Please try again."
         )
     except Exception as e:
         logger.error(f"Contradiction scan failed: {e}")

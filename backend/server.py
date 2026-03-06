@@ -3324,7 +3324,7 @@ BE THOROUGH. Identify ALL potential grounds. The appellant's freedom may depend 
 # ============ AI ANALYSIS & REPORTS ============
 
 async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str, aggressive_mode: bool = False) -> dict:
-    """Use OpenAI GPT-5.2 to analyze case and generate report"""
+    """Use OpenAI GPT-5.2 to analyse case and generate report"""
     from emergentintegrations.llm.chat import LlmChat, UserMessage
     
     # Get case data
