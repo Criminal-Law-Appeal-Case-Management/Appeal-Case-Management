@@ -646,6 +646,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 
 ## Latest Delivery Note (Mar 2026)
 - Landing, report, and barrister-content polish updates (AU spelling pass, dropdown/footer-link alignment, upgraded barrister showcase messaging, and extensive-report barrister dossier requirements) are logged in `CHANGELOG.md` (latest session).
+- Verification status: `iteration_36.json` (feature/content pass) + backend regression iteration 39 (ready).
 
 ## Technical Debt (Current)
 - `server.py` remains monolithic and should be modularized into focused routers/services.
