@@ -640,60 +640,9 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - `badge` — Tiny inline badge
 - [x] **Placement**: Below hero section with "Join thousands of Australians researching their appeals"
 
-### Session 10 - PayID UX & Mobile Improvements (Mar 2026) ✅
-- [x] **PayID Details Shown Upfront** — Users now see where to send money BEFORE clicking:
-  - PayID: djkingy79@gmail.com
-  - Account Name: Deb King - Appeal Case Manager
-  - Amount displayed prominently
-- [x] **PayID as Default Tab** — More relevant for Australian users
-- [x] **Mobile-Optimised Payment Modal**:
-  - 95% viewport width on mobile
-  - Minimum 56px touch targets for all buttons
-  - Collapsible "What you get" section
-  - Larger copy buttons
-  - Step-by-step banking app instructions
-- [x] **Improved Reference Display** — Red border + warning icon for the payment reference
+## Delivery Tracking Files
+- Detailed implementation history moved to: `/app/memory/CHANGELOG.md`
+- Prioritized pending work moved to: `/app/memory/ROADMAP.md`
 
-### Session 11 - Premium Report + Barrister View Overhaul (Mar 2026) ✅
-- [x] **AI Report Prompt Upgrade (Hybrid Tone)** in `backend/server.py`:
-  - Rebuilt Quick, Full, and Extensive report prompt templates for deeper barrister-grade output
-  - Added strict report guardrails: **NO cost estimates/fees/funding commentary**
-  - Added strict report guardrails: **NO witness contradiction / witness credibility sections**
-  - Strengthened structure for legislation mapping, precedent outcomes, sentencing comparisons, filing pathway guidance, and hearing strategy
-- [x] **Landing Page Report Samples Overhauled** (`frontend/src/pages/LandingPage.jsx`):
-  - Added **Sample A + Sample B** snippets across all 3 tiers (Quick, Full, Extensive)
-  - Removed report sample cost-estimate content and witness-credibility sample content
-  - Upgraded report sample framing and hybrid legal/plain-English narrative cues
-- [x] **Landing Barrister Promo Section Redesigned**:
-  - Replaced generic preview with hearing-ready deck concept (authorities bundle, oral run-sheet, orders sought)
-  - Updated copy to stronger legal professional value proposition
-- [x] **BarristerView Page Upgraded** (`frontend/src/pages/BarristerView.jsx`):
-  - Added **Hearing Strategy Snapshot** section with dynamic lead-ground and run-sheet
-  - Added **Authorities & Precedent Pack** section sourced from ground legislation and similar cases
-  - Added premium **top summary box** (accused, sentence, offence, grounds, strength, court/state)
-  - Preserved export/print workflow while improving courtroom-readiness presentation
-- [x] **Admin Access UX Hardening** (`frontend/src/pages/Dashboard.jsx` + `frontend/src/App.js`):
-  - Normalized admin email comparison (`trim().toLowerCase()`) + `is_admin` support
-  - Added admin shortcut button in dashboard header
-  - Protected `/admin/dashboard` route via `ProtectedRoute`
-- [x] **Legal Resources Completion Pass** (`frontend/src/pages/LegalResourcesPage.jsx`):
-  - Added sticky quick-nav tab bar for all major legal resource sections (scroll-to-section navigation)
-- [x] **Testing Completed**:
-  - Smoke screenshot captured after implementation
-  - Testing agent report: `/app/test_reports/iteration_32.json`
-  - Frontend: 100% pass; backend guardrails confirmed
-  - Iteration 34 follow-up: Full report upgraded to extensive-level depth, extensive report expanded with mandatory comparative-sentencing/common-grounds/options tables + explicit sentence-reduction scenarios; ReportView redesigned with markdown table rendering + readiness gauge; ReportsSection collapsible warning resolved.
-## Next Priority Tasks
-- [ ] User verification pass on upgraded report quality and barrister presentation quality (content depth sign-off)
-- [ ] Real-time collaboration/chat for Notes (WebSockets)
-- [ ] Continue backend refactoring — extract remaining routes from server.py (cases, documents, timeline, reports)
-
-## Backlog (Lower Priority)
-- [ ] Build and submit native mobile app (Capacitor ready)
-- [ ] Enhanced collaboration features (replies, threads, @mentions in notes)
-- [ ] Deadline Tracker with Calendar integration
-- [ ] Clarify purpose of ContactsPage.jsx vs ContactPage.jsx
-
-## Technical Debt
-- `server.py` is 4117 lines — needs modularization
-- Consider extracting: cases.py, documents.py, timeline.py, reports.py, grounds.py, notes.py
+## Technical Debt (Current)
+- `server.py` remains monolithic and should be modularized into focused routers/services.
