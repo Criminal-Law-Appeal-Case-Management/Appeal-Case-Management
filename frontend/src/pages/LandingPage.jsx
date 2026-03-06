@@ -632,7 +632,7 @@ const LandingPage = () => {
                 <h3 className="font-bold text-white text-lg">FAQ & Support</h3>
               </div>
               <p className="text-slate-400 text-sm mb-3">
-                Answers to common questions about using the platform, appeal processes, costs, legal disclaimers, and technical support.
+                Answers to common questions about using the platform, appeal processes, pricing, legal disclaimers, and technical support.
               </p>
               <div className="text-yellow-500 text-xs font-medium">
                 ✓ Comprehensive answers • Contact form • Email support
@@ -936,6 +936,9 @@ const LandingPage = () => {
                       
                       {/* Report Content */}
                       <div className="p-5 space-y-4">
+                        <div className="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs px-3 py-1 rounded-full font-semibold">
+                          SAMPLE A • Conviction Appeal Snapshot
+                        </div>
                         {/* Case Overview */}
                         <div>
                           <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b border-slate-200 pb-2 mb-2">CASE OVERVIEW</h5>
@@ -988,6 +991,16 @@ const LandingPage = () => {
                             <span className="text-lg">⚠️</span>
                             DEADLINE: Notice of Appeal must be filed within 28 days of sentence (by 2 April 2026)
                           </p>
+                        </div>
+
+                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3 border border-slate-200 dark:border-slate-600">
+                          <p className="text-xs font-bold text-slate-800 dark:text-slate-200 mb-2">SAMPLE B • Sentence Appeal Snapshot</p>
+                          <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+                            <p><strong className="text-slate-900 dark:text-white">Case:</strong> R v Nguyen [2023] NSWCCA (sentence appeal)</p>
+                            <p><strong className="text-slate-900 dark:text-white">Core Issue:</strong> Manifest excess relative to objective seriousness and parity outcomes.</p>
+                            <p><strong className="text-slate-900 dark:text-white">Legislation Anchor:</strong> Crimes (Sentencing Procedure) Act 1999 (NSW), s 5 and sentencing principles.</p>
+                            <p><strong className="text-slate-900 dark:text-white">Action:</strong> Compile sentencing remarks + comparable NSWCCA outcomes for disparity argument.</p>
+                          </div>
                         </div>
 
                         {/* Upgrade Prompt */}
@@ -1046,6 +1059,9 @@ const LandingPage = () => {
 
                       {/* Report Content */}
                       <div className="p-5 space-y-5">
+                        <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-xs px-3 py-1 rounded-full font-semibold">
+                          SAMPLE A • Jury Direction Ground
+                        </div>
                         {/* Ground 1 - Full Detail */}
                         <div>
                           <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b-2 border-blue-500 pb-2 mb-3">
@@ -1104,6 +1120,18 @@ const LandingPage = () => {
                           </div>
                         </div>
 
+                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                          <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b border-slate-300 dark:border-slate-600 pb-2 mb-3">
+                            SAMPLE B: SENTENCING ERROR ANALYSIS (HYBRID STYLE)
+                          </h5>
+                          <div className="space-y-2 text-xs text-slate-700 dark:text-slate-300">
+                            <p><strong>Legal framing:</strong> The sentence appears affected by an error in principle where mitigating rehabilitation material was not given adequate weight in the balancing exercise.</p>
+                            <p><strong>Plain-English impact:</strong> This means the court may have set the penalty too high even if conviction findings stay in place.</p>
+                            <p><strong>Authorities to brief:</strong> Markarian v The Queen [2005] HCA 25; House v The King (1936) 55 CLR 499; relevant NSWCCA parity authorities.</p>
+                            <p><strong>Next tactical step:</strong> Build a comparator bundle with sentencing remarks, parity matrix, and transcript extracts for oral emphasis.</p>
+                          </div>
+                        </div>
+
                         {/* Filing Guide Preview */}
                         <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-700">
                           <h5 className="font-bold text-amber-800 dark:text-amber-200 text-sm mb-3">APPEAL FILING GUIDE — NSW District Court to CCA</h5>
@@ -1114,7 +1142,7 @@ const LandingPage = () => {
                             </div>
                             <div>
                               <p className="font-semibold text-slate-800 dark:text-slate-200 mb-1">Step 2: Obtain Transcripts</p>
-                              <p className="text-slate-600 dark:text-slate-400">Request from Reporting Services: approx $7.50/page. Priority available for custody matters.</p>
+                              <p className="text-slate-600 dark:text-slate-400">Request from Reporting Services promptly and prioritise custody-related material for urgent filing preparation.</p>
                             </div>
                           </div>
                           <p className="text-xs text-amber-700 dark:text-amber-300 mt-3 italic">Full 8-step guide included in report...</p>
@@ -1172,7 +1200,7 @@ const LandingPage = () => {
                           <span>7. Ground 3: Full</span>
                           <span>8. Similar Cases (12)</span>
                           <span>9. Legislation</span>
-                          <span>10. Witness Analysis</span>
+                          <span>10. Submission Blueprint</span>
                           <span>11. Sentencing Comparison</span>
                           <span>12. Appeal Strategy</span>
                           <span>13. Filing Guide (All Courts)</span>
@@ -1182,29 +1210,33 @@ const LandingPage = () => {
 
                       {/* Report Content */}
                       <div className="p-5 space-y-5">
-                        {/* Witness Credibility Analysis */}
+                        <div className="inline-flex items-center gap-2 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 text-xs px-3 py-1 rounded-full font-semibold">
+                          SAMPLE A • Hearing-Ready Strategic Dossier
+                        </div>
+
+                        {/* Hearing Submission Blueprint */}
                         <div>
                           <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b-2 border-purple-500 pb-2 mb-3">
-                            SECTION 10: WITNESS CREDIBILITY ANALYSIS
+                            SECTION 10: HEARING SUBMISSION BLUEPRINT
                           </h5>
-                          <div className="space-y-3">
-                            <div className="p-3 bg-slate-50 dark:bg-slate-700 rounded">
-                              <div className="flex items-start justify-between">
-                                <div>
-                                  <p className="font-semibold text-sm text-slate-900 dark:text-white">Prosecution Witness: James Martin</p>
-                                  <p className="text-xs text-slate-500">Security guard, eyewitness to incident</p>
-                                </div>
-                                <span className="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded font-semibold">CREDIBILITY: QUESTIONABLE</span>
-                              </div>
-                              <div className="mt-2 text-xs text-slate-600 dark:text-slate-400">
-                                <p><strong>Issues Identified:</strong></p>
-                                <ul className="list-disc ml-4 mt-1 space-y-1">
-                                  <li>Statement given 3 weeks after incident (delayed recall)</li>
-                                  <li>Viewing angle obstructed by pillar (CCTV confirms)</li>
-                                  <li>Prior inconsistent statement to police at scene</li>
-                                  <li>Employment relationship with complainant's employer</li>
-                                </ul>
-                              </div>
+                          <div className="grid md:grid-cols-2 gap-3 text-xs">
+                            <div className="p-3 bg-slate-50 dark:bg-slate-700 rounded border border-slate-200 dark:border-slate-600">
+                              <p className="font-semibold text-slate-900 dark:text-white mb-2">Written Submissions Run Order</p>
+                              <ul className="list-disc ml-4 space-y-1 text-slate-600 dark:text-slate-400">
+                                <li>Ground 1 as lead error with transcript anchors</li>
+                                <li>Materiality and miscarriage pathway</li>
+                                <li>Sentencing fallback submissions in the alternative</li>
+                                <li>Orders sought and remitter framing</li>
+                              </ul>
+                            </div>
+                            <div className="p-3 bg-slate-50 dark:bg-slate-700 rounded border border-slate-200 dark:border-slate-600">
+                              <p className="font-semibold text-slate-900 dark:text-white mb-2">Oral Hearing Rehearsal Points</p>
+                              <ul className="list-disc ml-4 space-y-1 text-slate-600 dark:text-slate-400">
+                                <li>Opening proposition in under 60 seconds</li>
+                                <li>Bench question pivots on intent direction</li>
+                                <li>Authorities sequence for clean navigation</li>
+                                <li>Closing relief requested: quash or resentence</li>
+                              </ul>
                             </div>
                           </div>
                         </div>
@@ -1238,6 +1270,20 @@ const LandingPage = () => {
                           </div>
                         </div>
 
+                        <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4 border border-indigo-200 dark:border-indigo-700">
+                          <h5 className="font-bold text-indigo-900 dark:text-indigo-200 text-sm mb-3">SAMPLE B: PRECEDENT OUTCOME MATRIX</h5>
+                          <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-700 dark:text-slate-300">
+                            <div className="bg-white dark:bg-slate-800 rounded p-3 border border-indigo-100 dark:border-indigo-800">
+                              <p className="font-semibold mb-1">R v XY [2021] NSWCCA 88</p>
+                              <p className="text-slate-600 dark:text-slate-400">Outcome: Conviction quashed due to misdirection on intent elements.</p>
+                            </div>
+                            <div className="bg-white dark:bg-slate-800 rounded p-3 border border-indigo-100 dark:border-indigo-800">
+                              <p className="font-semibold mb-1">R v AB [2022] NSWCCA 191</p>
+                              <p className="text-slate-600 dark:text-slate-400">Outcome: Resentenced after appellate finding of error in principle.</p>
+                            </div>
+                          </div>
+                        </div>
+
                         {/* Appeal Strategy */}
                         <div>
                           <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b-2 border-purple-500 pb-2 mb-3">
@@ -1263,15 +1309,15 @@ const LandingPage = () => {
 
                         {/* Risk Assessment */}
                         <div className="bg-gradient-to-r from-purple-100 to-indigo-100 dark:from-purple-900/30 dark:to-indigo-900/30 rounded-lg p-4 border border-purple-200 dark:border-purple-700">
-                          <h5 className="font-bold text-purple-900 dark:text-purple-200 text-sm mb-3">SECTION 14: RISK ASSESSMENT & COST ESTIMATE</h5>
+                          <h5 className="font-bold text-purple-900 dark:text-purple-200 text-sm mb-3">SECTION 14: RISK ASSESSMENT</h5>
                           <div className="grid md:grid-cols-3 gap-4 text-xs">
                             <div className="text-center">
                               <p className="text-2xl font-bold text-green-600">65-75%</p>
                               <p className="text-slate-600 dark:text-slate-400">Success probability</p>
                             </div>
                             <div className="text-center">
-                              <p className="text-2xl font-bold text-amber-600">$15-25k</p>
-                              <p className="text-slate-600 dark:text-slate-400">Est. legal costs</p>
+                              <p className="text-2xl font-bold text-amber-600">Ground 1</p>
+                              <p className="text-slate-600 dark:text-slate-400">Primary argument to lead</p>
                             </div>
                             <div className="text-center">
                               <p className="text-2xl font-bold text-purple-600">4-6 mo</p>
@@ -1348,24 +1394,37 @@ const LandingPage = () => {
 
             {/* Sample 6: Barrister Presentation View */}
             <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="order-2 md:order-1 bg-slate-900 rounded-lg p-4">
-                <div className="bg-white rounded shadow-lg p-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                  <div className="text-center border-b border-slate-200 pb-4 mb-4">
-                    <h4 className="text-lg font-bold text-slate-900">APPEAL CASE SUMMARY</h4>
-                    <p className="text-sm text-slate-600">R v Smith [2024] NSWSC 142</p>
+              <div className="order-2 md:order-1 rounded-2xl p-4 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-indigo-700/40 shadow-2xl">
+                <div className="bg-white rounded-xl shadow-lg p-5" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  <div className="flex items-start justify-between border-b border-slate-200 pb-4 mb-4">
+                    <div>
+                      <p className="text-[11px] text-slate-500 uppercase tracking-wider">Hearing Deck Preview</p>
+                      <h4 className="text-lg font-bold text-slate-900">R v Smith [2024] NSWSC 142</h4>
+                      <p className="text-xs text-slate-600">Court of Criminal Appeal briefing format</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[11px] text-slate-500">Strength</p>
+                      <p className="text-lg font-bold text-emerald-600">78 / 100</p>
+                    </div>
                   </div>
-                  <div className="space-y-3 text-sm">
-                    <div>
-                      <h5 className="font-semibold text-slate-800">1. PRIMARY GROUND</h5>
-                      <p className="text-slate-600 text-xs mt-1">Misdirection on mens rea — The trial judge's direction on the element of intent under s.18(1)(a) Crimes Act 1900 was inadequate...</p>
+                  <div className="grid grid-cols-2 gap-2 mb-4 text-[11px]">
+                    <div className="bg-indigo-50 rounded-md p-2 border border-indigo-100">
+                      <p className="font-semibold text-indigo-900">Lead Ground</p>
+                      <p className="text-slate-600">Misdirection on intent</p>
                     </div>
-                    <div>
-                      <h5 className="font-semibold text-slate-800">2. SUPPORTING CASE LAW</h5>
-                      <p className="text-slate-600 text-xs mt-1">R v Lavender (2005) 222 CLR 67; Royall v The Queen (1991) 172 CLR 378...</p>
+                    <div className="bg-amber-50 rounded-md p-2 border border-amber-100">
+                      <p className="font-semibold text-amber-900">Orders Sought</p>
+                      <p className="text-slate-600">Quash + retrial alternative</p>
                     </div>
-                    <div>
-                      <h5 className="font-semibold text-slate-800">3. RECOMMENDATION</h5>
-                      <p className="text-slate-600 text-xs mt-1">Strong basis for appeal on Ground 1. Seek senior counsel opinion...</p>
+                  </div>
+                  <div className="space-y-2 text-xs">
+                    <div className="p-2 rounded-md bg-slate-50 border border-slate-100">
+                      <p className="font-semibold text-slate-800">Authorities Bundle</p>
+                      <p className="text-slate-600 mt-0.5">Crimes Act 1900 (NSW) s 18, Evidence Act 1995 s 137, Markarian, House v The King</p>
+                    </div>
+                    <div className="p-2 rounded-md bg-slate-50 border border-slate-100">
+                      <p className="font-semibold text-slate-800">Oral Run-Sheet</p>
+                      <p className="text-slate-600 mt-0.5">Opening proposition → legal test → transcript anchor → remedy sought</p>
                     </div>
                   </div>
                 </div>
@@ -1373,14 +1432,21 @@ const LandingPage = () => {
               <div className="order-1 md:order-2">
                 <span className="text-amber-600 font-semibold text-xs uppercase tracking-wider">For Legal Professionals</span>
                 <h3 className="text-xl font-bold text-foreground mt-2 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                  Barrister Presentation View
+                  Barrister View That Feels Hearing-Ready
                 </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  A clean, professional presentation mode designed for legal counsel. 
-                  Present case information in court or client meetings with a formatted view 
-                  that looks like a proper legal brief — numbered sections, case citations, 
-                  and clear recommendations. Export to PDF for filing or sharing.
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  Not just a pretty printout. Barrister View turns your report into a courtroom briefing deck: lead grounds, statutes, authorities, chronology pressure points, and an oral submission sequence your counsel can use immediately.
                 </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div className="rounded-lg border border-border p-3 bg-card">
+                    <p className="font-semibold text-foreground mb-1">Dual-audience format</p>
+                    <p className="text-muted-foreground">Technical legal framing + plain-English notes for family and clients.</p>
+                  </div>
+                  <div className="rounded-lg border border-border p-3 bg-card">
+                    <p className="font-semibold text-foreground mb-1">Export-ready</p>
+                    <p className="text-muted-foreground">PDF and Word outputs for counsel review, filing prep, and conference handover.</p>
+                  </div>
+                </div>
               </div>
             </div>
 

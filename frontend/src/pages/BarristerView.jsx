@@ -271,6 +271,46 @@ const BarristerView = ({ user }) => {
   const keyEvents = getKeyEvents();
   const strongGrounds = grounds.filter(g => g.strength === 'strong');
   const moderateGrounds = grounds.filter(g => g.strength === 'moderate');
+  const leadGround = strongGrounds[0] || grounds[0] || null;
+  const authorityMap = new Map();
+  grounds.forEach((ground) => {
+    (ground.law_sections || []).forEach((law) => {
+      const key = `${law.section || ''}-${law.act || ''}-${law.jurisdiction || ''}`;
+      if (!authorityMap.has(key) && (law.section || law.act)) {
+        authorityMap.set(key, {
+          section: law.section,
+          act: law.act,
+          jurisdiction: law.jurisdiction,
+          linked_ground: ground.title
+        });
+      }
+    });
+  });
+  const keyAuthorities = Array.from(authorityMap.values()).slice(0, 8);
+
+  const precedentRows = [];
+  grounds.forEach((ground) => {
+    (ground.similar_cases || []).forEach((item) => {
+      if (precedentRows.length < 8) {
+        precedentRows.push({
+          case_name: item.case_name,
+          citation: item.citation,
+          outcome: item.outcome,
+          relevance: item.relevance,
+          linked_ground: ground.title
+        });
+      }
+    });
+  });
+
+  const strategicChecklist = [
+    leadGround
+      ? `Lead with "${leadGround.title}" and establish legal test before factual detail.`
+      : "Open with your strongest legal error and establish the appellate test first.",
+    "Use chronology as a spine: event date → source → legal consequence.",
+    "Anchor each submission paragraph to one statute and one evidentiary reference.",
+    "Close by stating precise orders sought (quash, retrial, or resentencing alternative)."
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 print:bg-white">
@@ -531,6 +571,111 @@ const BarristerView = ({ user }) => {
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   <span>{report?.content?.event_count || timeline.length} timeline events</span>
+                </div>
+              </div>
+            </div>
+
+            {/* ===== HEARING STRATEGY SNAPSHOT ===== */}
+            <div className="p-8 sm:p-12 border-b border-slate-200 dark:border-slate-700 page-break-inside-avoid bg-gradient-to-r from-indigo-50/60 via-white to-amber-50/50 dark:from-indigo-900/20 dark:via-slate-800 dark:to-amber-900/10">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+                  <Sword className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                </div>
+                <h2
+                  className="text-2xl font-bold text-slate-900 dark:text-white"
+                  style={{ fontFamily: 'Crimson Pro, serif' }}
+                >
+                  Hearing Strategy Snapshot
+                </h2>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-4 mb-6" data-testid="hearing-strategy-cards">
+                <div className="rounded-xl border border-indigo-200 dark:border-indigo-700 bg-white/80 dark:bg-slate-800/80 p-4">
+                  <p className="text-xs uppercase tracking-wide text-indigo-600 dark:text-indigo-300 mb-2">Lead Ground</p>
+                  <p className="font-semibold text-slate-900 dark:text-white text-sm">
+                    {leadGround?.title || "Ground to be confirmed after document review"}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-amber-200 dark:border-amber-700 bg-white/80 dark:bg-slate-800/80 p-4">
+                  <p className="text-xs uppercase tracking-wide text-amber-700 dark:text-amber-300 mb-2">Authorities Ready</p>
+                  <p className="font-semibold text-slate-900 dark:text-white text-sm">
+                    {keyAuthorities.length} statute references indexed for submissions
+                  </p>
+                </div>
+                <div className="rounded-xl border border-emerald-200 dark:border-emerald-700 bg-white/80 dark:bg-slate-800/80 p-4">
+                  <p className="text-xs uppercase tracking-wide text-emerald-700 dark:text-emerald-300 mb-2">Orders Sought</p>
+                  <p className="font-semibold text-slate-900 dark:text-white text-sm">
+                    Quash conviction / alternative resentencing pathway
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5" data-testid="hearing-strategy-checklist">
+                <h3 className="font-semibold text-slate-900 dark:text-white mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  Counsel Run-Sheet
+                </h3>
+                <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                  {strategicChecklist.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <ChevronRight className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* ===== AUTHORITIES & PRECEDENT PACK ===== */}
+            <div className="p-8 sm:p-12 border-b border-slate-200 dark:border-slate-700 page-break-inside-avoid">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center">
+                  <BookOpen className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h2
+                  className="text-2xl font-bold text-slate-900 dark:text-white"
+                  style={{ fontFamily: 'Crimson Pro, serif' }}
+                >
+                  Authorities & Precedent Pack
+                </h2>
+              </div>
+
+              <div className="grid lg:grid-cols-2 gap-6" data-testid="authorities-precedents-section">
+                <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                  <div className="px-4 py-3 bg-slate-100 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600">
+                    <h3 className="font-semibold text-slate-900 dark:text-white text-sm">Key Legislative Authorities</h3>
+                  </div>
+                  <div className="p-4 space-y-3">
+                    {keyAuthorities.length > 0 ? keyAuthorities.map((law, idx) => (
+                      <div key={idx} className="rounded-lg border border-slate-200 dark:border-slate-700 p-3 bg-white dark:bg-slate-800">
+                        <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                          {law.section ? `s.${law.section} ` : ""}{law.act || "Legislation Reference"}
+                        </p>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                          {law.jurisdiction ? `${law.jurisdiction} • ` : ""}Linked ground: {law.linked_ground}
+                        </p>
+                      </div>
+                    )) : (
+                      <p className="text-sm text-slate-500 dark:text-slate-400">No legislation mapping available yet. Generate grounds analysis to populate this panel.</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                  <div className="px-4 py-3 bg-slate-100 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600">
+                    <h3 className="font-semibold text-slate-900 dark:text-white text-sm">Comparable Appeal Outcomes</h3>
+                  </div>
+                  <div className="p-4 space-y-3">
+                    {precedentRows.length > 0 ? precedentRows.map((item, idx) => (
+                      <div key={idx} className="rounded-lg border border-slate-200 dark:border-slate-700 p-3 bg-white dark:bg-slate-800">
+                        <p className="text-sm font-semibold text-slate-900 dark:text-white">{item.case_name || "Comparable case"}</p>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{item.citation || "Citation pending"}</p>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Outcome: {item.outcome || "Outcome not recorded"}</p>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Ground link: {item.linked_ground}</p>
+                      </div>
+                    )) : (
+                      <p className="text-sm text-slate-500 dark:text-slate-400">No precedent cases mapped yet. Investigate grounds to populate precedent outcomes.</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

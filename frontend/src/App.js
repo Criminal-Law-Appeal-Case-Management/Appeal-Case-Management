@@ -296,7 +296,11 @@ function AppRouter() {
       />
       <Route
         path="/admin/dashboard"
-        element={<AdminDashboard />}
+        element={
+          <ProtectedRoute>
+            {({ user }) => <AdminDashboard user={user} />}
+          </ProtectedRoute>
+        }
       />
     </Routes>
   );

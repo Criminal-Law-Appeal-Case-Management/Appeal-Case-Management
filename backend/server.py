@@ -3115,297 +3115,220 @@ Summary: {case.get('summary', 'N/A')}
 
     # Define prompts based on report type with offence-specific language
     base_system = get_offence_system_prompt(offence_category)
+    report_guardrails = """
+MANDATORY GUARDRAILS:
+- Use a HYBRID tone: court-ready legal analysis + plain-English action notes for the client.
+- Use Australian English only.
+- Anchor findings to supplied case material; clearly mark uncertainty when evidence is incomplete.
+- Include legislation as: section + Act + jurisdiction.
+- Include sentencing comparisons and precedent outcomes where relevant.
+- DO NOT include cost estimates, fee ranges, funding commentary, or budget analysis.
+- DO NOT include witness contradiction sections or witness credibility scoring sections.
+"""
     
     if report_type == "quick_summary":
         system_prompt = f"""{base_system}
-You are generating a FREE quick summary report. Provide real value — specific findings, identified grounds, and an honest assessment. But make it clear the paid reports include significantly deeper analysis with case law citations, legislation links, appeal step-by-step guides, and court-specific filing procedures. Tease the upgrade naturally."""
-        user_prompt = f"""Analyze this {category_name.lower()} appeal case and provide a QUICK SUMMARY REPORT.
+{report_guardrails}
+You are generating a FREE Quick Summary. Deliver real legal value, then clearly explain what deeper paid reports add."""
+        user_prompt = f"""Analyse this {category_name.lower()} appeal matter and produce a QUICK SUMMARY REPORT.
 
 {case_context}
 
-Structure your response EXACTLY as follows:
+Write 900-1400 words. Structure your response EXACTLY as follows:
 
-## CASE OVERVIEW
-3-4 sentences: defendant, charges, jurisdiction, sentencing outcome, key dates. Reference documents reviewed.
+## CASE SNAPSHOT
+3-4 concise paragraphs: defendant, offence posture, jurisdiction, sentence, key procedural dates, and what material was reviewed.
 
-## KEY FINDINGS
-5-6 bullet points summarising the most significant findings. Be specific — reference actual content from the documents.
+## PRIMARY ISSUES IDENTIFIED
+6-8 bullet points. Each bullet must include:
+- issue label
+- document/timeline anchor
+- why it matters legally
 
-## POTENTIAL GROUNDS FOR APPEAL
-For each ground found (aim for 3-5), provide:
-- Ground name and type
-- 2-3 sentences explaining why it's viable
-- Strength rating (Strong / Moderate / Weak)
+## TOP POTENTIAL GROUNDS (PREVIEW)
+For 3-5 grounds, provide:
+- Ground title + type
+- Strength (Strong / Moderate / Weak)
+- 2-3 sentence legal rationale
+- One immediate action step in plain English
 
-## SIMILAR CASES (Preview)
-Mention 1-2 similar Australian appeal cases that may be relevant (e.g., "R v [Name] [Year] NSWCCA" or similar). Note: Full case analysis with links is available in the Full Report.
+## KEY LEGISLATION (PREVIEW)
+List the most relevant sections from {state_info.get('name', 'NSW')} / Commonwealth law with one-line relevance notes.
 
-## CASE STRENGTH ASSESSMENT
-Overall: Strong / Moderate / Requires Further Investigation. 2-3 sentences explaining.
+## SIMILAR CASES (PREVIEW)
+List 2-3 Australian appeal decisions with:
+- citation
+- hearing outcome (allowed/dismissed/resentenced)
+- why each is relevant
 
-## WHAT THE FULL REPORT ($29) UNLOCKS
-- Detailed legal analysis with specific legislation sections and direct links
-- Similar case decisions you can read in full (with AustLII links)
-- Document-by-document evidence analysis with direct quotes
-- Complete appeal filing guide for your specific court level
-- Strategic recommendations for presenting your case
-- Barrister-ready legal brief format
+## SENTENCING POSITION (HIGH LEVEL)
+2-3 paragraphs comparing sentence posture against typical appellate principles and proportionality concerns.
 
-IMPORTANT: Be specific and reference actual document content. This should feel like a real legal professional reviewed the case."""
+## OVERALL APPEAL OUTLOOK
+Give: Strong / Moderate / Needs Further Development + concise reasoning.
+
+## WHAT THE FULL REPORT ($29) ADDS
+- full section-by-section legal framework mapping
+- deeper precedent analysis with decision links
+- ground-by-ground tactical roadmap
+- filing pathway guidance by court level
+- hearing strategy and submission structure
+
+IMPORTANT:
+- No cost discussion.
+- No witness contradiction or witness credibility section.
+- Be specific to the supplied material, not generic."""
 
     elif report_type == "full_detailed":
         system_prompt = f"""{base_system}
-You are generating a PAID Full Detailed Report ($29 AUD). This must be comprehensive, professional, and worth every cent. Include specific legislation with section numbers, quote from documents, cite real Australian appeal cases with AustLII links (format: https://www.austlii.edu.au/cgi-bin/viewdoc/au/cases/[state]/[court]/[year]/[number].html), include step-by-step appeal filing procedures for the relevant court level, and provide strategic case presentation advice."""
+{report_guardrails}
+You are generating a PAID Full Detailed Report ($29 AUD). It must read like a barrister-grade brief plus clear client guidance."""
         user_prompt = f"""Create a FULL DETAILED LEGAL ANALYSIS REPORT for this {category_name.lower()} appeal case.
 
 {case_context}
 
-This is a PAID premium report. Write a minimum of 2500 words. Be comprehensive and specific.
+Minimum 3200 words. Structure your response EXACTLY as follows:
 
-Structure your response EXACTLY as follows:
+## 1. EXECUTIVE BRIEF (LEGAL + PLAIN ENGLISH)
+4-6 paragraphs combining professional legal framing with plain-English implications for the applicant.
 
-## 1. EXECUTIVE SUMMARY
-4-5 paragraphs: thorough overview, key issues, appeal viability assessment. Reference specific documents.
+## 2. CASE THEORY MAP
+Set out prosecution theory, defence theory, and where appellate pressure points emerge.
 
-## 2. CASE CHRONOLOGY
-Detailed chronological timeline from all documents. Every key date, event, court appearance. Cross-reference between documents.
+## 3. CHRONOLOGY WITH LEGAL INFLECTION POINTS
+Chronological timeline with events tied to legal significance and potential grounds.
 
-## 3. EVIDENCE ANALYSIS
-For EACH document:
-- Document name, type, significance
-- Direct quotes (use "quotation marks")
-- Reliability assessment
-- How it supports/undermines the appeal
-- Cross-references with other documents
+## 4. EVIDENCE SYNTHESIS BY SOURCE
+For each major document/source:
+- source summary
+- key quoted extracts
+- probative value
+- appellate relevance
 
-## 4. GROUNDS OF APPEAL — DETAILED ANALYSIS
-For EACH identified ground:
-### Ground [Number]: [Type] — [Title]
-- **Legal Basis**: Cite specific {state_info.get('name', 'NSW')} legislation sections
-- **Supporting Evidence**: Direct quotes from documents
-- **Strength**: Strong / Moderate / Weak with reasoning
-- **Relevant Similar Cases**: Cite 2-3 real Australian appeal cases where this ground succeeded. Include:
-  - Case name and citation (e.g., R v Smith [2020] NSWCCA 123)
-  - What happened and how it's similar
-  - Link: https://www.austlii.edu.au/cgi-bin/viewdoc/au/cases/nsw/NSWCCA/2020/123.html (use real format)
-- **Counter-Arguments**: What the Crown might argue
-- **How to Strengthen**: Specific steps
+## 5. GROUND-BY-GROUND APPEAL ANALYSIS
+For each viable ground:
+- Legal test and threshold
+- Relevant legislation (section + Act + jurisdiction)
+- Supporting material anchors
+- Likely Crown response
+- Defence reply strategy
+- Priority rating and next tactical step
 
-## 5. APPLICABLE LEGAL FRAMEWORK
-For each relevant Act, provide the section number, title, and what it means for this case:
-- {state_info.get('name', 'NSW')} Criminal legislation
-- Evidence Act sections
-- Criminal Appeal Act sections
-- Sentencing Act provisions
-Include links where possible: https://www.legislation.nsw.gov.au/ (or relevant state)
+## 6. APPLICABLE LEGAL FRAMEWORK (DETAILED)
+Map all key Acts/sections and explain exactly how each applies to this matter.
 
-## 6. SIMILAR CASES & PRECEDENTS
-For each similar case:
-- **Case**: Full citation
-- **Facts**: Brief summary of similar facts
-- **Outcome**: What happened on appeal
-- **Relevance**: How it applies to this case
-- **Decision Link**: AustLII URL to read the full decision
+## 7. SENTENCING BENCHMARK COMPARISON
+Compare sentence posture against sentencing principles and comparable appellate outcomes.
 
-## 7. HOW TO LODGE YOUR APPEAL — STEP BY STEP
-Provide the COMPLETE step-by-step process specific to {state_info.get('name', 'NSW')}:
+## 8. PRECEDENT TABLE (6-8 CASES)
+For each precedent include:
+- citation
+- facts in one line
+- hearing outcome
+- principle extracted
+- AustLII-format decision path
 
-### From Local/Magistrates Court
-1. [Step-by-step with forms, deadlines, filing locations]
+## 9. APPEAL PATHWAY BY COURT LEVEL
+For Local/Magistrates, District, Supreme/CCA pathways include:
+- filing sequence
+- forms/documents required
+- deadlines
+- registry/lodgement channel
 
-### From District Court
-1. [Step-by-step with forms, deadlines, filing locations]
+## 10. WRITTEN + ORAL SUBMISSION BLUEPRINT
+Provide practical structure for written submissions and oral submissions, including sequencing of arguments.
 
-### From Supreme Court to Court of Criminal Appeal
-1. [Step-by-step with forms, deadlines, filing locations]
+## 11. EVIDENTIARY GAPS & REMEDIATION PLAN
+Identify missing material and provide a step-by-step remediation checklist.
 
-Include specific forms needed, filing fees, time limits (usually 28 days), and where to lodge.
+## 12. 28-DAY ACTION PLAN
+Day-by-day/phase-by-phase action plan with urgency labels.
 
-## 8. CONTRADICTIONS & INCONSISTENCIES
-Every contradiction found across documents — quote the specific contradictory statements side by side.
-
-## 9. STRATEGIC RECOMMENDATIONS — HOW TO PRESENT YOUR CASE
-- Which grounds to lead with and why
-- How to structure your written submissions
-- Key arguments to emphasise in oral submissions
-- Evidence to highlight for maximum impact
-- Weaknesses to address proactively
-- How to present yourself to the court
-- What judges look for in successful appeals
-
-## 10. NEXT STEPS & DEADLINES
-Specific, actionable steps with exact deadlines. What to do today, this week, within 28 days.
-
-IMPORTANT: Quote directly from documents. Cite specific legislation. Include real case citations with AustLII-format links. Include actual court-specific filing steps."""
+IMPORTANT:
+- No cost discussion.
+- No witness contradiction or witness credibility section.
+- Quote from supplied material where possible.
+- Keep analysis jurisdiction-specific to {state_info.get('name', 'NSW')} and relevant Commonwealth law."""
 
     else:  # extensive_log
         system_prompt = f"""{base_system}
-You are generating the PREMIUM Extensive Log Report ($39 AUD). This is the most comprehensive report available — forensic-level analysis. Include EVERYTHING: line-by-line evidence analysis, complete legal mapping with legislation links, full cross-referencing, forensic timeline, all similar cases with AustLII decision links, complete appeal filing procedures for ALL court levels, witness credibility analysis, sentencing comparison, and a complete appeal strategy that a barrister could use as their primary working document. Write a minimum of 5000 words."""
-        user_prompt = f"""Create an EXTENSIVE LOG REPORT for this {category_name.lower()} appeal case. This is the PREMIUM report — the most detailed analysis possible.
+{report_guardrails}
+You are generating the PREMIUM Extensive Log Report ($39 AUD). This must function as a primary barrister working file: exhaustive, structured, and hearing-ready."""
+        user_prompt = f"""Create an EXTENSIVE LOG REPORT for this {category_name.lower()} appeal case.
 
 {case_context}
 
-MINIMUM 5000 words. Cover every angle, every document, every potential issue.
+Minimum 5200 words. Be exhaustive and highly structured. Use this exact format:
 
-Structure your response EXACTLY as follows:
-
-## 1. EXECUTIVE SUMMARY & CASE OVERVIEW
-6-8 paragraphs: comprehensive overview covering all parties, all charges, jurisdiction, court history, sentencing details, aggravating/mitigating factors, and overall appeal viability. More detailed than the entire Quick Summary report.
+## 1. EXECUTIVE COMMAND BRIEF
+Comprehensive overview, core appellate thesis, strongest routes to relief, and immediate urgency items.
 
 ## 2. COMPLETE FORENSIC CHRONOLOGY
-Day-by-day reconstruction from ALL documents. Every date, interaction, court appearance, evidence collection. Source citation for each entry. Highlight gaps in the timeline.
+Date-sequenced reconstruction with source anchors and legal implications for each stage.
 
-## 3. DOCUMENT-BY-DOCUMENT FORENSIC ANALYSIS
-For EACH document:
-### Document: [Name]
-- **Classification & Date**: Type and dating
-- **Author/Source**: Who created it, their role, potential bias
-- **Complete Summary**: Every relevant detail
-- **Key Quotes**: Every significant quote (use "quotation marks")
-- **Credibility Assessment**: Detailed reliability analysis
-- **Relevance to Each Appeal Ground**: How each element connects
-- **Cross-References**: Agreements/disagreements with other documents
-- **Gaps & Omissions**: What's missing that should be there
-- **Forensic Notes**: Anything unusual about the document
+## 3. DOCUMENT FORENSIC DIGEST
+For each document/source include:
+- origin and reliability context
+- key extracts (quoted)
+- legal significance
+- evidentiary limitations
 
-## 4. EVIDENCE CROSS-REFERENCE MATRIX
-- Where witnesses agree/disagree (quote each version)
-- Timeline inconsistencies across documents
-- Factual claims contradicted by other evidence
-- Missing evidence that would normally be expected
-- Chain of custody issues
-- Hearsay vs direct evidence classification
+## 4. CORROBORATION & RELIABILITY MATRIX
+Map where evidence converges/diverges, what is verified, what remains uncertain, and what corroboration is required.
 
-## 5. COMPREHENSIVE GROUNDS OF APPEAL
-For EVERY possible ground (examine ALL, not just the strongest):
-### Ground [Number]: [Type] — [Title]
-- **Strength Rating**: Strong / Moderate / Weak / Speculative (with percentage estimate)
-- **Detailed Legal Analysis**: Full discussion with multiple legislation references and section numbers
-- **Every Piece of Supporting Evidence**: All quotes, all documents, all witnesses
-- **Every Piece of Opposing Evidence**: What works against this ground
-- **Similar Cases (3-5 per ground)**:
-  For each case:
-  - Full citation (e.g., R v Smith [2020] NSWCCA 123)
-  - Brief facts and similarity to this case
-  - Appeal outcome
-  - Key legal principles established
-  - AustLII link: https://www.austlii.edu.au/cgi-bin/viewdoc/au/cases/[state]/[court]/[year]/[number].html
-- **Legal Tests**: The specific legal tests to satisfy
-- **How to Strengthen**: Detailed steps
-- **Counter-Strategy**: How to rebut Crown arguments
+## 5. COMPREHENSIVE GROUNDS PORTFOLIO
+Evaluate all plausible grounds, each with:
+- legal threshold
+- supporting anchors
+- contrary material
+- appellate viability score (reasoned)
+- tactical next step
 
-## 6. COMPLETE LEGAL FRAMEWORK MAP
-Every relevant piece of legislation with section numbers, titles, and application to this case:
-- {state_info.get('name', 'NSW')} Criminal Law Act — with section-by-section relevance
-- Evidence Act — applicable rules and exceptions
-- Criminal Appeal Act — specific provisions for this appeal type
-- Sentencing Act — guidelines and principles
-- Commonwealth legislation — any federal provisions
-- Human Rights — ICCPR, UN conventions, state human rights acts
-- Include direct links: https://www.legislation.nsw.gov.au/ (or relevant state)
+## 6. STATUTORY & DOCTRINAL MAP
+Full legislation map with section-level commentary and practical use in submissions.
 
-## 7. ALL SIMILAR & PRECEDENT CASES
-A comprehensive table of 8-12 similar Australian appeal cases:
-For each:
-- **Citation**: Full case name and citation
-- **Court**: Which court decided it
-- **Year**: When
-- **Similar Facts**: What makes it relevant
-- **Grounds Used**: Which appeal grounds were argued
-- **Outcome**: Allowed/dismissed and why
-- **Key Principle**: Legal principle established
-- **Read the Decision**: Full AustLII URL
+## 7. PRECEDENT OUTCOME MATRIX (8-12 CASES)
+For each case provide citation, fact pattern, hearing outcome, governing principle, and AustLII-style decision path.
 
-## 8. COMPLETE APPEAL FILING GUIDE — ALL COURT LEVELS
-Step-by-step procedures for {state_info.get('name', 'NSW')}:
+## 8. SENTENCING COMPARISON ANALYSIS
+Analyse sentence positioning, standard principles, comparable appellate outcomes, and resentencing indicators.
 
-### A. Appeal from Local/Magistrates Court to District Court
-1. Form required: [specific form name and number]
-2. Time limit: [days from conviction/sentence]
-3. Where to file: [specific court registry]
-4. Filing fee: [amount]
-5. What to include in the notice
-6. Serving the DPP
-7. What happens next (directions hearing, etc.)
+## 9. COURT-PATHWAY OPERATIONS GUIDE
+Operational filing guidance for all relevant court levels:
+- required forms/documents
+- sequencing
+- deadlines
+- lodgement channels
+- extension-of-time pathway
 
-### B. Appeal from District Court to Court of Criminal Appeal
-1. Notice of Intention to Appeal: [form, deadline, where to file]
-2. Grounds of Appeal document: [requirements, format]
-3. Leave to appeal requirements
-4. Written submissions: [format, deadlines, page limits]
-5. Transcript requests and funding
-6. Legal Aid application process
-7. The hearing: what to expect
+## 10. WRITTEN SUBMISSIONS MASTER OUTLINE
+Produce a robust written outline with argument order, authorities placement, and evidentiary references.
 
-### C. Appeal from Supreme Court to Court of Criminal Appeal
-1. [Same detailed steps]
+## 11. ORAL SUBMISSIONS HEARING SCRIPT
+Provide an oral run-sheet: opening, issue framing, authority sequence, anticipated bench questions, and closing orders sought.
 
-### D. Special Leave to Appeal to High Court
-1. [When this applies, requirements, timeline]
+## 12. EVIDENCE PREPARATION CHECKLIST
+What must be assembled for appeal books/annexures and how to index critical passages.
 
-### E. Extension of Time Applications
-1. When you've missed the deadline — how to apply, what to show
+## 13. RISK & SCENARIO ANALYSIS
+Best-case / mid-case / downside scenarios, triggers, and mitigation steps.
 
-## 9. SENTENCING ANALYSIS
-- Original sentence and classification
-- Sentencing range for this offence in {state_info.get('name', 'NSW')}
-- Comparable sentences in similar cases (with citations)
-- Standard non-parole period (if applicable)
-- Aggravating and mitigating factors from the documents
-- Grounds for sentence appeal (manifestly excessive, error in principle)
+## 14. PRIORITISED 72-HOUR, 7-DAY, 28-DAY PLAN
+Numbered tasks with urgency and dependencies.
 
-## 10. WITNESS CREDIBILITY ANALYSIS
-For each witness in the documents:
-- What they claimed (with quotes)
-- Internal consistency
-- Consistency with other evidence
-- Potential motives for bias
-- Areas for cross-examination
+## 15. STRATEGIC COMMUNICATION PACK
+Two layers:
+- Counsel-facing technical summary
+- Client-facing plain-English explanation
 
-## 11. COMPLETE APPEAL STRATEGY — HOW TO PRESENT YOUR CASE
+## 16. APPENDIX OF AUTHORITIES & REFERENCES
+Consolidated list of statutes, sections, precedents, and source anchors used in the report.
 
-### Written Submissions
-- Structure and format
-- Which grounds to lead with
-- How to cite legislation and case law
-- Key arguments to make
-- How to present evidence references
-
-### Oral Submissions
-- How to present to the Court of Criminal Appeal
-- Key points to emphasise
-- How to handle judicial questions
-- Time management in the hearing
-
-### Evidence Presentation
-- Which documents to include in the appeal book
-- Order and indexing
-- Highlighting key passages
-- Fresh evidence applications
-
-### Personal Presentation
-- What to wear, how to address the court
-- Courtroom etiquette
-- Self-represented vs legal representation considerations
-
-## 12. RISK ASSESSMENT
-- Best case scenario with probability
-- Worst case scenario
-- What could go wrong
-- Mitigating strategies
-- Whether appeal could increase sentence (rare but possible)
-
-## 13. IMMEDIATE ACTION ITEMS
-Numbered priority list with specific deadlines. What to do today, this week, within 28 days, within 3 months.
-
-## 14. APPENDIX — COMPLETE REFERENCES
-- All legislation cited with section references and links
-- All case law cited with AustLII links
-- All documents referenced
-- Glossary of legal terms
-- Contact details for relevant courts and legal aid
-
-IMPORTANT: This is the PREMIUM report. Be exhaustive. Quote extensively from documents. Cite every relevant law section with links. Reference 8-12 similar cases with AustLII links. Include complete court-specific filing procedures. This should be a barrister's primary working document."""
+IMPORTANT:
+- No cost discussion.
+- No witness contradiction or witness credibility section.
+- Prefer specificity over generic commentary.
+- Every major conclusion should point back to material in the case context."""
 
     # Call OpenAI via Emergent
     api_key = os.environ.get('EMERGENT_LLM_KEY')

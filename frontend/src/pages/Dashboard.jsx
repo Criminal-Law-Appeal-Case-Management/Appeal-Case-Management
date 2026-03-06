@@ -141,7 +141,8 @@ const Dashboard = ({ user }) => {
   };
 
   // Sidebar navigation items - grouped logically
-  const isAdmin = user?.email === "djkingy79@gmail.com" || user?.is_admin;
+  const normalizedEmail = (user?.email || "").trim().toLowerCase();
+  const isAdmin = Boolean(user?.is_admin) || normalizedEmail === "djkingy79@gmail.com";
   
   const navGroups = [
     {
@@ -287,14 +288,28 @@ const Dashboard = ({ user }) => {
                 </p>
               </div>
             </div>
-            <Button
-              onClick={() => setShowNewCaseDialog(true)}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl shadow-lg shadow-primary/20"
-              data-testid="new-case-btn"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              New Case
-            </Button>
+            <div className="flex items-center gap-2">
+              {isAdmin && (
+                <Link to="/admin/dashboard">
+                  <Button
+                    variant="outline"
+                    className="rounded-xl border-amber-500/40 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20"
+                    data-testid="admin-dashboard-shortcut-btn"
+                  >
+                    <Shield className="w-4 h-4 mr-2" />
+                    Admin
+                  </Button>
+                </Link>
+              )}
+              <Button
+                onClick={() => setShowNewCaseDialog(true)}
+                className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl shadow-lg shadow-primary/20"
+                data-testid="new-case-btn"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                New Case
+              </Button>
+            </div>
           </div>
         </header>
 

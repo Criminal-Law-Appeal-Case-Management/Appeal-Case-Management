@@ -18,8 +18,13 @@ const LegalResourcesPage = () => {
     { id: "legal-aid", label: "Legal Aid", icon: Users },
     { id: "law-societies", label: "Law Societies", icon: Scale },
     { id: "complaints", label: "Complaints & OLCR", icon: AlertTriangle },
+    { id: "courts", label: "Courts", icon: Gavel },
     { id: "community", label: "Community Legal", icon: Building },
     { id: "pro-bono", label: "Pro Bono", icon: Shield },
+    { id: "government", label: "Government Bodies", icon: Building },
+    { id: "profession", label: "Profession Bodies", icon: Scale },
+    { id: "specialist", label: "Specialist Services", icon: Users },
+    { id: "regulatory", label: "Regulatory Agencies", icon: Shield },
   ];
 
   return (
@@ -75,6 +80,27 @@ const LegalResourcesPage = () => {
           <p className="text-slate-400 max-w-2xl mx-auto">
             Comprehensive directory of legal assistance, courts, law societies, and complaint bodies across all Australian states and territories.
           </p>
+        </div>
+      </section>
+
+      <section className="sticky top-[72px] z-30 bg-background/95 backdrop-blur border-b border-border" data-testid="legal-resources-quick-nav-wrapper">
+        <div className="max-w-5xl mx-auto px-6 py-3">
+          <div className="flex gap-2 overflow-x-auto pb-1" data-testid="legal-resources-quick-nav">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => scrollToSection(tab.id)}
+                  className="inline-flex items-center gap-2 whitespace-nowrap px-3 py-2 rounded-lg border border-border bg-card hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20 text-sm text-foreground transition-colors"
+                  data-testid={`legal-resource-tab-${tab.id}`}
+                >
+                  <Icon className="w-4 h-4 text-amber-600" />
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </section>
 
