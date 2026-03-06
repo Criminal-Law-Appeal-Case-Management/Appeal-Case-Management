@@ -557,7 +557,7 @@ const LandingPage = () => {
                 84+ legal terms explained in plain English including 23 specific Appeal Grounds, evidence law, and sentencing principles.
               </p>
               <div className="text-indigo-500 text-xs font-medium">
-                ✓ Searchable • Categorized • Plain language explanations
+                ✓ Searchable • Categorised • Plain language explanations
               </div>
             </Link>
 

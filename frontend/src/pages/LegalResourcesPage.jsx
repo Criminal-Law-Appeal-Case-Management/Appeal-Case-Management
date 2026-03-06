@@ -181,7 +181,7 @@ const LegalResourcesPage = () => {
                 </div>
                 <h3 className="text-lg font-bold text-foreground mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>Grants & Special Funding</h3>
                 <p className="text-muted-foreground text-sm mb-3">
-                  Various grants and funding programs exist specifically to support criminal appeals and wrongful conviction cases. 
+                  Various grants and funding programmes exist specifically to support criminal appeals and wrongful conviction cases. 
                   These are rarely advertised but can cover legal costs.
                 </p>
                 <ul className="text-xs text-muted-foreground space-y-1 mb-3">

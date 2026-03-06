@@ -155,7 +155,7 @@ const faqs = [
     questions: [
       {
         q: "Is my case information confidential?",
-        a: "Yes. Your case data is stored securely and is only accessible to you. We do not share individual case information with anyone. Aggregated, anonymized statistics may be used to improve the service."
+        a: "Yes. Your case data is stored securely and is only accessible to you. We do not share individual case information with anyone. Aggregated, anonymised statistics may be used to improve the service."
       },
       {
         q: "Who can see my documents?",

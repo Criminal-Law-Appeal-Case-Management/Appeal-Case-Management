@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 
-// Categorized glossary with more comprehensive terms
+// Categorised glossary with more comprehensive terms
 const glossaryCategories = [
   {
     id: "fundamentals",
@@ -549,7 +549,7 @@ const glossaryCategories = [
       {
         term: "Community Correction Order (CCO)",
         simple: "A supervised order in the community",
-        detailed: "A sentence that allows you to remain in the community while completing certain conditions. Can include supervision, community service, drug testing, and treatment programs.",
+        detailed: "A sentence that allows you to remain in the community while completing certain conditions. Can include supervision, community service, drug testing, and treatment programmes.",
         example: "You're sentenced to a 2-year CCO with 200 hours community service."
       },
       {

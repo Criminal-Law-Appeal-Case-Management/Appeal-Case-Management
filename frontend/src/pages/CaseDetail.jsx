@@ -99,8 +99,8 @@ const SIGNIFICANCE_LEVELS = [
 
 const PERSPECTIVES = [
   { value: "neutral", label: "Neutral" },
-  { value: "prosecution", label: "Favors Prosecution" },
-  { value: "defence", label: "Favors Defence" }
+  { value: "prosecution", label: "Favours Prosecution" },
+  { value: "defence", label: "Favours Defence" }
 ];
 
 const GROUND_TYPES = [

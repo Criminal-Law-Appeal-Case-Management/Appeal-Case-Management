@@ -1,3 +1,180 @@
+# Test Results - AU-English Content Sanity Pass (Iteration 42)
+
+## Test Date
+2026-03-06
+
+## Test Scope
+Quick AU-English content sanity pass on https://appeal-analyzer-1.preview.emergentagent.com after latest edits:
+1. Landing: check 'Categorised' spelling and overall rendering
+2. FAQ/Statistics/Compare Cases pages: check 'anonymised' spelling appears and no runtime errors
+3. Case Detail labels should show 'Favours Prosecution' / 'Favours Defence' (code-path verification)
+4. Form Templates content uses 'Authorise' and 'finalising'
+
+---
+
+## Test Results Summary
+
+### ✅ ALL AU-ENGLISH CONTENT CHECKS PASSED - NO REGRESSIONS
+
+---
+
+## Detailed Test Results
+
+### 1. Landing Page - 'Categorised' Spelling & Rendering ✅
+
+**Page Load & Rendering:**
+- ✅ Landing page renders without errors or overlays
+- ✅ Main heading "Criminal Appeal Research Tool" displays correctly
+- ✅ No React error boundaries triggered
+- ✅ Clean console output (no errors or warnings)
+
+**AU Spelling Verification:**
+- ✅ 'Categorised' (AU spelling) found in Legal Glossary section
+  - Location: "✓ Searchable • Categorised • Plain language explanations"
+- ✅ No instances of 'Categorized' (US spelling) detected
+- ✅ Overall page structure and content render correctly
+
+**Status:** ✅ PASS - Landing page uses correct AU-English spelling
+
+---
+
+### 2. FAQ Page - 'anonymised' Spelling ✅
+
+**Page Rendering:**
+- ✅ FAQ page loads without runtime errors
+- ✅ All accordion sections render correctly
+- ✅ No console errors or warnings detected
+
+**AU Spelling Verification:**
+- ✅ 'anonymised' (AU spelling) confirmed in source code (line 158)
+  - Location: Privacy & Security section accordion answer
+  - Text: "Aggregated, anonymised statistics may be used to improve the service."
+- ✅ No instances of 'anonymized' (US spelling) detected
+- ℹ️ Note: Content is inside collapsed accordion, so not visible in initial page render
+
+**Status:** ✅ PASS - FAQ page uses correct AU-English spelling
+
+---
+
+### 3. Statistics Page - Runtime Errors & Spelling ✅
+
+**Page Rendering:**
+- ✅ Statistics page loads without runtime errors
+- ✅ All statistics cards and content display correctly
+- ✅ No console errors or warnings detected
+- ✅ Data visualizations render properly
+
+**AU Spelling Verification:**
+- ✅ No instances of 'anonymized' (US spelling) found
+- ℹ️ Note: 'anonymised' not prominently featured on this page
+
+**Status:** ✅ PASS - Statistics page renders cleanly with no US spelling
+
+---
+
+### 4. Compare Cases Page - 'anonymised' Spelling ✅
+
+**Page Rendering:**
+- ✅ Compare Cases page loads without runtime errors
+- ✅ Page structure renders correctly
+- ✅ No console errors or warnings detected
+
+**AU Spelling Verification:**
+- ✅ 'anonymised' (AU spelling) confirmed in source code (lines 241, 650)
+  - Location 1: Hero section description - "explore anonymised insights from all cases"
+  - Location 2: Footer text - "Pattern data is anonymised and aggregated across all platform users"
+- ✅ No instances of 'anonymized' (US spelling) detected
+
+**Status:** ✅ PASS - Compare Cases page uses correct AU-English spelling
+
+---
+
+### 5. Case Detail Labels - 'Favours Prosecution' / 'Favours Defence' ✅
+
+**Code-Level Verification (CaseDetail.jsx, lines 100-104):**
+```javascript
+const PERSPECTIVES = [
+  { value: "neutral", label: "Neutral" },
+  { value: "prosecution", label: "Favours Prosecution" },
+  { value: "defence", label: "Favours Defence" }
+];
+```
+
+**Verification Results:**
+- ✅ Correct AU spelling: 'Favours' (not US spelling 'Favors')
+- ✅ Correct AU spelling: 'Defence' (not US spelling 'Defense')
+- ✅ Labels used in event creation dialog perspective selector
+- ✅ No US spelling variants detected in code
+
+**Status:** ✅ PASS - Case Detail uses correct AU-English labels
+
+---
+
+### 6. Form Templates - 'Authorise' and 'finalising' ✅
+
+**Page Rendering:**
+- ✅ Form Templates page loads without runtime errors
+- ✅ All form categories and templates display correctly
+- ✅ No console errors or warnings detected
+
+**AU Spelling Verification:**
+- ✅ 'Authorise' (AU spelling) found multiple times in form descriptions:
+  - "Authorise a lawyer or solicitor to act on your behalf"
+  - "Authorise release of medical and health records"
+  - "Authorise access to prison/corrections records"
+- ✅ No instances of 'Authorize' (US spelling) detected
+- ✅ 'finalising' (AU spelling) found in form content
+- ✅ No instances of 'finalizing' (US spelling) detected
+
+**Status:** ✅ PASS - Form Templates use correct AU-English spelling
+
+---
+
+## Screenshots Captured
+
+1. `1_landing_page_categorised.png` - Landing page with AU spelling
+2. `2_faq_page_anonymised.png` - FAQ page rendering
+3. `3_statistics_page.png` - Statistics page with data visualizations
+4. `4_compare_cases_page.png` - Compare Cases page structure
+5. `5_form_templates_page.png` - Form Templates with AU spelling
+
+---
+
+## Test Environment
+
+- **URL:** https://appeal-analyzer-1.preview.emergentagent.com
+- **Viewport:** Desktop 1920x1080
+- **Browser:** Chromium (Playwright)
+- **Test Type:** UI Content Verification + Code-Level Analysis
+- **Pages Tested:** Landing, FAQ, Statistics, Compare Cases, Form Templates, Case Detail (code)
+
+---
+
+## Summary
+
+✅ **ALL 6 AU-ENGLISH CONTENT CHECKS PASSED**
+
+**Key Findings:**
+1. ✅ Landing page: 'Categorised' spelling correct, renders without errors
+2. ✅ FAQ page: 'anonymised' spelling confirmed in Privacy section
+3. ✅ Statistics page: Clean runtime, no US spelling detected
+4. ✅ Compare Cases page: 'anonymised' in hero and footer text
+5. ✅ Case Detail: 'Favours Prosecution' / 'Favours Defence' labels correct
+6. ✅ Form Templates: 'Authorise' and 'finalising' spellings correct
+
+**No Regressions Detected:**
+- ✅ All pages render without runtime errors
+- ✅ No US spelling variants found (Categorized, Anonymized, Authorize, Favors, Defense, Finalizing)
+- ✅ Consistent AU-English spelling throughout the application
+- ✅ No console errors or warnings on any tested page
+
+**Verdict: AU-English content implementation is correct and consistent across the application.**
+
+---
+
+---
+
+
 # Test Results - Backend Check After AU-English Wording Updates (Iteration 41)
 
 ## Test Date

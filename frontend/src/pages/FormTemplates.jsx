@@ -56,10 +56,10 @@ const FORM_CATEGORIES = [
     icon: Users,
     color: "text-blue-600",
     forms: [
-      { id: "authority-lawyer", name: "Authority to Act - Legal Representative", description: "Authorize a lawyer or solicitor to act on your behalf" },
+      { id: "authority-lawyer", name: "Authority to Act - Legal Representative", description: "Authorise a lawyer or solicitor to act on your behalf" },
       { id: "authority-police", name: "Authority to Release - Police Records", description: "Request release of police records and evidence" },
-      { id: "authority-medical", name: "Authority to Release - Medical Records", description: "Authorize release of medical and health records" },
-      { id: "authority-corrective", name: "Authority to Act - Corrective Services", description: "Authorize access to prison/corrections records" },
+      { id: "authority-medical", name: "Authority to Release - Medical Records", description: "Authorise release of medical and health records" },
+      { id: "authority-corrective", name: "Authority to Act - Corrective Services", description: "Authorise access to prison/corrections records" },
       { id: "authority-court", name: "Authority to Obtain - Court Documents", description: "Request copies of court transcripts and documents" },
       { id: "authority-general", name: "General Authority to Act", description: "Broad authority for a person to act on another's behalf" },
     ]
@@ -943,7 +943,7 @@ const FormTemplates = () => {
                 </div>
 
                 <p className="mt-4 bg-amber-200 dark:bg-amber-900/60 p-3 rounded border border-amber-400 dark:border-amber-600 font-medium">
-                  ⚡ <strong>PRO TIP:</strong> Request transcripts and exhibits <strong>immediately</strong> — even before finalizing your grounds of appeal. You can't properly identify appeal grounds without reviewing what was said and done at trial.
+                  ⚡ <strong>PRO TIP:</strong> Request transcripts and exhibits <strong>immediately</strong> — even before finalising your grounds of appeal. You can't properly identify appeal grounds without reviewing what was said and done at trial.
                 </p>
               </div>
             </div>

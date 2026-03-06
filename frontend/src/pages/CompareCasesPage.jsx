@@ -238,7 +238,7 @@ const CompareCasesPage = ({ user }) => {
             </div>
           </div>
           <p className="text-muted-foreground max-w-2xl mt-2">
-            Compare your own cases to find patterns, or explore anonymized insights from all cases on the platform.
+            Compare your own cases to find patterns, or explore anonymised insights from all cases on the platform.
           </p>
         </div>
       </section>
@@ -647,7 +647,7 @@ const CompareCasesPage = ({ user }) => {
             © 2025 Appeal Case Manager. All rights reserved.
           </p>
           <p className="text-slate-500 text-xs mt-2">
-            Pattern data is anonymized and aggregated across all platform users.
+            Pattern data is anonymised and aggregated across all platform users.
           </p>
         </div>
       </footer>

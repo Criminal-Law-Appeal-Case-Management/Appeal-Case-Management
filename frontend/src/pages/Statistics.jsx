@@ -147,7 +147,7 @@ const Statistics = () => {
             Case Statistics Dashboard
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Anonymized insights from cases managed through our platform. Understanding patterns can help inform your appeal strategy.
+            Anonymised insights from cases managed through our platform. Understanding patterns can help inform your appeal strategy.
           </p>
         </div>
       </section>
