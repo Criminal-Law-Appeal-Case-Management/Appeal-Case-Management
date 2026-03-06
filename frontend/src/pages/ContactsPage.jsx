@@ -62,6 +62,13 @@ const ContactsPage = () => {
           <p className="text-slate-400 max-w-2xl mx-auto">
             All legal assistance contacts across Australia in one place. Legal Aid, Law Societies, Complaints Bodies, Courts, Community Legal Centres, and Pro Bono services.
           </p>
+          <div className="mt-5">
+            <Link to="/contact" data-testid="legal-contacts-contact-deb-link">
+              <Button className="bg-amber-600 hover:bg-amber-700 text-white rounded-lg">
+                Contact Deb Directly
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 

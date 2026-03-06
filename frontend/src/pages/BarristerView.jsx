@@ -329,6 +329,45 @@ const BarristerView = ({ user }) => {
     "Close by stating precise orders sought (quash, retrial, or resentencing alternative)."
   ];
 
+  const outcomeOptions = [
+    {
+      option: "Conviction quashed",
+      threshold: "Material legal error + miscarriage consequence",
+      likelihood: caseStrength >= 72 ? "High" : caseStrength >= 52 ? "Moderate" : "Developing",
+      result: "Charge set aside; acquittal or further directions"
+    },
+    {
+      option: "Retrial ordered",
+      threshold: "Unsafe verdict but sufficient basis for fresh trial",
+      likelihood: caseStrength >= 55 ? "Moderate" : "Low-Moderate",
+      result: "Matter remitted for retrial"
+    },
+    {
+      option: "Conviction downgraded/substituted",
+      threshold: "Elements for higher offence not sustained",
+      likelihood: caseStrength >= 60 ? "Moderate" : "Developing",
+      result: "Possible substitution (e.g., murder → manslaughter where sustainable)"
+    },
+    {
+      option: "Sentence reduced",
+      threshold: "Manifest excess or error in principle",
+      likelihood: caseStrength >= 58 ? "High" : "Moderate",
+      result: "Resentencing with lower head sentence/NPP"
+    },
+    {
+      option: "Appeal dismissed",
+      threshold: "No material legal error established",
+      likelihood: caseStrength >= 65 ? "Lower risk" : "Active risk",
+      result: "Original conviction/sentence stands"
+    }
+  ];
+
+  const comparativeSentenceRows = [
+    { case_label: "Comparable Path A", original: "30 / 22.5", revised: "18 / 11", reduction: "12 years (40%)" },
+    { case_label: "Comparable Path B", original: "24 / 16", revised: "16 / 10", reduction: "8 years (33%)" },
+    { case_label: "Comparable Path C", original: "18 / 12", revised: "14 / 8", reduction: "4 years (22%)" },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 print:bg-white">
       {/* Premium Header Bar - hidden when printing */}
@@ -731,6 +770,69 @@ const BarristerView = ({ user }) => {
                       <p className="text-sm text-slate-500 dark:text-slate-400">No precedent cases mapped yet. Investigate grounds to populate precedent outcomes.</p>
                     )}
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ===== OUTCOME OPTIONS + COMPARATIVE SENTENCING ===== */}
+            <div className="p-8 sm:p-12 border-b border-slate-200 dark:border-slate-700 page-break-inside-avoid bg-gradient-to-r from-rose-50/40 via-white to-indigo-50/40 dark:from-rose-900/10 dark:via-slate-800 dark:to-indigo-900/10">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-rose-600 dark:text-rose-400" />
+                </div>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  Comparative Sentencing & Relief Pathways
+                </h2>
+              </div>
+
+              <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 overflow-x-auto mb-6" data-testid="comparative-sentencing-table-panel">
+                <table className="w-full text-sm min-w-[640px]">
+                  <thead className="bg-slate-100 dark:bg-slate-700">
+                    <tr>
+                      <th className="text-left px-4 py-2 font-semibold text-slate-800 dark:text-slate-100">Comparative Track</th>
+                      <th className="text-left px-4 py-2 font-semibold text-slate-800 dark:text-slate-100">Original Sentence / NPP</th>
+                      <th className="text-left px-4 py-2 font-semibold text-slate-800 dark:text-slate-100">Revised Sentence / NPP</th>
+                      <th className="text-left px-4 py-2 font-semibold text-slate-800 dark:text-slate-100">Reduction</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {comparativeSentenceRows.map((row) => (
+                      <tr key={row.case_label} className="border-t border-slate-200 dark:border-slate-700">
+                        <td className="px-4 py-2 text-slate-700 dark:text-slate-200 font-medium">{row.case_label}</td>
+                        <td className="px-4 py-2 text-slate-700 dark:text-slate-300">{row.original}</td>
+                        <td className="px-4 py-2 text-slate-700 dark:text-slate-300">{row.revised}</td>
+                        <td className="px-4 py-2 text-emerald-700 dark:text-emerald-300 font-semibold">{row.reduction}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 overflow-hidden" data-testid="outcome-options-matrix-panel">
+                <div className="px-4 py-3 bg-slate-100 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600">
+                  <h3 className="font-semibold text-slate-900 dark:text-white text-sm">Full Options Available Matrix</h3>
+                </div>
+                <div className="divide-y divide-slate-200 dark:divide-slate-700">
+                  {outcomeOptions.map((item, idx) => (
+                    <div key={item.option} className="grid md:grid-cols-4 gap-3 px-4 py-3">
+                      <div>
+                        <p className="text-[11px] uppercase tracking-wide text-slate-500 mb-1">Option {idx + 1}</p>
+                        <p className="font-semibold text-slate-900 dark:text-white text-sm">{item.option}</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] uppercase tracking-wide text-slate-500 mb-1">Legal Threshold</p>
+                        <p className="text-sm text-slate-700 dark:text-slate-300">{item.threshold}</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] uppercase tracking-wide text-slate-500 mb-1">Likelihood (Current Case)</p>
+                        <p className="text-sm text-slate-700 dark:text-slate-300">{item.likelihood}</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] uppercase tracking-wide text-slate-500 mb-1">Practical Result</p>
+                        <p className="text-sm text-slate-700 dark:text-slate-300">{item.result}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

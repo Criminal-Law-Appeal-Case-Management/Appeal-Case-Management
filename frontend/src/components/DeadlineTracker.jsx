@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { API } from "../App";
 import { 
-  Clock, AlertTriangle, CheckCircle2, Plus, Trash2, Calendar as CalendarIcon, List
+  Clock, AlertTriangle, CheckCircle2, Plus, Trash2, Calendar as CalendarIcon, List, ExternalLink, Download
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
@@ -107,6 +107,60 @@ const DeadlineTracker = ({ caseId }) => {
     if (daysRemaining <= 3) return "bg-red-50 text-red-700 border-red-200";
     if (daysRemaining <= 7) return "bg-amber-50 text-amber-700 border-amber-200";
     return "bg-slate-50 text-slate-700 border-slate-200";
+  };
+
+  const toGoogleDateTime = (isoDate) => {
+    const date = new Date(isoDate);
+    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  };
+
+  const getGoogleCalendarUrl = (deadline) => {
+    const start = toGoogleDateTime(deadline.due_date);
+    const endDate = new Date(deadline.due_date);
+    endDate.setHours(endDate.getHours() + 1);
+    const end = toGoogleDateTime(endDate.toISOString());
+
+    const params = new URLSearchParams({
+      action: 'TEMPLATE',
+      text: deadline.title,
+      details: deadline.description || `Appeal deadline (${deadline.deadline_type})`,
+      dates: `${start}/${end}`,
+    });
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  };
+
+  const downloadICS = (deadline) => {
+    const start = toGoogleDateTime(deadline.due_date);
+    const endDate = new Date(deadline.due_date);
+    endDate.setHours(endDate.getHours() + 1);
+    const end = toGoogleDateTime(endDate.toISOString());
+    const uid = `${deadline.deadline_id}@appeal-case-manager`;
+
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Appeal Case Manager//Deadlines//EN',
+      'BEGIN:VEVENT',
+      `UID:${uid}`,
+      `DTSTAMP:${toGoogleDateTime(new Date().toISOString())}`,
+      `DTSTART:${start}`,
+      `DTEND:${end}`,
+      `SUMMARY:${deadline.title.replace(/\n/g, ' ')}`,
+      `DESCRIPTION:${(deadline.description || '').replace(/\n/g, ' ')}`,
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
+
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${deadline.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${deadline.deadline_id}.ics`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+    toast.success('Calendar file downloaded');
   };
 
   // Get deadlines for a specific date
@@ -235,6 +289,28 @@ const DeadlineTracker = ({ caseId }) => {
                                   }
                                 </span>
                               )}
+                            </div>
+
+                            <div className="flex flex-wrap gap-2 mt-2" data-testid={`deadline-calendar-actions-${deadline.deadline_id}`}>
+                              <a
+                                href={getGoogleCalendarUrl(deadline)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-xs text-indigo-700 hover:text-indigo-900"
+                                data-testid={`deadline-google-calendar-link-${deadline.deadline_id}`}
+                              >
+                                <ExternalLink className="w-3.5 h-3.5" />
+                                Add to Google Calendar
+                              </a>
+                              <button
+                                type="button"
+                                onClick={() => downloadICS(deadline)}
+                                className="inline-flex items-center gap-1 text-xs text-slate-700 hover:text-slate-900"
+                                data-testid={`deadline-download-ics-btn-${deadline.deadline_id}`}
+                              >
+                                <Download className="w-3.5 h-3.5" />
+                                Download ICS
+                              </button>
                             </div>
                           </div>
                         </div>

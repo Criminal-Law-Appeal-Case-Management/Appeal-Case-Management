@@ -7,6 +7,7 @@ import {
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
+import { Switch } from "./ui/switch";
 import {
   Dialog,
   DialogContent,
@@ -64,6 +65,7 @@ const ReportsSection = ({
   const [expandedReports, setExpandedReports] = useState({});
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [pendingReportType, setPendingReportType] = useState(null);
+  const [aggressiveMode, setAggressiveMode] = useState(false);
 
   const handleExportPDF = async (reportId) => {
     try {
@@ -137,7 +139,7 @@ const ReportsSection = ({
     try {
       const response = await axios.post(
         `${API}/cases/${caseId}/reports/generate`,
-        { report_type: reportType },
+        { report_type: reportType, aggressive_mode: aggressiveMode },
         { timeout: 180000 }
       );
       
@@ -151,6 +153,7 @@ const ReportsSection = ({
       }
     } finally {
       setGeneratingReport(false);
+      setAggressiveMode(false);
     }
   };
 
@@ -271,6 +274,11 @@ const ReportsSection = ({
                           <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
                             AI Generated
                           </Badge>
+                          {report?.content?.aggressive_mode && (
+                            <Badge variant="outline" className="bg-rose-50 text-rose-700 border-rose-200" data-testid={`aggressive-report-badge-${report.report_id}`}>
+                              Aggressive
+                            </Badge>
+                          )}
                           <Button
                             variant="ghost"
                             size="icon"
@@ -345,7 +353,13 @@ const ReportsSection = ({
       )}
 
       {/* Report Type Selection Dialog */}
-      <Dialog open={showReportDialog} onOpenChange={setShowReportDialog}>
+      <Dialog
+        open={showReportDialog}
+        onOpenChange={(open) => {
+          setShowReportDialog(open);
+          if (!open) setAggressiveMode(false);
+        }}
+      >
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -383,6 +397,22 @@ const ReportsSection = ({
                 </div>
               </div>
             ))}
+
+            <div className="rounded-lg border border-rose-200 bg-rose-50 p-3" data-testid="aggressive-mode-container">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-rose-900">Aggressive Mode</p>
+                  <p className="text-xs text-rose-700">
+                    Uses stronger advocacy language with primary and fallback orders sought.
+                  </p>
+                </div>
+                <Switch
+                  checked={aggressiveMode}
+                  onCheckedChange={setAggressiveMode}
+                  data-testid="aggressive-mode-switch"
+                />
+              </div>
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowReportDialog(false)}>

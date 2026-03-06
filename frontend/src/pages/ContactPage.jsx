@@ -132,6 +132,13 @@ const ContactPage = () => {
           <p className="text-muted-foreground text-lg max-w-lg mx-auto">
             Have a question or need help? Send a message and I'll get back to you as soon as possible.
           </p>
+          <Link
+            to="/legal-contacts"
+            className="inline-flex items-center mt-4 text-sm font-semibold text-amber-600 hover:text-amber-700"
+            data-testid="contact-page-directory-link"
+          >
+            Looking for legal organisations instead? Open Legal Contacts Directory
+          </Link>
         </div>
       </section>
 

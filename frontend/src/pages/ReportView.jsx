@@ -305,6 +305,11 @@ const ReportView = () => {
               <Badge variant="outline" className={reportTypeConfig[report?.report_type]?.cls || reportTypeConfig.quick_summary.cls} data-testid="report-type-badge">
                 {reportTypeConfig[report?.report_type]?.label || report?.report_type}
               </Badge>
+              {report?.content?.aggressive_mode && (
+                <Badge variant="outline" className="bg-rose-100 text-rose-800 border-rose-200" data-testid="report-aggressive-mode-badge">
+                  Aggressive Mode
+                </Badge>
+              )}
               <span className="text-sm text-slate-500" data-testid="report-generated-date">Generated: {formatDate(report?.generated_at)}</span>
             </div>
           </div>

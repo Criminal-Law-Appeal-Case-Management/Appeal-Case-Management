@@ -50,7 +50,7 @@ const LandingPage = () => {
                 <Link to="/legal-resources" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm rounded-t-lg">
                   Legal Resources
                 </Link>
-                <Link to="/contacts" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
+                <Link to="/legal-contacts" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
                   Contacts Directory
                 </Link>
                 <Link to="/legal-framework" className="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white text-sm">
@@ -143,7 +143,7 @@ const LandingPage = () => {
             <Link to="/success-stories" className="block py-2 text-slate-300 hover:text-white">Success Stories</Link>
             <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
             <Link to="/legal-resources" className="block py-2 text-slate-300 hover:text-white">Legal Resources</Link>
-            <Link to="/contacts" className="block py-2 text-slate-300 hover:text-white">Contacts Directory</Link>
+            <Link to="/legal-contacts" className="block py-2 text-slate-300 hover:text-white">Contacts Directory</Link>
             <Link to="/forms" className="block py-2 text-slate-300 hover:text-white">Forms</Link>
             <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
             <Link to="/legal-framework" className="block py-2 text-slate-300 hover:text-white">Legal Framework</Link>
@@ -512,7 +512,7 @@ const LandingPage = () => {
             </Link>
 
             {/* Legal Contacts Directory */}
-            <Link to="/contacts" className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group block">
+            <Link to="/legal-contacts" className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-amber-600 transition-all group block">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 bg-teal-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Users className="w-5 h-5 text-white" />

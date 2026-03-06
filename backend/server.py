@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Response, Request, UploadFile, File, Form
+from fastapi import FastAPI, APIRouter, HTTPException, Response, Request, UploadFile, File, Form, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -7,7 +7,7 @@ import os
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
-from typing import List, Optional
+from typing import List, Optional, Dict
 import uuid
 from datetime import datetime, timezone, timedelta
 import httpx
@@ -15,6 +15,7 @@ import base64
 import json
 import asyncio
 import resend
+import re
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -238,6 +239,7 @@ class GroundOfMeritUpdate(BaseModel):
 
 class ReportRequest(BaseModel):
     report_type: str = "quick_summary"
+    aggressive_mode: bool = False
 
 class Report(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -263,6 +265,8 @@ class Note(BaseModel):
     is_pinned: bool = False
     document_id: Optional[str] = None  # Link to specific document
     report_id: Optional[str] = None  # Link to specific report
+    mentions: List[str] = []
+    comments: List[dict] = []
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
@@ -273,12 +277,16 @@ class NoteCreate(BaseModel):
     is_pinned: bool = False
     document_id: Optional[str] = None
     report_id: Optional[str] = None
+    mentions: List[str] = []
 
 class NoteUpdate(BaseModel):
     category: Optional[str] = None
     title: Optional[str] = None
     content: Optional[str] = None
     is_pinned: Optional[bool] = None
+
+class NoteCommentCreate(BaseModel):
+    content: str
 
 # ============ DEADLINE MODELS ============
 
@@ -428,6 +436,72 @@ async def get_current_user(request: Request) -> User:
         raise HTTPException(status_code=401, detail="User not found")
     
     return User(**user_doc)
+
+async def get_user_from_session_token(session_token: str) -> User:
+    """Resolve user directly from a session token (used by WebSocket auth)."""
+    if not session_token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    session_doc = await db.user_sessions.find_one({"session_token": session_token}, {"_id": 0})
+    if not session_doc:
+        raise HTTPException(status_code=401, detail="Invalid session")
+
+    expires_at = session_doc.get("expires_at")
+    if isinstance(expires_at, str):
+        expires_at = datetime.fromisoformat(expires_at)
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+    if expires_at < datetime.now(timezone.utc):
+        raise HTTPException(status_code=401, detail="Session expired")
+
+    user_doc = await db.users.find_one({"user_id": session_doc["user_id"]}, {"_id": 0})
+    if not user_doc:
+        raise HTTPException(status_code=401, detail="User not found")
+
+    return User(**user_doc)
+
+
+# ============ NOTES REAL-TIME COLLAB HELPERS ============
+
+MENTION_PATTERN = re.compile(r"@([A-Za-z0-9._-]{2,64})")
+notes_ws_connections: Dict[str, Dict[str, WebSocket]] = {}
+
+
+def extract_mentions(text: str) -> List[str]:
+    if not text:
+        return []
+    mentions = [m.strip().lower() for m in MENTION_PATTERN.findall(text)]
+    return sorted(list(set([m for m in mentions if m])))
+
+
+async def get_presence_snapshot(case_id: str) -> List[dict]:
+    case_connections = notes_ws_connections.get(case_id, {})
+    if not case_connections:
+        return []
+
+    users = await db.users.find(
+        {"user_id": {"$in": list(case_connections.keys())}},
+        {"_id": 0, "user_id": 1, "name": 1, "email": 1}
+    ).to_list(100)
+    return users
+
+
+async def broadcast_notes_event(case_id: str, event_type: str, payload: dict):
+    case_connections = notes_ws_connections.get(case_id, {})
+    if not case_connections:
+        return
+
+    stale_user_ids = []
+    message = {"type": event_type, "payload": payload}
+
+    for user_id, ws in case_connections.items():
+        try:
+            await ws.send_json(message)
+        except Exception:
+            stale_user_ids.append(user_id)
+
+    for user_id in stale_user_ids:
+        case_connections.pop(user_id, None)
 
 # ============ VISITOR TRACKING ============
 
@@ -2263,6 +2337,11 @@ async def get_notes(case_id: str, request: Request):
         {"case_id": case_id},
         {"_id": 0}
     ).sort([("is_pinned", -1), ("created_at", -1)]).to_list(500)
+
+    for note in notes:
+        note["pinned"] = note.get("is_pinned", False)
+        note["mentions"] = note.get("mentions", [])
+        note["comments"] = note.get("comments", [])
     
     return notes
 
@@ -2276,12 +2355,16 @@ async def create_note(case_id: str, note_data: NoteCreate, request: Request):
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")
     
+    merged_mentions = sorted(list(set(note_data.mentions + extract_mentions(note_data.content))))
+
     note = Note(
         case_id=case_id,
         user_id=user.user_id,
         author_name=user.name,
         author_email=user.email,
-        **note_data.model_dump()
+        mentions=merged_mentions,
+        comments=[],
+        **note_data.model_dump(exclude={"mentions"})
     )
     
     note_dict = note.model_dump()
@@ -2297,6 +2380,19 @@ async def create_note(case_id: str, note_data: NoteCreate, request: Request):
     )
     
     created_note = await db.notes.find_one({"note_id": note.note_id}, {"_id": 0})
+    if created_note:
+        created_note["pinned"] = created_note.get("is_pinned", False)
+        created_note["mentions"] = created_note.get("mentions", [])
+        created_note["comments"] = created_note.get("comments", [])
+
+    await broadcast_notes_event(
+        case_id,
+        "note_created",
+        {
+            "note": created_note,
+            "actor": {"user_id": user.user_id, "name": user.name}
+        }
+    )
     return created_note
 
 @api_router.get("/cases/{case_id}/notes/{note_id}", response_model=dict)
@@ -2310,6 +2406,10 @@ async def get_note(case_id: str, note_id: str, request: Request):
     )
     if not note:
         raise HTTPException(status_code=404, detail="Note not found")
+
+    note["pinned"] = note.get("is_pinned", False)
+    note["mentions"] = note.get("mentions", [])
+    note["comments"] = note.get("comments", [])
     
     return note
 
@@ -2317,19 +2417,41 @@ async def get_note(case_id: str, note_id: str, request: Request):
 async def update_note(case_id: str, note_id: str, note_data: NoteUpdate, request: Request):
     """Update a note"""
     user = await get_current_user(request)
+
+    existing_note = await db.notes.find_one(
+        {"note_id": note_id, "case_id": case_id, "user_id": user.user_id},
+        {"_id": 0}
+    )
+    if not existing_note:
+        raise HTTPException(status_code=404, detail="Note not found")
     
     update_fields = {k: v for k, v in note_data.model_dump().items() if v is not None}
+
+    updated_content = update_fields.get("content", existing_note.get("content", ""))
+    update_fields["mentions"] = extract_mentions(updated_content)
     update_fields["updated_at"] = datetime.now(timezone.utc).isoformat()
     
-    result = await db.notes.update_one(
+    await db.notes.update_one(
         {"note_id": note_id, "case_id": case_id, "user_id": user.user_id},
         {"$set": update_fields}
     )
     
-    if result.matched_count == 0:
-        raise HTTPException(status_code=404, detail="Note not found")
-    
-    return await db.notes.find_one({"note_id": note_id}, {"_id": 0})
+    updated_note = await db.notes.find_one({"note_id": note_id}, {"_id": 0})
+    if updated_note:
+        updated_note["pinned"] = updated_note.get("is_pinned", False)
+        updated_note["mentions"] = updated_note.get("mentions", [])
+        updated_note["comments"] = updated_note.get("comments", [])
+
+    await broadcast_notes_event(
+        case_id,
+        "note_updated",
+        {
+            "note": updated_note,
+            "actor": {"user_id": user.user_id, "name": user.name}
+        }
+    )
+
+    return updated_note
 
 @api_router.delete("/cases/{case_id}/notes/{note_id}")
 async def delete_note(case_id: str, note_id: str, request: Request):
@@ -2344,6 +2466,15 @@ async def delete_note(case_id: str, note_id: str, request: Request):
     
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Note not found")
+
+    await broadcast_notes_event(
+        case_id,
+        "note_deleted",
+        {
+            "note_id": note_id,
+            "actor": {"user_id": user.user_id, "name": user.name}
+        }
+    )
     
     return {"message": "Note deleted"}
 
@@ -2365,8 +2496,186 @@ async def toggle_pin_note(case_id: str, note_id: str, request: Request):
         {"note_id": note_id},
         {"$set": {"is_pinned": new_pin_status, "updated_at": datetime.now(timezone.utc).isoformat()}}
     )
+
+    updated_note = await db.notes.find_one({"note_id": note_id}, {"_id": 0})
+    if updated_note:
+        updated_note["pinned"] = updated_note.get("is_pinned", False)
+        updated_note["mentions"] = updated_note.get("mentions", [])
+        updated_note["comments"] = updated_note.get("comments", [])
+
+    await broadcast_notes_event(
+        case_id,
+        "note_updated",
+        {
+            "note": updated_note,
+            "actor": {"user_id": user.user_id, "name": user.name}
+        }
+    )
     
-    return await db.notes.find_one({"note_id": note_id}, {"_id": 0})
+    return updated_note
+
+
+@api_router.post("/cases/{case_id}/notes/{note_id}/comments", response_model=dict)
+async def add_note_comment(case_id: str, note_id: str, comment_data: NoteCommentCreate, request: Request):
+    """Add a threaded comment to a note."""
+    user = await get_current_user(request)
+
+    note = await db.notes.find_one(
+        {"note_id": note_id, "case_id": case_id, "user_id": user.user_id},
+        {"_id": 0}
+    )
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found")
+
+    content = comment_data.content.strip()
+    if not content:
+        raise HTTPException(status_code=400, detail="Comment content is required")
+
+    comment = {
+        "comment_id": f"cmt_{uuid.uuid4().hex[:12]}",
+        "content": content,
+        "mentions": extract_mentions(content),
+        "author_name": user.name,
+        "author_email": user.email,
+        "author_user_id": user.user_id,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+
+    await db.notes.update_one(
+        {"note_id": note_id},
+        {
+            "$push": {"comments": comment},
+            "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}
+        }
+    )
+
+    updated_note = await db.notes.find_one({"note_id": note_id}, {"_id": 0})
+    if updated_note:
+        updated_note["pinned"] = updated_note.get("is_pinned", False)
+        updated_note["mentions"] = updated_note.get("mentions", [])
+        updated_note["comments"] = updated_note.get("comments", [])
+
+    await broadcast_notes_event(
+        case_id,
+        "note_comment_added",
+        {
+            "note_id": note_id,
+            "comment": comment,
+            "note": updated_note,
+            "actor": {"user_id": user.user_id, "name": user.name}
+        }
+    )
+
+    return {"comment": comment, "note": updated_note}
+
+
+@api_router.delete("/cases/{case_id}/notes/{note_id}/comments/{comment_id}")
+async def delete_note_comment(case_id: str, note_id: str, comment_id: str, request: Request):
+    """Delete a comment from a note."""
+    user = await get_current_user(request)
+
+    note = await db.notes.find_one(
+        {"note_id": note_id, "case_id": case_id, "user_id": user.user_id},
+        {"_id": 0}
+    )
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found")
+
+    comments = note.get("comments", [])
+    target_comment = next((c for c in comments if c.get("comment_id") == comment_id), None)
+    if not target_comment:
+        raise HTTPException(status_code=404, detail="Comment not found")
+
+    if target_comment.get("author_user_id") != user.user_id:
+        raise HTTPException(status_code=403, detail="Only the comment author can delete this comment")
+
+    await db.notes.update_one(
+        {"note_id": note_id},
+        {
+            "$pull": {"comments": {"comment_id": comment_id}},
+            "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}
+        }
+    )
+
+    await broadcast_notes_event(
+        case_id,
+        "note_comment_deleted",
+        {
+            "note_id": note_id,
+            "comment_id": comment_id,
+            "actor": {"user_id": user.user_id, "name": user.name}
+        }
+    )
+
+    return {"message": "Comment deleted"}
+
+
+@api_router.websocket("/cases/{case_id}/notes/ws")
+async def notes_collaboration_ws(websocket: WebSocket, case_id: str):
+    """Realtime note collaboration channel for a case."""
+    session_token = websocket.query_params.get("session_token") or websocket.cookies.get("session_token")
+
+    try:
+        user = await get_user_from_session_token(session_token)
+        case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id}, {"_id": 0})
+        if not case:
+            await websocket.close(code=4404)
+            return
+
+        await websocket.accept()
+
+        case_connections = notes_ws_connections.setdefault(case_id, {})
+        case_connections[user.user_id] = websocket
+
+        presence = await get_presence_snapshot(case_id)
+        await broadcast_notes_event(case_id, "presence_update", {"users": presence})
+
+        while True:
+            raw_message = await websocket.receive_text()
+            if not raw_message:
+                continue
+
+            if raw_message == "ping":
+                await websocket.send_json({"type": "pong", "payload": {"timestamp": datetime.now(timezone.utc).isoformat()}})
+                continue
+
+            try:
+                payload = json.loads(raw_message)
+            except json.JSONDecodeError:
+                continue
+
+            if payload.get("type") == "typing":
+                await broadcast_notes_event(
+                    case_id,
+                    "typing",
+                    {
+                        "user_id": user.user_id,
+                        "name": user.name,
+                        "note_id": payload.get("note_id"),
+                        "is_typing": bool(payload.get("is_typing", False))
+                    }
+                )
+
+    except WebSocketDisconnect:
+        pass
+    except HTTPException:
+        if websocket.client_state.value != 3:
+            await websocket.close(code=4401)
+    finally:
+        case_connections = notes_ws_connections.get(case_id, {})
+        stale_user_id = None
+        for uid, ws in list(case_connections.items()):
+            if ws is websocket:
+                stale_user_id = uid
+                case_connections.pop(uid, None)
+                break
+
+        if stale_user_id and case_connections:
+            presence = await get_presence_snapshot(case_id)
+            await broadcast_notes_event(case_id, "presence_update", {"users": presence})
+
+        if case_id in notes_ws_connections and not notes_ws_connections.get(case_id):
+            notes_ws_connections.pop(case_id, None)
 
 # ============ GROUNDS OF MERIT ENDPOINTS ============
 
@@ -3014,7 +3323,7 @@ BE THOROUGH. Identify ALL potential grounds. The appellant's freedom may depend 
 
 # ============ AI ANALYSIS & REPORTS ============
 
-async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str) -> dict:
+async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str, aggressive_mode: bool = False) -> dict:
     """Use OpenAI GPT-5.2 to analyze case and generate report"""
     from emergentintegrations.llm.chat import LlmChat, UserMessage
     
@@ -3349,6 +3658,18 @@ IMPORTANT:
 - No witness contradiction or witness credibility section.
 - Every major conclusion must tie back to case material or clearly marked assumptions."""
 
+    if aggressive_mode:
+        aggressive_directive = """
+
+AGGRESSIVE MODE (USER-REQUESTED):
+- Prioritise strongest grounds first and state the primary order sought immediately.
+- Use decisive advocacy language while staying legally accurate.
+- Provide primary and fallback appellate pathways for each major issue.
+- Push for sharper remedy framing (quash/retrial/substitute/reduce sentence) where evidence supports it.
+"""
+        system_prompt = f"{system_prompt}\n{aggressive_directive}"
+        user_prompt = f"{user_prompt}\n\nAGGRESSIVE MODE: ON. Use assertive legal strategy and explicit primary + fallback orders sought."
+
     # Call OpenAI via Emergent
     api_key = os.environ.get('EMERGENT_LLM_KEY')
     if not api_key:
@@ -3445,7 +3766,7 @@ async def generate_report(case_id: str, report_request: ReportRequest, request: 
             )
     
     # Generate AI analysis
-    analysis_result = await analyze_case_with_ai(case_id, user.user_id, report_type)
+    analysis_result = await analyze_case_with_ai(case_id, user.user_id, report_type, report_request.aggressive_mode)
     
     # Create report
     report_titles = {
@@ -3464,7 +3785,8 @@ async def generate_report(case_id: str, report_request: ReportRequest, request: 
             "case_title": analysis_result["case_data"].get("title", ""),
             "defendant": analysis_result["case_data"].get("defendant_name", ""),
             "document_count": analysis_result["document_count"],
-            "event_count": analysis_result["event_count"]
+            "event_count": analysis_result["event_count"],
+            "aggressive_mode": report_request.aggressive_mode
         },
         grounds_of_merit=analysis_result["grounds_of_merit"]
     )
