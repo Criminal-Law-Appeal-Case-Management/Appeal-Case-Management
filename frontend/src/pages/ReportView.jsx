@@ -351,6 +351,31 @@ const ReportView = () => {
             </div>
           </section>
 
+          <section className="mb-8 rounded-2xl border border-slate-200 bg-slate-900 text-white p-5 sm:p-6" data-testid="premium-value-architecture-section">
+            <p className="text-[11px] uppercase tracking-widest text-blue-300 font-semibold mb-2">Premium Report Architecture</p>
+            <h2 className="text-xl font-bold mb-4" style={{ fontFamily: "Crimson Pro, serif" }}>
+              Built for strategic legal action — not just plain text
+            </h2>
+            <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
+              <div className="rounded-xl border border-blue-800/60 bg-blue-950/40 p-3">
+                <p className="text-xs font-semibold text-blue-200 mb-1">Comparative Sentencing</p>
+                <p className="text-[12px] text-slate-200">Before/after reduction pathways with practical appeal outcomes.</p>
+              </div>
+              <div className="rounded-xl border border-yellow-700/60 bg-yellow-900/30 p-3">
+                <p className="text-xs font-semibold text-yellow-100 mb-1">Similar Case Search Options</p>
+                <p className="text-[12px] text-slate-200">AustLII-ready query packs and jurisdiction filters.</p>
+              </div>
+              <div className="rounded-xl border border-emerald-700/60 bg-emerald-900/30 p-3">
+                <p className="text-xs font-semibold text-emerald-100 mb-1">How to Argue Grounds</p>
+                <p className="text-[12px] text-slate-200">Lead propositions, likely prosecution responses, and rebuttal direction.</p>
+              </div>
+              <div className="rounded-xl border border-purple-700/60 bg-purple-900/30 p-3">
+                <p className="text-xs font-semibold text-purple-100 mb-1">Next Steps Playbook</p>
+                <p className="text-[12px] text-slate-200">72-hour, 7-day, and 28-day execution plan with priorities.</p>
+              </div>
+            </div>
+          </section>
+
           {sections.length > 0 && (
             <section className="mb-8 rounded-2xl border border-slate-200 p-5 bg-slate-50" data-testid="report-table-of-contents">
               <div className="flex items-center gap-2 mb-3">

@@ -3548,7 +3548,7 @@ You are generating a FREE Quick Summary. Deliver real legal value, then clearly 
 
 {case_context}
 
-Write 900-1400 words. Structure your response EXACTLY as follows:
+Write 1500-2200 words. Structure your response EXACTLY as follows:
 
 ## TABLE OF CONTENTS
 List each section heading in order using a numbered list.
@@ -3580,6 +3580,23 @@ List 2-3 Australian appeal decisions with:
 
 ## SENTENCING POSITION (HIGH LEVEL)
 2-3 paragraphs comparing sentence posture against typical appellate principles and proportionality concerns.
+
+## MINI COMPARATIVE SENTENCING TABLE
+Provide a markdown table with at least 3 comparison rows.
+Required columns:
+| Comparator | Original Sentence / NPP | Outcome on Appeal | Revised Sentence / NPP | Reduction Insight |
+
+## SIMILAR CASE SEARCH OPTIONS
+Provide practical search options for the user to find related decisions, including:
+- 3 AustLII-ready search query strings
+- relevant court filters (e.g., NSWCCA, VSCA)
+- one keyword pack per likely ground
+
+## HOW TO ARGUE THE TOP GROUNDS (QUICK PLAYBOOK)
+For each top ground provide:
+- One key argument line to lead with
+- One authority type to cite first
+- One likely Crown response and concise rebuttal direction
 
 ## OVERALL APPEAL OUTLOOK
 Give: Strong / Moderate / Needs Further Development + concise reasoning.
@@ -3657,13 +3674,26 @@ For all relevant court levels provide filing sequence, documents/forms, deadline
 ## 11. AGGRESSIVE SUBMISSIONS BLUEPRINT
 Provide both written and oral submission strategy with argument sequence, authority placement, likely bench questions, and response lines.
 
-## 12. EVIDENTIARY GAPS + REMEDIATION CHECKLIST
+## 12. HOW TO ARGUE EACH TOP GROUND (MANDATORY)
+For each priority ground include:
+- Lead proposition (1-2 lines)
+- Supporting authority cluster (statute + 2-3 precedent anchors)
+- Expected prosecution answer
+- Rebuttal strategy for hearing
+
+## 13. SIMILAR CASE SEARCH OPTIONS (MANDATORY)
+Provide actionable search guidance:
+- 5 AustLII query strings tailored to this offence/grounds profile
+- court-level filtering suggestions
+- keyword alternates if initial search returns low relevance
+
+## 14. EVIDENTIARY GAPS + REMEDIATION CHECKLIST
 Specific missing material and exact remediation steps with urgency priority.
 
-## 13. 72-HOUR, 7-DAY, 28-DAY ACTION PLAN
+## 15. 72-HOUR, 7-DAY, 28-DAY ACTION PLAN
 Priority-ordered actions with dependencies and objective of each step.
 
-## 14. CLIENT PLAIN-ENGLISH BRIEF
+## 16. CLIENT PLAIN-ENGLISH BRIEF
 Translate the technical outcome into plain-English next steps and realistic scenarios.
 
 IMPORTANT:
@@ -3740,21 +3770,35 @@ Argument architecture, authority sequencing, and evidence anchoring for a high-i
 ## 13. ORAL HEARING SCRIPT + BENCH QUESTION PLAYBOOK
 Structured oral strategy with anticipated judicial interventions and controlled response lines.
 
-## 14. EVIDENCE PREPARATION + ANNEXURE CHECKLIST
+## 14. HOW TO ARGUE EACH MAJOR GROUND (MANDATORY)
+For each major ground include:
+- Lead proposition
+- authority sequence for submissions
+- anticipated prosecution answer
+- hearing rebuttal line
+
+## 15. SIMILAR CASE SEARCH OPTIONS (MANDATORY)
+Provide comprehensive search pathways:
+- 8 AustLII-ready query strings
+- offence-specific keyword packs
+- jurisdiction/court filters
+- fallback query strategy when direct analogues are limited
+
+## 16. EVIDENCE PREPARATION + ANNEXURE CHECKLIST
 Exactly what to assemble for appeal books/annexures and how to index key passages.
 
-## 15. RISK, SCENARIO, AND CONTINGENCY ANALYSIS
+## 17. RISK, SCENARIO, AND CONTINGENCY ANALYSIS
 Best-case / base-case / downside pathways and mitigation triggers.
 
-## 16. PRIORITISED 72-HOUR, 7-DAY, 28-DAY EXECUTION PLAN
+## 18. PRIORITISED 72-HOUR, 7-DAY, 28-DAY EXECUTION PLAN
 Action list with dependencies and expected legal impact per step.
 
-## 17. STRATEGIC COMMUNICATION PACK
+## 19. STRATEGIC COMMUNICATION PACK
 Two outputs:
 - Counsel-facing technical briefing
 - Client-facing plain-English pathway summary
 
-## 18. BARRISTER CONFERENCE DOSSIER (MANDATORY)
+## 20. BARRISTER CONFERENCE DOSSIER (MANDATORY)
 Provide a barrister-ready conference pack containing:
 - Lead theory of appeal in 8-12 lines
 - 10-minute oral conference outline
@@ -3762,7 +3806,7 @@ Provide a barrister-ready conference pack containing:
 - Authorities shortlist (primary + fallback)
 - Orders sought: primary order + fallback order
 
-## 19. APPENDIX OF AUTHORITIES + SOURCE REFERENCES
+## 21. APPENDIX OF AUTHORITIES + SOURCE REFERENCES
 Consolidated list of statutes, sections, precedents, and source anchors.
 
 IMPORTANT:
