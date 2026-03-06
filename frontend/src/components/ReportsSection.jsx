@@ -174,10 +174,10 @@ const ReportsSection = ({
     }
   };
 
-  const toggleReportExpand = (reportId) => {
+  const toggleReportExpand = (reportId, isOpen) => {
     setExpandedReports(prev => ({
       ...prev,
-      [reportId]: !prev[reportId]
+      [reportId]: isOpen
     }));
   };
 
@@ -237,8 +237,8 @@ const ReportsSection = ({
             return (
               <Card key={report.report_id} className="overflow-hidden">
                 <Collapsible
-                  open={expandedReports[report.report_id]}
-                  onOpenChange={() => toggleReportExpand(report.report_id)}
+                  open={Boolean(expandedReports[report.report_id])}
+                  onOpenChange={(isOpen) => toggleReportExpand(report.report_id, isOpen)}
                 >
                   <CollapsibleTrigger asChild>
                     <CardContent className="p-4 cursor-pointer hover:bg-slate-50 transition-colors">
