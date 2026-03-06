@@ -141,6 +141,8 @@ const Dashboard = ({ user }) => {
   };
 
   // Sidebar navigation items - grouped logically
+  const isAdmin = user?.email === "djkingy79@gmail.com" || user?.is_admin;
+  
   const navGroups = [
     {
       title: "Main",
@@ -160,10 +162,17 @@ const Dashboard = ({ user }) => {
       title: "Resources",
       items: [
         { to: "/lawyers", icon: Users, label: "Find Lawyers", testId: "nav-lawyers" },
+        { to: "/legal-resources", icon: BookOpen, label: "Legal Resources", testId: "nav-legal-resources" },
         { to: "/glossary", icon: BookOpen, label: "Legal Glossary", testId: "nav-glossary" },
         { to: "/faq", icon: HelpCircle, label: "FAQ & Help", testId: "nav-faq" },
       ]
-    }
+    },
+    ...(isAdmin ? [{
+      title: "Admin",
+      items: [
+        { to: "/admin/dashboard", icon: Shield, label: "Admin Dashboard", testId: "nav-admin" },
+      ]
+    }] : [])
   ];
 
   return (

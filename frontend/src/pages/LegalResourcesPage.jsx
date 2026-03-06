@@ -762,6 +762,521 @@ const LegalResourcesPage = () => {
             </div>
           </div>
 
+        {/* ============ NEW SECTION: Government & Regulatory Bodies ============ */}
+        <div id="government" className="space-y-6">
+          <h2 className="text-2xl font-bold text-foreground flex items-center gap-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <Building className="w-7 h-7 text-blue-600" />
+            Government & Regulatory Bodies
+          </h2>
+          <p className="text-muted-foreground">
+            Key government departments, ombudsmen, and regulatory agencies that oversee the justice system.
+          </p>
+
+          {/* Attorneys-General */}
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Attorneys-General Departments
+            </h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+              <a href="https://www.ag.gov.au" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 bg-white dark:bg-slate-700 rounded-lg hover:shadow-md transition-shadow">
+                <span className="w-8 h-8 bg-blue-600 rounded text-white text-xs font-bold flex items-center justify-center">CTH</span>
+                <div className="min-w-0">
+                  <p className="font-semibold text-sm text-foreground truncate">Commonwealth Attorney-General</p>
+                  <p className="text-xs text-muted-foreground">ag.gov.au</p>
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground ml-auto shrink-0" />
+              </a>
+              <a href="https://www.justice.nsw.gov.au" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 bg-white dark:bg-slate-700 rounded-lg hover:shadow-md transition-shadow">
+                <span className="w-8 h-8 bg-blue-500 rounded text-white text-xs font-bold flex items-center justify-center">NSW</span>
+                <div className="min-w-0">
+                  <p className="font-semibold text-sm text-foreground truncate">NSW Department of Justice</p>
+                  <p className="text-xs text-muted-foreground">justice.nsw.gov.au</p>
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground ml-auto shrink-0" />
+              </a>
+              <a href="https://www.justice.vic.gov.au" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 bg-white dark:bg-slate-700 rounded-lg hover:shadow-md transition-shadow">
+                <span className="w-8 h-8 bg-indigo-600 rounded text-white text-xs font-bold flex items-center justify-center">VIC</span>
+                <div className="min-w-0">
+                  <p className="font-semibold text-sm text-foreground truncate">VIC Dept of Justice</p>
+                  <p className="text-xs text-muted-foreground">justice.vic.gov.au</p>
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground ml-auto shrink-0" />
+              </a>
+              <a href="https://www.justice.qld.gov.au" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 bg-white dark:bg-slate-700 rounded-lg hover:shadow-md transition-shadow">
+                <span className="w-8 h-8 bg-red-600 rounded text-white text-xs font-bold flex items-center justify-center">QLD</span>
+                <div className="min-w-0">
+                  <p className="font-semibold text-sm text-foreground truncate">QLD Dept of Justice</p>
+                  <p className="text-xs text-muted-foreground">justice.qld.gov.au</p>
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground ml-auto shrink-0" />
+              </a>
+              <a href="https://www.wa.gov.au/justice" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 bg-white dark:bg-slate-700 rounded-lg hover:shadow-md transition-shadow">
+                <span className="w-8 h-8 bg-amber-600 rounded text-white text-xs font-bold flex items-center justify-center">WA</span>
+                <div className="min-w-0">
+                  <p className="font-semibold text-sm text-foreground truncate">WA Dept of Justice</p>
+                  <p className="text-xs text-muted-foreground">wa.gov.au/justice</p>
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground ml-auto shrink-0" />
+              </a>
+              <a href="https://www.agd.sa.gov.au" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 bg-white dark:bg-slate-700 rounded-lg hover:shadow-md transition-shadow">
+                <span className="w-8 h-8 bg-purple-600 rounded text-white text-xs font-bold flex items-center justify-center">SA</span>
+                <div className="min-w-0">
+                  <p className="font-semibold text-sm text-foreground truncate">SA Attorney-General's Dept</p>
+                  <p className="text-xs text-muted-foreground">agd.sa.gov.au</p>
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground ml-auto shrink-0" />
+              </a>
+            </div>
+          </div>
+
+          {/* Ombudsmen */}
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Ombudsmen & Integrity Bodies
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <ResourceCard
+                title="Commonwealth Ombudsman"
+                state="National"
+                phone="1300 362 072"
+                website="https://www.ombudsman.gov.au"
+                description="Investigates complaints about Commonwealth government agencies and services."
+                color="blue"
+                highlight={true}
+              />
+              <ResourceCard
+                title="ACLEI - Law Enforcement Integrity"
+                state="National"
+                phone="1800 060 077"
+                website="https://www.aclei.gov.au"
+                description="Australian Commission for Law Enforcement Integrity - investigates corruption in federal law enforcement."
+                color="emerald"
+              />
+              <ResourceCard
+                title="NSW Ombudsman"
+                state="NSW"
+                phone="1800 451 524"
+                website="https://www.ombo.nsw.gov.au"
+                description="Independent watchdog for NSW public sector agencies."
+                color="blue"
+              />
+              <ResourceCard
+                title="Victorian Ombudsman"
+                state="VIC"
+                phone="(03) 9613 6222"
+                website="https://www.ombudsman.vic.gov.au"
+                description="Investigates complaints about Victorian government and public bodies."
+                color="indigo"
+              />
+              <ResourceCard
+                title="QLD Ombudsman"
+                state="QLD"
+                phone="(07) 3005 7000"
+                website="https://www.ombudsman.qld.gov.au"
+                description="Queensland Ombudsman - investigates administrative actions of QLD agencies."
+                color="red"
+              />
+              <ResourceCard
+                title="WA Ombudsman"
+                state="WA"
+                phone="(08) 9220 7555"
+                website="https://www.ombudsman.wa.gov.au"
+                description="Investigates WA state government and local government agencies."
+                color="amber"
+              />
+            </div>
+          </div>
+
+          {/* Human Rights & Discrimination */}
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Human Rights Commissions
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <ResourceCard
+                title="Australian Human Rights Commission"
+                state="National"
+                phone="1300 369 711"
+                website="https://humanrights.gov.au"
+                description="National body that handles discrimination complaints and promotes human rights."
+                color="emerald"
+                highlight={true}
+              />
+              <ResourceCard
+                title="Anti-Discrimination NSW"
+                state="NSW"
+                phone="1800 670 812"
+                website="https://www.antidiscrimination.nsw.gov.au"
+                description="Handles discrimination complaints in NSW."
+                color="blue"
+              />
+              <ResourceCard
+                title="Victorian Equal Opportunity Commission"
+                state="VIC"
+                phone="1300 292 153"
+                website="https://www.humanrights.vic.gov.au"
+                description="Promotes and protects human rights in Victoria."
+                color="indigo"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* ============ NEW SECTION: Legal Profession Bodies ============ */}
+        <div id="profession" className="space-y-6">
+          <h2 className="text-2xl font-bold text-foreground flex items-center gap-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <Gavel className="w-7 h-7 text-amber-600" />
+            Legal Profession Bodies
+          </h2>
+          <p className="text-muted-foreground">
+            Law societies, bar associations, and professional conduct bodies that regulate the legal profession.
+          </p>
+
+          {/* Law Councils & Societies */}
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Law Councils & Societies
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <ResourceCard
+                title="Law Council of Australia"
+                state="National"
+                phone="(02) 6246 3788"
+                website="https://www.lawcouncil.asn.au"
+                description="Peak national body representing the Australian legal profession."
+                color="amber"
+                highlight={true}
+              />
+              <ResourceCard
+                title="Law Society of NSW"
+                state="NSW"
+                phone="(02) 9926 0333"
+                website="https://www.lawsociety.com.au"
+                description="Professional body for solicitors in NSW. Can help find a lawyer."
+                color="blue"
+              />
+              <ResourceCard
+                title="Law Institute of Victoria"
+                state="VIC"
+                phone="(03) 9607 9311"
+                website="https://www.liv.asn.au"
+                description="Peak body for solicitors in Victoria."
+                color="indigo"
+              />
+              <ResourceCard
+                title="Queensland Law Society"
+                state="QLD"
+                phone="(07) 3842 5888"
+                website="https://www.qls.com.au"
+                description="Professional body for solicitors in Queensland."
+                color="red"
+              />
+              <ResourceCard
+                title="Law Society of SA"
+                state="SA"
+                phone="(08) 8229 0200"
+                website="https://www.lawsocietysa.asn.au"
+                description="Represents solicitors in South Australia."
+                color="purple"
+              />
+              <ResourceCard
+                title="Law Society of WA"
+                state="WA"
+                phone="(08) 9324 8600"
+                website="https://www.lawsocietywa.asn.au"
+                description="Peak body for lawyers in Western Australia."
+                color="amber"
+              />
+            </div>
+          </div>
+
+          {/* Bar Associations */}
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Bar Associations (Barristers)
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <ResourceCard
+                title="Australian Bar Association"
+                state="National"
+                phone="(02) 9232 4055"
+                website="https://www.australianbar.asn.au"
+                description="National body representing barristers. Can help find specialist criminal barristers."
+                color="slate"
+                highlight={true}
+              />
+              <ResourceCard
+                title="NSW Bar Association"
+                state="NSW"
+                phone="(02) 9232 4055"
+                website="https://www.nswbar.asn.au"
+                description="Find a barrister in NSW - search by practice area including criminal appeals."
+                color="blue"
+              />
+              <ResourceCard
+                title="Victorian Bar"
+                state="VIC"
+                phone="(03) 9225 7111"
+                website="https://www.vicbar.com.au"
+                description="Find a barrister in Victoria."
+                color="indigo"
+              />
+              <ResourceCard
+                title="Queensland Bar"
+                state="QLD"
+                phone="(07) 3238 5100"
+                website="https://www.qldbar.asn.au"
+                description="Find a barrister in Queensland."
+                color="red"
+              />
+            </div>
+          </div>
+
+          {/* Legal Practice Boards & Conduct */}
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Legal Practice Boards & Professional Conduct
+            </h3>
+            <p className="text-muted-foreground text-sm mb-4">
+              If you have a complaint about a lawyer's conduct, these bodies can investigate:
+            </p>
+            <div className="grid md:grid-cols-2 gap-4">
+              <ResourceCard
+                title="Legal Services Council"
+                state="National"
+                phone="N/A"
+                website="https://www.legalservicescouncil.org.au"
+                description="National body overseeing regulation of the legal profession."
+                color="slate"
+              />
+              <ResourceCard
+                title="Legal Services Commissioner NSW"
+                state="NSW"
+                phone="(02) 9377 1800"
+                website="https://www.olsc.nsw.gov.au"
+                description="Handles complaints about NSW lawyers. Also known as OLSC."
+                color="blue"
+              />
+              <ResourceCard
+                title="Legal Services Board VIC"
+                state="VIC"
+                phone="(03) 9679 8001"
+                website="https://www.lsbc.vic.gov.au"
+                description="Regulates lawyers in Victoria and handles complaints."
+                color="indigo"
+              />
+              <ResourceCard
+                title="Legal Practice Board WA"
+                state="WA"
+                phone="(08) 9461 2299"
+                website="https://www.lpbwa.org.au"
+                description="Regulates legal practitioners in Western Australia."
+                color="amber"
+              />
+              <ResourceCard
+                title="Legal Profession Conduct Commissioner SA"
+                state="SA"
+                phone="(08) 8238 5700"
+                website="https://www.lpcc.sa.gov.au"
+                description="Receives and investigates complaints about SA lawyers."
+                color="purple"
+              />
+              <ResourceCard
+                title="Legal Services Commission QLD"
+                state="QLD"
+                phone="(07) 3564 7726"
+                website="https://www.lsc.qld.gov.au"
+                description="Handles complaints about Queensland lawyers."
+                color="red"
+              />
+            </div>
+          </div>
+
+          {/* Law Reform */}
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Law Reform & Research Bodies
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <ResourceCard
+                title="Australian Law Reform Commission"
+                state="National"
+                phone="(02) 8238 6333"
+                website="https://www.alrc.gov.au"
+                description="Reviews and recommends changes to Australian laws. Publishes important reports."
+                color="blue"
+              />
+              <ResourceCard
+                title="Law and Justice Foundation of NSW"
+                state="NSW"
+                phone="(02) 8227 3200"
+                website="https://www.lawfoundation.net.au"
+                description="Research and grants to improve access to justice in NSW."
+                color="blue"
+              />
+              <ResourceCard
+                title="NSW Law Reform Commission"
+                state="NSW"
+                phone="(02) 8061 9270"
+                website="https://www.lawreform.justice.nsw.gov.au"
+                description="Reviews and recommends changes to NSW laws."
+                color="blue"
+              />
+              <ResourceCard
+                title="Victorian Law Reform Commission"
+                state="VIC"
+                phone="(03) 8608 7800"
+                website="https://www.lawreform.vic.gov.au"
+                description="Reviews and reports on areas of Victorian law."
+                color="indigo"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* ============ NEW SECTION: Specialist Legal Services ============ */}
+        <div id="specialist" className="space-y-6">
+          <h2 className="text-2xl font-bold text-foreground flex items-center gap-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <Users className="w-7 h-7 text-purple-600" />
+            Specialist Legal Services
+          </h2>
+          <p className="text-muted-foreground">
+            Services for specific groups including prisoners, Aboriginal and Torres Strait Islander peoples, and vulnerable communities.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <ResourceCard
+              title="Prisoners' Legal Service QLD"
+              state="QLD"
+              phone="(07) 3846 5074"
+              website="https://www.plsqld.com"
+              description="Free legal advice and representation for Queensland prisoners."
+              color="red"
+              highlight={true}
+            />
+            <ResourceCard
+              title="Prisoners Aid NSW"
+              state="NSW"
+              phone="(02) 9281 1965"
+              website="https://www.prisonersaid.org.au"
+              description="Support services for NSW prisoners and their families."
+              color="blue"
+            />
+            <ResourceCard
+              title="Aboriginal Legal Service NSW/ACT"
+              state="NSW/ACT"
+              phone="1800 765 767"
+              website="https://www.alsnswact.org.au"
+              description="Legal services for Aboriginal and Torres Strait Islander peoples."
+              color="amber"
+              highlight={true}
+            />
+            <ResourceCard
+              title="Victorian Aboriginal Legal Service"
+              state="VIC"
+              phone="1800 064 865"
+              website="https://www.vals.org.au"
+              description="Legal services for Aboriginal and Torres Strait Islander peoples in Victoria."
+              color="indigo"
+            />
+            <ResourceCard
+              title="Aboriginal Legal Service WA"
+              state="WA"
+              phone="(08) 9265 6666"
+              website="https://www.als.org.au"
+              description="Legal services for Aboriginal and Torres Strait Islander peoples in WA."
+              color="amber"
+            />
+            <ResourceCard
+              title="North Australian Aboriginal Justice Agency"
+              state="NT"
+              phone="1800 898 251"
+              website="https://www.naaja.org.au"
+              description="Legal services for Aboriginal peoples in the Northern Territory."
+              color="orange"
+            />
+            <ResourceCard
+              title="Redfern Legal Centre"
+              state="NSW"
+              phone="(02) 9698 7277"
+              website="https://rlc.org.au"
+              description="Free community legal centre in inner Sydney. Specialises in many areas."
+              color="emerald"
+            />
+            <ResourceCard
+              title="Kingsford Legal Centre"
+              state="NSW"
+              phone="(02) 9385 9566"
+              website="https://www.klc.unsw.edu.au"
+              description="UNSW community legal centre providing free legal advice."
+              color="blue"
+            />
+          </div>
+        </div>
+
+        {/* ============ NEW SECTION: Regulatory Agencies ============ */}
+        <div id="regulatory" className="space-y-6">
+          <h2 className="text-2xl font-bold text-foreground flex items-center gap-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <Shield className="w-7 h-7 text-red-600" />
+            Other Regulatory Agencies
+          </h2>
+          <p className="text-muted-foreground">
+            Government agencies that may be relevant depending on your case circumstances.
+          </p>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <ResourceCard
+              title="ACCC"
+              state="National"
+              phone="1300 302 502"
+              website="https://www.accc.gov.au"
+              description="Australian Competition and Consumer Commission - consumer protection."
+              color="blue"
+            />
+            <ResourceCard
+              title="ASIC"
+              state="National"
+              phone="1300 300 630"
+              website="https://www.asic.gov.au"
+              description="Australian Securities and Investments Commission - corporate regulation."
+              color="blue"
+            />
+            <ResourceCard
+              title="AFP"
+              state="National"
+              phone="(02) 5126 0000"
+              website="https://www.afp.gov.au"
+              description="Australian Federal Police - federal law enforcement."
+              color="slate"
+            />
+            <ResourceCard
+              title="AustLII"
+              state="National"
+              phone="N/A"
+              website="https://www.austlii.edu.au"
+              description="Free access to Australian legal information - cases, legislation, treaties."
+              color="emerald"
+              highlight={true}
+            />
+            <ResourceCard
+              title="Australasian Legal Information Institute"
+              state="National"
+              phone="N/A"
+              website="https://www.alii.org"
+              description="Legal information from Australian and international sources."
+              color="emerald"
+            />
+            <ResourceCard
+              title="Australian Public Law"
+              state="National"
+              phone="N/A"
+              website="https://www.auspublaw.org"
+              description="Academic resource for Australian public law commentary and analysis."
+              color="blue"
+            />
+          </div>
+        </div>
+
       </main>
 
       {/* Footer */}
