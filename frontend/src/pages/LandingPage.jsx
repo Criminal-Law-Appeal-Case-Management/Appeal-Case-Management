@@ -285,18 +285,6 @@ const LandingPage = () => {
       </section>
 
       {/* ============================================ */}
-      {/* VISITOR COUNTER - Social Proof */}
-      {/* ============================================ */}
-      <section className="py-8 px-6 bg-slate-50 dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-6">
-            <p className="text-sm text-muted-foreground">Join thousands of Australians researching their appeals</p>
-          </div>
-          <VisitorCounter variant="full" />
-        </div>
-      </section>
-
-      {/* ============================================ */}
       {/* APP OVERVIEW - What This Tool Does */}
       {/* ============================================ */}
       <section className="py-16 px-6 bg-gradient-to-b from-background to-muted/30">
