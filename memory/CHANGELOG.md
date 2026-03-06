@@ -76,6 +76,12 @@
 - Landing footer reorganised into clearer grouped sections with updated links
 - Validation: full frontend presentation checks passed, no regressions
 
+## 2026-03 — Session 19 (Glossary + Landing Navigation Polish Continuation)
+- Added Legal Glossary compact/expanded density toggle (compact default) for faster scanning without removing any term details
+- Kept full glossary data and examples intact while tightening card spacing/typography for readability
+- Added mini "Back to top" controls between major landing sections with smooth scroll
+- Validation: frontend testing agent pass (`iteration_37.json`) + final sanity pass all green
+
 ## 2026-03 — Session 11 (Premium Report + Barrister Overhaul)
 - AI report prompts reworked for hybrid legal/plain-English depth
 - Removed costs + witness contradiction/credibility sections from report content requirements
