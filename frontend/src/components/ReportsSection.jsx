@@ -147,8 +147,13 @@ const ReportsSection = ({
       toast.success("Report generated successfully");
       if (onReportsChange) onReportsChange();
     } catch (error) {
+      const detail = error?.response?.data?.detail;
       if (error.code === 'ECONNABORTED') {
         toast.info("Report generation timed out. Please retry — processing is now prioritised for speed.");
+      } else if (typeof detail === 'string') {
+        toast.error(detail);
+      } else if (detail?.message) {
+        toast.error(detail.message);
       } else {
         toast.error("Failed to generate report");
       }

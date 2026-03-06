@@ -28,6 +28,12 @@ db = client[os.environ['DB_NAME']]
 # Admin configuration - emails that have admin access
 ADMIN_EMAILS = os.environ.get("ADMIN_EMAILS", "djkingy79@gmail.com").split(",")
 
+
+def is_admin_user(email: str) -> bool:
+    normalized = (email or "").strip().lower()
+    allowed = {(e or "").strip().lower() for e in ADMIN_EMAILS}
+    return normalized in allowed
+
 # Import offence framework for AI context building
 from offence_framework import OFFENCE_CATEGORIES, AUSTRALIAN_STATES
 
@@ -2100,7 +2106,7 @@ async def get_case_payments(case_id: str, request: Request):
     user = await get_current_user(request)
     
     # Admin users get everything unlocked
-    if user.email in ADMIN_EMAILS:
+    if is_admin_user(user.email):
         return {
             "payments": [],
             "unlocked_features": {
@@ -2761,7 +2767,7 @@ async def get_grounds_of_merit(case_id: str, request: Request):
         "status": "completed"
     })
     
-    is_unlocked = payment is not None or user.email in ADMIN_EMAILS
+    is_unlocked = payment is not None or is_admin_user(user.email)
     
     if is_unlocked:
         # Return full grounds data
@@ -3598,7 +3604,7 @@ You are generating a PAID Full Detailed Report ($29 AUD). This must be as detail
 
 {case_context}
 
-Minimum 6200 words. This report must feel premium, strategic, and hearing-ready. Use this exact structure:
+Target range 2600-3600 words. This report must feel premium, strategic, and hearing-ready. Use this exact structure:
 
 ## TABLE OF CONTENTS
 Numbered list matching every heading below.
@@ -3675,7 +3681,7 @@ You are generating the PREMIUM Extensive Log Report ($39 AUD). This must exceed 
 
 {case_context}
 
-Minimum 7800 words. Exhaustive depth required. Use this exact structure:
+Target range 4200-5600 words. Exhaustive depth required. Use this exact structure:
 
 ## TABLE OF CONTENTS
 Numbered list matching every heading below.
@@ -3787,11 +3793,16 @@ AGGRESSIVE MODE (USER-REQUESTED):
     last_error = None
     for attempt in range(4):
         try:
+            if report_type == "quick_summary":
+                model_name = "gpt-4o-mini"
+            else:
+                model_name = "gpt-4o" if attempt < 2 else "gpt-4o-mini"
+
             chat = LlmChat(
                 api_key=api_key,
                 session_id=f"report_{case_id}_{uuid.uuid4().hex[:8]}",
                 system_message=system_prompt
-            ).with_model("openai", "gpt-4o")
+            ).with_model("openai", model_name)
             
             response = await chat.send_message(UserMessage(text=user_prompt))
             break
@@ -3816,6 +3827,16 @@ AGGRESSIVE MODE (USER-REQUESTED):
             "strength": "To be assessed by legal professional"
         }]
     
+    if aggressive_mode:
+        response += """
+
+## AGGRESSIVE RELIEF OPTIONS — QUICK REFERENCE
+- Primary Order Sought: Conviction quashed OR sentence reduced (depending on strongest established ground).
+- Fallback Order 1: Retrial ordered if appellate court finds trial error but not final acquittal basis.
+- Fallback Order 2: Conviction substituted/downgraded where legal elements for higher offence are not made out.
+- Sentencing Fallback: If conviction stands, press manifest excess/error in principle for sentence reduction.
+"""
+
     return {
         "analysis": response,
         "grounds_of_merit": grounds_of_merit,
@@ -3834,7 +3855,7 @@ async def generate_report(case_id: str, report_request: ReportRequest, request: 
         raise HTTPException(status_code=400, detail="Invalid report type")
     
     # Check payment for premium reports (admin bypasses all payments)
-    is_admin = user.email in ADMIN_EMAILS
+    is_admin = is_admin_user(user.email)
     
     if report_type == "full_detailed" and not is_admin:
         payment = await db.payments.find_one({
