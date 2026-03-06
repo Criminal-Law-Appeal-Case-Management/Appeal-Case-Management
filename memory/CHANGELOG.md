@@ -98,6 +98,15 @@
 - Improved frontend error feedback to show backend report-generation detail messages instead of generic errors
 - Validation: backend report-generation stability checks passed and aggressive section confirmed present
 
+## 2026-03 — Session 22 (Recovered Report Embedding)
+- Added authenticated backend endpoint: `GET /api/reports/embedded-legacy`
+  - Finds strongest historical reports for the current user (prioritised by detail length)
+  - Returns embedded-ready report payload with type/title/date/content
+- Report View now embeds recovered high-detail historical reports directly below current report content
+  - Includes report type badge, generated date, embedded analysis block, and “Open Original” button
+- Goal: preserve previously strong report quality references and reduce perceived loss of good prior outputs
+- Validation: frontend testing pass (`iteration_40.json`) confirms section visibility and no regressions
+
 ## 2026-03 — Session 11 (Premium Report + Barrister Overhaul)
 - AI report prompts reworked for hybrid legal/plain-English depth
 - Removed costs + witness contradiction/credibility sections from report content requirements

@@ -657,6 +657,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - Continued polish: glossary now supports compact/expanded reading density (compact default) and landing now includes section-level back-to-top controls for long-scroll usability.
 - Visibility pass completed: landing nav uses direct links (no desktop dropdown dependency), stats critical content is always visible, and headings on stats/how-it-works are centred for clearer flow.
 - Report generation reliability hotfix completed: adaptive model fallback, normalised admin unlock checks, and guaranteed aggressive options section appended at report bottom when enabled.
+- Added historical report embedding on Report View via new `/api/reports/embedded-legacy` endpoint so strongest prior reports are visible in-app and not lost.
 
 ## Technical Debt (Current)
 - `server.py` remains monolithic and should be modularized into focused routers/services.
