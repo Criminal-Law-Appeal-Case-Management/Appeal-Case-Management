@@ -652,6 +652,7 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - Performance hotfix shipped for lag during grounds investigation/report generation: bounded AI context budgets + faster grounds models + clearer long-run UX feedback.
 - Legal directory and appeal statistics readability overhaul delivered: merged legal resources/contacts flow, state-ordered filtering, clearer advice-help descriptions, and reorganised statistics hierarchy with prominent appeal-rate spotlight.
 - Legal directory further simplified into state-focused default mode with national support included, reducing first-load clutter while retaining all listings.
+- Added dedicated `/how-it-works` page with process flow, report pricing, and a direct Start Case CTA while preserving all existing tutorial content on `/how-to-use`.
 
 ## Technical Debt (Current)
 - `server.py` remains monolithic and should be modularized into focused routers/services.

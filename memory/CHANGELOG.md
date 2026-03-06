@@ -61,6 +61,14 @@
 - Kept all legal contacts/resources in merged one-page experience and retained advice-help descriptors
 - Validation: UX checks confirm improved scannability and stable rendering
 
+## 2026-03 — Session 17 (How It Works Standalone Experience)
+- Added new standalone `/how-it-works` page to show process flow in action
+- Included report pricing section directly under the process walkthrough
+- Added clear "Start Your Case Now" CTA button on the new page
+- Kept existing `/how-to-use` page intact (no info removed)
+- Updated landing Learn dropdown and mobile menu links to include new page
+- Validation: routing and UI checks passed with no regressions
+
 ## 2026-03 — Session 11 (Premium Report + Barrister Overhaul)
 - AI report prompts reworked for hybrid legal/plain-English depth
 - Removed costs + witness contradiction/credibility sections from report content requirements
