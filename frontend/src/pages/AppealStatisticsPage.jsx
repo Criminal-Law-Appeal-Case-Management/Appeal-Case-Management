@@ -169,7 +169,7 @@ const AppealStatisticsPage = () => {
       </header>
 
       {/* Hero */}
-      <section className="py-12 px-6 bg-gradient-to-b from-slate-900 to-slate-800 text-white">
+      <section className="py-12 px-6 bg-gradient-to-b from-black via-slate-950 to-blue-950 text-white">
         <div className="max-w-5xl mx-auto text-center">
           <div className="flex justify-center mb-4">
             <div className="w-14 h-14 rounded-2xl bg-blue-600 flex items-center justify-center">
@@ -192,10 +192,10 @@ const AppealStatisticsPage = () => {
       <main className="max-w-5xl mx-auto px-6 py-8">
 
         {/* Headline Snapshot */}
-        <section className="mb-10" data-testid="appeal-rate-spotlight-section">
-          <div className="rounded-2xl border-2 border-red-300 dark:border-red-700 bg-gradient-to-r from-red-50 via-white to-amber-50 dark:from-red-900/20 dark:via-slate-900/20 dark:to-amber-900/20 p-6 md:p-8">
-            <p className="text-xs uppercase tracking-wider text-red-700 dark:text-red-300 font-semibold mb-2">Appeal Access Snapshot</p>
-            <p className="text-5xl md:text-6xl font-black text-red-700 dark:text-red-300 leading-none" style={{ fontFamily: 'Crimson Pro, serif' }} data-testid="appeal-rate-spotlight-value">
+        <section className="mb-10 text-center" data-testid="appeal-rate-spotlight-section">
+          <div className="rounded-2xl border-2 border-yellow-400 dark:border-yellow-600 bg-gradient-to-r from-yellow-50 via-white to-blue-50 dark:from-yellow-900/20 dark:via-slate-900/20 dark:to-blue-900/20 p-6 md:p-8">
+            <p className="text-xs uppercase tracking-wider text-blue-700 dark:text-blue-300 font-semibold mb-2">Appeal Access Snapshot</p>
+            <p className="text-5xl md:text-6xl font-black text-blue-700 dark:text-blue-300 leading-none" style={{ fontFamily: 'Crimson Pro, serif' }} data-testid="appeal-rate-spotlight-value">
               0.012%
             </p>
             <p className="text-sm text-slate-700 dark:text-slate-300 mt-3 max-w-3xl" data-testid="appeal-rate-spotlight-description">

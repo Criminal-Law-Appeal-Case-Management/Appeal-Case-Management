@@ -62,13 +62,13 @@ const HowItWorksPage = () => {
       title: "Extensive Log Report",
       price: "$39 AUD",
       note: "Barrister-level depth with comparative sentencing and options matrix.",
-      tone: "border-purple-300 bg-purple-50 dark:bg-purple-900/20",
+      tone: "border-blue-300 bg-blue-50 dark:bg-blue-900/20",
     },
   ];
 
   return (
     <div className="min-h-screen bg-background" style={{ fontFamily: "Manrope, sans-serif" }}>
-      <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
+      <header className="bg-gradient-to-r from-black via-slate-950 to-blue-950 sticky top-0 z-50 border-b border-blue-900/40">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
@@ -113,10 +113,10 @@ const HowItWorksPage = () => {
         )}
       </header>
 
-      <section className="py-14 px-6 bg-gradient-to-b from-slate-900 to-slate-800 text-white">
+      <section className="py-14 px-6 bg-gradient-to-b from-black via-slate-950 to-blue-950 text-white">
         <div className="max-w-5xl mx-auto text-center">
           <div className="flex justify-center mb-4">
-            <div className="w-14 h-14 rounded-2xl bg-amber-600 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-yellow-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-900/40">
               <PlayCircle className="w-7 h-7 text-white" />
             </div>
           </div>

@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-heading: 'Crimson Pro', serif;
+  --font-heading: 'Playfair Display', serif;
   --font-body: 'Manrope', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   
@@ -20,11 +20,18 @@ body {
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
+  letter-spacing: -0.01em;
 }
+
+h1 { font-size: clamp(2rem, 3.6vw, 4rem); line-height: 1.08; }
+h2 { font-size: clamp(1.45rem, 2.3vw, 2.45rem); line-height: 1.2; }
+h3 { font-size: clamp(1.15rem, 1.7vw, 1.45rem); line-height: 1.25; }
+p, li { line-height: 1.65; }
 
 code, .mono {
   font-family: var(--font-mono);
@@ -32,48 +39,48 @@ code, .mono {
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 243 75% 20%;
+    --background: 0 0% 99%;
+    --foreground: 222 47% 9%;
     --card: 0 0% 100%;
-    --card-foreground: 243 75% 20%;
+    --card-foreground: 222 47% 9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 243 75% 20%;
-    --primary: 243 75% 20%;
+    --popover-foreground: 222 47% 9%;
+    --primary: 222 47% 11%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 32 95% 37%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 32 95% 44%;
+    --secondary: 44 96% 52%;
+    --secondary-foreground: 222 47% 9%;
+    --muted: 210 18% 95%;
+    --muted-foreground: 215 13% 38%;
+    --accent: 207 100% 50%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 243 75% 20%;
+    --border: 214 24% 89%;
+    --input: 214 24% 89%;
+    --ring: 207 100% 50%;
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 222 47% 2%;
+    --background: 222 47% 4%;
     --foreground: 210 40% 98%;
-    --card: 222 47% 6%;
+    --card: 222 47% 7%;
     --card-foreground: 210 40% 98%;
-    --popover: 222 47% 6%;
+    --popover: 222 47% 7%;
     --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222 47% 2%;
-    --secondary: 37 91% 55%;
+    --primary: 44 96% 52%;
+    --primary-foreground: 222 47% 9%;
+    --secondary: 207 100% 50%;
     --secondary-foreground: 0 0% 100%;
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
-    --accent: 217 33% 17%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 207 100% 50%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
     --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 210 40% 98%;
+    --ring: 207 100% 50%;
   }
 }
 
@@ -147,11 +154,11 @@ code, .mono {
 
 /* Gradient backgrounds */
 .gradient-hero {
-  background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #1E1B4B 100%);
+  background: linear-gradient(145deg, #06080e 0%, #0b1633 55%, #0a0b10 100%);
 }
 
 .gradient-amber {
-  background: linear-gradient(135deg, #B45309 0%, #D97706 100%);
+  background: linear-gradient(135deg, #EAB308 0%, #D97706 100%);
 }
 
 /* Subtle texture overlay */
@@ -204,7 +211,38 @@ code, .mono {
 
 /* Gradient text for headings */
 .gradient-text {
-  @apply bg-gradient-to-r from-indigo-950 to-indigo-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-slate-900 via-yellow-600 to-blue-600 dark:from-white dark:via-yellow-300 dark:to-blue-300 bg-clip-text text-transparent;
+}
+
+/* iOS-safe image rendering helpers */
+.image-safe {
+  width: 100%;
+  height: auto;
+  object-position: center;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .ios-image-safe {
+    object-fit: contain !important;
+    background: #0f172a;
+  }
+}
+
+/* Performance smoothing */
+@media (max-width: 768px) {
+  .glass,
+  .glass-header {
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Status badges */

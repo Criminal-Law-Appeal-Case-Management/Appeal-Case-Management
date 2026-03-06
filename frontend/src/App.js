@@ -4,6 +4,7 @@ import axios from "axios";
 import { Toaster } from "./components/ui/sonner";
 import InstallPrompt from "./components/InstallPrompt";
 import TermsAcceptance from "./components/TermsAcceptance";
+import { FastScrollTop } from "./components/FastScrollTop";
 
 // Pages
 import LandingPage from "./pages/LandingPage";
@@ -320,6 +321,7 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <AppRouter />
+          <FastScrollTop />
           <Toaster position="top-right" richColors />
           <InstallPrompt />
         </BrowserRouter>
