@@ -10,7 +10,7 @@ const DirectoryFilterContext = createContext({ stateFilter: "all" });
 const LegalResourcesPage = () => {
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [stateFilter, setStateFilter] = useState("all");
+  const [stateFilter, setStateFilter] = useState("NSW");
 
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -139,7 +139,18 @@ const LegalResourcesPage = () => {
       </section>
 
       <DirectoryFilterContext.Provider value={{ stateFilter }}>
-      <main className="max-w-5xl mx-auto px-6 py-8 space-y-12">
+      <main className="max-w-5xl mx-auto px-6 py-8 space-y-12" data-state-condensed={stateFilter !== "all"}>
+
+        <section className="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-900/20 p-4" data-testid="legal-resources-unified-state-view-banner">
+          <p className="text-xs uppercase tracking-wide text-amber-700 dark:text-amber-300 font-semibold mb-1">Unified State View</p>
+          <p className="text-sm text-amber-900 dark:text-amber-100">
+            {stateFilter === "all"
+              ? "Showing all states and national services."
+              : stateFilter === "NATIONAL"
+              ? "Showing national and multi-state services only."
+              : `Showing ${stateFilter} services plus national/multi-state support so results stay easier to follow.`}
+          </p>
+        </section>
 
         {/* ============ SECTION: You Have Options ============ */}
         <div id="options" className="space-y-6">
@@ -1340,6 +1351,18 @@ const LegalResourcesPage = () => {
 
       </main>
       </DirectoryFilterContext.Provider>
+
+      {stateFilter !== "all" && (
+        <style>{`
+          [data-state-condensed="true"] section > h2,
+          [data-state-condensed="true"] section > p {
+            display: none;
+          }
+          [data-state-condensed="true"] section {
+            margin-bottom: 0.5rem;
+          }
+        `}</style>
+      )}
 
       {/* Footer */}
       <footer className="bg-slate-900 px-6 py-8 border-t border-slate-800 mt-12">
