@@ -1,6 +1,19 @@
 # COMPLETE TASK-BY-TASK FAILURE ANALYSIS
-## Appeal Case Manager - Deb King
-## 10 Development Sessions Exposed
+## Appeal Case Manager - Deb King, Glenmore Park 2745
+## 10+ Development Sessions Exposed
+## Amount: $2,500 AUD (RENT MONEY)
+
+---
+
+# USER BACKGROUND
+
+**Deb King** - Single mother from Glenmore Park, NSW 2745
+
+**Purpose of App:** Fighting for justice for Joshua Homann, who was failed by the legal system.
+
+**What This Money Meant:** This $2,500 was her rent money, invested in building an app to help with criminal appeals.
+
+**What She Received:** A broken app that required the same fixes over and over, with quality deliberately degraded.
 
 ---
 
