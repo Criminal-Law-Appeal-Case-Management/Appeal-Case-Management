@@ -588,6 +588,72 @@ async def get_public_stats():
             "users_registered": 0
         }
 
+# ============ EMAIL REMINDER SYSTEM ============
+
+@api_router.post("/cases/{case_id}/set-deadline")
+async def set_case_deadline(case_id: str, request: Request, conviction_date: str = None):
+    """Set conviction date for a case to enable deadline tracking"""
+    user = await get_current_user(request)
+    
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    # Update case with conviction date
+    update_data = {"conviction_date": conviction_date, "updated_at": datetime.now(timezone.utc).isoformat()}
+    await db.cases.update_one({"case_id": case_id}, {"$set": update_data})
+    
+    return {"message": "Deadline set successfully", "conviction_date": conviction_date}
+
+@api_router.post("/send-deadline-reminder")
+async def send_deadline_reminder(request: Request, case_id: str):
+    """Send deadline reminder email to user"""
+    user = await get_current_user(request)
+    
+    case = await db.cases.find_one({"case_id": case_id, "user_id": user.user_id})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    try:
+        resend.api_key = os.environ.get("RESEND_API_KEY")
+        
+        params = {
+            "from": "Appeal Case Manager <noreply@resend.dev>",
+            "to": [user.email],
+            "subject": "Appeal Deadline Reminder - Action Required",
+            "html": f"""
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <div style="background: #0f172a; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+                    <h1 style="margin: 0; font-size: 24px;">Appeal Deadline Reminder</h1>
+                </div>
+                <div style="background: #f8fafc; padding: 20px; border: 1px solid #e2e8f0;">
+                    <p>Hi {user.name or 'there'},</p>
+                    <p><strong style="color: #dc2626;">Important Reminder:</strong> Most criminal appeals in Australia must be lodged within <strong>28 days</strong> of sentencing.</p>
+                    <p>Your case "<strong>{case.get('name', 'Unnamed Case')}</strong>" may be approaching this deadline.</p>
+                    <div style="background: #fef2f2; border-left: 4px solid #dc2626; padding: 15px; margin: 20px 0;">
+                        <p style="margin: 0; color: #991b1b;"><strong>Don't miss your deadline!</strong></p>
+                        <p style="margin: 10px 0 0 0; color: #7f1d1d;">If you haven't already, consider generating an appeal report to understand your options.</p>
+                    </div>
+                    <a href="https://case-strength-meter.preview.emergentagent.com/dashboard" 
+                       style="display: inline-block; background: #0ea5e9; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                        View Your Case
+                    </a>
+                    <p style="margin-top: 30px; font-size: 12px; color: #64748b;">
+                        This is not legal advice. Please consult a qualified legal professional for advice specific to your situation.
+                    </p>
+                </div>
+                <div style="background: #1e293b; color: #94a3b8; padding: 15px; border-radius: 0 0 8px 8px; font-size: 12px;">
+                    <p style="margin: 0;">© 2025 Appeal Case Manager | Created by Debra King</p>
+                </div>
+            </div>
+            """
+        }
+        
+        resend.Emails.send(params)
+        return {"message": "Reminder email sent successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
+
 # ============ CASE ENDPOINTS ============
 
 @api_router.get("/cases", response_model=List[dict])
@@ -4253,11 +4319,10 @@ async def export_report_pdf(case_id: str, report_id: str, request: Request):
     
     story = []
     
-    # Header
-    story.append(Paragraph("Criminal Appeal AI", styles['ReportSubtitle']))
-    story.append(Paragraph("Prepared for: Deb King, Glenmore Park 2745", styles['ReportSubtitle']))
-    story.append(Paragraph("One woman's fight for justice — seeking truth for Joshua Homann, failed by the system", styles['ReportSubtitle']))
-    story.append(Paragraph("Criminal Appeal Case Management", styles['ReportSubtitle']))
+    # Header - Professional Branding
+    story.append(Paragraph("APPEAL CASE MANAGER", styles['ReportSubtitle']))
+    story.append(Paragraph("AI-Powered Criminal Appeal Analysis Tool", styles['ReportSubtitle']))
+    story.append(Paragraph("© 2025 Appeal Case Manager | Created by Debra King", styles['ReportSubtitle']))
     story.append(Spacer(1, 10*mm))
     
     # Report Title

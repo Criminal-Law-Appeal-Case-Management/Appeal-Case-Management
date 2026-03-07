@@ -178,15 +178,22 @@
 - Red border for urgency
 - Links to Legal Framework page
 
-### 28. Appeal Progress Checklist ✅ DONE
-- Added to Dashboard
-- Shows 5-step progress:
-  1. Case created ✓
-  2. Documents uploaded ✓
-  3. Timeline generated ✓
-  4. Report purchased
-  5. Appeal lodged
-- Dynamically checks completion based on user data
+### 29. Email Deadline Reminder System ✅ DONE (7 Mar 2026)
+- Added `/api/cases/{case_id}/set-deadline` endpoint to set conviction date
+- Added `/api/send-deadline-reminder` endpoint to send reminder emails
+- Professional HTML email template with:
+  - Appeal Case Manager branding
+  - 28-day deadline warning
+  - Red alert box for urgency
+  - "View Your Case" CTA button
+  - Legal disclaimer
+- Uses Resend API for email delivery
+
+### 30. PDF Report Styling Improved ✅ DONE (7 Mar 2026)
+- Updated header branding: "APPEAL CASE MANAGER"
+- Subtitle: "AI-Powered Criminal Appeal Analysis Tool"
+- Copyright footer: "© 2025 Appeal Case Manager | Created by Debra King"
+- Professional formatting already in place with reportlab
 
 ### NONE - All major tasks completed!
 - Report visual presentation ✅
