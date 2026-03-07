@@ -70,7 +70,7 @@ const AppealStatisticsPage = () => {
     sa: {
       name: "South Australia",
       abbrev: "SA",
-      color: "amber",
+      color: "sky",
       filings2024: 95,
       successRate: 20,
       avgMonths: 9,
@@ -232,7 +232,7 @@ const AppealStatisticsPage = () => {
               label="Avg Processing Time"
               value="11 months"
               subtext="To finalisation"
-              color="amber"
+              color="sky"
             />
             <StatCard 
               icon={Users}
@@ -606,7 +606,7 @@ const StatCard = ({ icon: Icon, label, value, subtext, color }) => {
   const colorClasses = {
     blue: "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
     emerald: "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400",
-    amber: "bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400",
+    sky: "bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400",
     purple: "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
   };
 
@@ -628,7 +628,7 @@ const StateDetailCard = ({ state }) => {
     blue: "border-blue-400",
     purple: "border-purple-400",
     red: "border-red-400",
-    amber: "border-sky-400",
+    sky: "border-sky-400",
     emerald: "border-emerald-400",
     teal: "border-teal-400",
     orange: "border-orange-400",
@@ -639,7 +639,7 @@ const StateDetailCard = ({ state }) => {
     <div className={`bg-card border-2 ${colorClasses[state.color]} rounded-2xl p-6`}>
       <div className="flex items-center gap-4 mb-6">
         <div className={`w-14 h-14 rounded-xl bg-${state.color}-600 flex items-center justify-center text-white text-xl font-bold`}
-          style={{ backgroundColor: state.color === 'blue' ? '#2563eb' : state.color === 'purple' ? '#9333ea' : state.color === 'red' ? '#dc2626' : state.color === 'amber' ? '#d97706' : state.color === 'emerald' ? '#059669' : state.color === 'teal' ? '#0d9488' : state.color === 'orange' ? '#ea580c' : '#4f46e5' }}
+          style={{ backgroundColor: state.color === 'blue' ? '#2563eb' : state.color === 'purple' ? '#9333ea' : state.color === 'red' ? '#dc2626' : state.color === 'sky' ? '#0ea5e9' : state.color === 'emerald' ? '#059669' : state.color === 'teal' ? '#0d9488' : state.color === 'orange' ? '#ea580c' : '#4f46e5' }}
         >
           {state.abbrev}
         </div>

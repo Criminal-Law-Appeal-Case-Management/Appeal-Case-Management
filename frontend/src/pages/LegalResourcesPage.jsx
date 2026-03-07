@@ -293,7 +293,7 @@ const LegalResourcesPage = () => {
                 phone="1300 366 424"
                 website="https://lsc.sa.gov.au"
                 description="Legal aid services for South Australians."
-                color="amber"
+                color="sky"
               />
               <ResourceCard
                 title="Legal Aid WA"
@@ -374,7 +374,7 @@ const LegalResourcesPage = () => {
                 phone="(08) 8229 0200"
                 website="https://www.lawsocietysa.asn.au"
                 description="Legal referral service for South Australians."
-                color="amber"
+                color="sky"
               />
               <ResourceCard
                 title="Law Society of Western Australia"
@@ -489,7 +489,7 @@ const LegalResourcesPage = () => {
                 phone="(08) 8111 5555"
                 website="https://www.lpcc.sa.gov.au"
                 description="Investigates complaints against lawyers in South Australia."
-                color="amber"
+                color="sky"
               />
               <ResourceCard
                 title="Legal Services and Complaints Committee WA"
@@ -727,7 +727,7 @@ const LegalResourcesPage = () => {
                   phone="1800 765 767"
                   website="https://www.alsnswact.org.au"
                   description="Legal services for Aboriginal and Torres Strait Islander peoples."
-                  color="amber"
+                  color="sky"
                 />
                 <ResourceCard
                   title="Victorian Aboriginal Legal Service"
@@ -735,7 +735,7 @@ const LegalResourcesPage = () => {
                   phone="1800 064 865"
                   website="https://www.vals.org.au"
                   description="Legal assistance for Aboriginal Victorians."
-                  color="amber"
+                  color="sky"
                 />
                 <ResourceCard
                   title="Prisoners Legal Service QLD"
@@ -954,7 +954,7 @@ const LegalResourcesPage = () => {
                 phone="(08) 9220 7555"
                 website="https://www.ombudsman.wa.gov.au"
                 description="Investigates WA state government and local government agencies."
-                color="amber"
+                color="sky"
               />
             </div>
           </div>
@@ -1016,7 +1016,7 @@ const LegalResourcesPage = () => {
                 phone="(02) 6246 3788"
                 website="https://www.lawcouncil.asn.au"
                 description="Peak national body representing the Australian legal profession."
-                color="amber"
+                color="sky"
                 highlight={true}
               />
               <ResourceCard
@@ -1057,7 +1057,7 @@ const LegalResourcesPage = () => {
                 phone="(08) 9324 8600"
                 website="https://www.lawsocietywa.asn.au"
                 description="Peak body for lawyers in Western Australia."
-                color="amber"
+                color="sky"
               />
             </div>
           </div>
@@ -1143,7 +1143,7 @@ const LegalResourcesPage = () => {
                 phone="(08) 9461 2299"
                 website="https://www.lpbwa.org.au"
                 description="Regulates legal practitioners in Western Australia."
-                color="amber"
+                color="sky"
               />
               <ResourceCard
                 title="Legal Profession Conduct Commissioner SA"
@@ -1240,7 +1240,7 @@ const LegalResourcesPage = () => {
               phone="1800 765 767"
               website="https://www.alsnswact.org.au"
               description="Legal services for Aboriginal and Torres Strait Islander peoples."
-              color="amber"
+              color="sky"
               highlight={true}
             />
             <ResourceCard
@@ -1257,7 +1257,7 @@ const LegalResourcesPage = () => {
               phone="(08) 9265 6666"
               website="https://www.als.org.au"
               description="Legal services for Aboriginal and Torres Strait Islander peoples in WA."
-              color="amber"
+              color="sky"
             />
             <ResourceCard
               title="North Australian Aboriginal Justice Agency"
@@ -1439,7 +1439,7 @@ const ResourceCard = ({ title, state, phone, website, description, color, highli
     blue: "bg-blue-600",
     purple: "bg-purple-600",
     red: "bg-red-600",
-    amber: "bg-sky-600",
+    sky: "bg-sky-600",
     emerald: "bg-emerald-600",
     teal: "bg-teal-600",
     orange: "bg-orange-600",

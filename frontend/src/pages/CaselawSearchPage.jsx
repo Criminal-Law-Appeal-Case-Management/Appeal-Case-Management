@@ -76,7 +76,7 @@ const CaselawSearchPage = () => {
     sa: {
       name: "South Australia",
       abbrev: "SA",
-      color: "amber",
+      color: "sky",
       courts: [
         {
           name: "Courts SA - Judgments",
@@ -338,7 +338,7 @@ const CaselawSearchPage = () => {
             {databases[selectedState].courts.map((court, index) => (
               <div key={index} className="bg-card border border-border rounded-2xl overflow-hidden">
                 <div className={`bg-${databases[selectedState].color}-600 px-6 py-4 flex items-center justify-between`}
-                  style={{ backgroundColor: databases[selectedState].color === 'blue' ? '#2563eb' : databases[selectedState].color === 'purple' ? '#9333ea' : databases[selectedState].color === 'red' ? '#dc2626' : databases[selectedState].color === 'amber' ? '#d97706' : databases[selectedState].color === 'emerald' ? '#059669' : databases[selectedState].color === 'teal' ? '#0d9488' : databases[selectedState].color === 'orange' ? '#ea580c' : databases[selectedState].color === 'indigo' ? '#4f46e5' : '#475569' }}
+                  style={{ backgroundColor: databases[selectedState].color === 'blue' ? '#2563eb' : databases[selectedState].color === 'purple' ? '#9333ea' : databases[selectedState].color === 'red' ? '#dc2626' : databases[selectedState].color === 'sky' ? '#0ea5e9' : databases[selectedState].color === 'emerald' ? '#059669' : databases[selectedState].color === 'teal' ? '#0d9488' : databases[selectedState].color === 'orange' ? '#ea580c' : databases[selectedState].color === 'indigo' ? '#4f46e5' : '#475569' }}
                 >
                   <div>
                     <h3 className="text-white font-bold text-lg">{court.name}</h3>
@@ -406,7 +406,7 @@ const CaselawSearchPage = () => {
                 >
                   <div className="flex items-center gap-3 mb-2">
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-white text-xs font-bold`}
-                      style={{ backgroundColor: state.color === 'blue' ? '#2563eb' : state.color === 'purple' ? '#9333ea' : state.color === 'red' ? '#dc2626' : state.color === 'amber' ? '#d97706' : state.color === 'emerald' ? '#059669' : state.color === 'teal' ? '#0d9488' : state.color === 'orange' ? '#ea580c' : state.color === 'indigo' ? '#4f46e5' : '#475569' }}
+                      style={{ backgroundColor: state.color === 'blue' ? '#2563eb' : state.color === 'purple' ? '#9333ea' : state.color === 'red' ? '#dc2626' : state.color === 'sky' ? '#0ea5e9' : state.color === 'emerald' ? '#059669' : state.color === 'teal' ? '#0d9488' : state.color === 'orange' ? '#ea580c' : state.color === 'indigo' ? '#4f46e5' : '#475569' }}
                     >
                       {state.abbrev}
                     </div>

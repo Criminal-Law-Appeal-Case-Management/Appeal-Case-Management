@@ -55,7 +55,7 @@ const LegalFrameworkPage = () => {
     sa: {
       name: "South Australia",
       abbrev: "SA",
-      color: "amber",
+      color: "sky",
       acts: [
         { name: "Criminal Law Consolidation Act 1935 (SA)", url: "https://www.legislation.sa.gov.au/lz?path=/c/a/criminal%20law%20consolidation%20act%201935", desc: "Main criminal offences in SA" },
         { name: "Controlled Substances Act 1984", url: "https://www.legislation.sa.gov.au/lz?path=/c/a/controlled%20substances%20act%201984", desc: "Drug offences" },
@@ -283,7 +283,7 @@ const LegalFrameworkPage = () => {
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-white text-xs font-bold`}
-                      style={{ backgroundColor: state.color === 'blue' ? '#2563eb' : state.color === 'purple' ? '#9333ea' : state.color === 'red' ? '#dc2626' : state.color === 'amber' ? '#d97706' : state.color === 'emerald' ? '#059669' : state.color === 'teal' ? '#0d9488' : state.color === 'orange' ? '#ea580c' : state.color === 'indigo' ? '#4f46e5' : '#475569' }}
+                      style={{ backgroundColor: state.color === 'blue' ? '#2563eb' : state.color === 'purple' ? '#9333ea' : state.color === 'red' ? '#dc2626' : state.color === 'sky' ? '#0ea5e9' : state.color === 'emerald' ? '#059669' : state.color === 'teal' ? '#0d9488' : state.color === 'orange' ? '#ea580c' : state.color === 'indigo' ? '#4f46e5' : '#475569' }}
                     >
                       {state.abbrev}
                     </div>

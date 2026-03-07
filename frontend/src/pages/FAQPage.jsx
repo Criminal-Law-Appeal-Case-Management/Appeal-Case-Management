@@ -11,7 +11,7 @@ const faqs = [
   {
     category: "Getting Started",
     icon: HelpCircle,
-    color: "amber",
+    color: "sky",
     image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?crop=entropy&cs=srgb&fm=jpg&q=85&w=400&h=150&fit=crop",
     questions: [
       {
@@ -235,7 +235,7 @@ const FAQPage = () => {
   const totalQuestions = faqs.reduce((sum, cat) => sum + cat.questions.length, 0);
 
   const colorClasses = {
-    amber: "bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400",
+    sky: "bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400",
     red: "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400",
     blue: "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400",
     purple: "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400",

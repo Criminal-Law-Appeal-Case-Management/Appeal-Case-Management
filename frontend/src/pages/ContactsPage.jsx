@@ -116,7 +116,7 @@ const ContactsPage = () => {
                 phone="1300 366 424"
                 website="https://lsc.sa.gov.au"
                 description="Legal aid services for South Australians."
-                color="amber"
+                color="sky"
               />
               <ResourceCard
                 title="Legal Aid WA"
@@ -200,7 +200,7 @@ const ContactsPage = () => {
                   phone="(08) 8229 0200"
                   website="https://www.lawsocietysa.asn.au"
                   description="Legal referral service for South Australians."
-                  color="amber"
+                  color="sky"
                 />
                 <ResourceCard
                   title="Law Society of Western Australia"
@@ -314,7 +314,7 @@ const ContactsPage = () => {
                 phone="(08) 8111 5555"
                 website="https://www.lpcc.sa.gov.au"
                 description="Investigates complaints against lawyers in South Australia."
-                color="amber"
+                color="sky"
               />
               <ResourceCard
                 title="Legal Services and Complaints Committee WA"
@@ -481,7 +481,7 @@ const ContactsPage = () => {
                   phone="1800 765 767"
                   website="https://www.alsnswact.org.au"
                   description="Legal services for Aboriginal and Torres Strait Islander peoples."
-                  color="amber"
+                  color="sky"
                 />
                 <ResourceCard
                   title="Victorian Aboriginal Legal Service"
@@ -489,7 +489,7 @@ const ContactsPage = () => {
                   phone="1800 064 865"
                   website="https://www.vals.org.au"
                   description="Legal assistance for Aboriginal Victorians."
-                  color="amber"
+                  color="sky"
                 />
                 <ResourceCard
                   title="Prisoners Legal Service QLD"
@@ -582,7 +582,7 @@ const ResourceCard = ({ title, state, phone, website, description, color, highli
     blue: "bg-blue-600",
     purple: "bg-purple-600",
     red: "bg-red-600",
-    amber: "bg-sky-600",
+    sky: "bg-sky-600",
     emerald: "bg-emerald-600",
     teal: "bg-teal-600",
     orange: "bg-orange-600",

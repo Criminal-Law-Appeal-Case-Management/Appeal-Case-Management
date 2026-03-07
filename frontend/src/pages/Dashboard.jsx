@@ -184,7 +184,7 @@ const Dashboard = ({ user }) => {
       <aside className={`fixed left-0 top-8 bottom-0 w-72 bg-card border-r border-border z-40 transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 flex flex-col`}>
         {/* Logo */}
         <div className="flex items-center gap-3 p-6 pb-4">
-          <div className="w-10 h-10 rounded-xl gradient-amber flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl gradient-sky flex items-center justify-center">
             <Scale className="w-5 h-5 text-white" />
           </div>
           <span className="text-lg font-bold text-foreground tracking-tight" style={{ fontFamily: 'Crimson Pro, serif' }}>

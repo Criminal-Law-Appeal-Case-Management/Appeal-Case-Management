@@ -537,7 +537,7 @@ const CaseDetail = ({ user }) => {
               <span className="hidden sm:inline">Back</span>
             </Button>
             <div className="flex items-center gap-2 flex-1 min-w-0">
-              <div className="w-8 h-8 rounded-lg gradient-amber flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-lg gradient-sky flex items-center justify-center shrink-0">
                 <Scale className="w-4 h-4 text-white" />
               </div>
               <span className="text-muted-foreground hidden sm:inline">/</span>

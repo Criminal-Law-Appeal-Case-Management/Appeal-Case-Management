@@ -1017,7 +1017,7 @@ const FormTemplates = () => {
                 >
                   <div className="flex items-center gap-4">
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                      category.color.includes('amber') ? 'bg-sky-100 dark:bg-sky-900/30' :
+                      category.color.includes('sky') ? 'bg-sky-100 dark:bg-sky-900/30' :
                       category.color.includes('blue') ? 'bg-blue-100 dark:bg-blue-900/30' :
                       category.color.includes('emerald') ? 'bg-emerald-100 dark:bg-emerald-900/30' :
                       category.color.includes('purple') ? 'bg-purple-100 dark:bg-purple-900/30' :

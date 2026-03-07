@@ -41,7 +41,7 @@ const HowToUsePage = () => {
       num: 3,
       title: "Upload Your Documents",
       icon: Upload,
-      color: "amber",
+      color: "sky",
       image: "/images/howto/step3-case-detail.png",
       description: "Upload all relevant case documents — transcripts, evidence, statements, court records.",
       instructions: [
@@ -139,7 +139,7 @@ const HowToUsePage = () => {
     const map = {
       blue: { bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-600 dark:text-blue-400", tipBg: "bg-blue-50 dark:bg-blue-900/20", tipText: "text-blue-800 dark:text-blue-200" },
       emerald: { bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-600 dark:text-emerald-400", tipBg: "bg-emerald-50 dark:bg-emerald-900/20", tipText: "text-emerald-800 dark:text-emerald-200" },
-      amber: { bg: "bg-sky-100 dark:bg-sky-900/30", text: "text-sky-600 dark:text-sky-400", tipBg: "bg-sky-50 dark:bg-sky-900/20", tipText: "text-sky-800 dark:text-sky-200" },
+      sky: { bg: "bg-sky-100 dark:bg-sky-900/30", text: "text-sky-600 dark:text-sky-400", tipBg: "bg-sky-50 dark:bg-sky-900/20", tipText: "text-sky-800 dark:text-sky-200" },
       purple: { bg: "bg-purple-100 dark:bg-purple-900/30", text: "text-purple-600 dark:text-purple-400", tipBg: "bg-purple-50 dark:bg-purple-900/20", tipText: "text-purple-800 dark:text-purple-200" },
       red: { bg: "bg-red-100 dark:bg-red-900/30", text: "text-red-600 dark:text-red-400", tipBg: "bg-red-50 dark:bg-red-900/20", tipText: "text-red-800 dark:text-red-200" },
       orange: { bg: "bg-orange-100 dark:bg-orange-900/30", text: "text-orange-600 dark:text-orange-400", tipBg: "bg-orange-50 dark:bg-orange-900/20", tipText: "text-orange-800 dark:text-orange-200" },
