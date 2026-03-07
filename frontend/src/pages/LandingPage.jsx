@@ -34,27 +34,27 @@ const LandingPage = () => {
       
       {/* Header */}
       <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-sky-600 flex items-center justify-center">
-              <Scale className="w-5 h-5 text-white" />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-sky-600 flex items-center justify-center">
+              <Scale className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <span className="text-base sm:text-lg font-semibold text-white tracking-tight">
               Appeal Case Manager
             </span>
-          </div>
+          </Link>
           <div className="hidden md:flex items-center gap-4">
-            <Link to="/how-it-works" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-how-it-works-link">
-              See It In Action
-            </Link>
             <Link to="/appeal-statistics" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-appeal-statistics-link">
-              Appeal Statistics
+              Statistics
             </Link>
-            <Link to="/legal-resources" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-legal-resources-link">
-              Legal Resources
+            <Link to="/how-it-works" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-how-it-works-link">
+              How It Works
             </Link>
             <Link to="/success-stories" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-success-stories-link">
               Success Stories
+            </Link>
+            <Link to="/legal-resources" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-legal-resources-link">
+              Resources
             </Link>
             <Link to="/faq" className="text-slate-400 hover:text-white text-sm transition-colors" data-testid="nav-faq-link">
               FAQ
@@ -84,33 +84,35 @@ const LandingPage = () => {
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Reorganised */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-slate-800 border-t border-slate-700 px-6 py-4 space-y-3">
-            <Link to="/appeal-statistics" className="block py-2 text-slate-300 hover:text-white">Statistics</Link>
-            <Link to="/success-stories" className="block py-2 text-slate-300 hover:text-white">Success Stories</Link>
-            <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
-            <Link to="/legal-resources" className="block py-2 text-slate-300 hover:text-white">Legal Resources & Contacts</Link>
-            <Link to="/forms" className="block py-2 text-slate-300 hover:text-white">Forms</Link>
-            <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
-            <Link to="/how-it-works" className="block py-2 text-slate-300 hover:text-white">How It Works</Link>
-            <Link to="/legal-framework" className="block py-2 text-slate-300 hover:text-white">Legal Framework</Link>
-            <Link to="/about" className="block py-2 text-slate-300 hover:text-white">About</Link>
-            <Link to="/contact" className="block py-2 text-slate-300 hover:text-white">Contact</Link>
-            <Link to="/terms" className="block py-2 text-slate-300 hover:text-white">Terms & Privacy</Link>
-            <div className="border-t border-slate-700 pt-3 mt-3">
-              <Link to="/how-it-works" className="block py-2 text-sky-400 hover:text-sky-300 font-medium">How It Works + Pricing</Link>
-              <Link to="/how-to-use" className="block py-2 text-sky-400 hover:text-sky-300 font-medium">How To Use The App</Link>
-              <Link to="/legal-framework" className="block py-2 text-sky-400 hover:text-sky-300 font-medium">Legal Framework & Legislation</Link>
-              <Link to="/caselaw-search" className="block py-2 text-sky-400 hover:text-sky-300 font-medium">Live Caselaw Search</Link>
-              <Link to="/success-stories" className="block py-2 text-sky-400 hover:text-sky-300 font-medium">Success Stories</Link>
-              <Link to="/glossary" className="block py-2 text-sky-400 hover:text-sky-300 font-medium">Legal Terms</Link>
-            </div>
-            <div className="flex items-center gap-3 pt-2">
-              <button onClick={toggleTheme} className="p-2 text-slate-300 hover:text-white">
+          <div className="md:hidden bg-slate-800 border-t border-slate-700 px-4 py-4 space-y-1">
+            <p className="text-slate-500 text-xs uppercase tracking-wider px-2 pt-2 pb-1">Main</p>
+            <Link to="/" className="block py-2 px-2 text-white font-medium rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+            <Link to="/appeal-statistics" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Statistics</Link>
+            <Link to="/how-it-works" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>How It Works</Link>
+            <Link to="/success-stories" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Success Stories</Link>
+            
+            <p className="text-slate-500 text-xs uppercase tracking-wider px-2 pt-4 pb-1">Resources</p>
+            <Link to="/legal-resources" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Legal Resources</Link>
+            <Link to="/glossary" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Legal Terms</Link>
+            <Link to="/forms" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Forms</Link>
+            <Link to="/legal-framework" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Legal Framework</Link>
+            
+            <p className="text-slate-500 text-xs uppercase tracking-wider px-2 pt-4 pb-1">Help</p>
+            <Link to="/faq" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>FAQ</Link>
+            <Link to="/how-to-use" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>How To Use</Link>
+            <Link to="/about" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>About</Link>
+            <Link to="/contact" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
+            
+            <p className="text-slate-500 text-xs uppercase tracking-wider px-2 pt-4 pb-1">Legal</p>
+            <Link to="/terms" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Terms & Conditions</Link>
+            
+            <div className="flex items-center gap-3 pt-4 px-2">
+              <button onClick={toggleTheme} className="p-2 text-slate-300 hover:text-white rounded hover:bg-slate-700">
                 {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
-              <Button onClick={() => setShowAuthModal(true)} className="bg-sky-600 text-white hover:bg-sky-700 flex-1">
+              <Button onClick={() => { setShowAuthModal(true); setMobileMenuOpen(false); }} className="bg-sky-600 text-white hover:bg-sky-700 flex-1 font-bold">
                 Sign In
               </Button>
             </div>
@@ -119,12 +121,12 @@ const LandingPage = () => {
       </header>
 
       {/* Single Clear Disclaimer */}
-      <div className="bg-red-700 py-3">
-        <div className="max-w-6xl mx-auto px-6">
-          <p className="text-white text-center text-sm md:text-base font-medium">
-            <AlertTriangle className="w-4 h-4 inline mr-2 -mt-0.5" />
+      <div className="bg-red-700 py-2 sm:py-3">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <p className="text-white text-center text-xs sm:text-sm md:text-base font-medium leading-snug">
+            <AlertTriangle className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1 sm:mr-2 -mt-0.5" />
             <strong>NOT LEGAL ADVICE</strong> — Australian Law Only. Creator is not a lawyer. All results must be verified by a qualified legal professional.
-            <Link to="/terms" className="underline ml-2 hover:text-sky-200">Read full terms</Link>
+            <Link to="/terms" className="underline ml-1 sm:ml-2 hover:text-sky-200">Read full terms</Link>
           </p>
         </div>
       </div>
@@ -132,57 +134,56 @@ const LandingPage = () => {
       {/* ============================================ */}
       {/* THE REALITY - Clean, Impactful Statistics */}
       {/* ============================================ */}
-      <section className="py-20 px-6 bg-slate-900" data-testid="landing-statistics-section">
+      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-slate-900" data-testid="landing-statistics-section">
         <div className="max-w-5xl mx-auto text-center">
           
-          {/* Hook - BOLD LEGAL */}
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-10 leading-tight">
-            Could You Be Sitting in Prison<br className="hidden sm:block" /> 
-            <span className="text-sky-400">With a Valid Appeal?</span>
+          {/* Hook - BOLD LEGAL - Mobile Fixed */}
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 sm:mb-10 leading-tight px-2">
+            Could You Be Sitting in Prison With a Valid Appeal?
           </h2>
           
-          {/* The Key Stats - Professional Blue/White */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
-              <p className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white">500K+</p>
-              <p className="text-slate-400 text-base sm:text-lg mt-2 uppercase tracking-wide font-medium">through courts yearly</p>
+          {/* The Key Stats - Mobile Responsive */}
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 mb-8 sm:mb-12">
+            <div className="bg-slate-800 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-slate-700">
+              <p className="text-3xl sm:text-5xl lg:text-6xl font-bold text-white">500K+</p>
+              <p className="text-slate-400 text-xs sm:text-base mt-1 sm:mt-2 uppercase tracking-wide font-medium">through courts yearly</p>
             </div>
-            <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
-              <p className="text-5xl sm:text-6xl lg:text-7xl font-bold text-sky-400">0.012%</p>
-              <p className="text-slate-400 text-base sm:text-lg mt-2 uppercase tracking-wide font-medium">appeal rate</p>
+            <div className="bg-slate-800 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-slate-700">
+              <p className="text-3xl sm:text-5xl lg:text-6xl font-bold text-sky-400">0.012%</p>
+              <p className="text-slate-400 text-xs sm:text-base mt-1 sm:mt-2 uppercase tracking-wide font-medium">appeal rate</p>
             </div>
-            <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
-              <p className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white">35%</p>
-              <p className="text-slate-400 text-base sm:text-lg mt-2 uppercase tracking-wide font-medium">of appeals succeed</p>
+            <div className="bg-slate-800 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-slate-700">
+              <p className="text-3xl sm:text-5xl lg:text-6xl font-bold text-white">35%</p>
+              <p className="text-slate-400 text-xs sm:text-base mt-1 sm:mt-2 uppercase tracking-wide font-medium">of appeals succeed</p>
             </div>
-            <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
-              <p className="text-5xl sm:text-6xl lg:text-7xl font-bold text-sky-400">28</p>
-              <p className="text-slate-400 text-base sm:text-lg mt-2 uppercase tracking-wide font-medium">days to lodge</p>
+            <div className="bg-slate-800 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-slate-700">
+              <p className="text-3xl sm:text-5xl lg:text-6xl font-bold text-sky-400">28</p>
+              <p className="text-slate-400 text-xs sm:text-base mt-1 sm:mt-2 uppercase tracking-wide font-medium">days to lodge</p>
             </div>
           </div>
 
-          {/* The Scale - Professional */}
-          <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 mb-8 max-w-3xl mx-auto">
-            <p className="text-slate-300 text-lg sm:text-xl leading-relaxed">
+          {/* The Scale - Mobile Responsive */}
+          <div className="bg-slate-800 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-slate-700 mb-6 sm:mb-8 max-w-3xl mx-auto">
+            <p className="text-slate-300 text-base sm:text-lg lg:text-xl leading-relaxed">
               <strong className="text-sky-400">In 2003-04 alone:</strong> Over <strong className="text-white">500,000 Australians</strong> went through the criminal court system. 
               Yet the appeal rate remained at just <strong className="text-white">0.012%</strong>. 
               <span className="text-slate-400">This isn't justice — it's a systemic failure of access.</span>
             </p>
           </div>
           
-          {/* The Insight - Bold */}
-          <div className="bg-slate-800 rounded-xl p-8 border border-sky-600/30 mb-10 max-w-4xl mx-auto">
-            <p className="text-white text-xl sm:text-2xl leading-relaxed font-medium">
+          {/* The Insight - Mobile Responsive */}
+          <div className="bg-slate-800 rounded-lg sm:rounded-xl p-5 sm:p-8 border border-sky-600/30 mb-8 sm:mb-10 max-w-4xl mx-auto">
+            <p className="text-white text-base sm:text-xl lg:text-2xl leading-relaxed font-medium">
               Only <strong className="text-sky-400">0.012%</strong> of convicted Australians appeal — yet <strong className="text-sky-400">35%</strong> of those who do succeed. 
               That's potentially <strong className="text-sky-400">thousands of people</strong> in prison who could have had their sentence reduced — <em className="text-slate-400">but never knew.</em>
             </p>
           </div>
           
-          {/* CTA - Professional Blue */}
+          {/* CTA - Mobile Responsive */}
           <Button
             onClick={() => setShowAuthModal(true)}
             data-testid="stats-cta-btn"
-            className="bg-sky-600 text-white hover:bg-sky-500 rounded-lg px-10 py-5 text-xl font-bold shadow-lg uppercase tracking-wide"
+            className="bg-sky-600 text-white hover:bg-sky-500 rounded-lg px-6 sm:px-10 py-4 sm:py-5 text-base sm:text-xl font-bold shadow-lg uppercase tracking-wide w-full sm:w-auto"
           >
             Check Your Case Now
           </Button>
@@ -192,7 +193,7 @@ const LandingPage = () => {
       {/* ============================================ */}
       {/* HERO - What This Tool Is */}
       {/* ============================================ */}
-      <section className="relative py-20 md:py-28 px-6 overflow-hidden bg-white dark:bg-slate-950">
+      <section className="relative py-12 sm:py-20 md:py-28 px-4 sm:px-6 overflow-hidden bg-white dark:bg-slate-950">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -205,41 +206,41 @@ const LandingPage = () => {
         </div>
         
         <div className="max-w-6xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Content */}
             <div className="text-center lg:text-left">
-              <p className="text-sky-600 dark:text-sky-400 font-bold text-sm uppercase tracking-widest mb-5">
+              <p className="text-sky-600 dark:text-sky-400 font-bold text-xs sm:text-sm uppercase tracking-widest mb-4 sm:mb-5">
                 All Australian Jurisdictions
               </p>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white tracking-tight leading-tight mb-6">
-                Criminal Appeal<br />Research Tool
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white tracking-tight leading-tight mb-4 sm:mb-6">
+                Criminal Appeal Research Tool
               </h1>
-              <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-lg leading-relaxed">
+              <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-6 sm:mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed">
                 Upload your case documents. Get AI-powered analysis of potential appeal grounds, 
                 comparative sentencing data, and barrister-ready reports.
               </p>
               
-              {/* State Badges - Professional */}
-              <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-8">
+              {/* State Badges - Mobile Responsive */}
+              <div className="flex flex-wrap justify-center lg:justify-start gap-1.5 sm:gap-2 mb-6 sm:mb-8">
                 {['NSW', 'VIC', 'QLD', 'SA', 'WA', 'TAS', 'NT', 'ACT'].map(state => (
-                  <span key={state} className="text-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded font-semibold border border-slate-200 dark:border-slate-700">{state}</span>
+                  <span key={state} className="text-xs sm:text-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 sm:px-3 py-1 sm:py-1.5 rounded font-semibold border border-slate-200 dark:border-slate-700">{state}</span>
                 ))}
               </div>
               
-              {/* CTA Buttons - Bold Professional */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              {/* CTA Buttons - Mobile Responsive */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
                 <Button
                   onClick={() => setShowAuthModal(true)}
                   data-testid="hero-login-btn"
-                  className="bg-slate-900 dark:bg-sky-600 text-white hover:bg-slate-800 dark:hover:bg-sky-500 rounded-lg px-8 py-4 text-lg font-bold inline-flex items-center justify-center gap-2 uppercase tracking-wide"
+                  className="bg-slate-900 dark:bg-sky-600 text-white hover:bg-slate-800 dark:hover:bg-sky-500 rounded-lg px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold inline-flex items-center justify-center gap-2 uppercase tracking-wide"
                 >
                   Start Your Case
-                  <ChevronRight className="w-6 h-6" />
+                  <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
                 </Button>
                 <Link to="/how-it-works">
                   <Button
                     variant="outline"
-                    className="border-2 border-slate-900 dark:border-slate-600 text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg px-8 py-4 text-lg font-bold w-full sm:w-auto uppercase tracking-wide"
+                    className="border-2 border-slate-900 dark:border-slate-600 text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold w-full uppercase tracking-wide"
                   >
                     How It Works
                   </Button>
@@ -248,14 +249,14 @@ const LandingPage = () => {
             </div>
             
             {/* Right - Hero Image */}
-            <div className="relative mt-8 lg:mt-0">
+            <div className="relative mt-6 lg:mt-0">
               <img 
                 src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/6fe186d3d7a5b01e3d3c6076c0a6aefc22c07aea5667124e0978d927d9c58335.png" 
                 alt="Legal research desk"
-                className="rounded-xl shadow-2xl w-full object-cover h-[280px] sm:h-[350px] lg:h-[420px] border border-slate-200 dark:border-slate-700"
+                className="rounded-xl shadow-2xl w-full object-cover h-[220px] sm:h-[300px] lg:h-[420px] border border-slate-200 dark:border-slate-700"
                 loading="eager"
               />
-              <div className="absolute -top-4 -right-4 bg-sky-600 text-white px-4 py-2 rounded text-sm font-bold shadow-lg uppercase tracking-wide">
+              <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-sky-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded text-xs sm:text-sm font-bold shadow-lg uppercase tracking-wide">
                 AI-Powered
               </div>
             </div>
