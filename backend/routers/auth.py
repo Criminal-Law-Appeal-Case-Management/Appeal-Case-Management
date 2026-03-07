@@ -105,7 +105,9 @@ async def register_user(request: RegisterRequest, response: Response):
         "user_id": user_id,
         "email": request.email.lower(),
         "name": request.name,
-        "picture": None
+        "picture": None,
+        "terms_accepted": False,
+        "is_admin": request.email.lower() in ADMIN_EMAILS
     }
 
 @router.post("/login")
@@ -151,7 +153,9 @@ async def login_user(request: LoginRequest, response: Response):
         "user_id": user_doc["user_id"],
         "email": user_doc["email"],
         "name": user_doc["name"],
-        "picture": user_doc.get("picture")
+        "picture": user_doc.get("picture"),
+        "terms_accepted": user_doc.get("terms_accepted", False),
+        "is_admin": user_doc["email"] in ADMIN_EMAILS
     }
 
 @router.post("/session")
