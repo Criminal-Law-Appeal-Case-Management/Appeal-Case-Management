@@ -3516,40 +3516,40 @@ async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str, agg
     state = case.get('state', 'nsw')
     state_info = AUSTRALIAN_STATES.get(state, AUSTRALIAN_STATES.get('nsw'))
     
-    # Context limits tuned for FAST report generation - optimised for speed
+    # Context limits - RESTORED for detailed comprehensive reports
     context_limits = {
         "quick_summary": {
-            "per_doc_chars": 1200,
-            "total_doc_chars": 8000,
-            "timeline_limit": 50,
-            "notes_limit": 30,
-            "note_chars": 200,
-            "grounds_limit": 25,
-            "ground_desc_chars": 180,
-            "ground_analysis_chars": 200,
+            "per_doc_chars": 3000,
+            "total_doc_chars": 15000,
+            "timeline_limit": 100,
+            "notes_limit": 50,
+            "note_chars": 300,
+            "grounds_limit": 50,
+            "ground_desc_chars": 400,
+            "ground_analysis_chars": 400,
             "ground_deep_chars": 0,
         },
         "full_detailed": {
-            "per_doc_chars": 2500,
-            "total_doc_chars": 25000,
-            "timeline_limit": 120,
-            "notes_limit": 80,
-            "note_chars": 500,
-            "grounds_limit": 70,
-            "ground_desc_chars": 600,
-            "ground_analysis_chars": 500,
-            "ground_deep_chars": 0,
+            "per_doc_chars": 6000,
+            "total_doc_chars": 50000,
+            "timeline_limit": 200,
+            "notes_limit": 100,
+            "note_chars": 800,
+            "grounds_limit": 100,
+            "ground_desc_chars": 1000,
+            "ground_analysis_chars": 800,
+            "ground_deep_chars": 500,
         },
         "extensive_log": {
-            "per_doc_chars": 3500,
-            "total_doc_chars": 40000,
-            "timeline_limit": 200,
-            "notes_limit": 120,
-            "note_chars": 700,
-            "grounds_limit": 100,
-            "ground_desc_chars": 900,
-            "ground_analysis_chars": 700,
-            "ground_deep_chars": 1000,
+            "per_doc_chars": 10000,
+            "total_doc_chars": 80000,
+            "timeline_limit": 500,
+            "notes_limit": 200,
+            "note_chars": 1000,
+            "grounds_limit": 150,
+            "ground_desc_chars": 1500,
+            "ground_analysis_chars": 1200,
+            "ground_deep_chars": 2000,
         },
     }
     limits = context_limits.get(report_type, context_limits["quick_summary"])
@@ -3638,7 +3638,7 @@ You are generating a FREE Quick Summary. Deliver real legal value, then clearly 
 
 {case_context}
 
-Write 1500-2200 words. Structure your response EXACTLY as follows:
+Write 2000-3000 words. Structure your response EXACTLY as follows:
 
 ## TABLE OF CONTENTS
 List each section heading in order using a numbered list.
@@ -3712,7 +3712,7 @@ You are generating a PAID Full Detailed Report ($100 AUD). This must be as detai
 
 {case_context}
 
-Target range 4200-6200 words. This report must feel premium, strategic, and hearing-ready. Use this exact structure:
+Target range 6000-8000 words. This report must feel premium, strategic, and hearing-ready. Use this exact structure:
 
 ## TABLE OF CONTENTS
 Numbered list matching every heading below.
@@ -3818,7 +3818,7 @@ You are generating the PREMIUM Extensive Log Report ($150 AUD). This must exceed
 
 {case_context}
 
-Target range 7000-9500 words. Exhaustive depth required. Use this exact structure:
+Target range 9000-12000 words. Exhaustive depth required. Use this exact structure:
 
 ## TABLE OF CONTENTS
 Numbered list matching every heading below.
