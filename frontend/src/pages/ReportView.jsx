@@ -18,6 +18,10 @@ import {
   Sparkles,
   ShieldCheck,
   TrendingUp,
+  AlertTriangle,
+  Clock,
+  Target,
+  CheckCircle,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -81,40 +85,74 @@ const parseAnalysisSections = (analysis = "") => {
 
 const getReadiness = (score) => {
   if (score >= 75) {
-    return { label: "Filing-Ready", tone: "text-emerald-700", bar: "bg-emerald-500", note: "Strong appellate pathway with actionable grounds." };
+    return { label: "Filing-Ready", tone: "text-emerald-600", bar: "bg-emerald-500", note: "Strong appellate pathway with actionable grounds." };
   }
   if (score >= 50) {
-    return { label: "Evidence Gap", tone: "text-amber-700", bar: "bg-amber-500", note: "Promising grounds present, but supporting material should be strengthened." };
+    return { label: "Evidence Gap", tone: "text-amber-600", bar: "bg-amber-500", note: "Promising grounds present, but supporting material should be strengthened." };
   }
-  return { label: "Urgent Build", tone: "text-rose-700", bar: "bg-rose-500", note: "Substantial preparation required before filing strategy is finalised." };
+  return { label: "Urgent Build", tone: "text-rose-600", bar: "bg-rose-500", note: "Substantial preparation required before filing strategy is finalised." };
 };
 
 const MarkdownBlock = ({ text, testId }) => (
   <ReactMarkdown
     remarkPlugins={[remarkGfm]}
     components={{
-      h1: ({ children }) => <h1 className="text-xl font-bold mt-6 mb-3 text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>{children}</h1>,
-      h2: ({ children }) => <h2 className="text-lg font-bold mt-5 mb-3 text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>{children}</h2>,
-      h3: ({ children }) => <h3 className="text-base font-semibold mt-4 mb-2 text-slate-900">{children}</h3>,
-      p: ({ children }) => <p className="text-slate-700 leading-7 mb-3">{children}</p>,
-      ul: ({ children }) => <ul className="list-disc ml-5 mb-3 space-y-1 text-slate-700">{children}</ul>,
-      ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 space-y-1 text-slate-700">{children}</ol>,
+      h1: ({ children }) => <h1 className="text-xl font-bold mt-6 mb-3 text-slate-900 dark:text-white" style={{ fontFamily: "Crimson Pro, serif" }}>{children}</h1>,
+      h2: ({ children }) => <h2 className="text-lg font-bold mt-5 mb-3 text-slate-900 dark:text-white" style={{ fontFamily: "Crimson Pro, serif" }}>{children}</h2>,
+      h3: ({ children }) => <h3 className="text-base font-semibold mt-4 mb-2 text-slate-900 dark:text-white">{children}</h3>,
+      p: ({ children }) => <p className="text-slate-700 dark:text-slate-300 leading-7 mb-3">{children}</p>,
+      ul: ({ children }) => <ul className="list-disc ml-5 mb-3 space-y-1 text-slate-700 dark:text-slate-300">{children}</ul>,
+      ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 space-y-1 text-slate-700 dark:text-slate-300">{children}</ol>,
       li: ({ children }) => <li className="leading-7">{children}</li>,
-      blockquote: ({ children }) => <blockquote className="border-l-4 border-indigo-300 pl-4 italic text-slate-700 my-3">{children}</blockquote>,
+      blockquote: ({ children }) => <blockquote className="border-l-4 border-indigo-300 pl-4 italic text-slate-700 dark:text-slate-300 my-3">{children}</blockquote>,
       table: ({ children }) => (
-        <div className="overflow-x-auto rounded-lg border border-slate-200 my-4" data-testid={`${testId}-table-wrapper`}>
+        <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700 my-4" data-testid={`${testId}-table-wrapper`}>
           <table className="min-w-full text-sm">{children}</table>
         </div>
       ),
-      thead: ({ children }) => <thead className="bg-slate-100">{children}</thead>,
-      th: ({ children }) => <th className="px-3 py-2 text-left font-semibold text-slate-800 border-b border-slate-200">{children}</th>,
-      td: ({ children }) => <td className="px-3 py-2 align-top text-slate-700 border-b border-slate-100">{children}</td>,
-      code: ({ children }) => <code className="text-xs bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">{children}</code>,
+      thead: ({ children }) => <thead className="bg-slate-100 dark:bg-slate-800">{children}</thead>,
+      th: ({ children }) => <th className="px-3 py-2 text-left font-semibold text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700">{children}</th>,
+      td: ({ children }) => <td className="px-3 py-2 align-top text-slate-700 dark:text-slate-300 border-b border-slate-100 dark:border-slate-800">{children}</td>,
+      code: ({ children }) => <code className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded">{children}</code>,
     }}
   >
     {text}
   </ReactMarkdown>
 );
+
+// Report type configurations matching landing page design
+const reportTypeConfig = {
+  quick_summary: { 
+    label: "Quick Summary", 
+    headerBg: "bg-green-600",
+    headerText: "text-white",
+    accentBg: "bg-green-100 dark:bg-green-900/30",
+    accentText: "text-green-800 dark:text-green-200",
+    accentBorder: "border-green-200 dark:border-green-700",
+    badgeBg: "bg-green-500",
+    price: "FREE"
+  },
+  full_detailed: { 
+    label: "Full Detailed Report", 
+    headerBg: "bg-gradient-to-r from-slate-900 to-blue-900",
+    headerText: "text-white",
+    accentBg: "bg-blue-100 dark:bg-blue-900/30",
+    accentText: "text-blue-800 dark:text-blue-200",
+    accentBorder: "border-blue-200 dark:border-blue-700",
+    badgeBg: "bg-blue-500",
+    price: "$29 AUD"
+  },
+  extensive_log: { 
+    label: "Extensive Log Report", 
+    headerBg: "bg-gradient-to-r from-purple-900 via-slate-900 to-indigo-900",
+    headerText: "text-white",
+    accentBg: "bg-purple-100 dark:bg-purple-900/30",
+    accentText: "text-purple-800 dark:text-purple-200",
+    accentBorder: "border-purple-200 dark:border-purple-700",
+    badgeBg: "bg-purple-500",
+    price: "$39 AUD"
+  },
+};
 
 const ReportView = () => {
   const { caseId, reportId } = useParams();
@@ -204,15 +242,7 @@ const ReportView = () => {
       day: "numeric",
       month: "long",
       year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
     });
-  };
-
-  const reportTypeConfig = {
-    quick_summary: { label: "Quick Summary", cls: "bg-blue-100 text-blue-800 border-blue-200" },
-    full_detailed: { label: "Full Detailed Analysis", cls: "bg-amber-100 text-amber-800 border-amber-200" },
-    extensive_log: { label: "Extensive Log Report", cls: "bg-purple-100 text-purple-800 border-purple-200" },
   };
 
   const analysisText = report?.content?.analysis || "";
@@ -232,35 +262,24 @@ const ReportView = () => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const config = reportTypeConfig[report?.report_type] || reportTypeConfig.quick_summary;
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50" data-testid="report-view-loading">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900" data-testid="report-view-loading">
         <div className="text-center">
           <Loader2 className="w-12 h-12 animate-spin text-slate-400 mx-auto" />
-          <p className="mt-4 text-slate-600">Loading report...</p>
+          <p className="mt-4 text-slate-600 dark:text-slate-400">Loading report...</p>
         </div>
       </div>
     );
   }
 
-  const summaryItems = [
-    { label: "Accused", value: caseData?.defendant_name || "N/A", icon: ShieldCheck, testId: "report-summary-accused" },
-    { label: "Sentence", value: sentenceSummary, icon: Scale, testId: "report-summary-sentence" },
-    { label: "Crime / Offence", value: offenceLabel, icon: Gavel, testId: "report-summary-offence" },
-    { label: "Grounds of Merit", value: String(grounds.length), icon: Sparkles, testId: "report-summary-grounds" },
-    { label: "Case Strength", value: `${caseStrength}/100`, icon: TrendingUp, testId: "report-summary-strength" },
-    {
-      label: "Court & State",
-      value: `${caseData?.court || "Court N/A"} • ${(caseData?.state || "NSW").toUpperCase()}`,
-      icon: Scale,
-      testId: "report-summary-court-state",
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,#eef2ff_0%,#f8fafc_40%,#f1f5f9_100%)]">
-      <header className="bg-white/95 backdrop-blur border-b border-slate-200 sticky top-0 z-40 no-print" data-testid="report-header">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-900">
+      {/* Fixed Action Header */}
+      <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-40 no-print" data-testid="report-header">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <Button variant="ghost" size="sm" onClick={() => navigate(`/cases/${caseId}`)} data-testid="back-btn">
               <ArrowLeft className="w-4 h-4 mr-1" />
@@ -284,201 +303,275 @@ const ReportView = () => {
                 variant="outline"
                 size="sm"
                 onClick={handleExportDOCX}
-                className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"
+                className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/50"
                 data-testid="export-docx-btn"
               >
                 <FileText className="w-4 h-4 mr-2" />
-                Export Word
+                Word
               </Button>
               <Button size="sm" onClick={handleExportPDF} className="bg-slate-900 text-white hover:bg-slate-800" data-testid="export-pdf-btn">
                 <Download className="w-4 h-4 mr-2" />
-                Export PDF
+                PDF
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        <div className="bg-white border border-slate-200 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.35)] rounded-3xl p-5 sm:p-8 md:p-10" data-testid="report-content">
-          <div className="text-center mb-8 pb-8 border-b border-slate-200">
-            <div className="inline-flex items-center justify-center gap-3 mb-4 px-4 py-2 rounded-full bg-slate-100 border border-slate-200" data-testid="report-brand-pill">
-              <Scale className="w-5 h-5 text-slate-900" />
-              <span className="text-sm font-semibold text-slate-900">Appeal Case Manager</span>
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
+        {/* Main Report Card - Matches Landing Page Design */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden" data-testid="report-content">
+          
+          {/* Coloured Header Band - Like Landing Page Mockups */}
+          <div className={`${config.headerBg} ${config.headerText} p-5 sm:p-6`} data-testid="report-header-band">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-3 h-3 bg-white rounded-full"></div>
+                  <p className="text-xs uppercase tracking-wider opacity-80">{config.label}</p>
+                  {report?.content?.aggressive_mode && (
+                    <span className="bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full font-medium">Aggressive Mode</span>
+                  )}
+                </div>
+                <h1 className="text-xl sm:text-2xl font-bold" style={{ fontFamily: "Crimson Pro, serif" }} data-testid="report-title">
+                  {report?.title || caseData?.title || "Appeal Report"}
+                </h1>
+                <p className="text-sm opacity-80 mt-1">
+                  {caseData?.court || "Court"} • {(caseData?.state || "NSW").toUpperCase()}
+                </p>
+              </div>
+              
+              {/* Case Strength Circle - Like Landing Page */}
+              <div className="flex items-center gap-4">
+                <div className="text-right hidden sm:block">
+                  <p className="text-xs opacity-70">Case Strength</p>
+                  <p className="text-sm font-medium">{readiness.label}</p>
+                </div>
+                <div className="w-20 h-20 rounded-full bg-white/10 border-4 border-white/30 flex items-center justify-center" data-testid="case-strength-circle">
+                  <span className="text-2xl font-bold">{caseStrength}</span>
+                </div>
+              </div>
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4" style={{ fontFamily: "Crimson Pro, serif" }} data-testid="report-title">
-              {report?.title}
-            </h1>
-            <div className="flex items-center justify-center gap-3 flex-wrap">
-              <Badge variant="outline" className={reportTypeConfig[report?.report_type]?.cls || reportTypeConfig.quick_summary.cls} data-testid="report-type-badge">
-                {reportTypeConfig[report?.report_type]?.label || report?.report_type}
-              </Badge>
-              {report?.content?.aggressive_mode && (
-                <Badge variant="outline" className="bg-rose-100 text-rose-800 border-rose-200" data-testid="report-aggressive-mode-badge">
-                  Aggressive Mode
-                </Badge>
-              )}
-              <span className="text-sm text-slate-500" data-testid="report-generated-date">Generated: {formatDate(report?.generated_at)}</span>
+            
+            {/* Stats Row */}
+            <div className="flex flex-wrap gap-3 mt-4 text-xs">
+              <span className="bg-white/20 px-3 py-1.5 rounded-lg">{sections.length} Sections</span>
+              <span className="bg-white/20 px-3 py-1.5 rounded-lg">{documentsCount} Documents</span>
+              <span className="bg-white/20 px-3 py-1.5 rounded-lg">{grounds.length} Grounds</span>
+              <span className="bg-white/20 px-3 py-1.5 rounded-lg">{eventsCount} Timeline Events</span>
             </div>
           </div>
 
-          <section className="mb-8 rounded-2xl border border-indigo-200 bg-gradient-to-r from-indigo-50 via-white to-amber-50 p-5 sm:p-6" data-testid="report-top-summary-box">
-            <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="w-5 h-5 text-indigo-700" />
-              <h2 className="text-lg font-bold text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>
-                Command Summary
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {summaryItems.map((item) => (
-                <SummaryPill key={item.label} label={item.label} value={item.value} icon={item.icon} testId={item.testId} />
-              ))}
-            </div>
-
-            <div className="mt-5 rounded-xl border border-slate-200 bg-white p-4" data-testid="appeal-readiness-gauge">
-              <div className="flex items-center justify-between gap-3 mb-2">
-                <p className="text-xs uppercase tracking-wide text-slate-500">Appeal Readiness Gauge</p>
-                <p className={`text-sm font-semibold ${readiness.tone}`} data-testid="appeal-readiness-label">{readiness.label}</p>
-              </div>
-              <div className="h-2.5 bg-slate-200 rounded-full overflow-hidden" data-testid="appeal-readiness-bar-track">
-                <div
-                  className={`h-full ${readiness.bar} transition-all duration-700`}
-                  style={{ width: `${caseStrength}%` }}
-                  data-testid="appeal-readiness-bar"
-                />
-              </div>
-              <p className="text-xs text-slate-600 mt-2" data-testid="appeal-readiness-note">{readiness.note}</p>
-            </div>
-          </section>
-
-          <section className="mb-8 rounded-2xl border border-slate-200 bg-slate-900 text-white p-5 sm:p-6" data-testid="premium-value-architecture-section">
-            <p className="text-[11px] uppercase tracking-widest text-blue-300 font-semibold mb-2">Premium Report Architecture</p>
-            <h2 className="text-xl font-bold mb-4" style={{ fontFamily: "Crimson Pro, serif" }}>
-              Built for strategic legal action — not just plain text
-            </h2>
-            <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
-              <div className="rounded-xl border border-blue-800/60 bg-blue-950/40 p-3">
-                <p className="text-xs font-semibold text-blue-200 mb-1">Comparative Sentencing</p>
-                <p className="text-[12px] text-slate-200">Before/after reduction pathways with practical appeal outcomes.</p>
-              </div>
-              <div className="rounded-xl border border-yellow-700/60 bg-yellow-900/30 p-3">
-                <p className="text-xs font-semibold text-yellow-100 mb-1">Similar Case Search Options</p>
-                <p className="text-[12px] text-slate-200">AustLII-ready query packs and jurisdiction filters.</p>
-              </div>
-              <div className="rounded-xl border border-emerald-700/60 bg-emerald-900/30 p-3">
-                <p className="text-xs font-semibold text-emerald-100 mb-1">How to Argue Grounds</p>
-                <p className="text-[12px] text-slate-200">Lead propositions, likely prosecution responses, and rebuttal direction.</p>
-              </div>
-              <div className="rounded-xl border border-purple-700/60 bg-purple-900/30 p-3">
-                <p className="text-xs font-semibold text-purple-100 mb-1">Next Steps Playbook</p>
-                <p className="text-[12px] text-slate-200">72-hour, 7-day, and 28-day execution plan with priorities.</p>
-              </div>
-            </div>
-          </section>
-
+          {/* Table of Contents - Like Landing Page */}
           {sections.length > 0 && (
-            <section className="mb-8 rounded-2xl border border-slate-200 p-5 bg-slate-50" data-testid="report-table-of-contents">
-              <div className="flex items-center gap-2 mb-3">
-                <ListOrdered className="w-4 h-4 text-slate-700" />
-                <h3 className="font-semibold text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>
-                  Table of Contents
-                </h3>
-              </div>
-              <div className="grid md:grid-cols-2 gap-2">
+            <div className="bg-slate-50 dark:bg-slate-700/50 p-4 border-b border-slate-200 dark:border-slate-600" data-testid="report-table-of-contents">
+              <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 uppercase tracking-wide">
+                Contents ({sections.length} Sections)
+              </p>
+              <div className="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-400">
                 {sections.map((section, idx) => (
                   <button
                     key={section.id}
                     onClick={() => scrollToSection(section.id)}
-                    className="text-left px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-sm text-slate-700 transition-colors"
+                    className="hover:text-slate-900 dark:hover:text-white hover:underline"
                     data-testid={`report-toc-item-${idx + 1}`}
                   >
-                    <span className="font-semibold text-slate-900 mr-1">{idx + 1}.</span>
-                    {section.title}
+                    {idx + 1}. {section.title}
                   </button>
                 ))}
               </div>
-            </section>
+            </div>
           )}
 
-          <section className="space-y-5" data-testid="report-full-analysis-section">
-            {sections.map((section, idx) => (
-              <article key={section.id} id={section.id} className="rounded-2xl border border-slate-200 p-4 sm:p-6 bg-gradient-to-b from-white to-slate-50/40 shadow-sm">
-                <div className="flex items-center gap-2 mb-3 pb-3 border-b border-slate-200">
-                  <div className="w-7 h-7 rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold flex items-center justify-center">
-                    {idx + 1}
+          {/* Report Body */}
+          <div className="p-5 sm:p-6 space-y-6" style={{ fontFamily: "Crimson Pro, serif" }}>
+            
+            {/* Case Overview Box - Like Landing Page */}
+            <div className={`rounded-xl border ${config.accentBorder} ${config.accentBg} p-5`} data-testid="report-case-overview">
+              <h2 className={`font-bold ${config.accentText} text-sm border-b border-slate-200 dark:border-slate-600 pb-2 mb-3`}>
+                CASE OVERVIEW
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+                <div>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">Defendant</p>
+                  <p className="font-semibold text-slate-900 dark:text-white">{caseData?.defendant_name || "N/A"}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">Offence</p>
+                  <p className="font-semibold text-slate-900 dark:text-white">{offenceLabel}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">Sentence</p>
+                  <p className="font-semibold text-slate-900 dark:text-white">{sentenceSummary}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">Court</p>
+                  <p className="font-semibold text-slate-900 dark:text-white">{caseData?.court || "N/A"}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">State</p>
+                  <p className="font-semibold text-slate-900 dark:text-white">{(caseData?.state || "NSW").toUpperCase()}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">Generated</p>
+                  <p className="font-semibold text-slate-900 dark:text-white">{formatDate(report?.generated_at)}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Grounds Preview Box */}
+            {grounds.length > 0 && (
+              <div className="rounded-xl border border-amber-200 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20 p-5" data-testid="report-grounds-preview">
+                <h2 className="font-bold text-amber-800 dark:text-amber-200 text-sm mb-3">
+                  GROUNDS IDENTIFIED: {grounds.length}
+                </h2>
+                <div className="space-y-2">
+                  {grounds.slice(0, 3).map((ground, idx) => (
+                    <div key={ground.ground_id || idx} className="flex items-center gap-2 text-sm">
+                      <span className={`w-2.5 h-2.5 rounded-full ${
+                        ground.strength === 'strong' ? 'bg-green-500' : 
+                        ground.strength === 'moderate' ? 'bg-amber-500' : 'bg-slate-400'
+                      }`}></span>
+                      <span className="font-medium text-slate-900 dark:text-white">
+                        {ground.strength === 'strong' ? 'Strong' : ground.strength === 'moderate' ? 'Moderate' : 'Potential'}:
+                      </span>
+                      <span className="text-slate-700 dark:text-slate-300">{ground.title}</span>
+                    </div>
+                  ))}
+                  {grounds.length > 3 && (
+                    <p className="text-xs text-slate-500 italic">+ {grounds.length - 3} more grounds in full analysis...</p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Appeal Viability Gauge */}
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5" data-testid="appeal-readiness-gauge">
+              <h2 className="font-bold text-slate-900 dark:text-white text-sm border-b border-slate-200 dark:border-slate-700 pb-2 mb-3">
+                APPEAL VIABILITY
+              </h2>
+              <div className="flex items-center gap-4">
+                <div className={`w-20 h-20 rounded-full flex items-center justify-center ${
+                  caseStrength >= 75 ? 'bg-gradient-to-br from-green-400 to-emerald-600' :
+                  caseStrength >= 50 ? 'bg-gradient-to-br from-amber-400 to-orange-600' :
+                  'bg-gradient-to-br from-rose-400 to-red-600'
+                }`} data-testid="viability-score-circle">
+                  <span className="text-white font-bold text-xl">{caseStrength}%</span>
+                </div>
+                <div className="flex-1">
+                  <p className={`font-semibold text-sm ${readiness.tone}`}>{readiness.label.toUpperCase()} PROSPECTS</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{readiness.note}</p>
+                  <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full mt-2 overflow-hidden">
+                    <div className={`h-full ${readiness.bar} transition-all duration-700`} style={{ width: `${caseStrength}%` }}></div>
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }} data-testid={`report-section-heading-${idx + 1}`}>
-                    {section.title}
-                  </h3>
                 </div>
+              </div>
+            </div>
 
-                <div className="text-slate-700" data-testid={`report-section-content-${idx + 1}`}>
-                  <MarkdownBlock text={section.content} testId={`report-section-md-${idx + 1}`} />
-                </div>
+            {/* Deadline Warning */}
+            <div className="rounded-xl border border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4" data-testid="deadline-warning">
+              <p className="text-sm text-red-800 dark:text-red-200 font-semibold flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5" />
+                DEADLINE: Notice of Appeal must be filed within 28 days of sentence
+              </p>
+            </div>
 
-                <button
-                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                  className="mt-2 inline-flex items-center gap-1 text-xs text-indigo-700 hover:text-indigo-900"
-                  data-testid={`report-back-to-top-${idx + 1}`}
+            {/* Full Analysis Sections */}
+            <div className="space-y-6" data-testid="report-full-analysis-section">
+              {sections.map((section, idx) => (
+                <article 
+                  key={section.id} 
+                  id={section.id} 
+                  className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 overflow-hidden"
                 >
-                  <ChevronRight className="w-3 h-3 rotate-[-90deg]" />
-                  Back to top
-                </button>
-              </article>
-            ))}
-          </section>
+                  <div className={`${config.headerBg} px-5 py-3`}>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-sm">
+                        {idx + 1}
+                      </div>
+                      <h3 className="text-white font-semibold" data-testid={`report-section-heading-${idx + 1}`}>
+                        {section.title}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="p-5" data-testid={`report-section-content-${idx + 1}`}>
+                    <MarkdownBlock text={section.content} testId={`report-section-md-${idx + 1}`} />
+                  </div>
+                </article>
+              ))}
+            </div>
 
+            {/* Premium Features Box */}
+            <div className="rounded-xl border border-slate-700 bg-slate-900 text-white p-5" data-testid="premium-value-architecture-section">
+              <p className="text-[11px] uppercase tracking-widest text-blue-300 font-semibold mb-2">Premium Report Architecture</p>
+              <h2 className="text-lg font-bold mb-4">Built for strategic legal action — not just plain text</h2>
+              <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
+                <div className="rounded-lg border border-blue-800/60 bg-blue-950/40 p-3">
+                  <p className="text-xs font-semibold text-blue-200 mb-1">Comparative Sentencing</p>
+                  <p className="text-[11px] text-slate-300">Before/after reduction pathways with practical appeal outcomes.</p>
+                </div>
+                <div className="rounded-lg border border-yellow-700/60 bg-yellow-900/30 p-3">
+                  <p className="text-xs font-semibold text-yellow-100 mb-1">Similar Case Search</p>
+                  <p className="text-[11px] text-slate-300">AustLII-ready query packs and jurisdiction filters.</p>
+                </div>
+                <div className="rounded-lg border border-emerald-700/60 bg-emerald-900/30 p-3">
+                  <p className="text-xs font-semibold text-emerald-100 mb-1">How to Argue Grounds</p>
+                  <p className="text-[11px] text-slate-300">Lead propositions and rebuttal directions.</p>
+                </div>
+                <div className="rounded-lg border border-purple-700/60 bg-purple-900/30 p-3">
+                  <p className="text-xs font-semibold text-purple-100 mb-1">Next Steps Playbook</p>
+                  <p className="text-[11px] text-slate-300">72-hour, 7-day, and 28-day execution plan.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Legacy Reports Section */}
           {legacyReports.length > 0 && (
-            <section className="mt-10 rounded-2xl border-2 border-amber-300 bg-amber-50/40 p-5 sm:p-6" data-testid="embedded-legacy-reports-section">
+            <div className="border-t border-amber-300 dark:border-amber-700 bg-amber-50/50 dark:bg-amber-900/10 p-5 sm:p-6" data-testid="embedded-legacy-reports-section">
               <div className="mb-4">
-                <p className="text-xs uppercase tracking-widest text-amber-700 font-semibold mb-1">Recovered Reports</p>
-                <h3 className="text-xl font-bold text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>
+                <p className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold mb-1">Recovered Reports</p>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white" style={{ fontFamily: "Crimson Pro, serif" }}>
                   Embedded High-Detail Reports From Your History
                 </h3>
-                <p className="text-sm text-slate-700 mt-1">
-                  We found your strongest previous reports and embedded them here so the quality/detail is not lost.
-                </p>
               </div>
-
               <div className="space-y-4" data-testid="embedded-legacy-reports-list">
                 {legacyReports.map((legacy, idx) => (
-                  <article key={`${legacy.report_id}-${idx}`} className="rounded-xl border border-amber-200 bg-white p-4">
+                  <article key={`${legacy.report_id}-${idx}`} className="rounded-xl border border-amber-200 dark:border-amber-700 bg-white dark:bg-slate-800 p-4">
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                       <div>
-                        <h4 className="text-sm font-bold text-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>
-                          {legacy.title || "Recovered Report"}
-                        </h4>
-                        <p className="text-xs text-slate-500">Generated: {formatDate(legacy.generated_at)}</p>
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-white">{legacy.title || "Recovered Report"}</h4>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Generated: {formatDate(legacy.generated_at)}</p>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline" className={reportTypeConfig[legacy.report_type]?.cls || reportTypeConfig.quick_summary.cls}>
-                          {reportTypeConfig[legacy.report_type]?.label || legacy.report_type}
-                        </Badge>
-                        {legacy.case_id && legacy.report_id && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => navigate(`/cases/${legacy.case_id}/reports/${legacy.report_id}`)}
-                            data-testid={`open-embedded-legacy-${legacy.report_id}`}
-                          >
-                            Open Original
-                          </Button>
-                        )}
-                      </div>
+                      {legacy.case_id && legacy.report_id && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => navigate(`/cases/${legacy.case_id}/reports/${legacy.report_id}`)}
+                          data-testid={`open-embedded-legacy-${legacy.report_id}`}
+                        >
+                          Open Original
+                        </Button>
+                      )}
                     </div>
-
-                    <div className="max-h-[360px] overflow-y-auto pr-2 border-t border-slate-100 pt-3" data-testid={`embedded-legacy-content-${legacy.report_id}`}>
+                    <div className="max-h-[300px] overflow-y-auto pr-2 border-t border-slate-100 dark:border-slate-700 pt-3" data-testid={`embedded-legacy-content-${legacy.report_id}`}>
                       <MarkdownBlock text={legacy.analysis || ""} testId={`embedded-legacy-md-${legacy.report_id}`} />
                     </div>
                   </article>
                 ))}
               </div>
-            </section>
+            </div>
           )}
 
-          <footer className="mt-12 pt-8 border-t border-slate-200 text-center text-sm text-slate-500" data-testid="report-footer">
-            <p>This is a full in-browser report view — no PDF download required to read all sections.</p>
-            <p className="font-medium">Prepared by Appeal Case Manager for legal review support.</p>
+          {/* Footer */}
+          <footer className="bg-slate-50 dark:bg-slate-700/50 border-t border-slate-200 dark:border-slate-700 p-5 text-center" data-testid="report-footer">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Scale className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Appeal Case Manager</span>
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Full in-browser report — no PDF download required. Prepared for legal review support.
+            </p>
           </footer>
         </div>
       </main>
@@ -493,15 +586,5 @@ const ReportView = () => {
     </div>
   );
 };
-
-const SummaryPill = ({ label, value, icon: Icon, testId }) => (
-  <div className="rounded-xl border border-slate-200 bg-white p-3" data-testid={testId}>
-    <div className="flex items-center gap-2 mb-1.5">
-      <Icon className="w-4 h-4 text-indigo-600" />
-      <p className="text-[11px] uppercase tracking-wide text-slate-500">{label}</p>
-    </div>
-    <p className="text-sm font-semibold text-slate-900 break-words">{value}</p>
-  </div>
-);
 
 export default ReportView;
