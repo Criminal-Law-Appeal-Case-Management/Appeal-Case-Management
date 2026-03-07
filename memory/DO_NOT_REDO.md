@@ -46,6 +46,12 @@
 - All have "Get Started Free" or "Start Your Case Now" buttons
 - **DO NOT ADD MORE CTA BUTTONS**
 
+### 9. CORS Fix for Google Auth ✅ DONE
+- File: `/app/backend/.env`
+- Changed CORS_ORIGINS from `*` to specific origin
+- This fixes cookie not being sent with requests after Google login
+- **DO NOT CHANGE CORS SETTINGS**
+
 ---
 
 ## STILL PENDING - WHAT ACTUALLY NEEDS WORK:
