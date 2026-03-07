@@ -541,7 +541,7 @@ const LandingPage = () => {
             {/* FAQ */}
             <Link to="/faq" className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-sky-600 transition-all group block">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-yellow-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div className="w-10 h-10 bg-sky-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
                 <h3 className="font-bold text-white text-lg">FAQ & Support</h3>
@@ -549,7 +549,7 @@ const LandingPage = () => {
               <p className="text-slate-400 text-sm mb-3">
                 Answers to common questions about using the platform, appeal processes, pricing, legal disclaimers, and technical support.
               </p>
-              <div className="text-yellow-500 text-xs font-medium">
+              <div className="text-sky-500 text-xs font-medium">
                 ✓ Comprehensive answers • Contact form • Email support
               </div>
             </Link>

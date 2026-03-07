@@ -140,12 +140,12 @@ const AppealStatisticsPage = () => {
     <div className="min-h-screen bg-background" style={{ fontFamily: 'Manrope, sans-serif' }}>
       {/* Header */}
       <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-sky-600 flex items-center justify-center">
-              <Scale className="w-5 h-5 text-white" />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-sky-600 flex items-center justify-center">
+              <Scale className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <span className="text-base sm:text-lg font-semibold text-white tracking-tight">
               Appeal Case Manager
             </span>
           </Link>
@@ -166,6 +166,30 @@ const AppealStatisticsPage = () => {
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
+        
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-slate-800 border-t border-slate-700 px-4 py-4 space-y-1">
+            <Link to="/" className="block py-2 px-2 text-white font-medium rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+            <Link to="/appeal-statistics" className="block py-2 px-2 text-sky-400 font-medium rounded bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Statistics</Link>
+            <Link to="/how-it-works" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>How It Works</Link>
+            <Link to="/glossary" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Legal Terms</Link>
+            <Link to="/legal-resources" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Resources</Link>
+            <Link to="/faq" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>FAQ</Link>
+            <Link to="/about" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>About</Link>
+            <Link to="/terms" className="block py-2 px-2 text-slate-300 hover:text-white rounded hover:bg-slate-700" onClick={() => setMobileMenuOpen(false)}>Terms</Link>
+            <div className="flex items-center gap-3 pt-3 px-2">
+              <button onClick={toggleTheme} className="p-2 text-slate-300 hover:text-white rounded hover:bg-slate-700">
+                {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+              <Link to="/" className="flex-1">
+                <Button className="bg-sky-600 text-white hover:bg-sky-700 w-full font-bold">
+                  Back to Home
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero */}
@@ -193,7 +217,7 @@ const AppealStatisticsPage = () => {
 
         {/* Headline Snapshot */}
         <section className="mb-10 text-center" data-testid="appeal-rate-spotlight-section">
-          <div className="rounded-2xl border-2 border-yellow-400 dark:border-yellow-600 bg-gradient-to-r from-yellow-50 via-white to-blue-50 dark:from-yellow-900/20 dark:via-slate-900/20 dark:to-blue-900/20 p-6 md:p-8">
+          <div className="rounded-2xl border-2 border-sky-400 dark:border-sky-600 bg-gradient-to-r from-sky-50 via-white to-blue-50 dark:from-sky-900/20 dark:via-slate-900/20 dark:to-blue-900/20 p-6 md:p-8">
             <p className="text-xs uppercase tracking-wider text-blue-700 dark:text-blue-300 font-semibold mb-2">Appeal Access Snapshot</p>
             <p className="text-5xl md:text-6xl font-black text-blue-700 dark:text-blue-300 leading-none" style={{ fontFamily: 'Crimson Pro, serif' }} data-testid="appeal-rate-spotlight-value">
               0.012%

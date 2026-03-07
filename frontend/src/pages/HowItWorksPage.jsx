@@ -72,7 +72,7 @@ const HowItWorksPage = () => {
       <section className="py-14 px-6 bg-gradient-to-b from-black via-slate-950 to-blue-950 text-white">
         <div className="max-w-5xl mx-auto text-center">
           <div className="flex justify-center mb-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-yellow-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-900/40">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-900/40">
               <PlayCircle className="w-7 h-7 text-white" />
             </div>
           </div>
