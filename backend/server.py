@@ -563,6 +563,31 @@ async def broadcast_notes_event(case_id: str, event_type: str, payload: dict):
 
 # Auth routes moved to routers/auth.py
 
+# ============ PUBLIC STATS ENDPOINT ============
+
+@api_router.get("/public/stats")
+async def get_public_stats():
+    """Get public statistics for landing page - no auth required"""
+    try:
+        total_cases = await db.cases.count_documents({})
+        total_documents = await db.documents.count_documents({})
+        total_reports = await db.reports.count_documents({})
+        total_users = await db.users.count_documents({})
+        
+        return {
+            "cases_analysed": total_cases,
+            "documents_processed": total_documents,
+            "reports_generated": total_reports,
+            "users_registered": total_users
+        }
+    except Exception as e:
+        return {
+            "cases_analysed": 0,
+            "documents_processed": 0,
+            "reports_generated": 0,
+            "users_registered": 0
+        }
+
 # ============ CASE ENDPOINTS ============
 
 @api_router.get("/cases", response_model=List[dict])

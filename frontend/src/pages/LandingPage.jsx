@@ -14,6 +14,20 @@ const LandingPage = () => {
   const [showLegalFramework, setShowLegalFramework] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [liveStats, setLiveStats] = useState({ cases_analysed: 0, documents_processed: 0, reports_generated: 0 });
+
+  useEffect(() => {
+    // Fetch live stats
+    const fetchStats = async () => {
+      try {
+        const response = await axios.get(`${API}/public/stats`);
+        setLiveStats(response.data);
+      } catch (error) {
+        console.log("Stats not available");
+      }
+    };
+    fetchStats();
+  }, []);
 
   const handleAuthSuccess = (userData) => {
     navigate("/dashboard", { state: { user: userData }, replace: true });
@@ -187,6 +201,24 @@ const LandingPage = () => {
           >
             Check Your Case Now
           </Button>
+          
+          {/* Live Stats Counter */}
+          {(liveStats.cases_analysed > 0 || liveStats.documents_processed > 0) && (
+            <div className="mt-8 flex flex-wrap justify-center gap-6 sm:gap-10">
+              <div className="text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-sky-400">{liveStats.cases_analysed}</p>
+                <p className="text-xs sm:text-sm text-slate-400 uppercase tracking-wide">Cases Analysed</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-white">{liveStats.documents_processed}</p>
+                <p className="text-xs sm:text-sm text-slate-400 uppercase tracking-wide">Documents Processed</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-sky-400">{liveStats.reports_generated}</p>
+                <p className="text-xs sm:text-sm text-slate-400 uppercase tracking-wide">Reports Generated</p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

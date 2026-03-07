@@ -157,6 +157,37 @@
 
 ## STILL PENDING - WHAT ACTUALLY NEEDS WORK:
 
+### Backend Refactoring (LOW PRIORITY)
+- server.py is 4673 lines - large but working
+- Already has some routers split out (auth.py, admin.py, etc.)
+- Only refactor if issues arise
+
+---
+
+## ENHANCEMENTS ADDED (7 Mar 2026):
+
+### 26. Live Stats Counter ✅ DONE
+- Added `/api/public/stats` endpoint (no auth required)
+- Shows real-time: Cases Analysed, Documents Processed, Reports Generated
+- Displayed on landing page under CTA button
+- Provides social proof to visitors
+
+### 27. 28-Day Deadline Countdown ✅ DONE  
+- Added to Dashboard
+- Shows prominent "28 DAYS" reminder
+- Red border for urgency
+- Links to Legal Framework page
+
+### 28. Appeal Progress Checklist ✅ DONE
+- Added to Dashboard
+- Shows 5-step progress:
+  1. Case created ✓
+  2. Documents uploaded ✓
+  3. Timeline generated ✓
+  4. Report purchased
+  5. Appeal lodged
+- Dynamically checks completion based on user data
+
 ### NONE - All major tasks completed!
 - Report visual presentation ✅
 - About page rewrite ✅

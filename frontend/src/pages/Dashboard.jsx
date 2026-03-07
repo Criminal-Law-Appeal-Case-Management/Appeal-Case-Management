@@ -392,6 +392,72 @@ const Dashboard = ({ user }) => {
             </div>
           </section>
 
+          {/* 28-Day Deadline Countdown & Progress Checklist */}
+          {cases.length > 0 && (
+            <section className="grid md:grid-cols-2 gap-4">
+              {/* Deadline Countdown */}
+              <div className="card-elevated p-5 border-l-4 border-red-500">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-red-500" />
+                    <h3 className="font-semibold text-foreground">Appeal Deadline</h3>
+                  </div>
+                  <span className="text-xs bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2 py-1 rounded font-medium">
+                    CRITICAL
+                  </span>
+                </div>
+                <div className="text-center py-4">
+                  <p className="text-5xl font-bold text-red-500 mb-1">28</p>
+                  <p className="text-sm text-muted-foreground">days from conviction to lodge</p>
+                </div>
+                <p className="text-xs text-muted-foreground text-center">
+                  Don't wait — most appeals must be lodged within 28 days of sentencing.
+                  <Link to="/legal-framework" className="text-sky-500 hover:text-sky-400 ml-1">Learn more</Link>
+                </p>
+              </div>
+
+              {/* Appeal Progress Checklist */}
+              <div className="card-elevated p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <FileCheck className="w-5 h-5 text-sky-600" />
+                  <h3 className="font-semibold text-foreground">Appeal Progress</h3>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center ${cases.length > 0 ? 'bg-green-500 text-white' : 'bg-slate-200 dark:bg-slate-700'}`}>
+                      {cases.length > 0 ? '✓' : '1'}
+                    </div>
+                    <span className={`text-sm ${cases.length > 0 ? 'text-foreground' : 'text-muted-foreground'}`}>Case created</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center ${cases.some(c => c.document_count > 0) ? 'bg-green-500 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-500'}`}>
+                      {cases.some(c => c.document_count > 0) ? '✓' : '2'}
+                    </div>
+                    <span className={`text-sm ${cases.some(c => c.document_count > 0) ? 'text-foreground' : 'text-muted-foreground'}`}>Documents uploaded</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center ${cases.some(c => c.event_count > 0) ? 'bg-green-500 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-500'}`}>
+                      {cases.some(c => c.event_count > 0) ? '✓' : '3'}
+                    </div>
+                    <span className={`text-sm ${cases.some(c => c.event_count > 0) ? 'text-foreground' : 'text-muted-foreground'}`}>Timeline generated</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-slate-500">
+                      4
+                    </div>
+                    <span className="text-sm text-muted-foreground">Report purchased</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-slate-500">
+                      5
+                    </div>
+                    <span className="text-sm text-muted-foreground">Appeal lodged</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
           {/* Cases Section */}
           <section>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
