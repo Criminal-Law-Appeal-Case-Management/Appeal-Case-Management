@@ -142,14 +142,14 @@ const LandingPage = () => {
           </h2>
           
           {/* The Key Stats - Simple Row */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <div className="bg-slate-900/80 rounded-xl p-5 border border-slate-800">
               <p className="text-4xl sm:text-5xl font-bold text-amber-500">85K</p>
               <p className="text-slate-400 text-xs mt-1">convictions yearly</p>
             </div>
             <div className="bg-slate-900/80 rounded-xl p-5 border border-slate-800">
-              <p className="text-4xl sm:text-5xl font-bold text-red-500">95%</p>
-              <p className="text-slate-400 text-xs mt-1">never appeal</p>
+              <p className="text-4xl sm:text-5xl font-bold text-red-500">0.012%</p>
+              <p className="text-slate-400 text-xs mt-1">appeal rate</p>
             </div>
             <div className="bg-slate-900/80 rounded-xl p-5 border border-slate-800">
               <p className="text-4xl sm:text-5xl font-bold text-emerald-500">35%</p>
@@ -164,9 +164,8 @@ const LandingPage = () => {
           {/* The Insight */}
           <div className="bg-gradient-to-r from-amber-900/30 to-red-900/30 rounded-xl p-6 border border-amber-700/40 mb-8 max-w-3xl mx-auto">
             <p className="text-white text-lg leading-relaxed">
-              If just <strong className="text-amber-400">10%</strong> of those who don't appeal have valid grounds, 
-              that's potentially <strong className="text-red-400">thousands of Australians</strong> in prison 
-              who could have had their sentence reduced — <em className="text-slate-300">but never knew.</em>
+              Only <strong className="text-red-400">0.012%</strong> of convicted Australians appeal — yet <strong className="text-emerald-400">35%</strong> of those who do succeed. 
+              That's potentially <strong className="text-amber-400">thousands of people</strong> in prison who could have had their sentence reduced — <em className="text-slate-300">but never knew.</em>
             </p>
           </div>
           

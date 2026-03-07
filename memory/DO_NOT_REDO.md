@@ -115,14 +115,21 @@
 ### 20. Landing Page Cleaned Up & Simplified ✅ DONE (7 Mar 2026)
 - File: `/app/frontend/src/pages/LandingPage.jsx`
 - Streamlined statistics section - cleaner headline: "Could You Be Sitting in Prison With a Valid Appeal?"
-- Simplified 4 stat cards (85K, 95%, 35%, 28 days)
-- Single insight paragraph instead of overwhelming maths breakdown
+- **Added 0.012% appeal rate stat** - the key shocking number
+- Simplified 4 stat cards (85K, 0.012%, 35%, 28 days)
+- Single insight paragraph with the 0.012% stat highlighted
 - Clean "Check Your Case Now" CTA
 - Hero section simplified with less text
 - Added "Three Simple Steps" section (Upload → AI Analysis → Get Reports)
 - Removed redundant content and duplicate sections
 - Flow: Stats hook → Hero → 3 Steps → Features
 - **DO NOT CHANGE THIS STRUCTURE**
+
+### 21. Other Pages Reviewed ✅ DONE (7 Mar 2026)
+- FAQ, About, Success Stories pages checked
+- Australian English spelling confirmed (organise, analyse, etc.)
+- All pages using consistent PageHeader component
+- No changes needed - pages are well-written
 
 ---
 
