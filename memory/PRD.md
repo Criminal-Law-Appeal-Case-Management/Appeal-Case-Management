@@ -2,6 +2,9 @@
 
 ## CRITICAL INFO FOR NEXT AGENT (7 Mar 2026)
 
+**LATEST FIX:**
+- ✅ Fixed ReportsSection.jsx - Reports were showing RAW markdown (`##`, `**`) - now properly rendered with ReactMarkdown
+
 **WHAT WAS DONE THIS SESSION:**
 1. ✅ ReportView.jsx COMPLETELY REWRITTEN - matches landing page samples (green/blue/purple headers)
 2. ✅ Statistics page REDESIGNED - big numbers, Key Insights, better layout

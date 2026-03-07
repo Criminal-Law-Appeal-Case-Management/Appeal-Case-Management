@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   FileText, Loader2, Clock, ChevronDown, ChevronRight, Trash2, Download, Presentation, Eye
 } from "lucide-react";
@@ -311,8 +313,29 @@ const ReportsSection = ({
                         </div>
 
                         <div className="rounded-lg border border-slate-200 p-3 bg-white" data-testid={`report-inline-content-${report.report_id}`}>
-                          <div className="whitespace-pre-wrap text-slate-700 text-sm leading-relaxed">
-                            {reportText}
+                          <div className="prose prose-slate prose-sm max-w-none">
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm]}
+                              components={{
+                                h1: ({children}) => <h1 className="text-lg font-bold text-slate-900 mt-4 mb-2 pb-1 border-b border-slate-200" style={{fontFamily: 'Crimson Pro, serif'}}>{children}</h1>,
+                                h2: ({children}) => <h2 className="text-base font-bold text-slate-800 mt-4 mb-2" style={{fontFamily: 'Crimson Pro, serif'}}>{children}</h2>,
+                                h3: ({children}) => <h3 className="text-sm font-semibold text-slate-700 mt-3 mb-1">{children}</h3>,
+                                p: ({children}) => <p className="text-sm text-slate-700 mb-2 leading-relaxed">{children}</p>,
+                                ul: ({children}) => <ul className="list-disc ml-4 mb-2 text-sm text-slate-700 space-y-1">{children}</ul>,
+                                ol: ({children}) => <ol className="list-decimal ml-4 mb-2 text-sm text-slate-700 space-y-1">{children}</ol>,
+                                li: ({children}) => <li className="leading-relaxed">{children}</li>,
+                                strong: ({children}) => <strong className="font-semibold text-slate-900">{children}</strong>,
+                                em: ({children}) => <em className="italic">{children}</em>,
+                                table: ({children}) => <div className="overflow-x-auto my-2"><table className="min-w-full text-xs border border-slate-200 rounded">{children}</table></div>,
+                                thead: ({children}) => <thead className="bg-slate-100">{children}</thead>,
+                                th: ({children}) => <th className="px-2 py-1.5 text-left font-semibold text-slate-800 border-b border-slate-200">{children}</th>,
+                                td: ({children}) => <td className="px-2 py-1.5 text-slate-700 border-b border-slate-100">{children}</td>,
+                                blockquote: ({children}) => <blockquote className="border-l-3 border-amber-400 pl-3 my-2 text-slate-600 italic bg-amber-50 py-1 rounded-r">{children}</blockquote>,
+                                a: ({href, children}) => <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{children}</a>,
+                              }}
+                            >
+                              {reportText}
+                            </ReactMarkdown>
                           </div>
                         </div>
                       </div>

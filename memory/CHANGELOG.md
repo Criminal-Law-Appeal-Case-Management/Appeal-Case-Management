@@ -2,6 +2,16 @@
 
 ## Session: 7 March 2026 (Current)
 
+### CRITICAL FIX: Report Markdown Rendering
+- **Fixed ReportsSection.jsx** - Reports were showing RAW markdown (`##`, `**`, `*`) instead of formatted text
+- Added `ReactMarkdown` with `remarkGfm` to properly render:
+  - Headers (h1, h2, h3) with proper styling
+  - Bold and italic text
+  - Lists (ordered and unordered)
+  - Tables
+  - Links
+  - Blockquotes
+
 ### Performance Optimisation
 - **Reduced context limits** for faster AI response times:
   - Quick Summary: 8K chars (was 12K), 50 timeline events (was 80)
