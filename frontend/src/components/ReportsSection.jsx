@@ -198,6 +198,22 @@ const ReportsSection = ({
 
   return (
     <>
+      {/* Generation Loading Overlay */}
+      {generatingReport && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center" data-testid="report-generating-overlay">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-2xl text-center max-w-md mx-4">
+            <Loader2 className="w-12 h-12 text-sky-600 mx-auto mb-4 animate-spin" />
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Generating Report</h3>
+            <p className="text-slate-600 dark:text-slate-400 mb-4">
+              AI is analysing your case documents. This may take 1-3 minutes for large cases.
+            </p>
+            <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+              <div className="bg-sky-600 h-2 rounded-full animate-pulse" style={{width: '60%'}}></div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Action Button */}
       <div className="flex justify-end mb-4">
         <Button 

@@ -586,6 +586,35 @@ const ReportView = () => {
           .no-print {
             display: none !important;
           }
+          body {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+          * {
+            box-shadow: none !important;
+          }
+          .bg-white, .bg-slate-50, .bg-slate-100 {
+            background-color: white !important;
+          }
+          table {
+            page-break-inside: auto;
+            border-collapse: collapse;
+          }
+          tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+          }
+          thead {
+            display: table-header-group;
+          }
+          h1, h2, h3, h4, h5, h6 {
+            page-break-after: avoid;
+          }
+          p, li {
+            orphans: 3;
+            widows: 3;
+          }
         }
       `}</style>
     </div>
