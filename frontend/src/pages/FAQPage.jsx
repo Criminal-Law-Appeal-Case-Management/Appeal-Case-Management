@@ -435,6 +435,23 @@ const FAQPage = () => {
           </div>
         </div>
       </main>
+
+      {/* Footer CTA */}
+      <section className="bg-slate-900 dark:bg-slate-950 px-4 sm:px-6 py-12 border-t border-slate-800">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Ready to Analyse Your Case?
+          </h2>
+          <p className="text-slate-400 mb-8 text-lg">
+            Let our AI help identify potential grounds for appeal in your case.
+          </p>
+          <Link to="/">
+            <Button className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-10 py-6 text-lg font-semibold shadow-lg shadow-amber-600/20" data-testid="faq-cta">
+              Get Started Free
+            </Button>
+          </Link>
+        </div>
+      </section>
     </div>
   );
 };

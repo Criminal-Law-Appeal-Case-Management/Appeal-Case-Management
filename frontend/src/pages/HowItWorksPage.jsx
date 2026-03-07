@@ -149,7 +149,7 @@ const HowItWorksPage = () => {
             Start your case now and move through the exact workflow above.
           </p>
           <Link to="/dashboard">
-            <Button className="bg-amber-600 hover:bg-amber-700 text-white rounded-xl px-6" data-testid="how-it-works-start-case-btn">
+            <Button className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white rounded-xl px-10 py-6 text-lg font-semibold shadow-lg shadow-amber-600/20" data-testid="how-it-works-start-case-btn">
               Start Your Case Now
             </Button>
           </Link>

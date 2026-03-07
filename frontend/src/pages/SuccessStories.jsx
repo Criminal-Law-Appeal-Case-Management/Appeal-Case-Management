@@ -390,14 +390,14 @@ const SuccessStories = () => {
       {/* Footer CTA */}
       <section className="bg-slate-900 dark:bg-slate-950 px-6 py-12 border-t border-slate-800">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Ready to Start Your Journey?
           </h2>
-          <p className="text-slate-400 mb-8">
+          <p className="text-slate-400 mb-8 text-lg">
             You don't have to do this alone. Let the tool help you find what might have been missed.
           </p>
           <Link to="/">
-            <Button className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-8 py-5 font-semibold shadow-lg shadow-amber-600/20">
+            <Button className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-10 py-6 text-lg font-semibold shadow-lg shadow-amber-600/20" data-testid="success-stories-cta">
               Get Started Free
             </Button>
           </Link>

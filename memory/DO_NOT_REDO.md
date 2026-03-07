@@ -41,6 +41,11 @@
 - Professional barrister brief presentation
 - **DO NOT TOUCH THIS FILE**
 
+### 8. Big CTA Buttons on All Pages ✅ DONE
+- Statistics, Success Stories, FAQ, About, Legal Resources, How It Works
+- All have "Get Started Free" or "Start Your Case Now" buttons
+- **DO NOT ADD MORE CTA BUTTONS**
+
 ---
 
 ## STILL PENDING - WHAT ACTUALLY NEEDS WORK:
