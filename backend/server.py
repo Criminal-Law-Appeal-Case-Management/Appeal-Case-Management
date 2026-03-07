@@ -3581,15 +3581,16 @@ List 2-3 Australian appeal decisions with:
 2-3 paragraphs comparing sentence posture against typical appellate principles and proportionality concerns.
 
 ## MINI COMPARATIVE SENTENCING TABLE
-Provide a markdown table with at least 3 comparison rows.
+Provide a markdown table with at least 3 comparison rows. Include clickable AustLII links.
 Required columns:
-| Comparator | Original Sentence / NPP | Outcome on Appeal | Revised Sentence / NPP | Reduction Insight |
+| Case (with AustLII Link) | Original Sentence / NPP | Outcome on Appeal | Revised Sentence / NPP | Reduction Insight |
 
 ## SIMILAR CASE SEARCH OPTIONS
 Provide practical search options for the user to find related decisions, including:
-- 3 AustLII-ready search query strings
+- 3 similar cases with DIRECT AustLII links in format: [Case Name [Year] Court Citation](https://www.austlii.edu.au/cgi-bin/viewdoc/au/cases/STATE/COURT/YEAR/NUMBER.html)
+- For each case: brief factual similarity and outcome
+- 3 AustLII-ready search query strings for finding more cases
 - relevant court filters (e.g., NSWCCA, VSCA)
-- one keyword pack per likely ground
 
 ## HOW TO ARGUE THE TOP GROUNDS (QUICK PLAYBOOK)
 For each top ground provide:
@@ -3662,7 +3663,12 @@ When discussing sentence reduction pathways, show explicit before/after formatti
 Original sentence/NPP -> revised sentence/NPP (for example 30/22.5 -> 18/11).
 
 ## 8. PRECEDENT OUTCOME MATRIX (10-12 CASES)
-For each case include citation, factual similarity, hearing outcome, extracted principle, and AustLII-style decision path.
+For each case include:
+- Full citation with DIRECT clickable AustLII link: [Case Name [Year] Court Citation](https://www.austlii.edu.au/cgi-bin/viewdoc/au/cases/STATE/COURT/YEAR/NUMBER.html)
+- Factual similarity to current case
+- Hearing outcome
+- Extracted governing principle
+- How this helps the current appeal
 
 ## 9. STATUTORY + DOCTRINAL FRAMEWORK MAP
 Section-level mapping of all key Acts and appellate principles applicable to this matter.
@@ -3681,8 +3687,10 @@ For each priority ground include:
 - Rebuttal strategy for hearing
 
 ## 13. SIMILAR CASE SEARCH OPTIONS (MANDATORY)
-Provide actionable search guidance:
-- 5 AustLII query strings tailored to this offence/grounds profile
+Provide actionable search guidance with DIRECT LINKS:
+- 5 similar cases with clickable AustLII links: [Case Name [Year] Court Citation](https://www.austlii.edu.au/cgi-bin/viewdoc/au/cases/STATE/COURT/YEAR/NUMBER.html)
+- For each: factual similarity, outcome, and why it's relevant
+- 5 additional AustLII query strings tailored to this offence/grounds profile
 - court-level filtering suggestions
 - keyword alternates if initial search returns low relevance
 
@@ -3755,7 +3763,12 @@ For sentence reduction modelling, include explicit before/after expressions wher
 Original sentence/NPP -> revised sentence/NPP (example: 30/22.5 -> 18/11), with legal rationale for each reduction path.
 
 ## 9. PRECEDENT OUTCOME MATRIX (12-15 CASES)
-For each authority include citation, comparable facts, hearing outcome, governing principle, and AustLII-style decision path.
+For each authority include:
+- Full citation with DIRECT clickable AustLII link: [Case Name [Year] Court Citation](https://www.austlii.edu.au/cgi-bin/viewdoc/au/cases/STATE/COURT/YEAR/NUMBER.html)
+- Comparable facts to current case
+- Hearing outcome (appeal allowed/dismissed, sentence reduced by X)
+- Governing principle extracted
+- Strategic relevance to this appeal
 
 ## 10. STATUTORY + DOCTRINAL MASTER MAP
 Complete section-level map of Acts, appellate principles, and doctrine application in this matter.
@@ -3777,8 +3790,10 @@ For each major ground include:
 - hearing rebuttal line
 
 ## 15. SIMILAR CASE SEARCH OPTIONS (MANDATORY)
-Provide comprehensive search pathways:
-- 8 AustLII-ready query strings
+Provide comprehensive search pathways with DIRECT LINKS:
+- 8 similar cases with clickable AustLII links: [Case Name [Year] Court Citation](https://www.austlii.edu.au/cgi-bin/viewdoc/au/cases/STATE/COURT/YEAR/NUMBER.html)
+- For each: brief facts, outcome, and strategic relevance
+- 8 additional AustLII-ready query strings
 - offence-specific keyword packs
 - jurisdiction/court filters
 - fallback query strategy when direct analogues are limited

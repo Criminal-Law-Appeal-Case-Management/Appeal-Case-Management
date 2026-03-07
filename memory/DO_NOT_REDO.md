@@ -52,6 +52,14 @@
 - This fixes cookie not being sent with requests after Google login
 - **DO NOT CHANGE CORS SETTINGS**
 
+### 10. AustLII Links in Reports ✅ DONE
+- Updated report prompts to include DIRECT clickable AustLII links to similar cases
+- Quick Summary: 3 cases with links
+- Full Detailed: 10-12 cases with links in Precedent Matrix + 5 in Similar Cases
+- Extensive Log: 12-15 cases with links in Precedent Matrix + 8 in Similar Cases
+- Comparative Sentencing tables now include case links
+- **DO NOT CHANGE REPORT PROMPTS**
+
 ---
 
 ## STILL PENDING - WHAT ACTUALLY NEEDS WORK:
