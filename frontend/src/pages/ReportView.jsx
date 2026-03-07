@@ -113,12 +113,12 @@ const MarkdownBlock = ({ text, testId }) => (
       blockquote: ({ children }) => <blockquote className="border-l-4 border-indigo-300 pl-4 italic text-slate-700 dark:text-slate-300 my-3 text-sm">{children}</blockquote>,
       table: ({ children }) => (
         <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700 my-4" data-testid={`${testId}-table-wrapper`}>
-          <table className="min-w-full text-sm">{children}</table>
+          <table className="min-w-full text-sm table-auto">{children}</table>
         </div>
       ),
       thead: ({ children }) => <thead className="bg-slate-100 dark:bg-slate-800">{children}</thead>,
-      th: ({ children }) => <th className="px-3 py-2 text-left font-semibold text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700">{children}</th>,
-      td: ({ children }) => <td className="px-3 py-2 align-top text-slate-700 dark:text-slate-300 border-b border-slate-100 dark:border-slate-800">{children}</td>,
+      th: ({ children }) => <th className="px-4 py-3 text-left font-semibold text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700 whitespace-nowrap">{children}</th>,
+      td: ({ children }) => <td className="px-4 py-3 align-top text-slate-700 dark:text-slate-300 border-b border-slate-100 dark:border-slate-800 break-words max-w-xs">{children}</td>,
       code: ({ children }) => <code className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded">{children}</code>,
       a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{children}</a>,
     }}
