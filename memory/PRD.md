@@ -645,27 +645,26 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - Prioritized pending work moved to: `/app/memory/ROADMAP.md`
 
 ## Latest Delivery Note (Mar 2026)
-- **UI Improvements Complete (7 Mar 2026)**:
-  - **Scroll to Top on Route Change**: Added `ScrollToTop.jsx` component that scrolls pages to top when navigating between routes
-  - **Shared PageHeader with Dark Mode**: Created `PageHeader.jsx` component with consistent dark mode toggle on all pages (Statistics, Success Stories, FAQ, About, How It Works)
-  - **Statistics Page Redesign**: Complete overhaul with:
-    - Big numbers (text-4xl to text-6xl) in coloured gradient cards
-    - Key Insights section with Most Common Offence, Top Appeal Ground, Busiest State
-    - Ground Strength Distribution with visual squares
-    - Detailed Breakdown sections for Cases by Offence Type and Cases by State
-  - **Success Stories 4-Column Grid**: Updated to show 4 cards per row on desktop with strong gradient headers and compact text
-- **ReportView Redesign Complete (7 Mar 2026)**: Completely rewrote `/app/frontend/src/pages/ReportView.jsx` to match the landing page mockup design:
-  - Coloured header bands based on report type (green for Quick Summary, blue gradient for Full Detailed, purple gradient for Extensive Log)
-  - Case strength circle prominently displayed in header
-  - Stats row showing sections, documents, grounds, and timeline events
-  - Table of Contents section
-  - Case Overview box with defendant, offence, sentence, court, state, and generated date
-  - Grounds Preview section with strength indicators
-  - Appeal Viability gauge with visual progress bar
+- **Report Visual Presentation OVERHAUL Complete (7 Mar 2026)**:
+  - ReportView.jsx completely rewritten to EXACTLY match landing page sample designs
+  - Coloured header bands: GREEN for Quick Summary, BLUE gradient for Full Detailed, PURPLE gradient for Extensive Log
+  - Case Overview section with defendant, offence, sentence, court, state, documents analysed
+  - Grounds Identified section with strength indicators (Strong/Moderate/Weak)
+  - Appeal Viability gauge with percentage and status label
   - Deadline Warning box
-  - Analysis sections with numbered coloured headers
-  - Premium Report Architecture section
-- Verification status: `iteration_43.json` (UI improvements - 100% pass)
+  - Table of Contents with clickable section navigation
+  - Numbered analysis sections with coloured badges
+  - Upgrade prompt for Quick Summary → paid reports
+  - Risk Assessment section for Extensive Log
+  - Premium Features box for paid reports
+- **BarristerView confirmed working**: Executive Summary, Hearing Strategy Snapshot, Counsel Run-Sheet, Authorities & Precedent Pack, Comparative Sentencing table, Outcome Options Matrix
+- **Backend Report Prompts**: Already comprehensive (Quick Summary: 1500-2200 words, Full Detailed: 4200-6200 words, Extensive Log: 7000-9500 words with 21 sections including Barrister Conference Dossier)
+- **UI Improvements (7 Mar 2026)**:
+  - ScrollToTop component - pages now start from top when navigating
+  - PageHeader shared component with dark mode toggle on all pages
+  - Statistics page redesigned with big numbers, Key Insights, Ground Strength Distribution
+  - Success Stories 4-column grid with strong headers
+- Verification status: `iteration_44.json` (report design verification - 100% pass)
 - AU-English enforcement pass completed across key user-facing strings; endpoint contracts retained where API naming uses legacy `/analyze` path segments.
 - Performance hotfix shipped for lag during grounds investigation/report generation: bounded AI context budgets + faster grounds models + clearer long-run UX feedback.
 
