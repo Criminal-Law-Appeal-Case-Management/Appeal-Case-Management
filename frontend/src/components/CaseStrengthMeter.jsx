@@ -46,21 +46,21 @@ const CaseStrengthMeter = ({ caseId }) => {
 
   const getScoreGradient = (score) => {
     if (score >= 75) return "from-emerald-500 to-emerald-600";
-    if (score >= 50) return "from-amber-500 to-amber-600";
+    if (score >= 50) return "from-sky-500 to-sky-600";
     if (score >= 25) return "from-orange-500 to-orange-600";
     return "from-red-500 to-red-600";
   };
 
   const getScoreBg = (score) => {
     if (score >= 75) return "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400";
-    if (score >= 50) return "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400";
+    if (score >= 50) return "bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400";
     if (score >= 25) return "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400";
     return "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400";
   };
 
   const getProgressBg = (score) => {
     if (score >= 75) return "bg-emerald-500";
-    if (score >= 50) return "bg-amber-500";
+    if (score >= 50) return "bg-sky-500";
     if (score >= 25) return "bg-orange-500";
     return "bg-red-500";
   };
@@ -96,7 +96,7 @@ const CaseStrengthMeter = ({ caseId }) => {
     <Card className="bg-card border-border shadow-sm" data-testid="case-strength-meter">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-500 to-sky-600 flex items-center justify-center">
             <TrendingUp className="w-4 h-4 text-white" />
           </div>
           Case Strength Meter
@@ -153,14 +153,14 @@ const CaseStrengthMeter = ({ caseId }) => {
 
         {/* Recommendations */}
         {strength.recommendations.length > 0 && (
-          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
-            <p className="text-sm font-semibold text-amber-800 dark:text-amber-200 mb-3 flex items-center gap-2">
+          <div className="bg-sky-50 dark:bg-sky-900/20 border border-sky-200 dark:border-sky-800 rounded-xl p-4">
+            <p className="text-sm font-semibold text-sky-800 dark:text-sky-200 mb-3 flex items-center gap-2">
               <AlertCircle className="w-4 h-4" />
               Recommendations to Improve
             </p>
             <ul className="space-y-2">
               {strength.recommendations.map((rec, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-amber-700 dark:text-amber-300">
+                <li key={i} className="flex items-start gap-2 text-sm text-sky-700 dark:text-sky-300">
                   <ChevronRight className="w-4 h-4 shrink-0 mt-0.5" />
                   {rec}
                 </li>

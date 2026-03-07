@@ -78,26 +78,26 @@ const ResourcesPage = () => {
         </Card>
 
         {/* Appeal Deadlines Alert */}
-        <Card className="mb-8 bg-amber-50 border-amber-200">
+        <Card className="mb-8 bg-sky-50 border-sky-200">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg flex items-center gap-2 text-amber-800">
+            <CardTitle className="text-lg flex items-center gap-2 text-sky-800">
               <Clock className="w-5 h-5" />
               Important Appeal Deadlines
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4">
-              <div className="bg-white p-3 rounded-lg border border-amber-200">
-                <p className="font-semibold text-amber-900">Notice of Appeal</p>
-                <p className="text-sm text-amber-700">{resources?.appeal_deadlines?.notice_of_appeal}</p>
+              <div className="bg-white p-3 rounded-lg border border-sky-200">
+                <p className="font-semibold text-sky-900">Notice of Appeal</p>
+                <p className="text-sm text-sky-700">{resources?.appeal_deadlines?.notice_of_appeal}</p>
               </div>
-              <div className="bg-white p-3 rounded-lg border border-amber-200">
-                <p className="font-semibold text-amber-900">Leave to Appeal</p>
-                <p className="text-sm text-amber-700">{resources?.appeal_deadlines?.leave_to_appeal}</p>
+              <div className="bg-white p-3 rounded-lg border border-sky-200">
+                <p className="font-semibold text-sky-900">Leave to Appeal</p>
+                <p className="text-sm text-sky-700">{resources?.appeal_deadlines?.leave_to_appeal}</p>
               </div>
-              <div className="bg-white p-3 rounded-lg border border-amber-200">
-                <p className="font-semibold text-amber-900">Extension of Time</p>
-                <p className="text-sm text-amber-700">{resources?.appeal_deadlines?.extension}</p>
+              <div className="bg-white p-3 rounded-lg border border-sky-200">
+                <p className="font-semibold text-sky-900">Extension of Time</p>
+                <p className="text-sm text-sky-700">{resources?.appeal_deadlines?.extension}</p>
               </div>
             </div>
           </CardContent>
@@ -214,7 +214,7 @@ const ResourcesPage = () => {
                     </p>
                   )}
                   {court.note && (
-                    <p className="text-sm text-amber-600 mt-2 italic">{court.note}</p>
+                    <p className="text-sm text-sky-600 mt-2 italic">{court.note}</p>
                   )}
                 </CardContent>
               </Card>

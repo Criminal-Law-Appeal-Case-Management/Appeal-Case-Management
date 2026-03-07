@@ -55,7 +55,7 @@ const EVENT_TYPE_LABELS = {
 };
 
 const EVENT_CATEGORIES = {
-  pre_trial: { label: "Pre-Trial", color: "bg-amber-100 text-amber-800 border-amber-200" },
+  pre_trial: { label: "Pre-Trial", color: "bg-sky-100 text-sky-800 border-sky-200" },
   trial: { label: "Trial", color: "bg-blue-100 text-blue-800 border-blue-200" },
   evidence: { label: "Evidence", color: "bg-emerald-100 text-emerald-800 border-emerald-200" },
   post_conviction: { label: "Post-Conviction", color: "bg-purple-100 text-purple-800 border-purple-200" },
@@ -187,7 +187,7 @@ const Timeline = ({
           <div className="text-slate-500 text-xs">Critical</div>
         </div>
         <div>
-          <div className="font-semibold text-amber-600">{stats.contested}</div>
+          <div className="font-semibold text-sky-600">{stats.contested}</div>
           <div className="text-slate-500 text-xs">Contested</div>
         </div>
         <div>
@@ -256,7 +256,7 @@ const Timeline = ({
           variant={showContestedOnly ? "default" : "outline"}
           size="sm"
           onClick={() => setShowContestedOnly(!showContestedOnly)}
-          className={showContestedOnly ? "bg-amber-500 hover:bg-amber-600" : ""}
+          className={showContestedOnly ? "bg-sky-500 hover:bg-sky-600" : ""}
           data-testid="contested-filter"
         >
           <AlertTriangle className="w-4 h-4 mr-1" />
@@ -332,7 +332,7 @@ const Timeline = ({
                               </Badge>
                             )}
                             {event.is_contested && (
-                              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-300">
+                              <Badge variant="outline" className="bg-sky-50 text-sky-700 border-sky-300">
                                 <AlertTriangle className="w-3 h-3 mr-1" />
                                 Contested
                               </Badge>
@@ -410,12 +410,12 @@ const Timeline = ({
                         
                         {/* Contested details */}
                         {event.is_contested && event.contested_details && (
-                          <div className="bg-amber-50 p-3 rounded-lg border border-amber-200">
-                            <h5 className="text-xs font-medium text-amber-700 uppercase tracking-wide mb-1 flex items-center gap-1">
+                          <div className="bg-sky-50 p-3 rounded-lg border border-sky-200">
+                            <h5 className="text-xs font-medium text-sky-700 uppercase tracking-wide mb-1 flex items-center gap-1">
                               <AlertTriangle className="w-3 h-3" />
                               Contested Details
                             </h5>
-                            <p className="text-amber-800 text-sm">{event.contested_details}</p>
+                            <p className="text-sky-800 text-sm">{event.contested_details}</p>
                           </div>
                         )}
                         

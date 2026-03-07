@@ -19,7 +19,7 @@ const PageCTAFooter = ({
         </p>
         <Link to={buttonLink}>
           <Button 
-            className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-8 py-6 text-lg font-semibold shadow-lg shadow-amber-600/20"
+            className="bg-gradient-to-r from-sky-600 to-sky-700 text-white hover:from-sky-700 hover:to-sky-800 rounded-xl px-8 py-6 text-lg font-semibold shadow-lg shadow-sky-600/20"
             data-testid="cta-button"
           >
             {buttonText}

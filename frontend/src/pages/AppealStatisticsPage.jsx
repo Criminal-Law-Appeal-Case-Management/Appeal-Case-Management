@@ -142,7 +142,7 @@ const AppealStatisticsPage = () => {
       <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-sky-600 flex items-center justify-center">
               <Scale className="w-5 h-5 text-white" />
             </div>
             <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -183,7 +183,7 @@ const AppealStatisticsPage = () => {
             Real data on criminal appeals across Australia — how many are lodged, how many succeed, 
             and what grounds are most commonly used.
           </p>
-          <p className="text-amber-300 text-sm mt-4" data-testid="appeal-stats-hero-subheading">
+          <p className="text-sky-300 text-sm mt-4" data-testid="appeal-stats-hero-subheading">
             Structured by clear sections so you can quickly understand what each statistic means.
           </p>
         </div>
@@ -206,7 +206,7 @@ const AppealStatisticsPage = () => {
 
         {/* National Overview */}
         <section className="mb-12">
-          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold mb-2 text-center">Section 1</p>
+          <p className="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold mb-2 text-center">Section 1</p>
           <h2 className="text-xl font-bold text-foreground mb-2 text-center" style={{ fontFamily: 'Crimson Pro, serif' }}>
             National Overview (2024)
           </h2>
@@ -243,8 +243,8 @@ const AppealStatisticsPage = () => {
             />
           </div>
 
-          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 text-sm">
-            <AlertTriangle className="w-5 h-5 text-amber-600 inline mr-2" />
+          <div className="bg-sky-50 dark:bg-sky-900/20 border border-sky-200 dark:border-sky-800 rounded-xl p-4 text-sm">
+            <AlertTriangle className="w-5 h-5 text-sky-600 inline mr-2" />
             <strong>Important:</strong> Only about 0.012% of all criminal cases are appealed. Of those that proceed to hearing, 
             approximately 1 in 4 succeed. Success rates vary significantly by jurisdiction and type of appeal.
           </div>
@@ -355,9 +355,9 @@ const AppealStatisticsPage = () => {
                 </p>
               </div>
 
-              <div className="bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/40 dark:to-orange-900/40 rounded-lg p-4 border-2 border-amber-400 dark:border-amber-600">
-                <p className="font-bold text-base mb-2 text-amber-900 dark:text-amber-200">🎯 This Tool's Purpose</p>
-                <p className="text-amber-900 dark:text-amber-100">
+              <div className="bg-gradient-to-r from-sky-100 to-orange-100 dark:from-sky-900/40 dark:to-orange-900/40 rounded-lg p-4 border-2 border-sky-400 dark:border-sky-600">
+                <p className="font-bold text-base mb-2 text-sky-900 dark:text-sky-200">🎯 This Tool's Purpose</p>
+                <p className="text-sky-900 dark:text-sky-100">
                   <strong>This application exists to bridge that gap.</strong> By making appeal research, document organization, 
                   and AI-powered analysis accessible and affordable, we aim to help those who have grounds for appeal 
                   but lack the resources to pursue justice through traditional means. Everyone deserves a fair chance to have 
@@ -370,7 +370,7 @@ const AppealStatisticsPage = () => {
 
         {/* State by State */}
         <section className="mb-12">
-          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold mb-2 text-center">Section 2</p>
+          <p className="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold mb-2 text-center">Section 2</p>
           <h2 className="text-xl font-bold text-foreground mb-2 text-center" style={{ fontFamily: 'Crimson Pro, serif' }}>
             State by State Statistics
           </h2>
@@ -384,7 +384,7 @@ const AppealStatisticsPage = () => {
                 onClick={() => setActiveState(key)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeState === key
-                    ? "bg-amber-600 text-white"
+                    ? "bg-sky-600 text-white"
                     : "bg-muted hover:bg-muted/80 text-muted-foreground"
                 }`}
               >
@@ -418,7 +418,7 @@ const AppealStatisticsPage = () => {
                     <td className="p-3 text-center">
                       <span className={`px-2 py-1 rounded text-xs font-medium ${
                         state.successRate >= 25 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' :
-                        state.successRate >= 20 ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
+                        state.successRate >= 20 ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400' :
                         'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
                       }`}>
                         {state.successRate}%
@@ -434,7 +434,7 @@ const AppealStatisticsPage = () => {
 
         {/* Common Grounds of Appeal */}
         <section className="mb-12">
-          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold mb-2 text-center">Section 3</p>
+          <p className="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold mb-2 text-center">Section 3</p>
           <h2 className="text-xl font-bold text-foreground mb-2 text-center" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Most Common Grounds of Appeal
           </h2>
@@ -451,13 +451,13 @@ const AppealStatisticsPage = () => {
                     <span className="text-xs font-bold bg-muted px-2 py-1 rounded">#{index + 1}</span>
                     <span className="font-semibold text-foreground">{ground.ground}</span>
                   </div>
-                  <span className="text-lg font-bold text-amber-600">{ground.percentage}%</span>
+                  <span className="text-lg font-bold text-sky-600">{ground.percentage}%</span>
                 </div>
                 <p className="text-sm text-muted-foreground ml-10">{ground.description}</p>
                 {/* Progress Bar */}
                 <div className="mt-3 ml-10 h-2 bg-muted rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-gradient-to-r from-amber-500 to-amber-600 rounded-full transition-all duration-500"
+                    className="h-full bg-gradient-to-r from-sky-500 to-sky-600 rounded-full transition-all duration-500"
                     style={{ width: `${ground.percentage}%` }}
                   />
                 </div>
@@ -468,7 +468,7 @@ const AppealStatisticsPage = () => {
 
         {/* Complaints About Lawyers */}
         <section className="mb-12">
-          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold mb-2 text-center">Section 4</p>
+          <p className="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold mb-2 text-center">Section 4</p>
           <h2 className="text-xl font-bold text-foreground mb-2 text-center" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Top Complaints About Lawyers
           </h2>
@@ -500,7 +500,7 @@ const AppealStatisticsPage = () => {
 
         {/* Key Insights */}
         <section className="mb-12">
-          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold mb-2 text-center">Section 5</p>
+          <p className="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold mb-2 text-center">Section 5</p>
           <h2 className="text-xl font-bold text-foreground mb-2 text-center" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Key Insights
           </h2>
@@ -534,7 +534,7 @@ const AppealStatisticsPage = () => {
 
         {/* Historical Trends */}
         <section className="mb-12">
-          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold mb-2 text-center">Section 6</p>
+          <p className="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold mb-2 text-center">Section 6</p>
           <h2 className="text-xl font-bold text-foreground mb-2 text-center" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Historical Trends
           </h2>
@@ -552,7 +552,7 @@ const AppealStatisticsPage = () => {
                 <p className="text-sm text-muted-foreground">NSW cases finalised within 12 months (2024)</p>
               </div>
               <div className="text-center">
-                <BarChart3 className="w-8 h-8 text-amber-500 mx-auto mb-2" />
+                <BarChart3 className="w-8 h-8 text-sky-500 mx-auto mb-2" />
                 <p className="text-2xl font-bold text-foreground">43%</p>
                 <p className="text-sm text-muted-foreground">Success rate for sexual assault conviction appeals (historical)</p>
               </div>
@@ -606,7 +606,7 @@ const StatCard = ({ icon: Icon, label, value, subtext, color }) => {
   const colorClasses = {
     blue: "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
     emerald: "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400",
-    amber: "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400",
+    amber: "bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400",
     purple: "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
   };
 
@@ -628,7 +628,7 @@ const StateDetailCard = ({ state }) => {
     blue: "border-blue-400",
     purple: "border-purple-400",
     red: "border-red-400",
-    amber: "border-amber-400",
+    amber: "border-sky-400",
     emerald: "border-emerald-400",
     teal: "border-teal-400",
     orange: "border-orange-400",
@@ -684,14 +684,14 @@ const StateDetailCard = ({ state }) => {
           <p className="text-sm text-muted-foreground">Avg Months to Finalise</p>
         </div>
         {state.cleared12Months && (
-          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 text-center">
-            <p className="text-3xl font-bold text-amber-600">{state.cleared12Months}%</p>
+          <div className="bg-sky-50 dark:bg-sky-900/20 rounded-lg p-4 text-center">
+            <p className="text-3xl font-bold text-sky-600">{state.cleared12Months}%</p>
             <p className="text-sm text-muted-foreground">Cleared in 12 Months</p>
           </div>
         )}
         {state.allowed !== undefined && (
-          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 text-center">
-            <p className="text-3xl font-bold text-amber-600">{state.allowed}/{state.dismissed}</p>
+          <div className="bg-sky-50 dark:bg-sky-900/20 rounded-lg p-4 text-center">
+            <p className="text-3xl font-bold text-sky-600">{state.allowed}/{state.dismissed}</p>
             <p className="text-sm text-muted-foreground">Allowed / Dismissed</p>
           </div>
         )}

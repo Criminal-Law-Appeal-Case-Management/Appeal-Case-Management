@@ -16,7 +16,7 @@ const AboutPage = () => {
         </div>
         
         <div className="max-w-4xl mx-auto relative z-10 text-center">
-          <p className="text-amber-500 font-bold text-sm uppercase tracking-widest mb-4">The Story Behind This App</p>
+          <p className="text-sky-500 font-bold text-sm uppercase tracking-widest mb-4">The Story Behind This App</p>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
             I Built What I Wish<br />I'd Had
           </h1>
@@ -30,7 +30,7 @@ const AboutPage = () => {
       <section className="py-12 sm:py-16 px-6">
         <div className="max-w-3xl mx-auto">
           <div className="bg-slate-900 rounded-2xl p-8 sm:p-10 text-center border border-slate-800">
-            <div className="w-20 h-20 bg-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-amber-600/30">
+            <div className="w-20 h-20 bg-sky-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-sky-600/30">
               <Gavel className="w-10 h-10 text-white" />
             </div>
             <p className="text-3xl sm:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -47,8 +47,8 @@ const AboutPage = () => {
       <section className="py-12 px-6 bg-muted/50 dark:bg-muted/20">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-              <Quote className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+            <div className="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center">
+              <Quote className="w-6 h-6 text-sky-600 dark:text-sky-400" />
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
               My Story
@@ -117,7 +117,7 @@ const AboutPage = () => {
       {/* Why This App */}
       <section className="py-12 px-6 bg-slate-900">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">The Mission</p>
+          <p className="text-sky-500 font-semibold text-xs uppercase tracking-widest mb-3">The Mission</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
             This App Is My Answer
           </h2>
@@ -128,7 +128,7 @@ const AboutPage = () => {
 
           <div className="grid sm:grid-cols-3 gap-6">
             <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-              <div className="w-14 h-14 bg-amber-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-14 h-14 bg-sky-600 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Shield className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-white font-bold mb-2">Find What Was Missed</h3>
@@ -161,8 +161,8 @@ const AboutPage = () => {
           
           <div className="space-y-4">
             <div className="bg-card rounded-xl p-6 border border-border flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
-                <Heart className="w-5 h-5 text-amber-600" />
+              <div className="w-10 h-10 rounded-lg bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center flex-shrink-0">
+                <Heart className="w-5 h-5 text-sky-600" />
               </div>
               <div>
                 <h3 className="font-bold text-foreground mb-1">Families fighting for loved ones</h3>
@@ -192,17 +192,17 @@ const AboutPage = () => {
       </section>
 
       {/* Important Disclaimer */}
-      <section className="py-12 px-6 bg-amber-50 dark:bg-amber-900/20 border-y border-amber-200 dark:border-amber-800">
+      <section className="py-12 px-6 bg-sky-50 dark:bg-sky-900/20 border-y border-sky-200 dark:border-sky-800">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-600 flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-sky-600 flex items-center justify-center flex-shrink-0">
               <AlertTriangle className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-amber-900 dark:text-amber-100 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              <h3 className="text-xl font-bold text-sky-900 dark:text-sky-100 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Important: This Is Not Legal Advice
               </h3>
-              <p className="text-amber-800 dark:text-amber-200 leading-relaxed">
+              <p className="text-sky-800 dark:text-sky-200 leading-relaxed">
                 I'm not a lawyer and this tool doesn't replace qualified legal counsel. What it does is help you 
                 understand your situation, organise your case materials, and identify potential issues that a 
                 lawyer can then properly assess. <strong>Always seek professional legal advice before taking action.</strong>
@@ -215,7 +215,7 @@ const AboutPage = () => {
       {/* Closing */}
       <section className="py-12 sm:py-16 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="w-20 h-20 bg-gradient-to-br from-amber-500 to-amber-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-amber-500/30">
+          <div className="w-20 h-20 bg-gradient-to-br from-sky-500 to-sky-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-sky-500/30">
             <Award className="w-10 h-10 text-white" />
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -240,7 +240,7 @@ const AboutPage = () => {
             Start your case analysis today — it's free to begin.
           </p>
           <Link to="/">
-            <Button className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-10 py-6 text-lg font-semibold shadow-lg shadow-amber-600/20">
+            <Button className="bg-gradient-to-r from-sky-600 to-sky-700 text-white hover:from-sky-700 hover:to-sky-800 rounded-xl px-10 py-6 text-lg font-semibold shadow-lg shadow-sky-600/20">
               Get Started Free
             </Button>
           </Link>

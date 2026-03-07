@@ -330,7 +330,7 @@ const ReportsSection = ({
                                 thead: ({children}) => <thead className="bg-slate-100">{children}</thead>,
                                 th: ({children}) => <th className="px-2 py-1.5 text-left font-semibold text-slate-800 border-b border-slate-200">{children}</th>,
                                 td: ({children}) => <td className="px-2 py-1.5 text-slate-700 border-b border-slate-100">{children}</td>,
-                                blockquote: ({children}) => <blockquote className="border-l-3 border-amber-400 pl-3 my-2 text-slate-600 italic bg-amber-50 py-1 rounded-r">{children}</blockquote>,
+                                blockquote: ({children}) => <blockquote className="border-l-3 border-sky-400 pl-3 my-2 text-slate-600 italic bg-sky-50 py-1 rounded-r">{children}</blockquote>,
                                 a: ({href, children}) => <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{children}</a>,
                               }}
                             >
@@ -419,7 +419,7 @@ const ReportsSection = ({
                       FREE
                     </Badge>
                   ) : (
-                    <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+                    <Badge variant="outline" className="bg-sky-50 text-sky-700 border-sky-200">
                       ${type.price.toFixed(2)} AUD
                     </Badge>
                   )}

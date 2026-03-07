@@ -588,7 +588,7 @@ const CaseDetail = ({ user }) => {
                   {caseData.state}
                 </Badge>
               )}
-              <Badge variant="outline" className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800 capitalize rounded-lg">
+              <Badge variant="outline" className="bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800 capitalize rounded-lg">
                 {caseData.offence_category.replace(/_/g, ' ')}
               </Badge>
               {caseData?.offence_type && (
@@ -675,7 +675,7 @@ const CaseDetail = ({ user }) => {
                   <Button 
                     onClick={handleAutoIdentifyGrounds}
                     disabled={autoIdentifying}
-                    className="bg-amber-600 text-white hover:bg-amber-700 rounded-xl"
+                    className="bg-sky-600 text-white hover:bg-sky-700 rounded-xl"
                     data-testid="auto-identify-btn"
                   >
                     {autoIdentifying ? (
@@ -765,7 +765,7 @@ const CaseDetail = ({ user }) => {
                   <Button 
                     onClick={handleAutoIdentifyGrounds}
                     disabled={autoIdentifying}
-                    className="bg-amber-600 text-white hover:bg-amber-700 rounded-xl"
+                    className="bg-sky-600 text-white hover:bg-sky-700 rounded-xl"
                   >
                     {autoIdentifying ? (
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -1098,19 +1098,19 @@ const CaseDetail = ({ user }) => {
             )}
 
             {/* Contested Fact */}
-            <div className="border border-amber-200 rounded-lg p-4 bg-amber-50/50">
+            <div className="border border-sky-200 rounded-lg p-4 bg-sky-50/50">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={newEvent.is_contested}
                   onChange={(e) => setNewEvent({ ...newEvent, is_contested: e.target.checked })}
-                  className="w-4 h-4 rounded border-amber-300"
+                  className="w-4 h-4 rounded border-sky-300"
                 />
-                <span className="font-medium text-amber-800">This is a contested fact</span>
+                <span className="font-medium text-sky-800">This is a contested fact</span>
               </label>
               {newEvent.is_contested && (
                 <div className="mt-3">
-                  <Label className="text-amber-700">What is contested?</Label>
+                  <Label className="text-sky-700">What is contested?</Label>
                   <Textarea
                     value={newEvent.contested_details}
                     onChange={(e) => setNewEvent({ ...newEvent, contested_details: e.target.value })}

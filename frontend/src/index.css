@@ -8,13 +8,12 @@
   --font-heading: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
   
-  /* Premium Theme Colors - Black, Gold, White, Blue */
+  /* Premium Theme Colors - Black, White, Steel Blue */
   --deep-black: #0a0a0a;
-  --rich-gold: #d4a84b;
-  --bright-gold: #f5c542;
   --pure-white: #ffffff;
-  --bright-blue: #3b82f6;
-  --royal-blue: #1d4ed8;
+  --steel-blue: #0ea5e9;
+  --royal-blue: #0284c7;
+  --navy: #0c4a6e;
 }
 
 body {

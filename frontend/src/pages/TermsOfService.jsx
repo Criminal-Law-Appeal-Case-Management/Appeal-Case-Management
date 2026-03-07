@@ -22,7 +22,7 @@ const TermsOfService = () => {
       <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-sky-600 flex items-center justify-center">
               <Scale className="w-5 h-5 text-white" />
             </div>
             <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -53,7 +53,7 @@ const TermsOfService = () => {
           <div className="md:hidden bg-slate-800 border-t border-slate-700 px-6 py-4 space-y-3">
             <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
             <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
-            <Link to="/" className="block py-2 text-amber-500 hover:text-amber-400">Back to Home</Link>
+            <Link to="/" className="block py-2 text-sky-500 hover:text-sky-400">Back to Home</Link>
           </div>
         )}
       </header>
@@ -71,11 +71,11 @@ const TermsOfService = () => {
         
         <div className="max-w-4xl mx-auto relative z-10 text-center">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/30">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-700 flex items-center justify-center shadow-lg shadow-sky-500/30">
               <FileText className="w-8 h-8 text-white" />
             </div>
           </div>
-          <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Legal</p>
+          <p className="text-sky-600 dark:text-sky-500 font-semibold text-xs uppercase tracking-widest mb-3">Legal</p>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Terms of Service & Privacy Policy
           </h1>
@@ -120,7 +120,7 @@ const TermsOfService = () => {
           {/* Section 2: About the Creator */}
           <div className="bg-gradient-to-r from-slate-900 to-indigo-950 rounded-2xl border border-slate-800 shadow-lg overflow-hidden">
             <div className="px-6 py-5 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-sky-500 flex items-center justify-center">
                 <Users className="w-5 h-5 text-white" />
               </div>
               <h2 className="text-lg font-semibold text-white" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -129,7 +129,7 @@ const TermsOfService = () => {
             </div>
             <div className="px-6 pb-6 text-slate-300">
               <p className="mb-3">
-                <strong className="text-amber-400">Debra King is not a qualified lawyer.</strong> She has spent years studying and learning applicable 
+                <strong className="text-sky-400">Debra King is not a qualified lawyer.</strong> She has spent years studying and learning applicable 
                 criminal laws herself, becoming so well-educated in NSW and Australian Federal law that she can recite most 
                 sections of the relevant Acts without reference.
               </p>
@@ -173,20 +173,20 @@ const TermsOfService = () => {
           </div>
 
           {/* Section 4: NOT LEGAL ADVICE - Always Visible */}
-          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl border-2 border-amber-300 dark:border-amber-700 shadow-lg p-6">
+          <div className="bg-sky-50 dark:bg-sky-900/20 rounded-2xl border-2 border-sky-300 dark:border-sky-700 shadow-lg p-6">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-sky-500 flex items-center justify-center flex-shrink-0">
                 <AlertTriangle className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-amber-900 dark:text-amber-200 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                <h2 className="text-xl font-bold text-sky-900 dark:text-sky-200 mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   4. Important: Not Legal Advice
                 </h2>
-                <p className="mb-3 text-amber-800 dark:text-amber-300">
+                <p className="mb-3 text-sky-800 dark:text-sky-300">
                   <strong>The information, analysis, and reports generated by this Application do NOT constitute legal advice</strong> and 
                   should not be relied upon as a substitute for advice from a qualified Australian legal practitioner.
                 </p>
-                <p className="text-amber-800 dark:text-amber-300">
+                <p className="text-sky-800 dark:text-sky-300">
                   All information generated through this Application is for <strong>informational and research purposes only</strong>. 
                   Users must obtain independent legal advice from a qualified legal professional before making any decision or 
                   taking any action in relation to an appeal or criminal proceeding.
@@ -373,7 +373,7 @@ const TermsOfService = () => {
             { id: 'contact', title: '14. Contact Information', icon: Mail, color: 'emerald', content: (
               <p>
                 If you have any questions about these Terms of Service or Privacy Policy, please contact Debra King at Glenmore Park, NSW, Australia, 
-                or email <a href="mailto:djkingy79@gmail.com" className="text-amber-600 hover:underline">djkingy79@gmail.com</a>.
+                or email <a href="mailto:djkingy79@gmail.com" className="text-sky-600 hover:underline">djkingy79@gmail.com</a>.
               </p>
             )}
           ].map((section) => (
@@ -401,17 +401,56 @@ const TermsOfService = () => {
           ))}
 
           {/* Acknowledgment - Always Visible */}
-          <div className="bg-gradient-to-r from-slate-900 to-indigo-950 rounded-2xl border border-slate-800 p-6 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-amber-500 flex items-center justify-center mx-auto mb-4">
+          <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl border border-slate-700 p-6 text-center">
+            <div className="w-14 h-14 rounded-2xl bg-sky-600 flex items-center justify-center mx-auto mb-4">
               <Shield className="w-7 h-7 text-white" />
             </div>
-            <h2 className="text-xl font-bold text-white mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <h2 className="text-xl font-bold text-white mb-3">
               15. Acknowledgment
             </h2>
             <p className="text-slate-300 max-w-2xl mx-auto">
               By using this Application, you acknowledge that you have read, understood, and agree to be bound by these 
               Terms of Service and Privacy Policy. If you do not agree to these terms, you must immediately cease using the Application.
             </p>
+          </div>
+
+          {/* Copyright Notice */}
+          <div className="bg-slate-800 rounded-2xl border border-slate-700 p-8 mt-8">
+            <h2 className="text-xl font-bold text-white mb-4 text-center">
+              16. Copyright Notice
+            </h2>
+            <div className="text-slate-300 space-y-4 max-w-3xl mx-auto">
+              <p>
+                <strong className="text-white">© 2025 Appeal Case Manager. All Rights Reserved.</strong>
+              </p>
+              <p>
+                This website, including all content, features, functionality, design, text, graphics, logos, icons, images, 
+                audio clips, video clips, data compilations, software, and the selection and arrangement thereof 
+                (collectively, the "Content"), is the exclusive property of Appeal Case Manager and its creator, 
+                Debra King, and is protected by Australian and international copyright, trademark, patent, trade secret, 
+                and other intellectual property or proprietary rights laws.
+              </p>
+              <p>
+                No part of this website or its Content may be reproduced, distributed, modified, transmitted, reused, 
+                downloaded, reposted, copied, or used in any form or by any means, whether electronic, mechanical, 
+                photocopying, recording, or otherwise, without the prior written permission of Appeal Case Manager.
+              </p>
+              <p>
+                Unauthorised use of the Content may violate copyright, trademark, and other applicable laws and could 
+                result in criminal or civil penalties. Appeal Case Manager actively enforces its intellectual property 
+                rights to the fullest extent of the law.
+              </p>
+              <p>
+                The AI-generated reports, analyses, and other outputs produced by this Application are provided for 
+                informational purposes only and remain the intellectual property of Appeal Case Manager. Users are 
+                granted a limited, non-exclusive, non-transferable licence to use such outputs solely for their 
+                personal legal research purposes.
+              </p>
+              <p className="text-slate-400 text-sm">
+                For permissions, licensing enquiries, or to report copyright infringement, please contact: 
+                <a href="mailto:djkingy79@gmail.com" className="text-sky-400 hover:text-sky-300 ml-1">djkingy79@gmail.com</a>
+              </p>
+            </div>
           </div>
         </div>
       </main>
@@ -423,7 +462,7 @@ const TermsOfService = () => {
             © 2025 Appeal Case Manager. All rights reserved.
           </p>
           <p className="text-slate-500 text-xs mt-2">
-            Created by Debra King — Glenmore Park, NSW
+            Created by Debra King — Glenmore Park, NSW, Australia
           </p>
         </div>
       </footer>

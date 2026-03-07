@@ -161,19 +161,19 @@ const QuickExport = ({ caseId, caseTitle }) => {
             )}
 
             {/* Templates Info */}
-            <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
-              <h4 className="text-sm font-semibold text-amber-800 dark:text-amber-200 mb-2 flex items-center gap-2">
+            <div className="mt-4 p-4 bg-sky-50 dark:bg-sky-900/20 border border-sky-200 dark:border-sky-800 rounded-xl">
+              <h4 className="text-sm font-semibold text-sky-800 dark:text-sky-200 mb-2 flex items-center gap-2">
                 <FileCode className="w-4 h-4" />
                 Included Templates
               </h4>
-              <ul className="text-xs text-amber-700 dark:text-amber-300 space-y-1">
+              <ul className="text-xs text-sky-700 dark:text-sky-300 space-y-1">
                 <li>• Notice of Intention to Appeal</li>
                 <li>• Application for Leave to Appeal</li>
                 <li>• Written Submissions Template</li>
                 <li>• Fresh Evidence Affidavit</li>
                 <li>• Chronology of Proceedings</li>
               </ul>
-              <p className="text-xs text-amber-600 dark:text-amber-400 mt-2 italic">
+              <p className="text-xs text-sky-600 dark:text-sky-400 mt-2 italic">
                 All templates are pre-filled with your case details
               </p>
             </div>

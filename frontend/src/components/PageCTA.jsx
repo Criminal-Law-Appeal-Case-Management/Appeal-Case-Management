@@ -24,7 +24,7 @@ const PageCTA = ({
   // Sticky bottom CTA
   if (variant === "sticky") {
     return (
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-amber-600 to-orange-600 border-t-2 border-amber-400 shadow-2xl">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-sky-600 to-orange-600 border-t-2 border-sky-400 shadow-2xl">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex w-10 h-10 bg-white/20 rounded-lg items-center justify-center">
@@ -34,14 +34,14 @@ const PageCTA = ({
               <p className="text-white font-bold text-sm sm:text-base">
                 Ready to Start Your Appeal?
               </p>
-              <p className="text-amber-100 text-xs hidden sm:block">
+              <p className="text-sky-100 text-xs hidden sm:block">
                 Upload your case documents and get AI-powered analysis
               </p>
             </div>
           </div>
           <Button
             onClick={handleClick}
-            className="bg-white text-amber-700 hover:bg-amber-50 font-semibold shadow-lg flex items-center gap-2 shrink-0"
+            className="bg-white text-sky-700 hover:bg-sky-50 font-semibold shadow-lg flex items-center gap-2 shrink-0"
           >
             {isAuthenticated ? (
               <>
@@ -106,7 +106,7 @@ const PageCTA = ({
     return (
       <button
         onClick={handleClick}
-        className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-bold px-6 py-4 rounded-full shadow-2xl flex items-center gap-2 transition-all hover:scale-105 group"
+        className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-sky-600 to-orange-600 hover:from-sky-700 hover:to-orange-700 text-white font-bold px-6 py-4 rounded-full shadow-2xl flex items-center gap-2 transition-all hover:scale-105 group"
       >
         <Upload className="w-5 h-5 group-hover:animate-bounce" />
         <span className="hidden sm:inline">
@@ -118,24 +118,24 @@ const PageCTA = ({
 
   // Default banner CTA
   return (
-    <div className={`bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-2 border-amber-300 dark:border-amber-700 rounded-xl p-6 ${className}`}>
+    <div className={`bg-gradient-to-r from-sky-50 to-orange-50 dark:from-sky-900/20 dark:to-orange-900/20 border-2 border-sky-300 dark:border-sky-700 rounded-xl p-6 ${className}`}>
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-4 text-center sm:text-left">
-          <div className="w-12 h-12 bg-amber-600 rounded-xl flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 bg-sky-600 rounded-xl flex items-center justify-center shrink-0">
             <Briefcase className="w-6 h-6 text-white" />
           </div>
           <div>
-            <p className="font-bold text-amber-900 dark:text-amber-200 text-lg">
+            <p className="font-bold text-sky-900 dark:text-sky-200 text-lg">
               Start Working On Your Appeal
             </p>
-            <p className="text-amber-700 dark:text-amber-300 text-sm">
+            <p className="text-sky-700 dark:text-sky-300 text-sm">
               Upload documents • AI analysis • Generate reports • Track deadlines
             </p>
           </div>
         </div>
         <Button
           onClick={handleClick}
-          className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-xl flex items-center gap-2 shrink-0 shadow-lg"
+          className="bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-3 rounded-xl flex items-center gap-2 shrink-0 shadow-lg"
         >
           {isAuthenticated ? (
             <>

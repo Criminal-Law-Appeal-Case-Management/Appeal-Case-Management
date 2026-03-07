@@ -211,7 +211,7 @@ const LegalFrameworkPage = () => {
       <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-sky-600 flex items-center justify-center">
               <Scale className="w-5 h-5 text-white" />
             </div>
             <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -241,7 +241,7 @@ const LegalFrameworkPage = () => {
             <Link to="/caselaw-search" className="block py-2 text-slate-300 hover:text-white">Caselaw Search</Link>
             <Link to="/legal-resources" className="block py-2 text-slate-300 hover:text-white">Resources</Link>
             <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
-            <Link to="/" className="block py-2 text-amber-500 hover:text-amber-400">Back to Home</Link>
+            <Link to="/" className="block py-2 text-sky-500 hover:text-sky-400">Back to Home</Link>
           </div>
         )}
       </header>
@@ -267,7 +267,7 @@ const LegalFrameworkPage = () => {
 
         {/* Criminal Law Section */}
           <div id="criminal" className="space-y-4">
-            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mb-6">
+            <div className="bg-sky-50 dark:bg-sky-900/20 border border-sky-200 dark:border-sky-800 rounded-xl p-4 mb-6">
               <h2 className="font-bold text-foreground mb-2">Criminal Law by Jurisdiction</h2>
               <p className="text-sm text-muted-foreground">
                 Each state and territory has its own criminal legislation. The Commonwealth also has criminal laws for federal offences. 

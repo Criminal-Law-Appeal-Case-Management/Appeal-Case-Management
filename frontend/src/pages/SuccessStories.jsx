@@ -207,10 +207,10 @@ const SuccessStories = () => {
         <div className="max-w-5xl mx-auto relative z-10 text-center">
           <div className="flex items-center justify-center gap-1 mb-6">
             {[1,2,3,4,5].map(i => (
-              <Star key={i} className="w-6 h-6 text-amber-500 fill-amber-500" />
+              <Star key={i} className="w-6 h-6 text-sky-500 fill-sky-500" />
             ))}
           </div>
-          <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Real Stories, Real Hope</p>
+          <p className="text-sky-600 dark:text-sky-500 font-semibold text-xs uppercase tracking-widest mb-3">Real Stories, Real Hope</p>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Success Stories
           </h1>
@@ -224,7 +224,7 @@ const SuccessStories = () => {
       {/* Stories */}
       <main className="max-w-7xl mx-auto px-6 pb-16">
         <section className="mb-8" data-testid="success-stories-grid-section">
-          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-2">Featured Stories</p>
+          <p className="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-500 font-semibold mb-2">Featured Stories</p>
           <h2 className="text-2xl font-bold text-foreground mb-1" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Real outcomes, organised for quick reading
           </h2>
@@ -235,7 +235,7 @@ const SuccessStories = () => {
           {successStories.map((story) => (
             <article
               key={story.id}
-              className="bg-card rounded-xl border border-border shadow-sm overflow-hidden hover:shadow-md hover:border-amber-300 dark:hover:border-amber-600 transition-all flex flex-col"
+              className="bg-card rounded-xl border border-border shadow-sm overflow-hidden hover:shadow-md hover:border-sky-300 dark:hover:border-sky-600 transition-all flex flex-col"
               data-testid={`success-story-card-${story.id}`}
             >
               {/* Strong Header */}
@@ -268,8 +268,8 @@ const SuccessStories = () => {
         </div>
 
         {/* Disclaimer */}
-        <div className="mt-10 p-5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl">
-          <p className="text-sm text-amber-800 dark:text-amber-200">
+        <div className="mt-10 p-5 bg-sky-50 dark:bg-sky-900/20 border border-sky-200 dark:border-sky-800 rounded-2xl">
+          <p className="text-sm text-sky-800 dark:text-sky-200">
             <strong>Note:</strong> These stories are shared by real users with their consent. 
             Individual results vary. This tool does not guarantee any outcome. 
             All legal matters should be reviewed by a qualified legal professional.
@@ -294,7 +294,7 @@ const SuccessStories = () => {
           {!showSubmitForm ? (
             <Button 
               onClick={() => setShowSubmitForm(true)}
-              className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-8 py-5 font-semibold shadow-lg shadow-amber-600/20"
+              className="bg-gradient-to-r from-sky-600 to-sky-700 text-white hover:from-sky-700 hover:to-sky-800 rounded-xl px-8 py-5 font-semibold shadow-lg shadow-sky-600/20"
             >
               Share My Story
             </Button>
@@ -374,7 +374,7 @@ const SuccessStories = () => {
                 <Button 
                   type="submit" 
                   disabled={loading} 
-                  className="flex-1 bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl py-5 font-semibold"
+                  className="flex-1 bg-gradient-to-r from-sky-600 to-sky-700 text-white hover:from-sky-700 hover:to-sky-800 rounded-xl py-5 font-semibold"
                 >
                   {loading ? "Submitting..." : "Submit Story"}
                 </Button>
@@ -397,7 +397,7 @@ const SuccessStories = () => {
             You don't have to do this alone. Let the tool help you find what might have been missed.
           </p>
           <Link to="/">
-            <Button className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-10 py-6 text-lg font-semibold shadow-lg shadow-amber-600/20" data-testid="success-stories-cta">
+            <Button className="bg-gradient-to-r from-sky-600 to-sky-700 text-white hover:from-sky-700 hover:to-sky-800 rounded-xl px-10 py-6 text-lg font-semibold shadow-lg shadow-sky-600/20" data-testid="success-stories-cta">
               Get Started Free
             </Button>
           </Link>

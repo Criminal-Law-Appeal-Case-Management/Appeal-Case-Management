@@ -43,7 +43,7 @@ const CaseComparison = ({ caseId }) => {
     return (
       <Card className="bg-white border-slate-200">
         <CardContent className="p-8 text-center">
-          <AlertTriangle className="w-8 h-8 text-amber-400 mx-auto mb-2" />
+          <AlertTriangle className="w-8 h-8 text-sky-400 mx-auto mb-2" />
           <p className="text-slate-500">Comparison data not available</p>
         </CardContent>
       </Card>
@@ -54,13 +54,13 @@ const CaseComparison = ({ caseId }) => {
 
   const getTrendIcon = (status) => {
     if (status === "above") return <TrendingUp className="w-4 h-4 text-emerald-500" />;
-    if (status === "below") return <TrendingDown className="w-4 h-4 text-amber-500" />;
+    if (status === "below") return <TrendingDown className="w-4 h-4 text-sky-500" />;
     return <Minus className="w-4 h-4 text-slate-400" />;
   };
 
   const getTrendColor = (status) => {
     if (status === "above") return "text-emerald-600 bg-emerald-50";
-    if (status === "below") return "text-amber-600 bg-amber-50";
+    if (status === "below") return "text-sky-600 bg-sky-50";
     return "text-slate-600 bg-slate-50";
   };
 
@@ -95,10 +95,10 @@ const CaseComparison = ({ caseId }) => {
             <p className="text-xs text-purple-600">Same State</p>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-amber-50 to-white border-amber-100">
+        <Card className="bg-gradient-to-br from-sky-50 to-white border-sky-100">
           <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold text-amber-700">{similar_cases.exact_match_count}</p>
-            <p className="text-xs text-amber-600">Exact Match</p>
+            <p className="text-2xl font-bold text-sky-700">{similar_cases.exact_match_count}</p>
+            <p className="text-xs text-sky-600">Exact Match</p>
           </CardContent>
         </Card>
       </div>

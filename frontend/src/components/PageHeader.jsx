@@ -43,14 +43,14 @@ const PageHeader = ({
               </Button>
             )}
             <Link to="/" className="flex items-center gap-2 sm:gap-3 group" title="Go to Home">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-amber-600 flex items-center justify-center group-hover:bg-amber-500 transition-colors">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-sky-600 flex items-center justify-center group-hover:bg-sky-500 transition-colors">
                 <Scale className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <div className="hidden sm:block">
                 <span className="text-base sm:text-lg font-semibold text-white tracking-tight block" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   Appeal Case Manager
                 </span>
-                <span className="text-[10px] text-amber-400 uppercase tracking-wider">Click to go Home</span>
+                <span className="text-[10px] text-sky-400 uppercase tracking-wider">Click to go Home</span>
               </div>
             </Link>
           </div>

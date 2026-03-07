@@ -106,12 +106,12 @@ const VisitorCounter = ({ variant = "full" }) => {
       </div>
 
       {/* Cases Created */}
-      <div className="bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-800/20 rounded-xl p-4 border border-amber-200 dark:border-amber-800 text-center">
-        <Briefcase className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
-        <p className="text-2xl font-bold text-amber-700 dark:text-amber-300" style={{ fontFamily: 'Crimson Pro, serif' }}>
+      <div className="bg-gradient-to-br from-sky-50 to-sky-100 dark:from-sky-900/20 dark:to-sky-800/20 rounded-xl p-4 border border-sky-200 dark:border-sky-800 text-center">
+        <Briefcase className="w-6 h-6 text-sky-600 dark:text-sky-400 mx-auto mb-2" />
+        <p className="text-2xl font-bold text-sky-700 dark:text-sky-300" style={{ fontFamily: 'Crimson Pro, serif' }}>
           {formatNumber(stats.cases_created)}
         </p>
-        <p className="text-xs text-amber-600 dark:text-amber-400">Cases</p>
+        <p className="text-xs text-sky-600 dark:text-sky-400">Cases</p>
       </div>
     </div>
   );

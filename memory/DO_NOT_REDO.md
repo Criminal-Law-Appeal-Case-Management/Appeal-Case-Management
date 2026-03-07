@@ -132,17 +132,18 @@
 - No changes needed - pages are well-written
 
 ### 22. Theme Enhanced ✅ DONE (7 Mar 2026)
-- Added custom `gold` and `royal` color palettes to tailwind.config.js
-- Colors now available as: gold-50 to gold-900, royal-50 to royal-900
-- Base theme already had black/gold/white/blue in index.css CSS variables
+- Removed ALL yellow/amber colors - user hated them
+- New color scheme: **Steel Blue (sky-400/sky-600)** and **White** on dark slate
+- Applied to ALL pages via bulk sed replacement
+- Professional legal look - no more rainbow colors
 
-### 23. Barrister Information Added to Extensive Report ✅ DONE (7 Mar 2026)
-- File: `/app/backend/server.py`
-- Added new Section 21: "FINDING & BRIEFING A BARRISTER (MANDATORY)"
-- Includes: what type of barrister to find, state bar directory links, what to bring to conference, fee expectations, pro bono options
-- Direct links to all state Bar Association barrister directories
-- Price prompt updated from $39 to $150
-- **DO NOT REMOVE THIS SECTION**
+### 23. Copyright Notice Added ✅ DONE (7 Mar 2026)
+- File: `/app/frontend/src/pages/TermsOfService.jsx`
+- Added Section 16: Copyright Notice
+- Full intellectual property protection paragraph
+- AI-generated content licensing terms
+- Contact email for permissions/infringement
+- Footer updated: "Created by Debra King — Glenmore Park, NSW, Australia"
 
 ---
 

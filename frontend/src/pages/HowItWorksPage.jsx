@@ -54,7 +54,7 @@ const HowItWorksPage = () => {
       title: "Full Detailed Report",
       price: "$100 AUD",
       note: "Premium legal analysis with strategic framing and filing guidance.",
-      tone: "border-amber-300 bg-amber-50 dark:bg-amber-900/20",
+      tone: "border-sky-300 bg-sky-50 dark:bg-sky-900/20",
     },
     {
       title: "Extensive Log Report",
@@ -87,7 +87,7 @@ const HowItWorksPage = () => {
 
       <main className="max-w-6xl mx-auto px-6 py-10 space-y-12">
         <section className="text-center" data-testid="how-it-works-flow-heading">
-          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">Process Flow</p>
+          <p className="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-500 font-semibold mb-1">Process Flow</p>
           <h2 className="text-2xl font-bold text-foreground" style={{ fontFamily: "Crimson Pro, serif" }}>
             Follow the exact steps from upload to hearing-ready output
           </h2>
@@ -99,8 +99,8 @@ const HowItWorksPage = () => {
             return (
               <div key={step.title} className="rounded-2xl border border-border bg-card p-5 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  <div className="w-10 h-10 rounded-lg bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-sky-600 dark:text-sky-400" />
                   </div>
                   <h2 className="text-lg font-bold text-foreground" style={{ fontFamily: "Crimson Pro, serif" }}>{step.title}</h2>
                 </div>
@@ -141,7 +141,7 @@ const HowItWorksPage = () => {
           </div>
         </section>
 
-        <section className="rounded-2xl border-2 border-amber-300 bg-amber-50 dark:bg-amber-900/20 p-6 text-center" data-testid="how-it-works-start-case-section">
+        <section className="rounded-2xl border-2 border-sky-300 bg-sky-50 dark:bg-sky-900/20 p-6 text-center" data-testid="how-it-works-start-case-section">
           <h2 className="text-2xl font-bold text-foreground mb-2" style={{ fontFamily: "Crimson Pro, serif" }}>
             Ready to begin?
           </h2>
@@ -149,7 +149,7 @@ const HowItWorksPage = () => {
             Start your case now and move through the exact workflow above.
           </p>
           <Link to="/dashboard">
-            <Button className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white rounded-xl px-10 py-6 text-lg font-semibold shadow-lg shadow-amber-600/20" data-testid="how-it-works-start-case-btn">
+            <Button className="bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 text-white rounded-xl px-10 py-6 text-lg font-semibold shadow-lg shadow-sky-600/20" data-testid="how-it-works-start-case-btn">
               Start Your Case Now
             </Button>
           </Link>

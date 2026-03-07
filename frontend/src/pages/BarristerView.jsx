@@ -27,7 +27,7 @@ const GROUND_TYPE_LABELS = {
 
 const STRENGTH_CONFIG = {
   strong: { icon: CheckCircle, color: "text-emerald-700", bg: "bg-emerald-50", border: "border-emerald-200", label: "Strong Ground", score: "HIGH" },
-  moderate: { icon: AlertTriangle, color: "text-amber-700", bg: "bg-amber-50", border: "border-amber-200", label: "Moderate Ground", score: "MEDIUM" },
+  moderate: { icon: AlertTriangle, color: "text-sky-700", bg: "bg-sky-50", border: "border-sky-200", label: "Moderate Ground", score: "MEDIUM" },
   weak: { icon: XCircle, color: "text-red-700", bg: "bg-red-50", border: "border-red-200", label: "Requires Development", score: "LOW" }
 };
 
@@ -270,8 +270,8 @@ const BarristerView = ({ user }) => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
         <div className="text-center">
           <div className="relative">
-            <Scale className="w-16 h-16 text-amber-500 mx-auto animate-pulse" />
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent animate-pulse" />
+            <Scale className="w-16 h-16 text-sky-500 mx-auto animate-pulse" />
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-transparent via-sky-500 to-transparent animate-pulse" />
           </div>
           <p className="mt-6 text-slate-300 text-lg" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Preparing your brief...
@@ -371,7 +371,7 @@ const BarristerView = ({ user }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 print:bg-white">
       {/* Premium Header Bar - hidden when printing */}
-      <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white sticky top-0 z-50 no-print border-b border-amber-500/30">
+      <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white sticky top-0 z-50 no-print border-b border-sky-500/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -387,7 +387,7 @@ const BarristerView = ({ user }) => {
               </Button>
               <div className="hidden sm:block h-6 w-px bg-slate-600" />
               <div className="hidden sm:flex items-center gap-2">
-                <Scale className="w-5 h-5 text-amber-500" />
+                <Scale className="w-5 h-5 text-sky-500" />
                 <span className="font-semibold tracking-tight" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   Barrister Brief
                 </span>
@@ -407,7 +407,7 @@ const BarristerView = ({ user }) => {
                 variant="outline"
                 size="sm"
                 onClick={handleExportPDF}
-                className="bg-amber-500 hover:bg-amber-600 text-slate-900 border-amber-500"
+                className="bg-sky-500 hover:bg-sky-600 text-slate-900 border-sky-500"
                 data-testid="export-btn"
               >
                 <Download className="w-4 h-4 mr-1 sm:mr-2" />
@@ -450,13 +450,13 @@ const BarristerView = ({ user }) => {
             {/* Cover Header with gradient */}
             <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 text-white p-8 sm:p-12 relative overflow-hidden">
               {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-amber-500/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-sky-500/5 rounded-full translate-y-1/2 -translate-x-1/2" />
               
               <div className="relative z-10">
                 {/* Document Type Badge */}
                 <div className="flex items-center gap-2 mb-6">
-                  <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 px-3 py-1">
+                  <Badge className="bg-sky-500/20 text-sky-300 border-sky-500/30 px-3 py-1">
                     <Scale className="w-3 h-3 mr-1" />
                     CONFIDENTIAL LEGAL BRIEF
                   </Badge>
@@ -483,7 +483,7 @@ const BarristerView = ({ user }) => {
                 {/* Key Case Info Grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
                   <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
-                    <div className="flex items-center gap-2 text-amber-400 mb-1">
+                    <div className="flex items-center gap-2 text-sky-400 mb-1">
                       <User className="w-4 h-4" />
                       <span className="text-xs uppercase tracking-wide">Defendant</span>
                     </div>
@@ -492,7 +492,7 @@ const BarristerView = ({ user }) => {
                   
                   {caseData?.case_number && (
                     <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
-                      <div className="flex items-center gap-2 text-amber-400 mb-1">
+                      <div className="flex items-center gap-2 text-sky-400 mb-1">
                         <FileText className="w-4 h-4" />
                         <span className="text-xs uppercase tracking-wide">Case No.</span>
                       </div>
@@ -502,7 +502,7 @@ const BarristerView = ({ user }) => {
                   
                   {caseData?.court && (
                     <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
-                      <div className="flex items-center gap-2 text-amber-400 mb-1">
+                      <div className="flex items-center gap-2 text-sky-400 mb-1">
                         <Building2 className="w-4 h-4" />
                         <span className="text-xs uppercase tracking-wide">Court</span>
                       </div>
@@ -511,7 +511,7 @@ const BarristerView = ({ user }) => {
                   )}
                   
                   <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
-                    <div className="flex items-center gap-2 text-amber-400 mb-1">
+                    <div className="flex items-center gap-2 text-sky-400 mb-1">
                       <MapPin className="w-4 h-4" />
                       <span className="text-xs uppercase tracking-wide">Jurisdiction</span>
                     </div>
@@ -536,7 +536,7 @@ const BarristerView = ({ user }) => {
               </div>
 
               <div
-                className="mb-6 rounded-2xl border border-indigo-200 dark:border-indigo-800 bg-gradient-to-r from-indigo-50 via-white to-amber-50 dark:from-indigo-900/20 dark:via-slate-800 dark:to-amber-900/10 p-5"
+                className="mb-6 rounded-2xl border border-indigo-200 dark:border-indigo-800 bg-gradient-to-r from-indigo-50 via-white to-sky-50 dark:from-indigo-900/20 dark:via-slate-800 dark:to-sky-900/10 p-5"
                 data-testid="barrister-top-summary-box"
               >
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -599,7 +599,7 @@ const BarristerView = ({ user }) => {
                     <h3 className="font-semibold text-slate-900 dark:text-white">Case Strength</h3>
                     <Badge className={
                       caseStrength >= 70 ? 'bg-emerald-100 text-emerald-700' :
-                      caseStrength >= 40 ? 'bg-amber-100 text-amber-700' :
+                      caseStrength >= 40 ? 'bg-sky-100 text-sky-700' :
                       'bg-red-100 text-red-700'
                     }>
                       {caseStrength >= 70 ? 'Strong Appeal' : caseStrength >= 40 ? 'Moderate Prospects' : 'Needs Development'}
@@ -620,7 +620,7 @@ const BarristerView = ({ user }) => {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-slate-600 dark:text-slate-300">Moderate Grounds</span>
-                      <span className="font-bold text-amber-600 text-lg">{moderateGrounds.length}</span>
+                      <span className="font-bold text-sky-600 text-lg">{moderateGrounds.length}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-slate-600 dark:text-slate-300">Total Grounds</span>
@@ -630,9 +630,9 @@ const BarristerView = ({ user }) => {
                 </div>
 
                 {/* Quick Stats */}
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-xl p-6 border border-amber-200 dark:border-amber-800">
+                <div className="bg-gradient-to-br from-sky-50 to-orange-50 dark:from-sky-900/20 dark:to-orange-900/20 rounded-xl p-6 border border-sky-200 dark:border-sky-800">
                   <div className="flex items-center gap-2 mb-4">
-                    <BarChart3 className="w-5 h-5 text-amber-600" />
+                    <BarChart3 className="w-5 h-5 text-sky-600" />
                     <h3 className="font-semibold text-slate-900 dark:text-white">Evidence Base</h3>
                   </div>
                   <div className="space-y-3">
@@ -670,7 +670,7 @@ const BarristerView = ({ user }) => {
             </div>
 
             {/* ===== HEARING STRATEGY SNAPSHOT ===== */}
-            <div className="p-8 sm:p-12 border-b border-slate-200 dark:border-slate-700 page-break-inside-avoid bg-gradient-to-r from-indigo-50/60 via-white to-amber-50/50 dark:from-indigo-900/20 dark:via-slate-800 dark:to-amber-900/10">
+            <div className="p-8 sm:p-12 border-b border-slate-200 dark:border-slate-700 page-break-inside-avoid bg-gradient-to-r from-indigo-50/60 via-white to-sky-50/50 dark:from-indigo-900/20 dark:via-slate-800 dark:to-sky-900/10">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
                   <Sword className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
@@ -690,8 +690,8 @@ const BarristerView = ({ user }) => {
                     {leadGround?.title || "Ground to be confirmed after document review"}
                   </p>
                 </div>
-                <div className="rounded-xl border border-amber-200 dark:border-amber-700 bg-white/80 dark:bg-slate-800/80 p-4">
-                  <p className="text-xs uppercase tracking-wide text-amber-700 dark:text-amber-300 mb-2">Authorities Ready</p>
+                <div className="rounded-xl border border-sky-200 dark:border-sky-700 bg-white/80 dark:bg-slate-800/80 p-4">
+                  <p className="text-xs uppercase tracking-wide text-sky-700 dark:text-sky-300 mb-2">Authorities Ready</p>
                   <p className="font-semibold text-slate-900 dark:text-white text-sm">
                     {keyAuthorities.length} statute references indexed for submissions
                   </p>
@@ -841,8 +841,8 @@ const BarristerView = ({ user }) => {
             {grounds.length > 0 && (
               <div className="p-8 sm:p-12 border-b border-slate-200 dark:border-slate-700 page-break-inside-avoid">
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center">
-                    <Gavel className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  <div className="w-10 h-10 rounded-lg bg-sky-100 dark:bg-sky-900/50 flex items-center justify-center">
+                    <Gavel className="w-5 h-5 text-sky-600 dark:text-sky-400" />
                   </div>
                   <div>
                     <h2 
@@ -872,7 +872,7 @@ const BarristerView = ({ user }) => {
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex-1">
                               <div className="flex flex-wrap items-center gap-2 mb-3">
-                                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-amber-500 text-white font-bold text-sm">
+                                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-sky-500 text-white font-bold text-sm">
                                   {idx + 1}
                                 </span>
                                 <Badge variant="outline" className="bg-white dark:bg-slate-700">
@@ -1060,8 +1060,8 @@ const BarristerView = ({ user }) => {
               <div className="space-y-8">
                 {parsedContent.sections.map((section, idx) => (
                   <div key={idx} className="page-break-inside-avoid">
-                    <div className="flex items-baseline gap-4 mb-4 pb-3 border-b-2 border-amber-500">
-                      <span className="text-3xl font-bold text-amber-500" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                    <div className="flex items-baseline gap-4 mb-4 pb-3 border-b-2 border-sky-500">
+                      <span className="text-3xl font-bold text-sky-500" style={{ fontFamily: 'Crimson Pro, serif' }}>
                         {section.number}.
                       </span>
                       <h3 
@@ -1133,8 +1133,8 @@ const BarristerView = ({ user }) => {
                 </div>
               </div>
               
-              <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
-                <p className="text-sm text-amber-800 dark:text-amber-200 italic" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              <div className="mt-6 p-4 bg-sky-50 dark:bg-sky-900/20 border border-sky-200 dark:border-sky-800 rounded-xl">
+                <p className="text-sm text-sky-800 dark:text-sky-200 italic" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   This document is prepared as an analytical aid and should be reviewed by qualified 
                   legal counsel before being relied upon in legal proceedings. The analysis is based 
                   on information provided and publicly available legal resources.
@@ -1146,7 +1146,7 @@ const BarristerView = ({ user }) => {
             <div className="p-8 sm:p-12 bg-gradient-to-br from-slate-900 to-indigo-900 text-white">
               <div className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-4">
-                  <Scale className="w-6 h-6 text-amber-500" />
+                  <Scale className="w-6 h-6 text-sky-500" />
                   <span 
                     className="text-xl font-semibold"
                     style={{ fontFamily: 'Crimson Pro, serif' }}
@@ -1157,7 +1157,7 @@ const BarristerView = ({ user }) => {
                 <p className="text-slate-300 mb-2">
                   Prepared for: <span className="font-semibold text-white">Deb King, Glenmore Park 2745</span>
                 </p>
-                <p className="text-amber-400 italic text-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                <p className="text-sky-400 italic text-sm" style={{ fontFamily: 'Crimson Pro, serif' }}>
                   "One woman's fight for justice — seeking truth for Joshua Homann, failed by the system"
                 </p>
                 <div className="mt-4 pt-4 border-t border-slate-700">

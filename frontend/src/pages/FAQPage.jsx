@@ -235,7 +235,7 @@ const FAQPage = () => {
   const totalQuestions = faqs.reduce((sum, cat) => sum + cat.questions.length, 0);
 
   const colorClasses = {
-    amber: "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400",
+    amber: "bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400",
     red: "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400",
     blue: "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400",
     purple: "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400",
@@ -261,7 +261,7 @@ const FAQPage = () => {
         </div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-amber-500/30">
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-700 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-sky-500/30">
             <HelpCircle className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -282,7 +282,7 @@ const FAQPage = () => {
               placeholder="Search for any question..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 py-6 text-base rounded-xl border-2 focus:border-amber-500"
+              className="pl-12 py-6 text-base rounded-xl border-2 focus:border-sky-500"
               data-testid="faq-search"
             />
           </div>
@@ -297,8 +297,8 @@ const FAQPage = () => {
               onClick={() => setActiveCategory("all")}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                 activeCategory === "all"
-                  ? "bg-amber-600 text-white shadow-lg"
-                  : "bg-card border border-border text-muted-foreground hover:border-amber-500"
+                  ? "bg-sky-600 text-white shadow-lg"
+                  : "bg-card border border-border text-muted-foreground hover:border-sky-500"
               }`}
             >
               All Questions ({totalQuestions})
@@ -309,8 +309,8 @@ const FAQPage = () => {
                 onClick={() => setActiveCategory(cat.category)}
                 className={`px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${
                   activeCategory === cat.category
-                    ? "bg-amber-600 text-white shadow-lg"
-                    : "bg-card border border-border text-muted-foreground hover:border-amber-500"
+                    ? "bg-sky-600 text-white shadow-lg"
+                    : "bg-card border border-border text-muted-foreground hover:border-sky-500"
                 }`}
               >
                 <cat.icon className="w-4 h-4" />
@@ -324,7 +324,7 @@ const FAQPage = () => {
       {/* FAQ Content */}
       <main className="max-w-5xl mx-auto px-6 pb-16">
         <section className="mb-6" data-testid="faq-content-intro">
-          <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">Quick Answers</p>
+          <p className="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-500 font-semibold mb-1">Quick Answers</p>
           <h2 className="text-xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Browse by category or expand individual questions
           </h2>
@@ -371,7 +371,7 @@ const FAQPage = () => {
                     return (
                       <div 
                         key={questionIndex}
-                        className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg hover:border-amber-500/30 transition-all"
+                        className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg hover:border-sky-500/30 transition-all"
                       >
                         <button
                           onClick={() => toggleItem(categoryIndex, questionIndex)}
@@ -379,9 +379,9 @@ const FAQPage = () => {
                           data-testid={`faq-${categoryIndex}-${questionIndex}`}
                         >
                           <span className="font-medium text-foreground pr-4">{item.q}</span>
-                          <div className={`p-2 rounded-lg transition-colors flex-shrink-0 ${isOpen ? 'bg-amber-100 dark:bg-amber-900/30' : 'bg-muted'}`}>
+                          <div className={`p-2 rounded-lg transition-colors flex-shrink-0 ${isOpen ? 'bg-sky-100 dark:bg-sky-900/30' : 'bg-muted'}`}>
                             {isOpen ? (
-                              <ChevronDown className="w-5 h-5 text-amber-600" />
+                              <ChevronDown className="w-5 h-5 text-sky-600" />
                             ) : (
                               <ChevronRight className="w-5 h-5 text-muted-foreground" />
                             )}
@@ -389,7 +389,7 @@ const FAQPage = () => {
                         </button>
                         {isOpen && (
                           <div className="px-5 pb-4">
-                            <div className="bg-muted/50 rounded-xl p-4 border-l-4 border-amber-500">
+                            <div className="bg-muted/50 rounded-xl p-4 border-l-4 border-sky-500">
                               <p className="text-muted-foreground text-sm leading-relaxed">{item.a}</p>
                             </div>
                           </div>
@@ -412,7 +412,7 @@ const FAQPage = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 to-slate-900/80 flex items-center justify-center">
             <div className="text-center px-6">
-              <MessageCircle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
+              <MessageCircle className="w-12 h-12 text-sky-500 mx-auto mb-4" />
               <h3 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Still have questions?
               </h3>
@@ -421,7 +421,7 @@ const FAQPage = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link to="/contact">
-                  <Button className="bg-amber-600 text-white hover:bg-amber-700 rounded-xl px-6">
+                  <Button className="bg-sky-600 text-white hover:bg-sky-700 rounded-xl px-6">
                     Contact Us
                   </Button>
                 </Link>
@@ -446,7 +446,7 @@ const FAQPage = () => {
             Let our AI help identify potential grounds for appeal in your case.
           </p>
           <Link to="/">
-            <Button className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-10 py-6 text-lg font-semibold shadow-lg shadow-amber-600/20" data-testid="faq-cta">
+            <Button className="bg-gradient-to-r from-sky-600 to-sky-700 text-white hover:from-sky-700 hover:to-sky-800 rounded-xl px-10 py-6 text-lg font-semibold shadow-lg shadow-sky-600/20" data-testid="faq-cta">
               Get Started Free
             </Button>
           </Link>

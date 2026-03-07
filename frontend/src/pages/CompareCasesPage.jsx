@@ -131,10 +131,10 @@ const CompareCasesPage = ({ user }) => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Card className="max-w-md mx-auto">
           <CardContent className="p-8 text-center">
-            <GitCompare className="w-12 h-12 text-amber-600 mx-auto mb-4" />
+            <GitCompare className="w-12 h-12 text-sky-600 mx-auto mb-4" />
             <h2 className="text-xl font-bold text-foreground mb-2">Sign In Required</h2>
             <p className="text-muted-foreground mb-4">Please sign in to compare cases and view patterns.</p>
-            <Button onClick={() => navigate("/")} className="bg-amber-600 text-white hover:bg-amber-700">
+            <Button onClick={() => navigate("/")} className="bg-sky-600 text-white hover:bg-sky-700">
               Go to Home
             </Button>
           </CardContent>
@@ -185,7 +185,7 @@ const CompareCasesPage = ({ user }) => {
       <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/dashboard" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-sky-600 flex items-center justify-center">
               <Scale className="w-5 h-5 text-white" />
             </div>
             <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -227,11 +227,11 @@ const CompareCasesPage = ({ user }) => {
         
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/30">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-700 flex items-center justify-center shadow-lg shadow-sky-500/30">
               <GitCompare className="w-7 h-7 text-white" />
             </div>
             <div>
-              <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest">Analysis</p>
+              <p className="text-sky-600 dark:text-sky-500 font-semibold text-xs uppercase tracking-widest">Analysis</p>
               <h1 className="text-3xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
                 Compare Cases
               </h1>
@@ -251,7 +251,7 @@ const CompareCasesPage = ({ user }) => {
               onClick={() => setActiveTab("my-cases")}
               className={`px-6 py-4 font-medium text-sm border-b-2 transition-colors flex items-center gap-2 ${
                 activeTab === "my-cases" 
-                  ? "border-amber-500 text-amber-600 dark:text-amber-400" 
+                  ? "border-sky-500 text-sky-600 dark:text-sky-400" 
                   : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -262,7 +262,7 @@ const CompareCasesPage = ({ user }) => {
               onClick={() => setActiveTab("patterns")}
               className={`px-6 py-4 font-medium text-sm border-b-2 transition-colors flex items-center gap-2 ${
                 activeTab === "patterns" 
-                  ? "border-amber-500 text-amber-600 dark:text-amber-400" 
+                  ? "border-sky-500 text-sky-600 dark:text-sky-400" 
                   : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -280,7 +280,7 @@ const CompareCasesPage = ({ user }) => {
             <Card className="bg-card border-border">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                  <Gavel className="w-5 h-5 text-amber-600" />
+                  <Gavel className="w-5 h-5 text-sky-600" />
                   Select Cases to Compare
                   <Badge variant="outline" className="ml-2">
                     {selectedCases.length}/5 selected
@@ -292,7 +292,7 @@ const CompareCasesPage = ({ user }) => {
                   <div className="text-center py-8">
                     <FileText className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
                     <p className="text-muted-foreground">No cases found. Create a case first.</p>
-                    <Button onClick={() => navigate("/dashboard")} className="mt-4 bg-amber-600 text-white hover:bg-amber-700">
+                    <Button onClick={() => navigate("/dashboard")} className="mt-4 bg-sky-600 text-white hover:bg-sky-700">
                       Go to Dashboard
                     </Button>
                   </div>
@@ -304,15 +304,15 @@ const CompareCasesPage = ({ user }) => {
                         onClick={() => toggleCaseSelection(case_.case_id)}
                         className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
                           selectedCases.includes(case_.case_id)
-                            ? "border-amber-500 bg-amber-50 dark:bg-amber-900/20"
-                            : "border-border hover:border-amber-300 bg-card"
+                            ? "border-sky-500 bg-sky-50 dark:bg-sky-900/20"
+                            : "border-border hover:border-sky-300 bg-card"
                         }`}
                       >
                         <div className="flex items-start justify-between mb-2">
                           <h3 className="font-semibold text-foreground truncate">{case_.title}</h3>
                           <Checkbox 
                             checked={selectedCases.includes(case_.case_id)}
-                            className="data-[state=checked]:bg-amber-600"
+                            className="data-[state=checked]:bg-sky-600"
                           />
                         </div>
                         <p className="text-sm text-muted-foreground mb-2">{case_.defendant_name}</p>
@@ -338,7 +338,7 @@ const CompareCasesPage = ({ user }) => {
                     <Button 
                       onClick={compareMyCases} 
                       disabled={selectedCases.length < 2 || loadingComparison}
-                      className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-8 py-5 font-semibold shadow-lg shadow-amber-600/20"
+                      className="bg-gradient-to-r from-sky-600 to-sky-700 text-white hover:from-sky-700 hover:to-sky-800 rounded-xl px-8 py-5 font-semibold shadow-lg shadow-sky-600/20"
                     >
                       {loadingComparison ? (
                         <>
@@ -414,7 +414,7 @@ const CompareCasesPage = ({ user }) => {
                   <Card className="bg-card border-border">
                     <CardHeader>
                       <CardTitle className="text-lg flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                        <Sparkles className="w-5 h-5 text-amber-600" />
+                        <Sparkles className="w-5 h-5 text-sky-600" />
                         Insights
                       </CardTitle>
                     </CardHeader>
@@ -422,7 +422,7 @@ const CompareCasesPage = ({ user }) => {
                       <ul className="space-y-2">
                         {comparisonResult.insights.map((insight, i) => (
                           <li key={i} className="flex items-start gap-2 text-muted-foreground">
-                            <Info className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                            <Info className="w-4 h-4 text-sky-600 mt-0.5 flex-shrink-0" />
                             {insight}
                           </li>
                         ))}
@@ -440,7 +440,7 @@ const CompareCasesPage = ({ user }) => {
             <Card className="bg-card border-border">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                  <Filter className="w-5 h-5 text-amber-600" />
+                  <Filter className="w-5 h-5 text-sky-600" />
                   Filter Patterns
                 </CardTitle>
               </CardHeader>
@@ -504,7 +504,7 @@ const CompareCasesPage = ({ user }) => {
             {/* Pattern Stats */}
             {loadingPatterns ? (
               <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600 mx-auto mb-4"></div>
                 <p className="text-muted-foreground">Loading patterns...</p>
               </div>
             ) : patterns ? (
@@ -522,8 +522,8 @@ const CompareCasesPage = ({ user }) => {
                   </Card>
                   <Card className="bg-card border-border">
                     <CardContent className="p-5 text-center">
-                      <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center mx-auto mb-3">
-                        <Gavel className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                      <div className="w-12 h-12 bg-sky-100 dark:bg-sky-900/30 rounded-xl flex items-center justify-center mx-auto mb-3">
+                        <Gavel className="w-6 h-6 text-sky-600 dark:text-sky-400" />
                       </div>
                       <p className="text-2xl font-bold text-foreground">{patterns.total_grounds_analyzed}</p>
                       <p className="text-sm text-muted-foreground">Grounds Identified</p>
@@ -569,7 +569,7 @@ const CompareCasesPage = ({ user }) => {
                               </div>
                               <div className="flex-1 bg-muted rounded-full h-7 overflow-hidden">
                                 <div 
-                                  className="h-full bg-gradient-to-r from-amber-500 to-amber-600 rounded-full flex items-center justify-end pr-3 transition-all duration-500"
+                                  className="h-full bg-gradient-to-r from-sky-500 to-sky-600 rounded-full flex items-center justify-end pr-3 transition-all duration-500"
                                   style={{ width: `${Math.max(percentage, 10)}%` }}
                                 >
                                   <span className="text-xs font-semibold text-white">{count}</span>
@@ -590,13 +590,13 @@ const CompareCasesPage = ({ user }) => {
                   <Card className="bg-gradient-to-r from-slate-900 to-indigo-950 border-0">
                     <CardContent className="p-6">
                       <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                        <Sparkles className="w-5 h-5 text-amber-400" />
+                        <Sparkles className="w-5 h-5 text-sky-400" />
                         Key Insights
                       </h3>
                       <ul className="space-y-2">
                         {patterns.insights.map((insight, i) => (
                           <li key={i} className="flex items-start gap-2 text-slate-300">
-                            <CheckCircle className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
+                            <CheckCircle className="w-4 h-4 text-sky-400 mt-0.5 flex-shrink-0" />
                             {insight}
                           </li>
                         ))}

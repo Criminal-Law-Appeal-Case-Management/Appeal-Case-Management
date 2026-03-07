@@ -94,7 +94,7 @@ const getReadiness = (score) => {
     return { label: "Filing-Ready", tone: "text-emerald-600", bar: "bg-emerald-500", note: "Strong appellate pathway with actionable grounds." };
   }
   if (score >= 50) {
-    return { label: "Evidence Gap", tone: "text-amber-600", bar: "bg-amber-500", note: "Promising grounds present, but supporting material should be strengthened." };
+    return { label: "Evidence Gap", tone: "text-sky-600", bar: "bg-sky-500", note: "Promising grounds present, but supporting material should be strengthened." };
   }
   return { label: "Urgent Build", tone: "text-rose-600", bar: "bg-rose-500", note: "Substantial preparation required before filing strategy is finalised." };
 };
@@ -420,18 +420,18 @@ const ReportView = () => {
 
                 {/* Grounds Identified - Like Landing Page */}
                 {grounds.length > 0 && (
-                  <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-700">
-                    <h5 className="font-bold text-amber-800 dark:text-amber-200 text-sm mb-3">GROUNDS IDENTIFIED: {grounds.length}</h5>
+                  <div className="bg-sky-50 dark:bg-sky-900/20 rounded-lg p-4 border border-sky-200 dark:border-sky-700">
+                    <h5 className="font-bold text-sky-800 dark:text-sky-200 text-sm mb-3">GROUNDS IDENTIFIED: {grounds.length}</h5>
                     <div className="space-y-2 text-xs">
                       {grounds.map((ground, idx) => (
                         <p key={ground.ground_id || idx} className="flex items-center gap-2">
                           <span className={`w-2.5 h-2.5 rounded-full ${
                             ground.strength === 'strong' ? 'bg-green-500' : 
-                            ground.strength === 'moderate' ? 'bg-amber-500' : 'bg-slate-400'
+                            ground.strength === 'moderate' ? 'bg-sky-500' : 'bg-slate-400'
                           }`}></span>
                           <strong className={
                             ground.strength === 'strong' ? 'text-green-700 dark:text-green-400' : 
-                            ground.strength === 'moderate' ? 'text-amber-700 dark:text-amber-400' : 'text-slate-600'
+                            ground.strength === 'moderate' ? 'text-sky-700 dark:text-sky-400' : 'text-slate-600'
                           }>
                             {ground.strength === 'strong' ? 'Strong:' : ground.strength === 'moderate' ? 'Moderate:' : 'Potential:'}
                           </strong>
@@ -448,7 +448,7 @@ const ReportView = () => {
                   <div className="flex items-center gap-4">
                     <div className={`w-20 h-20 rounded-full flex items-center justify-center ${
                       caseStrength >= 75 ? 'bg-gradient-to-br from-green-400 to-emerald-600' :
-                      caseStrength >= 50 ? 'bg-gradient-to-br from-amber-400 to-orange-600' :
+                      caseStrength >= 50 ? 'bg-gradient-to-br from-sky-400 to-orange-600' :
                       'bg-gradient-to-br from-rose-400 to-red-600'
                     }`}>
                       <span className="text-white font-bold text-xl">{caseStrength}%</span>
@@ -525,9 +525,9 @@ const ReportView = () => {
                     <p className="text-xs font-semibold text-blue-200 mb-1">Similar Cases Analysis</p>
                     <p className="text-[11px] text-slate-300">AustLII references with outcome summaries and applicable principles.</p>
                   </div>
-                  <div className="rounded-lg border border-amber-700/60 bg-amber-900/30 p-3">
-                    <Scale className="w-5 h-5 text-amber-300 mb-2" />
-                    <p className="text-xs font-semibold text-amber-100 mb-1">Legislation Links</p>
+                  <div className="rounded-lg border border-sky-700/60 bg-sky-900/30 p-3">
+                    <Scale className="w-5 h-5 text-sky-300 mb-2" />
+                    <p className="text-xs font-semibold text-sky-100 mb-1">Legislation Links</p>
                     <p className="text-[11px] text-slate-300">Direct references to applicable Acts and sections for your state.</p>
                   </div>
                   <div className="rounded-lg border border-emerald-700/60 bg-emerald-900/30 p-3">
@@ -554,7 +554,7 @@ const ReportView = () => {
                     <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Estimated Success Probability</p>
                   </div>
                   <div>
-                    <p className="text-3xl font-bold text-amber-600">Ground {strongGrounds > 0 ? '1' : '2'}</p>
+                    <p className="text-3xl font-bold text-sky-600">Ground {strongGrounds > 0 ? '1' : '2'}</p>
                     <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Primary Argument to Lead</p>
                   </div>
                   <div>
