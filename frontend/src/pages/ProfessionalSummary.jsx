@@ -56,9 +56,10 @@ const ProfessionalSummary = () => {
           </h2>
           <p className="text-slate-700 leading-relaxed">
             Criminal Appeal Case Management is a <strong>document-analysis and case-organisation tool</strong> designed 
-            to assist with identifying potential appeal issues in serious criminal matters, particularly homicide 
-            cases under NSW State and Australian Federal law. The tool supports the preparation of appeal documentation 
-            by helping users organise case materials and identify issues that may warrant further legal review.
+            to assist with identifying potential appeal issues in <strong>all criminal matters</strong> across Australian jurisdictions. 
+            The tool supports all offence types including assault, drug offences, fraud, robbery, sexual offences, 
+            domestic violence, traffic matters, and serious indictable offences. It helps users organise case materials 
+            and identify issues that may warrant further legal review.
           </p>
         </section>
 
@@ -231,7 +232,7 @@ const ProfessionalSummary = () => {
         <footer className="text-center text-sm text-slate-500 pt-6 border-t border-slate-200">
           <p className="mb-1">Criminal Appeal Case Management Tool</p>
           <p>Created by Debra King — Glenmore Park, NSW</p>
-          <p className="mt-2 text-xs">NSW State & Australian Federal Law Reference</p>
+          <p className="mt-2 text-xs">All Australian Jurisdictions — NSW, VIC, QLD, SA, WA, TAS, NT, ACT & Federal</p>
         </footer>
       </div>
     </div>
