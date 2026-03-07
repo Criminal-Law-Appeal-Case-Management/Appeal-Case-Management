@@ -2,8 +2,28 @@
 
 ## CRITICAL INFO FOR NEXT AGENT (7 Mar 2026)
 
-**LATEST FIX:**
-- ✅ Fixed ReportsSection.jsx - Reports were showing RAW markdown (`##`, `**`) - now properly rendered with ReactMarkdown
+**⚠️ READ /app/memory/DO_NOT_REDO.md FIRST ⚠️**
+**USER HAS SPENT $2000 AUD - DO NOT REDO COMPLETED WORK**
+
+**ALREADY DONE - DO NOT TOUCH:**
+1. ✅ ReportsSection.jsx - Markdown rendering with ReactMarkdown
+2. ✅ ReportView.jsx - Redesigned to match landing page samples
+3. ✅ Statistics.jsx - Big numbers, Key Insights layout
+4. ✅ SuccessStories.jsx - 4-column grid with strong headers
+5. ✅ PageHeader.jsx - Dark mode toggle on all pages
+6. ✅ ScrollToTop.jsx - Pages start from top
+7. ✅ Performance optimisation - Faster AI responses
+8. ✅ BarristerView.jsx - Professional presentation
+
+**ACTUALLY PENDING:**
+1. 🔴 About Page Rewrite - more intriguing content
+2. 🔴 Full App Theme - black/gold/white/blue palette
+3. 🟠 Barrister Info in third report tier
+4. 🟠 Backend refactoring (server.py is monolithic)
+
+**See /app/memory/DO_NOT_REDO.md for full list**
+
+---
 
 **WHAT WAS DONE THIS SESSION:**
 1. ✅ ReportView.jsx COMPLETELY REWRITTEN - matches landing page samples (green/blue/purple headers)
