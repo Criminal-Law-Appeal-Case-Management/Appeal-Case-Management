@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PageCTA from "../components/PageCTA";
+import PageHeader from "../components/PageHeader";
 import { Scale, ArrowLeft, Star, Send, CheckCircle, Heart, Moon, Sun, Menu, X } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -155,8 +156,6 @@ const successStories = [
 ];
 
 const SuccessStories = () => {
-  const { theme, toggleTheme } = useTheme();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -191,47 +190,8 @@ const SuccessStories = () => {
 
   return (
     <div className="min-h-screen bg-background" style={{ fontFamily: 'Manrope, sans-serif' }}>
-      {/* Header */}
-      <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
-              <Scale className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Appeal Case Manager
-            </span>
-          </Link>
-          <div className="hidden md:flex items-center gap-4">
-            <Link to="/glossary" className="text-slate-400 hover:text-white text-sm transition-colors">Legal Terms</Link>
-            <Link to="/faq" className="text-slate-400 hover:text-white text-sm transition-colors">FAQ</Link>
-            <Link to="/contact" className="text-slate-400 hover:text-white text-sm transition-colors">Contact</Link>
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-            >
-              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-            <Link to="/">
-              <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800 rounded-lg">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-            </Link>
-          </div>
-          <button className="md:hidden p-2 text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-slate-800 border-t border-slate-700 px-6 py-4 space-y-3">
-            <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
-            <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
-            <Link to="/contact" className="block py-2 text-slate-300 hover:text-white">Contact</Link>
-            <Link to="/" className="block py-2 text-amber-500 hover:text-amber-400">Back to Home</Link>
-          </div>
-        )}
-      </header>
+      {/* Shared Page Header with Dark Mode */}
+      <PageHeader showBackButton={true} backTo="/" />
 
       {/* Hero Section */}
       <section className="relative py-16 px-6 overflow-hidden">

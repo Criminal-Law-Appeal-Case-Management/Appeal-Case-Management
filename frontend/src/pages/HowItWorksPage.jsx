@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { useTheme } from "../contexts/ThemeContext";
+import PageHeader from "../components/PageHeader";
 import {
   Scale,
   ArrowLeft,
@@ -19,9 +20,6 @@ import {
 } from "lucide-react";
 
 const HowItWorksPage = () => {
-  const { theme, toggleTheme } = useTheme();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const flowSteps = [
     {
       icon: Upload,
@@ -68,50 +66,8 @@ const HowItWorksPage = () => {
 
   return (
     <div className="min-h-screen bg-background" style={{ fontFamily: "Manrope, sans-serif" }}>
-      <header className="bg-gradient-to-r from-black via-slate-950 to-blue-950 sticky top-0 z-50 border-b border-blue-900/40">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
-              <Scale className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: "Crimson Pro, serif" }}>
-              Appeal Case Manager
-            </span>
-          </Link>
-
-          <div className="hidden md:flex items-center gap-4">
-            <Link to="/how-to-use" className="text-slate-400 hover:text-white text-sm transition-colors">How To Use</Link>
-            <Link to="/legal-resources" className="text-slate-400 hover:text-white text-sm transition-colors">Legal Resources</Link>
-            <Link to="/appeal-statistics" className="text-slate-400 hover:text-white text-sm transition-colors">Statistics</Link>
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-              data-testid="how-it-works-theme-toggle"
-            >
-              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-            <Link to="/">
-              <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800 rounded-lg" data-testid="how-it-works-back-btn">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-            </Link>
-          </div>
-
-          <button className="md:hidden p-2 text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} data-testid="how-it-works-mobile-menu-btn">
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-slate-800 border-t border-slate-700 px-6 py-4 space-y-3">
-            <Link to="/how-to-use" className="block py-2 text-slate-300 hover:text-white">How To Use</Link>
-            <Link to="/legal-resources" className="block py-2 text-slate-300 hover:text-white">Legal Resources</Link>
-            <Link to="/appeal-statistics" className="block py-2 text-slate-300 hover:text-white">Statistics</Link>
-            <Link to="/" className="block py-2 text-amber-400 hover:text-amber-300">Back to Home</Link>
-          </div>
-        )}
-      </header>
+      {/* Shared Page Header with Dark Mode */}
+      <PageHeader showBackButton={true} backTo="/" />
 
       <section className="py-14 px-6 bg-gradient-to-b from-black via-slate-950 to-blue-950 text-white">
         <div className="max-w-5xl mx-auto text-center">

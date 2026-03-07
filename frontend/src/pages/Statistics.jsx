@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
-import { Scale, ArrowLeft, BarChart3, FileText, Users, TrendingUp, MapPin, Gavel, Shield, AlertTriangle, Moon, Sun, Menu, X } from "lucide-react";
+import { Scale, ArrowLeft, BarChart3, FileText, Users, TrendingUp, MapPin, Gavel, Shield, AlertTriangle, Moon, Sun, Menu, X, CheckCircle, Target, Zap } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { API } from "../App";
 import { useTheme } from "../contexts/ThemeContext";
+import PageHeader from "../components/PageHeader";
 
 const Statistics = () => {
   const { theme, toggleTheme } = useTheme();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -82,312 +82,270 @@ const Statistics = () => {
   const maxStateCount = stats?.cases_by_state?.[0]?.count || 1;
 
   return (
-    <div className="min-h-screen bg-background" style={{ fontFamily: 'Manrope, sans-serif' }}>
-      {/* Header */}
-      <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
-              <Scale className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Appeal Case Manager
-            </span>
-          </Link>
-          <div className="hidden md:flex items-center gap-4">
-            <Link to="/glossary" className="text-slate-400 hover:text-white text-sm transition-colors">Legal Terms</Link>
-            <Link to="/faq" className="text-slate-400 hover:text-white text-sm transition-colors">FAQ</Link>
-            <Link to="/forms" className="text-slate-400 hover:text-white text-sm transition-colors">Forms</Link>
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-            >
-              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-            <Link to="/">
-              <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800 rounded-lg">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-            </Link>
-          </div>
-          <button className="md:hidden p-2 text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-slate-800 border-t border-slate-700 px-6 py-4 space-y-3">
-            <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
-            <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
-            <Link to="/forms" className="block py-2 text-slate-300 hover:text-white">Forms</Link>
-            <Link to="/" className="block py-2 text-amber-500 hover:text-amber-400">Back to Home</Link>
-          </div>
-        )}
-      </header>
+    <div className="min-h-screen bg-background" style={{ fontFamily: 'Manrope, sans-serif' }} data-testid="statistics-page">
+      {/* Shared Page Header with Dark Mode */}
+      <PageHeader showBackButton={true} backTo="/" />
 
       {/* Hero Section */}
-      <section className="relative py-16 px-6 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920" 
-            alt=""
-            className="w-full h-full object-cover opacity-5 dark:opacity-[0.02]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
-        </div>
-        
+      <section className="relative py-12 sm:py-16 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-slate-900 to-slate-800" data-testid="stats-hero">
         <div className="max-w-6xl mx-auto relative z-10 text-center">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/30">
-              <BarChart3 className="w-8 h-8 text-white" />
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-xl shadow-amber-500/30">
+              <BarChart3 className="w-10 h-10 text-white" />
             </div>
           </div>
-          <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Analytics</p>
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
-            Case Statistics Dashboard
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }} data-testid="stats-page-title">
+            Case Statistics
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Anonymised insights from cases managed through our platform. Understanding patterns can help inform your appeal strategy.
+          <p className="text-slate-300 text-lg sm:text-xl max-w-2xl mx-auto">
+            Real insights from cases managed through our platform
           </p>
         </div>
       </section>
 
-      {/* Stats Content */}
-      <main className="max-w-6xl mx-auto px-6 pb-16">
-        {/* Overview Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-10">
-          <Card className="bg-card border-border shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-6 text-center">
-              <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Gavel className="w-7 h-7 text-blue-600 dark:text-blue-400" />
-              </div>
-              <p className="text-3xl font-bold text-foreground">{stats?.overview?.total_cases || 0}</p>
-              <p className="text-sm text-muted-foreground mt-1">Total Cases</p>
-            </CardContent>
-          </Card>
+      {/* Main Stats Content */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
+        
+        {/* VITAL STATISTICS - Big Numbers Section */}
+        <section className="mb-12" data-testid="vital-stats-section">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Platform Overview
+          </h2>
           
-          <Card className="bg-card border-border shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-6 text-center">
-              <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <FileText className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {/* Total Cases - BIG */}
+            <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-6 sm:p-8 text-center shadow-xl" data-testid="stat-total-cases">
+              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Gavel className="w-8 h-8 text-white" />
               </div>
-              <p className="text-3xl font-bold text-foreground">{stats?.overview?.total_documents || 0}</p>
-              <p className="text-sm text-muted-foreground mt-1">Documents Uploaded</p>
-            </CardContent>
-          </Card>
+              <p className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-2">
+                {stats?.overview?.total_cases || 0}
+              </p>
+              <p className="text-blue-200 text-base sm:text-lg font-medium">Total Cases</p>
+            </div>
+            
+            {/* Documents Uploaded - BIG */}
+            <div className="bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-2xl p-6 sm:p-8 text-center shadow-xl" data-testid="stat-total-documents">
+              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <FileText className="w-8 h-8 text-white" />
+              </div>
+              <p className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-2">
+                {stats?.overview?.total_documents || 0}
+              </p>
+              <p className="text-emerald-200 text-base sm:text-lg font-medium">Documents</p>
+            </div>
+            
+            {/* Reports Generated - BIG */}
+            <div className="bg-gradient-to-br from-amber-600 to-amber-800 rounded-2xl p-6 sm:p-8 text-center shadow-xl" data-testid="stat-total-reports">
+              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="w-8 h-8 text-white" />
+              </div>
+              <p className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-2">
+                {stats?.overview?.total_reports || 0}
+              </p>
+              <p className="text-amber-200 text-base sm:text-lg font-medium">Reports</p>
+            </div>
+            
+            {/* Grounds Identified - BIG */}
+            <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl p-6 sm:p-8 text-center shadow-xl" data-testid="stat-total-grounds">
+              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-white" />
+              </div>
+              <p className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-2">
+                {stats?.overview?.total_grounds_identified || 0}
+              </p>
+              <p className="text-purple-200 text-base sm:text-lg font-medium">Grounds Found</p>
+            </div>
+          </div>
+        </section>
+
+        {/* KEY INSIGHTS - Prominent Section */}
+        {stats?.insights && (stats.overview?.total_cases > 0) && (
+          <section className="mb-12" data-testid="key-insights-section">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Key Insights
+            </h2>
+            
+            <div className="grid sm:grid-cols-3 gap-4 sm:gap-6">
+              <div className="bg-card border-2 border-amber-200 dark:border-amber-800 rounded-2xl p-6 text-center" data-testid="insight-offence">
+                <div className="w-14 h-14 bg-amber-100 dark:bg-amber-900/40 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <AlertTriangle className="w-7 h-7 text-amber-600 dark:text-amber-400" />
+                </div>
+                <p className="text-amber-600 dark:text-amber-400 text-sm font-semibold uppercase tracking-wide mb-2">Most Common Offence</p>
+                <p className="text-xl sm:text-2xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  {stats.insights.most_common_offence}
+                </p>
+              </div>
+              
+              <div className="bg-card border-2 border-purple-200 dark:border-purple-800 rounded-2xl p-6 text-center" data-testid="insight-ground">
+                <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/40 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Target className="w-7 h-7 text-purple-600 dark:text-purple-400" />
+                </div>
+                <p className="text-purple-600 dark:text-purple-400 text-sm font-semibold uppercase tracking-wide mb-2">Top Appeal Ground</p>
+                <p className="text-xl sm:text-2xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  {stats.insights.most_common_ground}
+                </p>
+              </div>
+              
+              <div className="bg-card border-2 border-blue-200 dark:border-blue-800 rounded-2xl p-6 text-center" data-testid="insight-state">
+                <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/40 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <MapPin className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+                </div>
+                <p className="text-blue-600 dark:text-blue-400 text-sm font-semibold uppercase tracking-wide mb-2">Busiest State</p>
+                <p className="text-xl sm:text-2xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  {stats.insights.busiest_state}
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* GROUND STRENGTH DISTRIBUTION - Visual */}
+        <section className="mb-12" data-testid="ground-strength-section">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Ground Strength Distribution
+          </h2>
           
-          <Card className="bg-card border-border shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-6 text-center">
-              <div className="w-14 h-14 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="w-7 h-7 text-amber-600 dark:text-amber-400" />
+          {stats?.grounds_by_strength?.length > 0 ? (
+            <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
+              <div className="flex flex-wrap justify-center gap-6 sm:gap-10">
+                {stats.grounds_by_strength.map((item, index) => (
+                  <div key={index} className="text-center" data-testid={`strength-${item.strength.toLowerCase()}`}>
+                    <div className={`w-24 h-24 sm:w-28 sm:h-28 ${getStrengthColor(item.strength)} rounded-2xl flex items-center justify-center mb-4 shadow-xl mx-auto`}>
+                      <span className="text-3xl sm:text-4xl font-bold text-white">{item.count}</span>
+                    </div>
+                    <p className="text-lg sm:text-xl font-bold text-foreground">{item.strength}</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {item.strength === 'Strong' ? 'High success likelihood' : 
+                       item.strength === 'Moderate' ? 'Requires strengthening' : 'Needs more evidence'}
+                    </p>
+                  </div>
+                ))}
               </div>
-              <p className="text-3xl font-bold text-foreground">{stats?.overview?.total_reports || 0}</p>
-              <p className="text-sm text-muted-foreground mt-1">Reports Generated</p>
-            </CardContent>
-          </Card>
+            </div>
+          ) : (
+            <div className="bg-card border border-border rounded-2xl p-8 text-center">
+              <Shield className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+              <p className="text-muted-foreground">No ground strength data available yet</p>
+            </div>
+          )}
+        </section>
+
+        {/* BREAKDOWN CHARTS */}
+        <section className="mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Detailed Breakdown
+          </h2>
           
-          <Card className="bg-card border-border shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-6 text-center">
-              <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-7 h-7 text-purple-600 dark:text-purple-400" />
+          <div className="grid lg:grid-cols-2 gap-6">
+            {/* Cases by Offence Type */}
+            <div className="bg-card border border-border rounded-2xl overflow-hidden" data-testid="offence-breakdown">
+              <div className="bg-amber-50 dark:bg-amber-900/20 border-b border-amber-100 dark:border-amber-800 px-6 py-4">
+                <h3 className="text-xl font-bold text-foreground flex items-center gap-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  <AlertTriangle className="w-6 h-6 text-amber-600" />
+                  Cases by Offence Type
+                </h3>
               </div>
-              <p className="text-3xl font-bold text-foreground">{stats?.overview?.total_grounds_identified || 0}</p>
-              <p className="text-sm text-muted-foreground mt-1">Grounds Identified</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Charts Section */}
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-10">
-          {/* Cases by Offence Type */}
-          <Card className="bg-card border-border shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                  <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                </div>
-                Cases by Offence Type
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {stats?.cases_by_offence?.length > 0 ? (
-                <div className="space-y-3">
-                  {stats.cases_by_offence.slice(0, 8).map((item, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <div className="w-28 text-sm text-muted-foreground truncate">{item.category}</div>
-                      <div className="flex-1 bg-muted rounded-full h-7 overflow-hidden">
-                        <div 
-                          className={`h-full ${getOffenceColor(item.key)} rounded-full flex items-center justify-end pr-3 transition-all duration-500`}
-                          style={{ width: `${Math.max((item.count / maxOffenceCount) * 100, 15)}%` }}
-                        >
-                          <span className="text-xs font-semibold text-white">{item.count}</span>
+              <div className="p-6">
+                {stats?.cases_by_offence?.length > 0 ? (
+                  <div className="space-y-4">
+                    {stats.cases_by_offence.slice(0, 8).map((item, index) => (
+                      <div key={index} className="flex items-center gap-4">
+                        <div className="w-32 sm:w-40 text-sm font-medium text-foreground truncate">{item.category}</div>
+                        <div className="flex-1 bg-muted rounded-full h-8 overflow-hidden">
+                          <div 
+                            className={`h-full ${getOffenceColor(item.key)} rounded-full flex items-center justify-end pr-4 transition-all duration-500`}
+                            style={{ width: `${Math.max((item.count / maxOffenceCount) * 100, 20)}%` }}
+                          >
+                            <span className="text-sm font-bold text-white">{item.count}</span>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center mx-auto mb-3">
-                    <BarChart3 className="w-6 h-6 text-muted-foreground" />
-                  </div>
-                  <p className="text-muted-foreground">No data available yet</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Cases by State */}
-          <Card className="bg-card border-border shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                  <MapPin className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                </div>
-                Cases by State
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {stats?.cases_by_state?.length > 0 ? (
-                <div className="space-y-3">
-                  {stats.cases_by_state.map((item, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <div className="w-36 text-sm text-muted-foreground truncate">{item.state}</div>
-                      <div className="flex-1 bg-muted rounded-full h-7 overflow-hidden">
-                        <div 
-                          className={`h-full ${getStateColor(item.key)} rounded-full flex items-center justify-end pr-3 transition-all duration-500`}
-                          style={{ width: `${Math.max((item.count / maxStateCount) * 100, 15)}%` }}
-                        >
-                          <span className="text-xs font-semibold text-white">{item.count}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center mx-auto mb-3">
-                    <MapPin className="w-6 h-6 text-muted-foreground" />
-                  </div>
-                  <p className="text-muted-foreground">No data available yet</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Grounds Analysis */}
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-10">
-          {/* Grounds by Type */}
-          <Card className="bg-card border-border shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                </div>
-                Most Common Appeal Grounds
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {stats?.grounds_by_type?.length > 0 ? (
-                <div className="space-y-2">
-                  {stats.grounds_by_type.slice(0, 6).map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-xl hover:bg-muted transition-colors">
-                      <span className="text-sm font-medium text-foreground">{item.type}</span>
-                      <span className="text-sm font-bold text-foreground bg-card px-3 py-1 rounded-lg border border-border">
-                        {item.count}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center mx-auto mb-3">
-                    <Shield className="w-6 h-6 text-muted-foreground" />
-                  </div>
-                  <p className="text-muted-foreground">No data available yet</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Grounds by Strength */}
-          <Card className="bg-card border-border shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                  <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                </div>
-                Ground Strength Distribution
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {stats?.grounds_by_strength?.length > 0 ? (
-                <div className="flex flex-col items-center justify-center py-6">
-                  <div className="flex gap-6 mb-6">
-                    {stats.grounds_by_strength.map((item, index) => (
-                      <div key={index} className="text-center">
-                        <div className={`w-20 h-20 ${getStrengthColor(item.strength)} rounded-2xl flex items-center justify-center mb-3 shadow-lg`}>
-                          <span className="text-2xl font-bold text-white">{item.count}</span>
-                        </div>
-                        <p className="text-sm font-medium text-foreground">{item.strength}</p>
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground text-center">
-                    Strong grounds have the highest likelihood of success on appeal
-                  </p>
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center mx-auto mb-3">
-                    <TrendingUp className="w-6 h-6 text-muted-foreground" />
+                ) : (
+                  <div className="text-center py-8">
+                    <BarChart3 className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+                    <p className="text-muted-foreground">No offence data available yet</p>
                   </div>
-                  <p className="text-muted-foreground">No data available yet</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+                )}
+              </div>
+            </div>
 
-        {/* Key Insights */}
-        {stats?.insights && (stats.overview?.total_cases > 0) && (
-          <Card className="bg-gradient-to-r from-slate-900 to-indigo-950 border-0 overflow-hidden">
-            <CardContent className="p-8 relative">
-              <div className="absolute inset-0 opacity-10">
-                <img 
-                  src="https://images.unsplash.com/photo-1589578527966-fdac0f44566c?crop=entropy&cs=srgb&fm=jpg&q=85&w=800" 
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="relative z-10">
-                <h3 className="text-2xl font-bold text-white mb-8 text-center" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                  Key Insights
+            {/* Cases by State */}
+            <div className="bg-card border border-border rounded-2xl overflow-hidden" data-testid="state-breakdown">
+              <div className="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-800 px-6 py-4">
+                <h3 className="text-xl font-bold text-foreground flex items-center gap-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  <MapPin className="w-6 h-6 text-blue-600" />
+                  Cases by State
                 </h3>
-                <div className="grid md:grid-cols-3 gap-8 text-center">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                    <p className="text-amber-400 text-sm font-semibold mb-2">Most Common Offence</p>
-                    <p className="text-white text-xl font-bold">{stats.insights.most_common_offence}</p>
+              </div>
+              <div className="p-6">
+                {stats?.cases_by_state?.length > 0 ? (
+                  <div className="space-y-4">
+                    {stats.cases_by_state.map((item, index) => (
+                      <div key={index} className="flex items-center gap-4">
+                        <div className="w-40 text-sm font-medium text-foreground truncate">{item.state}</div>
+                        <div className="flex-1 bg-muted rounded-full h-8 overflow-hidden">
+                          <div 
+                            className={`h-full ${getStateColor(item.key)} rounded-full flex items-center justify-end pr-4 transition-all duration-500`}
+                            style={{ width: `${Math.max((item.count / maxStateCount) * 100, 20)}%` }}
+                          >
+                            <span className="text-sm font-bold text-white">{item.count}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                    <p className="text-amber-400 text-sm font-semibold mb-2">Top Appeal Ground</p>
-                    <p className="text-white text-xl font-bold">{stats.insights.most_common_ground}</p>
+                ) : (
+                  <div className="text-center py-8">
+                    <MapPin className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+                    <p className="text-muted-foreground">No state data available yet</p>
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                    <p className="text-amber-400 text-sm font-semibold mb-2">Busiest State</p>
-                    <p className="text-white text-xl font-bold">{stats.insights.busiest_state}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Most Common Appeal Grounds */}
+        <section className="mb-12" data-testid="common-grounds-section">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Most Common Appeal Grounds
+          </h2>
+          
+          {stats?.grounds_by_type?.length > 0 ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {stats.grounds_by_type.slice(0, 6).map((item, index) => (
+                <div 
+                  key={index} 
+                  className="bg-card border border-border rounded-xl p-5 hover:border-purple-300 dark:hover:border-purple-700 transition-colors"
+                  data-testid={`ground-type-${index}`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/40 rounded-lg flex items-center justify-center">
+                        <CheckCircle className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <span className="text-base font-medium text-foreground">{item.type}</span>
+                    </div>
+                    <span className="text-2xl font-bold text-purple-600 dark:text-purple-400">{item.count}</span>
                   </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+              ))}
+            </div>
+          ) : (
+            <div className="bg-card border border-border rounded-2xl p-8 text-center">
+              <Shield className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+              <p className="text-muted-foreground">No grounds data available yet</p>
+            </div>
+          )}
+        </section>
 
         {/* Disclaimer */}
-        <div className="mt-10 p-5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl">
-          <p className="text-sm text-amber-800 dark:text-amber-200">
-            <strong>Note:</strong> These statistics are based on cases managed through this platform and are provided 
+        <div className="p-5 sm:p-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl" data-testid="stats-disclaimer">
+          <p className="text-sm sm:text-base text-amber-800 dark:text-amber-200">
+            <strong>Important:</strong> These statistics are based on cases managed through this platform and are provided 
             for informational purposes only. They do not represent official court statistics or predict appeal outcomes. 
             Every case is unique and should be assessed on its own merits by qualified legal professionals.
           </p>
@@ -395,16 +353,16 @@ const Statistics = () => {
       </main>
 
       {/* Footer CTA */}
-      <section className="bg-slate-900 dark:bg-slate-950 px-6 py-12 border-t border-slate-800">
+      <section className="bg-slate-900 dark:bg-slate-950 px-4 sm:px-6 py-12 border-t border-slate-800">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
             Ready to Analyse Your Case?
           </h2>
-          <p className="text-slate-400 mb-8">
+          <p className="text-slate-400 mb-8 text-lg">
             Let our AI help identify potential grounds for appeal in your case.
           </p>
           <Link to="/">
-            <Button className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-8 py-5 font-semibold shadow-lg shadow-amber-600/20">
+            <Button className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-8 py-5 text-lg font-semibold shadow-lg shadow-amber-600/20">
               Get Started Free
             </Button>
           </Link>

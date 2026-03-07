@@ -5,6 +5,7 @@ import { Toaster } from "./components/ui/sonner";
 import InstallPrompt from "./components/InstallPrompt";
 import TermsAcceptance from "./components/TermsAcceptance";
 import { FastScrollTop } from "./components/FastScrollTop";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Pages
 import LandingPage from "./pages/LandingPage";
@@ -320,6 +321,7 @@ function App() {
     <ThemeProvider>
       <div className="App">
         <BrowserRouter>
+          <ScrollToTop />
           <AppRouter />
           <FastScrollTop />
           <Toaster position="top-right" richColors />
