@@ -1,13 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-heading: 'Crimson Pro', serif;
-  --font-body: 'Manrope', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
   
   /* Premium Theme Colors - Black, Gold, White, Blue */
   --deep-black: #0a0a0a;
@@ -21,6 +20,7 @@
 body {
   margin: 0;
   font-family: var(--font-body);
+  font-size: 18px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -28,16 +28,38 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
-h1 { font-size: clamp(2rem, 3.6vw, 4rem); line-height: 1.08; }
-h2 { font-size: clamp(1.45rem, 2.3vw, 2.45rem); line-height: 1.2; }
-h3 { font-size: clamp(1.15rem, 1.7vw, 1.45rem); line-height: 1.25; }
-p, li { line-height: 1.65; }
+/* EXTRA LARGE main headings */
+h1 { 
+  font-size: clamp(2.5rem, 5vw, 4.5rem); 
+  line-height: 1.1; 
+  font-weight: 800;
+}
 
-code, .mono {
-  font-family: var(--font-mono);
+/* Slightly smaller sub headings */
+h2 { 
+  font-size: clamp(1.75rem, 3.5vw, 3rem); 
+  line-height: 1.15; 
+  font-weight: 700;
+}
+
+h3 { 
+  font-size: clamp(1.35rem, 2.5vw, 2rem); 
+  line-height: 1.2; 
+  font-weight: 600;
+}
+
+/* Larger, more readable body text */
+p, li { 
+  font-size: 1.125rem;
+  line-height: 1.7; 
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
 }
 
 @layer base {

@@ -132,57 +132,57 @@ const LandingPage = () => {
       {/* ============================================ */}
       {/* THE REALITY - Clean, Impactful Statistics */}
       {/* ============================================ */}
-      <section className="py-16 px-6 bg-slate-950" data-testid="landing-statistics-section">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="py-20 px-6 bg-slate-950" data-testid="landing-statistics-section">
+        <div className="max-w-5xl mx-auto text-center">
           
-          {/* Hook */}
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          {/* Hook - EXTRA LARGE */}
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
             Could You Be Sitting in Prison<br className="hidden sm:block" /> 
             <span className="text-amber-500">With a Valid Appeal?</span>
           </h2>
           
-          {/* The Key Stats - Simple Row */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="bg-slate-900/80 rounded-xl p-5 border border-slate-800">
-              <p className="text-4xl sm:text-5xl font-bold text-amber-500">500K+</p>
-              <p className="text-slate-400 text-xs mt-1">through courts yearly</p>
+          {/* The Key Stats - Larger Numbers */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <div className="bg-slate-900/80 rounded-2xl p-6 border border-slate-800">
+              <p className="text-5xl sm:text-6xl lg:text-7xl font-bold text-amber-500">500K+</p>
+              <p className="text-slate-300 text-base sm:text-lg mt-2">through courts yearly</p>
             </div>
-            <div className="bg-slate-900/80 rounded-xl p-5 border border-slate-800">
-              <p className="text-4xl sm:text-5xl font-bold text-red-500">0.012%</p>
-              <p className="text-slate-400 text-xs mt-1">appeal rate</p>
+            <div className="bg-slate-900/80 rounded-2xl p-6 border border-slate-800">
+              <p className="text-5xl sm:text-6xl lg:text-7xl font-bold text-red-500">0.012%</p>
+              <p className="text-slate-300 text-base sm:text-lg mt-2">appeal rate</p>
             </div>
-            <div className="bg-slate-900/80 rounded-xl p-5 border border-slate-800">
-              <p className="text-4xl sm:text-5xl font-bold text-emerald-500">35%</p>
-              <p className="text-slate-400 text-xs mt-1">of appeals succeed</p>
+            <div className="bg-slate-900/80 rounded-2xl p-6 border border-slate-800">
+              <p className="text-5xl sm:text-6xl lg:text-7xl font-bold text-emerald-500">35%</p>
+              <p className="text-slate-300 text-base sm:text-lg mt-2">of appeals succeed</p>
             </div>
-            <div className="bg-slate-900/80 rounded-xl p-5 border border-slate-800">
-              <p className="text-4xl sm:text-5xl font-bold text-purple-500">28</p>
-              <p className="text-slate-400 text-xs mt-1">days to lodge</p>
+            <div className="bg-slate-900/80 rounded-2xl p-6 border border-slate-800">
+              <p className="text-5xl sm:text-6xl lg:text-7xl font-bold text-purple-500">28</p>
+              <p className="text-slate-300 text-base sm:text-lg mt-2">days to lodge</p>
             </div>
           </div>
 
-          {/* The Scale of the Problem */}
-          <div className="bg-slate-900/60 rounded-xl p-4 border border-slate-800 mb-6 max-w-2xl mx-auto">
-            <p className="text-slate-300 text-sm">
+          {/* The Scale of the Problem - Larger Text */}
+          <div className="bg-slate-900/60 rounded-2xl p-6 border border-slate-800 mb-8 max-w-3xl mx-auto">
+            <p className="text-slate-200 text-lg sm:text-xl leading-relaxed">
               <strong className="text-amber-400">In 2003-04 alone:</strong> Over <strong className="text-white">500,000 Australians</strong> went through the criminal court system. 
               Yet the appeal rate remained at just <strong className="text-red-400">0.012%</strong>. 
-              <span className="text-slate-400">This isn't justice — it's a systemic failure of access.</span>
+              <span className="text-slate-300">This isn't justice — it's a systemic failure of access.</span>
             </p>
           </div>
           
-          {/* The Insight */}
-          <div className="bg-gradient-to-r from-amber-900/30 to-red-900/30 rounded-xl p-6 border border-amber-700/40 mb-8 max-w-3xl mx-auto">
-            <p className="text-white text-lg leading-relaxed">
+          {/* The Insight - Larger */}
+          <div className="bg-gradient-to-r from-amber-900/30 to-red-900/30 rounded-2xl p-8 border border-amber-700/40 mb-10 max-w-4xl mx-auto">
+            <p className="text-white text-xl sm:text-2xl leading-relaxed">
               Only <strong className="text-red-400">0.012%</strong> of convicted Australians appeal — yet <strong className="text-emerald-400">35%</strong> of those who do succeed. 
               That's potentially <strong className="text-amber-400">thousands of people</strong> in prison who could have had their sentence reduced — <em className="text-slate-300">but never knew.</em>
             </p>
           </div>
           
-          {/* CTA */}
+          {/* CTA - Larger */}
           <Button
             onClick={() => setShowAuthModal(true)}
             data-testid="stats-cta-btn"
-            className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-8 py-4 text-lg font-semibold shadow-lg"
+            className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-2xl px-10 py-5 text-xl font-bold shadow-lg"
           >
             Check Your Case Now
           </Button>
@@ -192,7 +192,7 @@ const LandingPage = () => {
       {/* ============================================ */}
       {/* HERO - What This Tool Is */}
       {/* ============================================ */}
-      <section className="relative py-16 md:py-24 px-6 overflow-hidden">
+      <section className="relative py-20 md:py-28 px-6 overflow-hidden">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -204,45 +204,42 @@ const LandingPage = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
         </div>
         
-        <div className="max-w-5xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <div className="text-center lg:text-left">
-              <p className="text-amber-600 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-4">
+              <p className="text-amber-600 dark:text-amber-500 font-bold text-sm uppercase tracking-widest mb-5">
                 All Australian Jurisdictions
               </p>
-              <h1 
-                className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight leading-tight mb-5"
-                style={{ fontFamily: 'Crimson Pro, serif' }}
-              >
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground tracking-tight leading-tight mb-6">
                 Criminal Appeal<br />Research Tool
               </h1>
-              <p className="text-base text-muted-foreground mb-6 max-w-md">
+              <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-lg leading-relaxed">
                 Upload your case documents. Get AI-powered analysis of potential appeal grounds, 
                 comparative sentencing data, and barrister-ready reports.
               </p>
               
-              {/* State Badges - Simplified */}
-              <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-6">
+              {/* State Badges - Larger */}
+              <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-8">
                 {['NSW', 'VIC', 'QLD', 'SA', 'WA', 'TAS', 'NT', 'ACT'].map(state => (
-                  <span key={state} className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2.5 py-1 rounded-md font-medium">{state}</span>
+                  <span key={state} className="text-sm bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-lg font-semibold">{state}</span>
                 ))}
               </div>
               
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+              {/* CTA Buttons - Larger */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Button
                   onClick={() => setShowAuthModal(true)}
                   data-testid="hero-login-btn"
-                  className="bg-amber-600 text-white hover:bg-amber-700 rounded-xl px-6 py-3 text-base font-semibold inline-flex items-center justify-center gap-2"
+                  className="bg-amber-600 text-white hover:bg-amber-700 rounded-xl px-8 py-4 text-lg font-bold inline-flex items-center justify-center gap-2"
                 >
                   Start Your Case
-                  <ChevronRight className="w-5 h-5" />
+                  <ChevronRight className="w-6 h-6" />
                 </Button>
                 <Link to="/how-it-works">
                   <Button
                     variant="outline"
-                    className="border border-slate-300 dark:border-slate-600 text-foreground hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl px-6 py-3 text-base w-full sm:w-auto"
+                    className="border-2 border-slate-300 dark:border-slate-600 text-foreground hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl px-8 py-4 text-lg font-semibold w-full sm:w-auto"
                   >
                     See How It Works
                   </Button>
@@ -251,14 +248,14 @@ const LandingPage = () => {
             </div>
             
             {/* Right - Hero Image */}
-            <div className="relative mt-6 lg:mt-0">
+            <div className="relative mt-8 lg:mt-0">
               <img 
                 src="https://static.prod-images.emergentagent.com/jobs/f60b6a6d-a118-49cd-899d-586e4a8a87a6/images/6fe186d3d7a5b01e3d3c6076c0a6aefc22c07aea5667124e0978d927d9c58335.png" 
                 alt="Legal research desk"
-                className="rounded-2xl shadow-xl w-full object-cover h-[260px] sm:h-[320px] lg:h-[380px] border border-slate-200 dark:border-slate-700"
+                className="rounded-2xl shadow-2xl w-full object-cover h-[280px] sm:h-[350px] lg:h-[420px] border border-slate-200 dark:border-slate-700"
                 loading="eager"
               />
-              <div className="absolute -top-3 -right-3 bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow">
+              <div className="absolute -top-4 -right-4 bg-amber-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg">
                 AI-Powered
               </div>
             </div>
@@ -269,44 +266,44 @@ const LandingPage = () => {
       {/* ============================================ */}
       {/* HOW IT WORKS - 3 Simple Steps */}
       {/* ============================================ */}
-      <section className="py-14 px-6 bg-muted/30">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3" style={{ fontFamily: 'Crimson Pro, serif' }}>
+      <section className="py-20 px-6 bg-muted/30">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
               Three Simple Steps
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-lg sm:text-xl">
               From documents to actionable insights in minutes.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-card border border-border rounded-xl p-6 text-center">
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Upload className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-card border border-border rounded-2xl p-8 text-center">
+              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-5">
+                <Upload className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="font-bold text-foreground mb-2">1. Upload Documents</h3>
-              <p className="text-muted-foreground text-sm">
+              <h3 className="text-xl font-bold text-foreground mb-3">1. Upload Documents</h3>
+              <p className="text-muted-foreground text-base leading-relaxed">
                 Transcripts, evidence, sentencing remarks — we extract the text automatically.
               </p>
             </div>
 
-            <div className="bg-card border border-border rounded-xl p-6 text-center">
-              <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BarChart3 className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+            <div className="bg-card border border-border rounded-2xl p-8 text-center">
+              <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-5">
+                <BarChart3 className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
               </div>
-              <h3 className="font-bold text-foreground mb-2">2. AI Analysis</h3>
-              <p className="text-muted-foreground text-sm">
+              <h3 className="text-xl font-bold text-foreground mb-3">2. AI Analysis</h3>
+              <p className="text-muted-foreground text-base leading-relaxed">
                 Our AI identifies potential grounds for appeal based on Australian law.
               </p>
             </div>
 
-            <div className="bg-card border border-border rounded-xl p-6 text-center">
-              <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FileCheck className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+            <div className="bg-card border border-border rounded-2xl p-8 text-center">
+              <div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mx-auto mb-5">
+                <FileCheck className="w-8 h-8 text-amber-600 dark:text-amber-400" />
               </div>
-              <h3 className="font-bold text-foreground mb-2">3. Get Reports</h3>
-              <p className="text-muted-foreground text-sm">
+              <h3 className="text-xl font-bold text-foreground mb-3">3. Get Reports</h3>
+              <p className="text-muted-foreground text-base leading-relaxed">
                 Detailed reports with case law, sentencing comparisons, and next steps.
               </p>
             </div>
@@ -317,7 +314,7 @@ const LandingPage = () => {
       {/* ============================================ */}
       {/* COMPLETE APP CAPABILITIES - At A Glance */}
       {/* ============================================ */}
-      <section className="py-16 px-6 bg-slate-900 dark:bg-slate-950 relative overflow-hidden">
+      <section className="py-20 px-6 bg-slate-900 dark:bg-slate-950 relative overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -331,12 +328,12 @@ const LandingPage = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-slate-900/95 via-slate-900/90 to-slate-900" />
         </div>
         <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-12">
-            <p className="text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Everything At Your Fingertips</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <div className="text-center mb-14">
+            <p className="text-amber-500 font-bold text-sm uppercase tracking-widest mb-4">Everything At Your Fingertips</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-5">
               Complete Criminal Appeal Platform
             </h2>
-            <p className="text-slate-400 text-lg max-w-3xl mx-auto">
+            <p className="text-slate-300 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">
               From document management to legal research, everything you need to build and understand your appeal — all in one place.
             </p>
           </div>
