@@ -645,6 +645,15 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - Prioritized pending work moved to: `/app/memory/ROADMAP.md`
 
 ## Latest Delivery Note (Mar 2026)
+- **Performance Optimisation Complete (7 Mar 2026)**:
+  - **Reduced context limits** for faster AI response times:
+    - Quick Summary: 8K chars (was 12K), 50 timeline events (was 80)
+    - Full Detailed: 25K chars (was 38K), 120 timeline events (was 220)
+    - Extensive Log: 40K chars (was 56K), 200 timeline events (was 320)
+  - **Faster retry logic**: 2 retries with 1-2 second backoff (was 4 retries with 3-12 second backoff)
+  - **Investigation endpoint**: 12K document context (was 18K), 60 timeline events (was 100)
+  - **Auto-identify endpoint**: 14K document context (was 20K), 70 timeline events (was 120)
+  - **Timeline analysis**: Uses gpt-4o-mini (was gpt-4o) for faster response
 - **Report Visual Presentation OVERHAUL Complete (7 Mar 2026)**:
   - ReportView.jsx completely rewritten to EXACTLY match landing page sample designs
   - Coloured header bands: GREEN for Quick Summary, BLUE gradient for Full Detailed, PURPLE gradient for Extensive Log

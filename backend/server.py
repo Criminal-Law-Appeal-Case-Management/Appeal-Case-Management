@@ -1601,20 +1601,20 @@ IDENTIFIED GROUNDS OF APPEAL:
 Provide a comprehensive analysis identifying gaps, inconsistencies, and appeal-relevant insights."""
 
     last_error = None
-    for attempt in range(3):
+    for attempt in range(2):
         try:
             chat = LlmChat(
                 api_key=emergent_api_key,
                 session_id=f"timeline_analysis_{case_id}_{uuid.uuid4().hex[:8]}",
                 system_message=system_prompt
-            ).with_model("openai", "gpt-4o")
+            ).with_model("openai", "gpt-4o-mini")
             
             response = await chat.send_message(UserMessage(text=user_prompt))
             break
         except Exception as e:
             last_error = e
-            if attempt < 2:
-                await asyncio.sleep(2 ** attempt)
+            if attempt < 1:
+                await asyncio.sleep(1)
     else:
         raise HTTPException(status_code=500, detail=f"AI analysis failed: {str(last_error)}")
     
@@ -2934,8 +2934,8 @@ Supporting Evidence Listed: {', '.join(ground.get('supporting_evidence', []))}
 
     doc_context = build_document_context(
         documents,
-        per_doc_char_limit=2200,
-        total_char_budget=18000,
+        per_doc_char_limit=1500,
+        total_char_budget=12000,
         include_description=False,
         content_heading="CONTENT"
     )
@@ -2948,11 +2948,11 @@ Supporting Evidence Listed: {', '.join(ground.get('supporting_evidence', []))}
             context += f"[Note: {doc_context['omitted_docs']} document(s) omitted from prompt for speed optimisation.]\n"
     
     if timeline:
-        timeline_limit = 100
+        timeline_limit = 60
         timeline_slice = timeline[:timeline_limit]
         context += f"\n=== TIMELINE ({len(timeline_slice)} included / {len(timeline)} total events) ===\n"
         for event in timeline_slice:
-            context += f"- {event.get('event_date')}: {event.get('title')} - {event.get('description', '')[:180]}\n"
+            context += f"- {event.get('event_date')}: {event.get('title')} - {event.get('description', '')[:120]}\n"
         if len(timeline) > timeline_limit:
             context += f"[... {len(timeline) - timeline_limit} additional timeline events omitted for speed ...]\n"
 
@@ -3003,10 +3003,10 @@ REQUIRED ANALYSIS (search the documents above for evidence):
     if not api_key:
         raise HTTPException(status_code=500, detail="AI service not configured")
     
-    # Try up to 4 times with exponential backoff
+    # Try up to 2 times with fast backoff for quick response
     response = None
     last_error = None
-    for attempt in range(4):
+    for attempt in range(2):
         try:
             chat = LlmChat(
                 api_key=api_key,
@@ -3019,9 +3019,9 @@ REQUIRED ANALYSIS (search the documents above for evidence):
         except Exception as e:
             last_error = e
             logger.warning(f"Ground investigation attempt {attempt + 1} failed: {e}")
-            if attempt < 3:
+            if attempt < 1:
                 import asyncio
-                await asyncio.sleep(3 * (2 ** attempt))
+                await asyncio.sleep(1)
     
     if response is None:
         logger.error(f"All ground investigation attempts failed: {last_error}")
@@ -3128,8 +3128,8 @@ CASE DETAILS:
 
     doc_context = build_document_context(
         documents,
-        per_doc_char_limit=2200,
-        total_char_budget=20000,
+        per_doc_char_limit=1500,
+        total_char_budget=14000,
         include_description=True,
         content_heading="CONTENT"
     )
@@ -3153,24 +3153,24 @@ CASE DETAILS:
         context += "NO DOCUMENTS UPLOADED YET - Analysis based on case summary only.\n\n"
 
     if timeline:
-        timeline_limit = 120
+        timeline_limit = 70
         timeline_slice = timeline[:timeline_limit]
         context += f"=== TIMELINE OF EVENTS ({len(timeline_slice)} included / {len(timeline)} total events) ===\n"
         for event in timeline_slice:
             context += f"- {event.get('event_date', 'Unknown date')} [{event.get('event_type', 'event')}]: {event.get('title')}\n"
             if event.get('description'):
-                context += f"  Details: {event.get('description')}\n"
+                context += f"  Details: {event.get('description')[:150]}\n"
         if len(timeline) > timeline_limit:
             context += f"[... {len(timeline) - timeline_limit} additional events omitted for speed ...]\n"
         context += "\n"
 
     if notes:
-        notes_limit = 80
+        notes_limit = 50
         notes_slice = notes[:notes_limit]
         context += f"=== LEGAL NOTES & OBSERVATIONS ({len(notes_slice)} included / {len(notes)} total notes) ===\n"
         for note in notes_slice:
             context += f"- [{note.get('category', 'general')}] {note.get('title')}:\n"
-            context += f"  {note.get('content', '')[:300]}\n"
+            context += f"  {note.get('content', '')[:200]}\n"
         if len(notes) > notes_limit:
             context += f"[... {len(notes) - notes_limit} additional notes omitted for speed ...]\n"
         context += "\n"
@@ -3251,10 +3251,10 @@ BE THOROUGH. Identify ALL potential grounds. The appellant's freedom may depend 
     if not api_key:
         raise HTTPException(status_code=500, detail="AI service not configured")
     
-    # Try up to 4 times with exponential backoff
+    # Try up to 2 times with fast backoff for quick response
     response = None
     last_error = None
-    for attempt in range(4):
+    for attempt in range(2):
         try:
             chat = LlmChat(
                 api_key=api_key,
@@ -3267,10 +3267,9 @@ BE THOROUGH. Identify ALL potential grounds. The appellant's freedom may depend 
         except Exception as e:
             last_error = e
             logger.warning(f"Auto-identify attempt {attempt + 1} failed: {e}")
-            if attempt < 3:
+            if attempt < 1:
                 import asyncio
-                # Exponential backoff: 3, 6, 12 seconds
-                await asyncio.sleep(3 * (2 ** attempt))
+                await asyncio.sleep(1)
     
     if response is None:
         logger.error(f"All auto-identify attempts failed: {last_error}")
@@ -3426,40 +3425,40 @@ async def analyze_case_with_ai(case_id: str, user_id: str, report_type: str, agg
     state = case.get('state', 'nsw')
     state_info = AUSTRALIAN_STATES.get(state, AUSTRALIAN_STATES.get('nsw'))
     
-    # Context limits tuned to keep report generation responsive on large cases
+    # Context limits tuned for FAST report generation - optimised for speed
     context_limits = {
         "quick_summary": {
-            "per_doc_chars": 1600,
-            "total_doc_chars": 12000,
-            "timeline_limit": 80,
-            "notes_limit": 50,
-            "note_chars": 260,
-            "grounds_limit": 40,
-            "ground_desc_chars": 240,
-            "ground_analysis_chars": 280,
+            "per_doc_chars": 1200,
+            "total_doc_chars": 8000,
+            "timeline_limit": 50,
+            "notes_limit": 30,
+            "note_chars": 200,
+            "grounds_limit": 25,
+            "ground_desc_chars": 180,
+            "ground_analysis_chars": 200,
             "ground_deep_chars": 0,
         },
         "full_detailed": {
-            "per_doc_chars": 3800,
-            "total_doc_chars": 38000,
-            "timeline_limit": 220,
-            "notes_limit": 120,
-            "note_chars": 700,
-            "grounds_limit": 110,
-            "ground_desc_chars": 900,
-            "ground_analysis_chars": 700,
+            "per_doc_chars": 2500,
+            "total_doc_chars": 25000,
+            "timeline_limit": 120,
+            "notes_limit": 80,
+            "note_chars": 500,
+            "grounds_limit": 70,
+            "ground_desc_chars": 600,
+            "ground_analysis_chars": 500,
             "ground_deep_chars": 0,
         },
         "extensive_log": {
-            "per_doc_chars": 5200,
-            "total_doc_chars": 56000,
-            "timeline_limit": 320,
-            "notes_limit": 180,
-            "note_chars": 950,
-            "grounds_limit": 150,
-            "ground_desc_chars": 1300,
-            "ground_analysis_chars": 1000,
-            "ground_deep_chars": 1600,
+            "per_doc_chars": 3500,
+            "total_doc_chars": 40000,
+            "timeline_limit": 200,
+            "notes_limit": 120,
+            "note_chars": 700,
+            "grounds_limit": 100,
+            "ground_desc_chars": 900,
+            "ground_analysis_chars": 700,
+            "ground_deep_chars": 1000,
         },
     }
     limits = context_limits.get(report_type, context_limits["quick_summary"])
@@ -3832,15 +3831,15 @@ AGGRESSIVE MODE (USER-REQUESTED):
     if not api_key:
         raise HTTPException(status_code=500, detail="AI service not configured")
     
-    # Try up to 4 times with exponential backoff
+    # Try up to 3 times with faster backoff
     response = None
     last_error = None
-    for attempt in range(4):
+    for attempt in range(3):
         try:
             if report_type == "quick_summary":
                 model_name = "gpt-4o-mini"
             else:
-                model_name = "gpt-4o" if attempt < 3 else "gpt-4o-mini"
+                model_name = "gpt-4o" if attempt < 2 else "gpt-4o-mini"
 
             chat = LlmChat(
                 api_key=api_key,
@@ -3853,10 +3852,10 @@ AGGRESSIVE MODE (USER-REQUESTED):
         except Exception as e:
             last_error = e
             logger.warning(f"Report generation attempt {attempt + 1} failed: {e}")
-            if attempt < 3:
+            if attempt < 2:
                 import asyncio
-                # Exponential backoff: 3, 6, 12 seconds
-                await asyncio.sleep(3 * (2 ** attempt))
+                # Faster backoff: 1, 2 seconds
+                await asyncio.sleep(1 * (2 ** attempt))
     
     if response is None:
         logger.error(f"All report generation attempts failed: {last_error}")
