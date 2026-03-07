@@ -384,9 +384,9 @@ class Payment(BaseModel):
 
 # Payment pricing configuration
 FEATURE_PRICES = {
-    "grounds_of_merit": {"price": 50.00, "name": "Unlock Grounds of Merit Details"},
-    "full_report": {"price": 29.00, "name": "Full Detailed Report"},
-    "extensive_report": {"price": 39.00, "name": "Extensive Log Report"}
+    "grounds_of_merit": {"price": 99.00, "name": "Unlock Grounds of Merit Details"},
+    "full_report": {"price": 100.00, "name": "Full Detailed Report"},
+    "extensive_report": {"price": 150.00, "name": "Extensive Log Report"}
 }
 
 # PayPal Configuration
@@ -3601,7 +3601,7 @@ For each top ground provide:
 ## OVERALL APPEAL OUTLOOK
 Give: Strong / Moderate / Needs Further Development + concise reasoning.
 
-## WHAT THE FULL REPORT ($29) ADDS
+## WHAT THE FULL REPORT ($100) ADDS
 - same-depth premium analysis standard as extensive tier
 - comparative sentencing table with reduction pathways
 - common grounds benchmark table for this offence type
@@ -3616,7 +3616,7 @@ IMPORTANT:
     elif report_type == "full_detailed":
         system_prompt = f"""{base_system}
 {report_guardrails}
-You are generating a PAID Full Detailed Report ($29 AUD). This must be as detailed as the extensive tier, with assertive appellate strategy, professional courtroom framing, and plain-English action notes."""
+You are generating a PAID Full Detailed Report ($100 AUD). This must be as detailed as the extensive tier, with assertive appellate strategy, professional courtroom framing, and plain-English action notes."""
         user_prompt = f"""Create a FULL DETAILED LEGAL ANALYSIS REPORT for this {category_name.lower()} appeal case.
 
 {case_context}

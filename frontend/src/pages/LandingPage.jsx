@@ -194,7 +194,7 @@ const LandingPage = () => {
                   data-testid="hero-login-btn"
                   className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-8 py-4 text-base font-semibold inline-flex items-center justify-center gap-2 shadow-xl shadow-amber-600/30 transition-all hover:scale-105"
                 >
-                  Get Started Free
+                  Start Your Case Analysis
                   <ChevronRight className="w-5 h-5" />
                 </Button>
                 <Link to="/professional-summary">
@@ -882,7 +882,7 @@ const LandingPage = () => {
                       <span className="font-semibold">QUICK SUMMARY REPORT</span>
                       <span className="text-green-200 text-sm">— Sample Preview</span>
                     </div>
-                    <span className="bg-green-500 px-3 py-1 rounded-full text-sm font-bold">FREE</span>
+                    <span className="bg-green-500 px-3 py-1 rounded-full text-sm font-bold">$99 AUD</span>
                   </div>
                   <div className="p-6">
                     <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -987,7 +987,7 @@ const LandingPage = () => {
                       <span className="font-semibold">FULL DETAILED REPORT</span>
                       <span className="text-blue-200 text-sm">— Sample Preview</span>
                     </div>
-                    <span className="bg-blue-500 px-3 py-1 rounded-full text-sm font-bold">$29 AUD</span>
+                    <span className="bg-blue-500 px-3 py-1 rounded-full text-sm font-bold">$100 AUD</span>
                   </div>
                   <div className="p-6">
                     <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -1126,7 +1126,7 @@ const LandingPage = () => {
                       <span className="font-semibold">EXTENSIVE LOG REPORT</span>
                       <span className="text-purple-200 text-sm">— Sample Preview</span>
                     </div>
-                    <span className="bg-purple-500 px-3 py-1 rounded-full text-sm font-bold">$39 AUD</span>
+                    <span className="bg-purple-500 px-3 py-1 rounded-full text-sm font-bold">$150 AUD</span>
                   </div>
                   <div className="p-6">
                     <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" style={{ fontFamily: 'Crimson Pro, serif' }}>
@@ -1532,10 +1532,10 @@ const LandingPage = () => {
           <div className="text-center mb-10">
             <p className="text-amber-700 dark:text-amber-500 font-semibold text-xs uppercase tracking-widest mb-3">Pricing</p>
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Simple, Affordable Access
+              Premium Legal Analysis
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Basic features are free. Pay only for detailed analysis when you need it — a fraction of what lawyers charge.
+              Professional-grade reports at a fraction of legal fees. Create your case for free, then unlock detailed analysis when you're ready.
             </p>
           </div>
 
@@ -1607,10 +1607,10 @@ const LandingPage = () => {
                   </svg>
                   <div className="flex-1">
                     <div className="flex justify-between items-start">
-                      <strong>Unlock Grounds of Merit</strong>
-                      <span className="text-amber-700 dark:text-amber-400 font-bold">$50</span>
+                      <strong>Grounds of Merit Report</strong>
+                      <span className="text-amber-700 dark:text-amber-400 font-bold">$99</span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">See full details of each potential ground, investigate further with legal citations and case law</p>
+                    <p className="text-xs text-muted-foreground mt-1">Full analysis of each potential ground with legal citations, case law references, and investigation guidance</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-2 p-3 bg-white dark:bg-slate-800 rounded-lg border border-amber-200 dark:border-amber-700">
@@ -1619,10 +1619,10 @@ const LandingPage = () => {
                   </svg>
                   <div className="flex-1">
                     <div className="flex justify-between items-start">
-                      <strong>Full Detailed Report</strong>
-                      <span className="text-amber-700 dark:text-amber-400 font-bold">$29</span>
+                      <strong>Full Investigative Report</strong>
+                      <span className="text-amber-700 dark:text-amber-400 font-bold">$100</span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">Comprehensive analysis with recommendations and case law references</p>
+                    <p className="text-xs text-muted-foreground mt-1">Comprehensive analysis with recommendations, AustLII case links, legislation references, and strategic guidance</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-2 p-3 bg-white dark:bg-slate-800 rounded-lg border border-amber-200 dark:border-amber-700">
@@ -1631,10 +1631,10 @@ const LandingPage = () => {
                   </svg>
                   <div className="flex-1">
                     <div className="flex justify-between items-start">
-                      <strong>Extensive Log Report</strong>
-                      <span className="text-amber-700 dark:text-amber-400 font-bold">$39</span>
+                      <strong>Extensive Barrister Report</strong>
+                      <span className="text-amber-700 dark:text-amber-400 font-bold">$150</span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">Complete barrister conference dossier with comparative sentencing tables, offence-specific common grounds matrix, and full relief options report</p>
+                    <p className="text-xs text-muted-foreground mt-1">Complete barrister conference dossier with comparative sentencing tables, 15+ precedent cases with AustLII links, court forms, and full relief options</p>
                   </div>
                 </li>
               </ul>

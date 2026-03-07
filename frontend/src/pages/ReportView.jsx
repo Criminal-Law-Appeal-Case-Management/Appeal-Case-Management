@@ -130,7 +130,7 @@ const MarkdownBlock = ({ text, testId }) => (
 // Report type configurations matching landing page design EXACTLY
 const reportTypeConfig = {
   quick_summary: { 
-    label: "Quick Summary Report", 
+    label: "Grounds of Merit Report", 
     headerBg: "bg-green-600",
     headerText: "text-white",
     accentBg: "bg-green-50 dark:bg-green-900/20",
@@ -138,11 +138,11 @@ const reportTypeConfig = {
     accentBorder: "border-green-200 dark:border-green-700",
     badgeBg: "bg-green-500",
     sectionBorder: "border-green-500",
-    price: "FREE",
+    price: "$99 AUD",
     sectionsTarget: 6,
   },
   full_detailed: { 
-    label: "Full Detailed Report", 
+    label: "Full Investigative Report", 
     headerBg: "bg-gradient-to-r from-slate-900 to-blue-900",
     headerText: "text-white",
     accentBg: "bg-blue-50 dark:bg-blue-900/20",
@@ -150,11 +150,11 @@ const reportTypeConfig = {
     accentBorder: "border-blue-200 dark:border-blue-700",
     badgeBg: "bg-blue-500",
     sectionBorder: "border-blue-500",
-    price: "$29 AUD",
+    price: "$100 AUD",
     sectionsTarget: 10,
   },
   extensive_log: { 
-    label: "Extensive Log Report", 
+    label: "Extensive Barrister Report", 
     headerBg: "bg-gradient-to-r from-purple-900 via-slate-900 to-indigo-900",
     headerText: "text-white",
     accentBg: "bg-purple-50 dark:bg-purple-900/20",
@@ -162,7 +162,7 @@ const reportTypeConfig = {
     accentBorder: "border-purple-200 dark:border-purple-700",
     badgeBg: "bg-purple-500",
     sectionBorder: "border-purple-500",
-    price: "$39 AUD",
+    price: "$150 AUD",
     sectionsTarget: 14,
   },
 };
@@ -503,10 +503,10 @@ const ReportView = () => {
                 </p>
                 <div className="flex justify-center gap-3">
                   <Button className="bg-white text-blue-600 hover:bg-blue-50">
-                    Full Report — $29 AUD
+                    Full Investigative Report — $100 AUD
                   </Button>
                   <Button className="bg-purple-700 text-white hover:bg-purple-800">
-                    Extensive Report — $39 AUD
+                    Extensive Barrister Report — $150 AUD
                   </Button>
                 </div>
               </div>

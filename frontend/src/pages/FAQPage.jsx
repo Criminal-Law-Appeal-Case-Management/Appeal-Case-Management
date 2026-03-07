@@ -108,11 +108,11 @@ const faqs = [
       },
       {
         q: "What's included in a Full Detailed Report?",
-        a: "The Full Detailed Report ($29) includes everything in Quick Summary PLUS: in-depth analysis of each ground, relevant case law citations, applicable legislation references, similar successful appeals, and detailed recommendations for legal professionals."
+        a: "The Full Investigative Report ($100) includes everything in Grounds of Merit PLUS: in-depth analysis of each ground, relevant case law citations with AustLII links, applicable legislation references, similar successful appeals, court form links, and detailed recommendations for legal professionals."
       },
       {
         q: "What's included in an Extensive Log Report?",
-        a: "The Extensive Log ($39) is the most comprehensive option. It includes: complete document index, full timeline with source references, evidence matrix, detailed grounds analysis with supporting documents, procedural checklist, and professional formatting suitable for legal submissions."
+        a: "The Extensive Barrister Report ($150) is the most comprehensive option. It includes: complete document index, full timeline with source references, evidence matrix, detailed grounds analysis with 15+ precedent cases linked to AustLII, court appeal forms, comparative sentencing tables, and professional formatting suitable for barrister conference and legal submissions."
       },
       {
         q: "Can I share reports with my lawyer?",
@@ -132,7 +132,7 @@ const faqs = [
       },
       {
         q: "What are the paid features?",
-        a: "Paid features include: Full Detailed Reports ($29 AUD) which provide comprehensive legal analysis with case citations, Extensive Log Reports ($39 AUD) for exhaustive documentation, and Grounds of Merit Details ($50 AUD) for in-depth analysis of each appeal ground."
+        a: "Paid features include: Grounds of Merit Report ($99 AUD) for detailed analysis of each appeal ground, Full Investigative Report ($100 AUD) with comprehensive legal analysis and AustLII case links, and Extensive Barrister Report ($150 AUD) for complete barrister-ready dossier with comparative sentencing and court forms."
       },
       {
         q: "Is my payment secure?",

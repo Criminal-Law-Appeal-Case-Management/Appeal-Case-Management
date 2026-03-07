@@ -90,6 +90,19 @@
 - Gold primary color, Blue accent color
 - **DO NOT CHANGE THEME**
 
+### 16. Pricing Updated ✅ DONE
+- Grounds of Merit Report: $99 AUD
+- Full Investigative Report: $100 AUD
+- Extensive Barrister Report: $150 AUD
+- Updated in: backend/server.py, LandingPage.jsx, FAQPage.jsx, HowItWorksPage.jsx, HowToUsePage.jsx, ReportView.jsx
+- **DO NOT CHANGE PRICING**
+
+### 17. Landing Page Content Updated ✅ DONE
+- "Start Your Case Analysis" instead of "Get Started Free"
+- Updated pricing section with new prices and descriptions
+- Premium Legal Analysis heading
+- **DO NOT CHANGE LANDING PAGE**
+
 ---
 
 ## STILL PENDING - WHAT ACTUALLY NEEDS WORK:

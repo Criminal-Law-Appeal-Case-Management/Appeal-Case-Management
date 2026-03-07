@@ -130,7 +130,7 @@ const HowToUsePage = () => {
       description: "Create professional reports summarising your case and findings.",
       instructions: [
         "Go to the 'Reports' tab",
-        "Choose your report type: Quick Summary (Free), Full Detailed ($29), or Extensive Log ($39)",
+        "Choose your report type: Grounds of Merit ($99), Full Investigative ($100), or Extensive Barrister ($150)",
         "Reports are generated as PDF documents",
         "Download and share with your lawyer"
       ],
