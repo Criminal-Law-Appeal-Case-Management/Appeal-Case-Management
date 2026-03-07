@@ -645,17 +645,26 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - Prioritized pending work moved to: `/app/memory/ROADMAP.md`
 
 ## Latest Delivery Note (Mar 2026)
-- Landing, report, and barrister-content polish updates (AU spelling pass, dropdown/footer-link alignment, upgraded barrister showcase messaging, and extensive-report barrister dossier requirements) are logged in `CHANGELOG.md` (latest session).
-- Verification status: `iteration_36.json` (feature/content pass) + backend regression iteration 39 (ready).
+- **ReportView Redesign Complete (7 Mar 2026)**: Completely rewrote `/app/frontend/src/pages/ReportView.jsx` to match the landing page mockup design:
+  - Coloured header bands based on report type (green for Quick Summary, blue gradient for Full Detailed, purple gradient for Extensive Log)
+  - Case strength circle prominently displayed in header
+  - Stats row showing sections, documents, grounds, and timeline events
+  - Table of Contents section
+  - Case Overview box with defendant, offence, sentence, court, state, and generated date
+  - Grounds Preview section with strength indicators
+  - Appeal Viability gauge with visual progress bar
+  - Deadline Warning box
+  - Analysis sections with numbered coloured headers
+  - Premium Report Architecture section
+- **Success Stories Redesign (7 Mar 2026)**: Updated `/app/frontend/src/pages/SuccessStories.jsx`:
+  - Changed to 4-column grid on desktop (xl:grid-cols-4)
+  - Strong gradient headers (dark slate) with name and location
+  - More compact text (text-[11px]) for stories
+  - Emerald outcome footer with checkmark
+- Verification status: `iteration_42.json` (frontend visual design verification - 100% pass)
 - AU-English enforcement pass completed across key user-facing strings; endpoint contracts retained where API naming uses legacy `/analyze` path segments.
-- Added cross-page AU-English proofreading sweep (FAQ, Statistics, Compare Cases, Case Detail labels, Form Templates, Landing glossary copy) with regression checks passing.
 - Performance hotfix shipped for lag during grounds investigation/report generation: bounded AI context budgets + faster grounds models + clearer long-run UX feedback.
 - Legal directory and appeal statistics readability overhaul delivered: merged legal resources/contacts flow, state-ordered filtering, clearer advice-help descriptions, and reorganised statistics hierarchy with prominent appeal-rate spotlight.
-- Legal directory further simplified into state-focused default mode with national support included, reducing first-load clutter while retaining all listings.
-- Added dedicated `/how-it-works` page with process flow, report pricing, and a direct Start Case CTA while preserving all existing tutorial content on `/how-to-use`.
-- Tightened overall presentation: success stories moved to compact 3-column card layout with heading-above-comment format, and landing navigation/footer/resource sections updated to reflect merged pages and new flow.
-- Continued polish: glossary now supports compact/expanded reading density (compact default) and landing now includes section-level back-to-top controls for long-scroll usability.
-- Visibility pass completed: landing nav uses direct links (no desktop dropdown dependency), stats critical content is always visible, and headings on stats/how-it-works are centred for clearer flow.
 - Report generation reliability hotfix completed: adaptive model fallback, normalised admin unlock checks, and guaranteed aggressive options section appended at report bottom when enabled.
 - Added historical report embedding on Report View via new `/api/reports/embedded-legacy` endpoint so strongest prior reports are visible in-app and not lost.
 
