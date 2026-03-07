@@ -1,8 +1,30 @@
 # Criminal Appeal AI - Case Management
 
-## PROJECT STATUS: COMPLETE ✅ (7 Mar 2026)
+## PROJECT STATUS: IN PROGRESS (7 Mar 2026)
 
-**All major features implemented and tested.**
+**Google OAuth fix applied - requires user verification**
+
+---
+
+## RECENT FIX (7 Mar 2026): Google OAuth Login Redirect
+
+**Problem:** Users logging in with Google were being redirected to the home page instead of the dashboard.
+
+**Root Cause:** The Kubernetes/Cloudflare proxy was overriding CORS headers with `Access-Control-Allow-Origin: *`, which when combined with `Access-Control-Allow-Credentials: true` causes browsers to reject cookie storage.
+
+**Solution Applied:**
+1. Backend now returns `session_token` in the response body (in addition to setting the cookie)
+2. Frontend stores the token in `localStorage` as a backup
+3. Added axios interceptor to include `Authorization: Bearer <token>` header with all requests
+4. This works regardless of whether cookies function correctly
+
+**Files Modified:**
+- `/app/backend/routers/auth.py` - Added session_token to response
+- `/app/frontend/src/App.js` - Added axios interceptor, updated AuthCallback
+- `/app/frontend/src/components/AuthModal.jsx` - Store token on email/password login
+- `/app/frontend/src/pages/Dashboard.jsx` - Clear localStorage on logout
+
+**Testing Status:** Email/password login verified working. Google OAuth requires user verification.
 
 ---
 

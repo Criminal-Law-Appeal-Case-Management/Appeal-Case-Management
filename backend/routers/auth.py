@@ -107,7 +107,8 @@ async def register_user(request: RegisterRequest, response: Response):
         "name": request.name,
         "picture": None,
         "terms_accepted": False,
-        "is_admin": request.email.lower() in ADMIN_EMAILS
+        "is_admin": request.email.lower() in ADMIN_EMAILS,
+        "session_token": session_token
     }
 
 @router.post("/login")
@@ -155,7 +156,8 @@ async def login_user(request: LoginRequest, response: Response):
         "name": user_doc["name"],
         "picture": user_doc.get("picture"),
         "terms_accepted": user_doc.get("terms_accepted", False),
-        "is_admin": user_doc["email"] in ADMIN_EMAILS
+        "is_admin": user_doc["email"] in ADMIN_EMAILS,
+        "session_token": session_token
     }
 
 @router.post("/session")
@@ -226,7 +228,11 @@ async def create_session(request: Request, response: Response):
     )
     
     user_doc = await db.users.find_one({"user_id": user_id}, {"_id": 0})
-    return user_doc
+    # Include session_token in response for localStorage backup
+    return {
+        **user_doc,
+        "session_token": session_token
+    }
 
 @router.get("/me")
 async def get_me(request: Request):

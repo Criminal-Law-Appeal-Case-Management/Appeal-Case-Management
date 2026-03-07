@@ -118,9 +118,12 @@ const Dashboard = ({ user }) => {
 
   const handleLogout = async () => {
     try {
+      // Clear localStorage token
+      localStorage.removeItem('session_token');
       await axios.post(`${API}/auth/logout`);
       navigate("/", { replace: true });
     } catch (error) {
+      localStorage.removeItem('session_token');
       navigate("/", { replace: true });
     }
   };

@@ -65,8 +65,17 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
       const endpoint = mode === "login" ? "/auth/login" : "/auth/register";
       const response = await axios.post(`${API}${endpoint}`, formData);
       
+      // Store session token in localStorage as backup for cookies
+      if (response.data?.session_token) {
+        localStorage.setItem('session_token', response.data.session_token);
+      }
+      
+      // Remove token from user data before passing to success handler
+      const userData = { ...response.data };
+      delete userData.session_token;
+      
       toast.success(mode === "login" ? "Welcome back!" : "Account created successfully!");
-      onSuccess(response.data);
+      onSuccess(userData);
       onClose();
     } catch (error) {
       const message = error.response?.data?.detail || "Authentication failed. Please try again.";

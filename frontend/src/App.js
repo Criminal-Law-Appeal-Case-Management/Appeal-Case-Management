@@ -45,8 +45,17 @@ export const API = `${BACKEND_URL}/api`;
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 30000; // 30 second timeout for most requests
 
+// Add request interceptor to include auth token from localStorage
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('session_token');
+  if (token && !config.headers.Authorization) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Auth Callback Component
-const AuthCallback = () => {
+const AuthCallback = ({ onComplete }) => {
   const navigate = useNavigate();
   const hasProcessed = useRef(false);
 
@@ -58,22 +67,51 @@ const AuthCallback = () => {
     const processAuth = async () => {
       const hash = window.location.hash;
       const sessionId = new URLSearchParams(hash.substring(1)).get("session_id");
+      console.log("[AuthCallback] Processing auth, session_id:", sessionId ? "present" : "missing");
 
       if (sessionId) {
         try {
+          console.log("[AuthCallback] Calling /api/auth/session...");
           const response = await axios.post(`${API}/auth/session`, { session_id: sessionId });
-          navigate("/dashboard", { state: { user: response.data }, replace: true });
+          console.log("[AuthCallback] Session created successfully, user:", response.data?.email);
+          
+          // Store session token in localStorage as backup for cookies
+          if (response.data?.session_token) {
+            localStorage.setItem('session_token', response.data.session_token);
+            console.log("[AuthCallback] Session token stored in localStorage");
+          }
+          
+          // Store user data (without sensitive token for state)
+          const userData = { ...response.data };
+          delete userData.session_token; // Don't keep token in React state
+          
+          // Small delay to ensure everything is set
+          await new Promise(resolve => setTimeout(resolve, 200));
+          
+          console.log("[AuthCallback] Navigating to dashboard with user state:", userData?.email);
+          
+          // Signal that auth processing is complete
+          if (onComplete) onComplete();
+          
+          // Navigate to dashboard with user data in state
+          navigate("/dashboard", { 
+            state: { user: userData }, 
+            replace: true 
+          });
         } catch (error) {
-          console.error("Auth error:", error);
+          console.error("[AuthCallback] Auth error:", error?.response?.data || error.message);
+          if (onComplete) onComplete();
           navigate("/", { replace: true });
         }
       } else {
+        console.log("[AuthCallback] No session_id found in URL hash");
+        if (onComplete) onComplete();
         navigate("/", { replace: true });
       }
     };
 
     processAuth();
-  }, [navigate]);
+  }, [navigate, onComplete]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -92,25 +130,39 @@ const ProtectedRoute = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const checkUserStatus = async (userData) => {
-    setUser(userData);
-    setIsAuthenticated(true);
-    setTermsAccepted(userData.terms_accepted === true);
-  };
+  const checkedRef = useRef(false);
 
   useEffect(() => {
-    // If user data was passed from AuthCallback, use it directly
-    if (location.state?.user) {
-      checkUserStatus(location.state.user);
-      return;
-    }
-
+    // Prevent double-checking
+    if (checkedRef.current && isAuthenticated !== null) return;
+    
     const checkAuth = async () => {
+      console.log("[ProtectedRoute] Checking auth, location.state:", location.state ? "present" : "missing");
+      
+      // First check if user data was passed via navigation state
+      if (location.state?.user) {
+        console.log("[ProtectedRoute] Using user from navigation state:", location.state.user?.email);
+        checkedRef.current = true;
+        const userData = location.state.user;
+        setUser(userData);
+        setIsAuthenticated(true);
+        setTermsAccepted(userData.terms_accepted === true);
+        return;
+      }
+
+      // Otherwise, verify session via API
+      console.log("[ProtectedRoute] No state, calling /api/auth/me...");
       try {
         const response = await axios.get(`${API}/auth/me`);
-        checkUserStatus(response.data);
+        console.log("[ProtectedRoute] Auth verified:", response.data?.email);
+        checkedRef.current = true;
+        const userData = response.data;
+        setUser(userData);
+        setIsAuthenticated(true);
+        setTermsAccepted(userData.terms_accepted === true);
       } catch (error) {
+        console.error("[ProtectedRoute] Auth check failed:", error?.response?.data || error.message);
+        checkedRef.current = true;
         setIsAuthenticated(false);
         navigate("/", { replace: true });
       }
@@ -151,10 +203,23 @@ const ProtectedRoute = ({ children }) => {
 // App Router Component
 function AppRouter() {
   const location = useLocation();
+  const [authCompleted, setAuthCompleted] = useState(false);
 
-  // Check URL fragment for session_id synchronously during render
-  if (location.hash?.includes("session_id=")) {
-    return <AuthCallback />;
+  // Check for session_id in hash - but only process it once
+  const hasSessionId = location.hash?.includes("session_id=");
+  const shouldShowAuthCallback = hasSessionId && !authCompleted;
+
+  // Handle auth completion - this clears the hash and marks auth as done
+  const handleAuthComplete = () => {
+    setAuthCompleted(true);
+    // Clear the hash from URL after auth completes
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  };
+
+  if (shouldShowAuthCallback) {
+    return <AuthCallback onComplete={handleAuthComplete} />;
   }
 
   return (
