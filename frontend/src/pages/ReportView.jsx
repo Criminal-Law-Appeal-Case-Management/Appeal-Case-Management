@@ -22,6 +22,12 @@ import {
   Clock,
   Target,
   CheckCircle,
+  BookOpen,
+  Users,
+  MapPin,
+  Calendar,
+  FileCheck,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -100,11 +106,11 @@ const MarkdownBlock = ({ text, testId }) => (
       h1: ({ children }) => <h1 className="text-xl font-bold mt-6 mb-3 text-slate-900 dark:text-white" style={{ fontFamily: "Crimson Pro, serif" }}>{children}</h1>,
       h2: ({ children }) => <h2 className="text-lg font-bold mt-5 mb-3 text-slate-900 dark:text-white" style={{ fontFamily: "Crimson Pro, serif" }}>{children}</h2>,
       h3: ({ children }) => <h3 className="text-base font-semibold mt-4 mb-2 text-slate-900 dark:text-white">{children}</h3>,
-      p: ({ children }) => <p className="text-slate-700 dark:text-slate-300 leading-7 mb-3">{children}</p>,
-      ul: ({ children }) => <ul className="list-disc ml-5 mb-3 space-y-1 text-slate-700 dark:text-slate-300">{children}</ul>,
-      ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 space-y-1 text-slate-700 dark:text-slate-300">{children}</ol>,
-      li: ({ children }) => <li className="leading-7">{children}</li>,
-      blockquote: ({ children }) => <blockquote className="border-l-4 border-indigo-300 pl-4 italic text-slate-700 dark:text-slate-300 my-3">{children}</blockquote>,
+      p: ({ children }) => <p className="text-slate-700 dark:text-slate-300 leading-7 mb-3 text-sm">{children}</p>,
+      ul: ({ children }) => <ul className="list-disc ml-5 mb-3 space-y-1 text-slate-700 dark:text-slate-300 text-sm">{children}</ul>,
+      ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 space-y-1 text-slate-700 dark:text-slate-300 text-sm">{children}</ol>,
+      li: ({ children }) => <li className="leading-6">{children}</li>,
+      blockquote: ({ children }) => <blockquote className="border-l-4 border-indigo-300 pl-4 italic text-slate-700 dark:text-slate-300 my-3 text-sm">{children}</blockquote>,
       table: ({ children }) => (
         <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700 my-4" data-testid={`${testId}-table-wrapper`}>
           <table className="min-w-full text-sm">{children}</table>
@@ -114,43 +120,50 @@ const MarkdownBlock = ({ text, testId }) => (
       th: ({ children }) => <th className="px-3 py-2 text-left font-semibold text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700">{children}</th>,
       td: ({ children }) => <td className="px-3 py-2 align-top text-slate-700 dark:text-slate-300 border-b border-slate-100 dark:border-slate-800">{children}</td>,
       code: ({ children }) => <code className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded">{children}</code>,
+      a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{children}</a>,
     }}
   >
     {text}
   </ReactMarkdown>
 );
 
-// Report type configurations matching landing page design
+// Report type configurations matching landing page design EXACTLY
 const reportTypeConfig = {
   quick_summary: { 
-    label: "Quick Summary", 
+    label: "Quick Summary Report", 
     headerBg: "bg-green-600",
     headerText: "text-white",
-    accentBg: "bg-green-100 dark:bg-green-900/30",
+    accentBg: "bg-green-50 dark:bg-green-900/20",
     accentText: "text-green-800 dark:text-green-200",
     accentBorder: "border-green-200 dark:border-green-700",
     badgeBg: "bg-green-500",
-    price: "FREE"
+    sectionBorder: "border-green-500",
+    price: "FREE",
+    sectionsTarget: 6,
   },
   full_detailed: { 
     label: "Full Detailed Report", 
     headerBg: "bg-gradient-to-r from-slate-900 to-blue-900",
     headerText: "text-white",
-    accentBg: "bg-blue-100 dark:bg-blue-900/30",
+    accentBg: "bg-blue-50 dark:bg-blue-900/20",
     accentText: "text-blue-800 dark:text-blue-200",
     accentBorder: "border-blue-200 dark:border-blue-700",
     badgeBg: "bg-blue-500",
-    price: "$29 AUD"
+    sectionBorder: "border-blue-500",
+    price: "$29 AUD",
+    sectionsTarget: 10,
   },
   extensive_log: { 
     label: "Extensive Log Report", 
     headerBg: "bg-gradient-to-r from-purple-900 via-slate-900 to-indigo-900",
     headerText: "text-white",
-    accentBg: "bg-purple-100 dark:bg-purple-900/30",
+    accentBg: "bg-purple-50 dark:bg-purple-900/20",
     accentText: "text-purple-800 dark:text-purple-200",
     accentBorder: "border-purple-200 dark:border-purple-700",
     badgeBg: "bg-purple-500",
-    price: "$39 AUD"
+    sectionBorder: "border-purple-500",
+    price: "$39 AUD",
+    sectionsTarget: 14,
   },
 };
 
@@ -160,7 +173,6 @@ const ReportView = () => {
   const [report, setReport] = useState(null);
   const [caseData, setCaseData] = useState(null);
   const [grounds, setGrounds] = useState([]);
-  const [legacyReports, setLegacyReports] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -177,13 +189,6 @@ const ReportView = () => {
       setReport(reportRes.data);
       setCaseData(caseRes.data);
       setGrounds(groundsRes.data?.grounds || []);
-
-      try {
-        const legacyRes = await axios.get(`${API}/reports/embedded-legacy`);
-        setLegacyReports(legacyRes.data?.reports || []);
-      } catch (legacyError) {
-        setLegacyReports([]);
-      }
     } catch (error) {
       toast.error("Failed to load report");
       navigate(`/cases/${caseId}`);
@@ -276,7 +281,7 @@ const ReportView = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-900">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-900" style={{ fontFamily: "Crimson Pro, serif" }}>
       {/* Fixed Action Header */}
       <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-40 no-print" data-testid="report-header">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3">
@@ -290,6 +295,7 @@ const ReportView = () => {
                 variant="outline"
                 size="sm"
                 onClick={() => navigate(`/cases/${caseId}/reports/${reportId}/barrister`)}
+                className="bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-700"
                 data-testid="barrister-view-btn"
               >
                 <Eye className="w-4 h-4 mr-2" />
@@ -303,7 +309,7 @@ const ReportView = () => {
                 variant="outline"
                 size="sm"
                 onClick={handleExportDOCX}
-                className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/50"
+                className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700"
                 data-testid="export-docx-btn"
               >
                 <FileText className="w-4 h-4 mr-2" />
@@ -319,180 +325,166 @@ const ReportView = () => {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-        {/* Main Report Card - Matches Landing Page Design */}
+        {/* Main Report Card - EXACTLY Like Landing Page */}
         <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden" data-testid="report-content">
           
-          {/* Coloured Header Band - Like Landing Page Mockups */}
+          {/* Report Header - Matching Landing Page Style */}
           <div className={`${config.headerBg} ${config.headerText} p-5 sm:p-6`} data-testid="report-header-band">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-3 h-3 bg-white rounded-full"></div>
-                  <p className="text-xs uppercase tracking-wider opacity-80">{config.label}</p>
-                  {report?.content?.aggressive_mode && (
-                    <span className="bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full font-medium">Aggressive Mode</span>
-                  )}
+                  <p className="text-xs uppercase tracking-wider font-semibold">{config.label}</p>
+                  <span className="opacity-70 text-sm">— Your Report</span>
                 </div>
-                <h1 className="text-xl sm:text-2xl font-bold" style={{ fontFamily: "Crimson Pro, serif" }} data-testid="report-title">
-                  {report?.title || caseData?.title || "Appeal Report"}
+                <h1 className="text-xl sm:text-2xl font-bold mb-1" data-testid="report-title">
+                  {caseData?.title || "Appeal Report"}
                 </h1>
-                <p className="text-sm opacity-80 mt-1">
+                <p className="text-sm opacity-80">
                   {caseData?.court || "Court"} • {(caseData?.state || "NSW").toUpperCase()}
                 </p>
               </div>
               
-              {/* Case Strength Circle - Like Landing Page */}
-              <div className="flex items-center gap-4">
-                <div className="text-right hidden sm:block">
+              {/* Case Strength Score - Like Landing Page */}
+              <div className="text-right">
+                <div className="bg-white/10 rounded-lg p-3 inline-block">
+                  <p className="text-3xl font-bold">{caseStrength}</p>
                   <p className="text-xs opacity-70">Case Strength</p>
-                  <p className="text-sm font-medium">{readiness.label}</p>
-                </div>
-                <div className="w-20 h-20 rounded-full bg-white/10 border-4 border-white/30 flex items-center justify-center" data-testid="case-strength-circle">
-                  <span className="text-2xl font-bold">{caseStrength}</span>
                 </div>
               </div>
             </div>
             
-            {/* Stats Row */}
+            {/* Stats Row - Like Landing Page Extensive Report */}
             <div className="flex flex-wrap gap-3 mt-4 text-xs">
-              <span className="bg-white/20 px-3 py-1.5 rounded-lg">{sections.length} Sections</span>
-              <span className="bg-white/20 px-3 py-1.5 rounded-lg">{documentsCount} Documents</span>
-              <span className="bg-white/20 px-3 py-1.5 rounded-lg">{grounds.length} Grounds</span>
-              <span className="bg-white/20 px-3 py-1.5 rounded-lg">{eventsCount} Timeline Events</span>
+              <span className="bg-white/20 px-3 py-1.5 rounded">{sections.length} Sections</span>
+              <span className="bg-white/20 px-3 py-1.5 rounded">{documentsCount} Documents</span>
+              <span className="bg-white/20 px-3 py-1.5 rounded">{grounds.length} Grounds</span>
+              <span className="bg-white/20 px-3 py-1.5 rounded">{eventsCount} Timeline Events</span>
             </div>
           </div>
 
           {/* Table of Contents - Like Landing Page */}
-          {sections.length > 0 && (
-            <div className="bg-slate-50 dark:bg-slate-700/50 p-4 border-b border-slate-200 dark:border-slate-600" data-testid="report-table-of-contents">
-              <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 uppercase tracking-wide">
-                Contents ({sections.length} Sections)
-              </p>
-              <div className="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-400">
-                {sections.map((section, idx) => (
-                  <button
-                    key={section.id}
-                    onClick={() => scrollToSection(section.id)}
-                    className="hover:text-slate-900 dark:hover:text-white hover:underline"
-                    data-testid={`report-toc-item-${idx + 1}`}
-                  >
-                    {idx + 1}. {section.title}
-                  </button>
-                ))}
-              </div>
+          <div className="bg-slate-50 dark:bg-slate-700/50 p-4 border-b border-slate-200 dark:border-slate-600" data-testid="report-table-of-contents">
+            <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 uppercase tracking-wide">
+              {report?.report_type === 'extensive_log' ? 'COMPLETE TABLE OF CONTENTS' : `CONTENTS (${sections.length} Sections)`}
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-1 text-xs text-slate-600 dark:text-slate-400">
+              {sections.map((section, idx) => (
+                <button
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  className="text-left hover:text-slate-900 dark:hover:text-white hover:underline truncate"
+                  data-testid={`report-toc-item-${idx + 1}`}
+                >
+                  {idx + 1}. {section.title}
+                </button>
+              ))}
             </div>
-          )}
+          </div>
 
           {/* Report Body */}
-          <div className="p-5 sm:p-6 space-y-6" style={{ fontFamily: "Crimson Pro, serif" }}>
+          <div className="p-5 sm:p-6 space-y-6">
             
-            {/* Case Overview Box - Like Landing Page */}
-            <div className={`rounded-xl border ${config.accentBorder} ${config.accentBg} p-5`} data-testid="report-case-overview">
-              <h2 className={`font-bold ${config.accentText} text-sm border-b border-slate-200 dark:border-slate-600 pb-2 mb-3`}>
-                CASE OVERVIEW
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
-                <div>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs">Defendant</p>
-                  <p className="font-semibold text-slate-900 dark:text-white">{caseData?.defendant_name || "N/A"}</p>
-                </div>
-                <div>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs">Offence</p>
-                  <p className="font-semibold text-slate-900 dark:text-white">{offenceLabel}</p>
-                </div>
-                <div>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs">Sentence</p>
-                  <p className="font-semibold text-slate-900 dark:text-white">{sentenceSummary}</p>
-                </div>
-                <div>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs">Court</p>
-                  <p className="font-semibold text-slate-900 dark:text-white">{caseData?.court || "N/A"}</p>
-                </div>
-                <div>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs">State</p>
-                  <p className="font-semibold text-slate-900 dark:text-white">{(caseData?.state || "NSW").toUpperCase()}</p>
-                </div>
-                <div>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs">Generated</p>
-                  <p className="font-semibold text-slate-900 dark:text-white">{formatDate(report?.generated_at)}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Grounds Preview Box */}
-            {grounds.length > 0 && (
-              <div className="rounded-xl border border-amber-200 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20 p-5" data-testid="report-grounds-preview">
-                <h2 className="font-bold text-amber-800 dark:text-amber-200 text-sm mb-3">
-                  GROUNDS IDENTIFIED: {grounds.length}
-                </h2>
-                <div className="space-y-2">
-                  {grounds.slice(0, 3).map((ground, idx) => (
-                    <div key={ground.ground_id || idx} className="flex items-center gap-2 text-sm">
-                      <span className={`w-2.5 h-2.5 rounded-full ${
-                        ground.strength === 'strong' ? 'bg-green-500' : 
-                        ground.strength === 'moderate' ? 'bg-amber-500' : 'bg-slate-400'
-                      }`}></span>
-                      <span className="font-medium text-slate-900 dark:text-white">
-                        {ground.strength === 'strong' ? 'Strong' : ground.strength === 'moderate' ? 'Moderate' : 'Potential'}:
-                      </span>
-                      <span className="text-slate-700 dark:text-slate-300">{ground.title}</span>
-                    </div>
-                  ))}
-                  {grounds.length > 3 && (
-                    <p className="text-xs text-slate-500 italic">+ {grounds.length - 3} more grounds in full analysis...</p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Appeal Viability Gauge */}
-            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5" data-testid="appeal-readiness-gauge">
-              <h2 className="font-bold text-slate-900 dark:text-white text-sm border-b border-slate-200 dark:border-slate-700 pb-2 mb-3">
-                APPEAL VIABILITY
-              </h2>
-              <div className="flex items-center gap-4">
-                <div className={`w-20 h-20 rounded-full flex items-center justify-center ${
-                  caseStrength >= 75 ? 'bg-gradient-to-br from-green-400 to-emerald-600' :
-                  caseStrength >= 50 ? 'bg-gradient-to-br from-amber-400 to-orange-600' :
-                  'bg-gradient-to-br from-rose-400 to-red-600'
-                }`} data-testid="viability-score-circle">
-                  <span className="text-white font-bold text-xl">{caseStrength}%</span>
-                </div>
-                <div className="flex-1">
-                  <p className={`font-semibold text-sm ${readiness.tone}`}>{readiness.label.toUpperCase()} PROSPECTS</p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{readiness.note}</p>
-                  <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full mt-2 overflow-hidden">
-                    <div className={`h-full ${readiness.bar} transition-all duration-700`} style={{ width: `${caseStrength}%` }}></div>
+            {/* Case Overview - Like Landing Page Sample */}
+            <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+              <div className="bg-slate-900 text-white p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-slate-400 uppercase tracking-wider">{config.label}</p>
+                    <h4 className="text-lg font-bold">{caseData?.title || "Case Analysis"}</h4>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-slate-400">Generated</p>
+                    <p className="text-sm">{formatDate(report?.generated_at)}</p>
                   </div>
                 </div>
               </div>
+              
+              <div className="p-5 space-y-4">
+                <div className={`inline-flex items-center gap-2 ${config.accentBg} ${config.accentText} text-xs px-3 py-1 rounded-full font-semibold`}>
+                  Appeal Analysis Report
+                </div>
+                
+                {/* Case Details Grid */}
+                <div>
+                  <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b border-slate-200 dark:border-slate-700 pb-2 mb-3">CASE OVERVIEW</h5>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-xs">
+                    <p><span className="text-slate-500">Defendant:</span> <strong className="text-slate-900 dark:text-white">{caseData?.defendant_name || "N/A"}</strong></p>
+                    <p><span className="text-slate-500">Offence:</span> <strong className="text-slate-900 dark:text-white">{offenceLabel}</strong></p>
+                    <p><span className="text-slate-500">Sentence:</span> <strong className="text-slate-900 dark:text-white">{sentenceSummary}</strong></p>
+                    <p><span className="text-slate-500">Court:</span> <strong className="text-slate-900 dark:text-white">{caseData?.court || "N/A"}</strong></p>
+                    <p><span className="text-slate-500">State:</span> <strong className="text-slate-900 dark:text-white">{(caseData?.state || "NSW").toUpperCase()}</strong></p>
+                    <p><span className="text-slate-500">Documents:</span> <strong className="text-slate-900 dark:text-white">{documentsCount} files analysed</strong></p>
+                  </div>
+                </div>
+
+                {/* Grounds Identified - Like Landing Page */}
+                {grounds.length > 0 && (
+                  <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-700">
+                    <h5 className="font-bold text-amber-800 dark:text-amber-200 text-sm mb-3">GROUNDS IDENTIFIED: {grounds.length}</h5>
+                    <div className="space-y-2 text-xs">
+                      {grounds.map((ground, idx) => (
+                        <p key={ground.ground_id || idx} className="flex items-center gap-2">
+                          <span className={`w-2.5 h-2.5 rounded-full ${
+                            ground.strength === 'strong' ? 'bg-green-500' : 
+                            ground.strength === 'moderate' ? 'bg-amber-500' : 'bg-slate-400'
+                          }`}></span>
+                          <strong className={
+                            ground.strength === 'strong' ? 'text-green-700 dark:text-green-400' : 
+                            ground.strength === 'moderate' ? 'text-amber-700 dark:text-amber-400' : 'text-slate-600'
+                          }>
+                            {ground.strength === 'strong' ? 'Strong:' : ground.strength === 'moderate' ? 'Moderate:' : 'Potential:'}
+                          </strong>
+                          <span className="text-slate-700 dark:text-slate-300">{ground.title}</span>
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Appeal Viability - Like Landing Page */}
+                <div>
+                  <h5 className="font-bold text-slate-900 dark:text-white text-sm border-b border-slate-200 dark:border-slate-700 pb-2 mb-3">APPEAL VIABILITY</h5>
+                  <div className="flex items-center gap-4">
+                    <div className={`w-20 h-20 rounded-full flex items-center justify-center ${
+                      caseStrength >= 75 ? 'bg-gradient-to-br from-green-400 to-emerald-600' :
+                      caseStrength >= 50 ? 'bg-gradient-to-br from-amber-400 to-orange-600' :
+                      'bg-gradient-to-br from-rose-400 to-red-600'
+                    }`}>
+                      <span className="text-white font-bold text-xl">{caseStrength}%</span>
+                    </div>
+                    <div className="text-xs">
+                      <p className={`font-semibold ${readiness.tone}`}>{readiness.label.toUpperCase()} PROSPECTS</p>
+                      <p className="text-slate-600 dark:text-slate-400 mt-1">{readiness.note}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Deadline Warning - Like Landing Page */}
+                <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-3 border border-red-200 dark:border-red-700">
+                  <p className="text-xs text-red-800 dark:text-red-200 font-semibold flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5" />
+                    DEADLINE: Notice of Appeal must be filed within 28 days of sentence
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* Deadline Warning */}
-            <div className="rounded-xl border border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4" data-testid="deadline-warning">
-              <p className="text-sm text-red-800 dark:text-red-200 font-semibold flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5" />
-                DEADLINE: Notice of Appeal must be filed within 28 days of sentence
-              </p>
-            </div>
-
-            {/* Full Analysis Sections */}
+            {/* Full Analysis Sections - Like Landing Page with Proper Formatting */}
             <div className="space-y-6" data-testid="report-full-analysis-section">
               {sections.map((section, idx) => (
                 <article 
                   key={section.id} 
                   id={section.id} 
-                  className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 overflow-hidden"
+                  className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden"
                 >
-                  <div className={`${config.headerBg} px-5 py-3`}>
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-sm">
+                  <div className={`border-b-2 ${config.sectionBorder} px-5 py-3 bg-slate-50 dark:bg-slate-700/50`}>
+                    <h3 className="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2" data-testid={`report-section-heading-${idx + 1}`}>
+                      <span className={`w-6 h-6 rounded ${config.badgeBg} text-white text-xs flex items-center justify-center font-bold`}>
                         {idx + 1}
-                      </div>
-                      <h3 className="text-white font-semibold" data-testid={`report-section-heading-${idx + 1}`}>
-                        {section.title}
-                      </h3>
-                    </div>
+                      </span>
+                      {section.title}
+                    </h3>
                   </div>
                   <div className="p-5" data-testid={`report-section-content-${idx + 1}`}>
                     <MarkdownBlock text={section.content} testId={`report-section-md-${idx + 1}`} />
@@ -501,67 +493,78 @@ const ReportView = () => {
               ))}
             </div>
 
-            {/* Premium Features Box */}
-            <div className="rounded-xl border border-slate-700 bg-slate-900 text-white p-5" data-testid="premium-value-architecture-section">
-              <p className="text-[11px] uppercase tracking-widest text-blue-300 font-semibold mb-2">Premium Report Architecture</p>
-              <h2 className="text-lg font-bold mb-4">Built for strategic legal action — not just plain text</h2>
-              <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
-                <div className="rounded-lg border border-blue-800/60 bg-blue-950/40 p-3">
-                  <p className="text-xs font-semibold text-blue-200 mb-1">Comparative Sentencing</p>
-                  <p className="text-[11px] text-slate-300">Before/after reduction pathways with practical appeal outcomes.</p>
-                </div>
-                <div className="rounded-lg border border-yellow-700/60 bg-yellow-900/30 p-3">
-                  <p className="text-xs font-semibold text-yellow-100 mb-1">Similar Case Search</p>
-                  <p className="text-[11px] text-slate-300">AustLII-ready query packs and jurisdiction filters.</p>
-                </div>
-                <div className="rounded-lg border border-emerald-700/60 bg-emerald-900/30 p-3">
-                  <p className="text-xs font-semibold text-emerald-100 mb-1">How to Argue Grounds</p>
-                  <p className="text-[11px] text-slate-300">Lead propositions and rebuttal directions.</p>
-                </div>
-                <div className="rounded-lg border border-purple-700/60 bg-purple-900/30 p-3">
-                  <p className="text-xs font-semibold text-purple-100 mb-1">Next Steps Playbook</p>
-                  <p className="text-[11px] text-slate-300">72-hour, 7-day, and 28-day execution plan.</p>
+            {/* Upgrade Prompt for Quick Summary */}
+            {report?.report_type === 'quick_summary' && (
+              <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-5 text-white text-center">
+                <p className="font-semibold text-lg mb-2">Want the full analysis?</p>
+                <p className="text-sm opacity-90 mb-4">
+                  Upgrade to see all grounds in detail, similar successful appeals, legislation references, 
+                  sentencing comparisons, and step-by-step appeal filing guide
+                </p>
+                <div className="flex justify-center gap-3">
+                  <Button className="bg-white text-blue-600 hover:bg-blue-50">
+                    Full Report — $29 AUD
+                  </Button>
+                  <Button className="bg-purple-700 text-white hover:bg-purple-800">
+                    Extensive Report — $39 AUD
+                  </Button>
                 </div>
               </div>
-            </div>
-          </div>
+            )}
 
-          {/* Legacy Reports Section */}
-          {legacyReports.length > 0 && (
-            <div className="border-t border-amber-300 dark:border-amber-700 bg-amber-50/50 dark:bg-amber-900/10 p-5 sm:p-6" data-testid="embedded-legacy-reports-section">
-              <div className="mb-4">
-                <p className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold mb-1">Recovered Reports</p>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white" style={{ fontFamily: "Crimson Pro, serif" }}>
-                  Embedded High-Detail Reports From Your History
-                </h3>
+            {/* Premium Features for Paid Reports */}
+            {(report?.report_type === 'full_detailed' || report?.report_type === 'extensive_log') && (
+              <div className="bg-slate-900 rounded-xl p-5 text-white">
+                <p className="text-xs uppercase tracking-widest text-blue-300 font-semibold mb-2">
+                  {report?.report_type === 'extensive_log' ? 'Premium Barrister-Ready Document' : 'Premium Report Features'}
+                </p>
+                <h2 className="text-lg font-bold mb-4">Built for strategic legal action — not just plain text</h2>
+                <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
+                  <div className="rounded-lg border border-blue-800/60 bg-blue-950/40 p-3">
+                    <BookOpen className="w-5 h-5 text-blue-300 mb-2" />
+                    <p className="text-xs font-semibold text-blue-200 mb-1">Similar Cases Analysis</p>
+                    <p className="text-[11px] text-slate-300">AustLII references with outcome summaries and applicable principles.</p>
+                  </div>
+                  <div className="rounded-lg border border-amber-700/60 bg-amber-900/30 p-3">
+                    <Scale className="w-5 h-5 text-amber-300 mb-2" />
+                    <p className="text-xs font-semibold text-amber-100 mb-1">Legislation Links</p>
+                    <p className="text-[11px] text-slate-300">Direct references to applicable Acts and sections for your state.</p>
+                  </div>
+                  <div className="rounded-lg border border-emerald-700/60 bg-emerald-900/30 p-3">
+                    <FileCheck className="w-5 h-5 text-emerald-300 mb-2" />
+                    <p className="text-xs font-semibold text-emerald-100 mb-1">Filing Guide</p>
+                    <p className="text-[11px] text-slate-300">Step-by-step instructions for lodging your appeal correctly.</p>
+                  </div>
+                  <div className="rounded-lg border border-purple-700/60 bg-purple-900/30 p-3">
+                    <TrendingUp className="w-5 h-5 text-purple-300 mb-2" />
+                    <p className="text-xs font-semibold text-purple-100 mb-1">Sentencing Comparison</p>
+                    <p className="text-[11px] text-slate-300">Statistical analysis against comparable cases in your jurisdiction.</p>
+                  </div>
+                </div>
               </div>
-              <div className="space-y-4" data-testid="embedded-legacy-reports-list">
-                {legacyReports.map((legacy, idx) => (
-                  <article key={`${legacy.report_id}-${idx}`} className="rounded-xl border border-amber-200 dark:border-amber-700 bg-white dark:bg-slate-800 p-4">
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                      <div>
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white">{legacy.title || "Recovered Report"}</h4>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Generated: {formatDate(legacy.generated_at)}</p>
-                      </div>
-                      {legacy.case_id && legacy.report_id && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => navigate(`/cases/${legacy.case_id}/reports/${legacy.report_id}`)}
-                          data-testid={`open-embedded-legacy-${legacy.report_id}`}
-                        >
-                          Open Original
-                        </Button>
-                      )}
-                    </div>
-                    <div className="max-h-[300px] overflow-y-auto pr-2 border-t border-slate-100 dark:border-slate-700 pt-3" data-testid={`embedded-legacy-content-${legacy.report_id}`}>
-                      <MarkdownBlock text={legacy.analysis || ""} testId={`embedded-legacy-md-${legacy.report_id}`} />
-                    </div>
-                  </article>
-                ))}
+            )}
+
+            {/* Risk Assessment for Extensive Report */}
+            {report?.report_type === 'extensive_log' && (
+              <div className="bg-gradient-to-r from-purple-100 to-indigo-100 dark:from-purple-900/30 dark:to-indigo-900/30 rounded-lg p-5 border border-purple-200 dark:border-purple-700">
+                <h5 className="font-bold text-purple-900 dark:text-purple-200 text-sm mb-4">RISK ASSESSMENT & STRATEGY SUMMARY</h5>
+                <div className="grid md:grid-cols-3 gap-6 text-center">
+                  <div>
+                    <p className="text-3xl font-bold text-green-600">{caseStrength >= 70 ? '65-75%' : caseStrength >= 50 ? '45-55%' : '25-35%'}</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Estimated Success Probability</p>
+                  </div>
+                  <div>
+                    <p className="text-3xl font-bold text-amber-600">Ground {strongGrounds > 0 ? '1' : '2'}</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Primary Argument to Lead</p>
+                  </div>
+                  <div>
+                    <p className="text-3xl font-bold text-purple-600">4-6 mo</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Estimated Timeline to Hearing</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Footer */}
           <footer className="bg-slate-50 dark:bg-slate-700/50 border-t border-slate-200 dark:border-slate-700 p-5 text-center" data-testid="report-footer">
@@ -570,7 +573,9 @@ const ReportView = () => {
               <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Appeal Case Manager</span>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Full in-browser report — no PDF download required. Prepared for legal review support.
+              {report?.report_type === 'extensive_log' 
+                ? 'This is a complete barrister\'s working document ready to hand to legal counsel'
+                : 'Full in-browser report — no PDF download required. Prepared for legal review support.'}
             </p>
           </footer>
         </div>
