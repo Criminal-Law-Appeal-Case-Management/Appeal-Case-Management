@@ -142,10 +142,10 @@ const LandingPage = () => {
           </h2>
           
           {/* The Key Stats - Simple Row */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div className="bg-slate-900/80 rounded-xl p-5 border border-slate-800">
-              <p className="text-4xl sm:text-5xl font-bold text-amber-500">85K</p>
-              <p className="text-slate-400 text-xs mt-1">convictions yearly</p>
+              <p className="text-4xl sm:text-5xl font-bold text-amber-500">500K+</p>
+              <p className="text-slate-400 text-xs mt-1">through courts yearly</p>
             </div>
             <div className="bg-slate-900/80 rounded-xl p-5 border border-slate-800">
               <p className="text-4xl sm:text-5xl font-bold text-red-500">0.012%</p>
@@ -159,6 +159,15 @@ const LandingPage = () => {
               <p className="text-4xl sm:text-5xl font-bold text-purple-500">28</p>
               <p className="text-slate-400 text-xs mt-1">days to lodge</p>
             </div>
+          </div>
+
+          {/* The Scale of the Problem */}
+          <div className="bg-slate-900/60 rounded-xl p-4 border border-slate-800 mb-6 max-w-2xl mx-auto">
+            <p className="text-slate-300 text-sm">
+              <strong className="text-amber-400">In 2003-04 alone:</strong> Over <strong className="text-white">500,000 Australians</strong> went through the criminal court system. 
+              Yet the appeal rate remained at just <strong className="text-red-400">0.012%</strong>. 
+              <span className="text-slate-400">This isn't justice — it's a systemic failure of access.</span>
+            </p>
           </div>
           
           {/* The Insight */}
