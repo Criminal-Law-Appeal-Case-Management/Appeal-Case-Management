@@ -112,14 +112,17 @@
 - Changed "All This For Free" to "Create Your Account To Get Started"
 - **DO NOT CHANGE**
 
-### 20. Landing Page Statistics Section Enhanced ✅ DONE (7 Mar 2026)
+### 20. Landing Page Cleaned Up & Simplified ✅ DONE (7 Mar 2026)
 - File: `/app/frontend/src/pages/LandingPage.jsx`
-- Added provocative headline: "How Many Innocent People Are Sitting In Prison Right Now?"
-- 4 dramatic stat cards with colour coding (85K+, 95%, 35%, 28 days)
-- "Let's Do The Maths..." calculation breakdown showing 80,750 → 8,075 → 2,800 people per year
-- "Are You One Of Them?" personal hook section
-- Clear CTA: "Find Out If You Have Grounds"
-- **DO NOT CHANGE THIS SECTION**
+- Streamlined statistics section - cleaner headline: "Could You Be Sitting in Prison With a Valid Appeal?"
+- Simplified 4 stat cards (85K, 95%, 35%, 28 days)
+- Single insight paragraph instead of overwhelming maths breakdown
+- Clean "Check Your Case Now" CTA
+- Hero section simplified with less text
+- Added "Three Simple Steps" section (Upload → AI Analysis → Get Reports)
+- Removed redundant content and duplicate sections
+- Flow: Stats hook → Hero → 3 Steps → Features
+- **DO NOT CHANGE THIS STRUCTURE**
 
 ---
 

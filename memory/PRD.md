@@ -26,13 +26,15 @@
 ---
 
 **WHAT WAS DONE THIS SESSION (7 Mar 2026 Latest):**
-1. ✅ **Landing Page Statistics Section ENHANCED** - Added:
-   - Provocative headline: "How Many Innocent People Are Sitting In Prison Right Now?"
-   - 4 dramatic stat cards (85K+, 95%, 35%, 28 days)
-   - "Let's Do The Maths..." calculation breakdown
-   - "Are You One Of Them?" personal hook
-   - Clear CTA button
-2. ✅ Statistics.jsx simplified (removed duplicate national stats now on landing page)
+1. ✅ **Landing Page CLEANED UP & SIMPLIFIED:**
+   - Streamlined stats section: "Could You Be Sitting in Prison With a Valid Appeal?"
+   - Simplified to 4 clean stat cards
+   - Single insight paragraph (not overwhelming maths breakdown)
+   - Hero section with less text, cleaner layout
+   - Added "Three Simple Steps" section
+   - Removed duplicate/redundant content
+   - Better flow: Stats hook → Hero → 3 Steps → Features
+2. ✅ Statistics.jsx simplified (removed duplicate national stats)
 
 **PENDING ITEMS TO VERIFY WITH USER:**
 1. 🟡 Google Login Redirect - fix applied (CORS), awaiting verification
