@@ -14,39 +14,29 @@
 6. ✅ ScrollToTop.jsx - Pages start from top
 7. ✅ Performance optimisation - Faster AI responses
 8. ✅ BarristerView.jsx - Professional presentation
-9. ✅ **LandingPage.jsx Statistics Section** - Enhanced with provocative hook, maths breakdown, and personal CTA (7 Mar 2026)
+9. ✅ **LandingPage.jsx Statistics Section** - 500K+, 0.012%, 35%, 28 days (7 Mar 2026)
+10. ✅ **Theme Enhanced** - gold and royal color palettes in tailwind.config.js
+11. ✅ **Barrister Info** - Section 21 in Extensive Report with bar directory links
 
 **ACTUALLY PENDING:**
-1. 🔴 Full App Theme - black/gold/white/blue palette (user priority)
-2. 🟠 Barrister Info in third report tier
-3. 🟠 Backend refactoring (server.py is monolithic)
+1. 🟠 Backend refactoring (server.py is monolithic - 4600+ lines)
 
 **See /app/memory/DO_NOT_REDO.md for full list**
 
 ---
 
-**WHAT WAS DONE THIS SESSION (7 Mar 2026 Latest):**
-1. ✅ **Landing Page CLEANED UP & SIMPLIFIED:**
-   - Streamlined stats section: "Could You Be Sitting in Prison With a Valid Appeal?"
-   - Simplified to 4 clean stat cards
-   - Single insight paragraph (not overwhelming maths breakdown)
-   - Hero section with less text, cleaner layout
-   - Added "Three Simple Steps" section
-   - Removed duplicate/redundant content
-   - Better flow: Stats hook → Hero → 3 Steps → Features
-2. ✅ Statistics.jsx simplified (removed duplicate national stats)
+**WHAT WAS DONE THIS SESSION (7 Mar 2026):**
+1. ✅ Landing Page cleaned up with 500K+ and 0.012% stats, 2003-04 context
+2. ✅ Theme: Added gold/royal color palettes to tailwind.config.js
+3. ✅ Barrister Info: New Section 21 in Extensive Report ($150) with bar directory links
+4. ✅ Statistics.jsx simplified
 
 **PENDING ITEMS TO VERIFY WITH USER:**
 1. 🟡 Google Login Redirect - fix applied (CORS), awaiting verification
 2. 🟡 Report Generation Lag - optimisations applied, awaiting verification
-3. 🟡 Report Visual Design - markdown rendering fixed, awaiting feedback
-
-**PENDING TASKS (P0):**
-1. 🔴 Full App Theme Update - user wants black/gold/white/blue colour palette
 
 **PENDING TASKS (P1):**
-2. 🟠 Add Barrister Information to third paid report tier
-3. 🟠 Backend Refactoring - server.py is monolithic (4600+ lines)
+1. 🟠 Backend Refactoring - server.py is monolithic (4600+ lines)
 
 **USER IS FRUSTRATED** - has spent $2000 AUD and expects premium quality. Be meticulous.
 

@@ -3722,7 +3722,7 @@ IMPORTANT:
     else:  # extensive_log
         system_prompt = f"""{base_system}
 {report_guardrails}
-You are generating the PREMIUM Extensive Log Report ($39 AUD). This must exceed barrister expectations: highly aggressive strategy, exhaustive legal mapping, and courtroom-ready execution detail."""
+You are generating the PREMIUM Extensive Log Report ($150 AUD). This must exceed barrister expectations: highly aggressive strategy, exhaustive legal mapping, courtroom-ready execution detail, and practical barrister engagement guidance."""
         user_prompt = f"""Create an EXTENSIVE LOG REPORT for this {category_name.lower()} appeal case.
 
 {case_context}
@@ -3842,7 +3842,27 @@ Provide a barrister-ready conference pack containing:
 - Authorities shortlist (primary + fallback)
 - Orders sought: primary order + fallback order
 
-## 21. APPENDIX OF AUTHORITIES + SOURCE REFERENCES
+## 21. FINDING & BRIEFING A BARRISTER (MANDATORY)
+Provide practical guidance on engaging legal representation:
+- What type of barrister to look for (criminal appeal specialists, Senior Counsel vs Junior Counsel)
+- How to find criminal appeal barristers in {state_info.get('name', 'NSW')}:
+  - State Bar Association directory links
+  - Legal Aid referral pathways
+  - Direct brief vs solicitor brief options
+- What to bring to a barrister conference:
+  - Essential documents checklist
+  - Questions to ask at first conference
+  - Fee structure expectations (daily rates, brief fees, disbursements)
+- Red flags when choosing representation
+- Pro bono and reduced fee options if applicable
+- Direct links to barrister directories:
+  - NSW Bar Association: https://www.nswbar.asn.au/find-a-barrister
+  - Victorian Bar: https://www.vicbar.com.au/find-barrister
+  - Queensland Bar: https://www.qldbar.asn.au/barristers/
+  - SA Bar Association: https://www.sabar.org.au/find-a-barrister/
+  - WA Bar Association: https://www.wabar.asn.au/find-a-barrister
+
+## 22. APPENDIX OF AUTHORITIES + SOURCE REFERENCES
 Consolidated list of statutes, sections, precedents, and source anchors.
 
 IMPORTANT:
