@@ -645,6 +645,15 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
 - Prioritized pending work moved to: `/app/memory/ROADMAP.md`
 
 ## Latest Delivery Note (Mar 2026)
+- **UI Improvements Complete (7 Mar 2026)**:
+  - **Scroll to Top on Route Change**: Added `ScrollToTop.jsx` component that scrolls pages to top when navigating between routes
+  - **Shared PageHeader with Dark Mode**: Created `PageHeader.jsx` component with consistent dark mode toggle on all pages (Statistics, Success Stories, FAQ, About, How It Works)
+  - **Statistics Page Redesign**: Complete overhaul with:
+    - Big numbers (text-4xl to text-6xl) in coloured gradient cards
+    - Key Insights section with Most Common Offence, Top Appeal Ground, Busiest State
+    - Ground Strength Distribution with visual squares
+    - Detailed Breakdown sections for Cases by Offence Type and Cases by State
+  - **Success Stories 4-Column Grid**: Updated to show 4 cards per row on desktop with strong gradient headers and compact text
 - **ReportView Redesign Complete (7 Mar 2026)**: Completely rewrote `/app/frontend/src/pages/ReportView.jsx` to match the landing page mockup design:
   - Coloured header bands based on report type (green for Quick Summary, blue gradient for Full Detailed, purple gradient for Extensive Log)
   - Case strength circle prominently displayed in header
@@ -656,17 +665,9 @@ Create an app to sort, store and organise documents, briefs, case notes, and pub
   - Deadline Warning box
   - Analysis sections with numbered coloured headers
   - Premium Report Architecture section
-- **Success Stories Redesign (7 Mar 2026)**: Updated `/app/frontend/src/pages/SuccessStories.jsx`:
-  - Changed to 4-column grid on desktop (xl:grid-cols-4)
-  - Strong gradient headers (dark slate) with name and location
-  - More compact text (text-[11px]) for stories
-  - Emerald outcome footer with checkmark
-- Verification status: `iteration_42.json` (frontend visual design verification - 100% pass)
+- Verification status: `iteration_43.json` (UI improvements - 100% pass)
 - AU-English enforcement pass completed across key user-facing strings; endpoint contracts retained where API naming uses legacy `/analyze` path segments.
 - Performance hotfix shipped for lag during grounds investigation/report generation: bounded AI context budgets + faster grounds models + clearer long-run UX feedback.
-- Legal directory and appeal statistics readability overhaul delivered: merged legal resources/contacts flow, state-ordered filtering, clearer advice-help descriptions, and reorganised statistics hierarchy with prominent appeal-rate spotlight.
-- Report generation reliability hotfix completed: adaptive model fallback, normalised admin unlock checks, and guaranteed aggressive options section appended at report bottom when enabled.
-- Added historical report embedding on Report View via new `/api/reports/embedded-legacy` endpoint so strongest prior reports are visible in-app and not lost.
 
 ## Technical Debt (Current)
 - `server.py` remains monolithic and should be modularized into focused routers/services.
