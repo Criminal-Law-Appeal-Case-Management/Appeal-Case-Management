@@ -1,5 +1,32 @@
 # Criminal Appeal AI - Case Management
 
+## CRITICAL INFO FOR NEXT AGENT (7 Mar 2026)
+
+**WHAT WAS DONE THIS SESSION:**
+1. ✅ ReportView.jsx COMPLETELY REWRITTEN - matches landing page samples (green/blue/purple headers)
+2. ✅ Statistics page REDESIGNED - big numbers, Key Insights, better layout
+3. ✅ Success Stories - now 4 columns with strong headers
+4. ✅ Dark mode toggle added to ALL pages via PageHeader component
+5. ✅ ScrollToTop added - pages start from top on navigation
+6. ✅ Performance optimisation - reduced context limits, faster retry logic
+
+**PENDING TASKS (P0):**
+1. 🔴 About Page Rewrite - user wants more intriguing content
+2. 🔴 Full App Theme Update - user wants black/gold/white/blue colour palette
+
+**PENDING TASKS (P1):**
+3. 🟠 Add Barrister Information to third paid report tier
+4. 🟠 Backend Refactoring - server.py is monolithic (4600+ lines)
+
+**USER IS FRUSTRATED** - has spent $2000 AUD and expects premium quality. Be meticulous.
+
+**TEST CREDENTIALS:** embedcheck_1772801403@example.com / Test1234!
+**ADMIN USER:** djkingy79@gmail.com (uses Google auth)
+
+**See /app/memory/CHANGELOG.md for full session details**
+
+---
+
 ## Original Problem Statement
 Create an app to sort, store and organise documents, briefs, case notes, and public case information for criminal appeals. Features include timeline generation, AI-powered grounds of merit identification, cross-referencing with source material, multiple report types, notes/comments, barrister presentation view, and PDF/DOCX export.
 
