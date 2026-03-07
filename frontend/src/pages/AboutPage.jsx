@@ -10,18 +10,18 @@ const AboutPage = () => {
       <PageHeader showBackButton={true} backTo="/" />
 
       {/* Hero Section - Dramatic Opening */}
-      <section className="relative py-16 sm:py-20 px-6 overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-background">
+      <section className="relative py-16 sm:py-20 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-background">
         <div className="absolute inset-0 z-0 opacity-20">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(251,191,36,0.15),transparent_50%)]"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(14,165,233,0.15),transparent_50%)]"></div>
         </div>
         
         <div className="max-w-4xl mx-auto relative z-10 text-center">
-          <p className="text-sky-500 font-bold text-sm uppercase tracking-widest mb-4">The Story Behind This App</p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
-            I Built What I Wish<br />I'd Had
+          <p className="text-sky-500 font-bold text-xs sm:text-sm uppercase tracking-widest mb-4">The Story Behind This App</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
+            Why I Created This Tool
           </h1>
-          <p className="text-xl sm:text-2xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            From prison cell to purpose. One woman's fight to give others what the system denied her.
+          <p className="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            A personal mission to help others navigate a system that failed me.
           </p>
         </div>
       </section>
@@ -33,7 +33,7 @@ const AboutPage = () => {
             <div className="w-20 h-20 bg-sky-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-sky-600/30">
               <Gavel className="w-10 h-10 text-white" />
             </div>
-            <p className="text-3xl sm:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <p className="text-3xl sm:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
               "No one told me I could appeal."
             </p>
             <p className="text-slate-400 text-lg">
@@ -50,7 +50,7 @@ const AboutPage = () => {
             <div className="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center">
               <Quote className="w-6 h-6 text-sky-600 dark:text-sky-400" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground" style={{ fontFamily: 'Playfair Display, serif' }}>
               My Story
             </h2>
           </div>
@@ -94,7 +94,7 @@ const AboutPage = () => {
                 <CheckCircle className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="text-emerald-800 dark:text-emerald-200 font-bold text-xl" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                <p className="text-emerald-800 dark:text-emerald-200 font-bold text-xl" style={{ fontFamily: 'Playfair Display, serif' }}>
                   8 Years Free
                 </p>
                 <p className="text-emerald-600 dark:text-emerald-400 text-sm">And counting</p>
@@ -107,7 +107,7 @@ const AboutPage = () => {
               every successful appeal I could find. I became obsessed with one question:
             </p>
             
-            <p className="text-2xl font-bold text-emerald-800 dark:text-emerald-200 mt-6 text-center" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            <p className="text-2xl font-bold text-emerald-800 dark:text-emerald-200 mt-6 text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
               "How can I help others avoid what happened to me?"
             </p>
           </div>
@@ -118,7 +118,7 @@ const AboutPage = () => {
       <section className="py-12 px-6 bg-slate-900">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-sky-500 font-semibold text-xs uppercase tracking-widest mb-3">The Mission</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
             This App Is My Answer
           </h2>
           <p className="text-slate-300 text-lg max-w-2xl mx-auto mb-10">
@@ -155,7 +155,7 @@ const AboutPage = () => {
       {/* Who This Is For */}
       <section className="py-12 sm:py-16 px-6">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-10" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-10" style={{ fontFamily: 'Playfair Display, serif' }}>
             Who This Is For
           </h2>
           
@@ -199,7 +199,7 @@ const AboutPage = () => {
               <AlertTriangle className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-sky-900 dark:text-sky-100 mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              <h3 className="text-xl font-bold text-sky-900 dark:text-sky-100 mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
                 Important: This Is Not Legal Advice
               </h3>
               <p className="text-sky-800 dark:text-sky-200 leading-relaxed">
@@ -218,7 +218,7 @@ const AboutPage = () => {
           <div className="w-20 h-20 bg-gradient-to-br from-sky-500 to-sky-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-sky-500/30">
             <Award className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
             This Is My Life's Work
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-8">
@@ -233,7 +233,7 @@ const AboutPage = () => {
       {/* CTA */}
       <section className="bg-slate-900 dark:bg-slate-950 px-6 py-12 border-t border-slate-800">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
             Ready to Find Out What Was Missed?
           </h2>
           <p className="text-slate-400 mb-8 text-lg">

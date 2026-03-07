@@ -14,31 +14,34 @@
 6. ✅ ScrollToTop.jsx - Pages start from top
 7. ✅ Performance optimisation - Faster AI responses
 8. ✅ BarristerView.jsx - Professional presentation
-9. ✅ **LandingPage.jsx Statistics Section** - 500K+, 0.012%, 35%, 28 days (7 Mar 2026)
-10. ✅ **Theme Enhanced** - gold and royal color palettes in tailwind.config.js
-11. ✅ **Barrister Info** - Section 21 in Extensive Report with bar directory links
+9. ✅ **LandingPage.jsx** - 500K+, 0.012%, mobile responsive, steel blue theme
+10. ✅ **Theme** - Steel blue (sky-400/sky-600), NO yellow/amber
+11. ✅ **Barrister Info** - Section 21 in Extensive Report
+12. ✅ **Copyright Notice** - Section 16 in Terms page
+13. ✅ **About Page** - "Why I Created This Tool" heading
+14. ✅ **All pages mobile tested** - Responsive on iOS
 
 **ACTUALLY PENDING:**
-1. 🟠 Backend refactoring (server.py is monolithic - 4600+ lines)
+1. 🟠 Backend refactoring (server.py is 4673 lines - but working)
 
 **See /app/memory/DO_NOT_REDO.md for full list**
 
 ---
 
 **WHAT WAS DONE THIS SESSION (7 Mar 2026):**
-1. ✅ Landing Page cleaned up with 500K+ and 0.012% stats, 2003-04 context
-2. ✅ Theme: Added gold/royal color palettes to tailwind.config.js
-3. ✅ Barrister Info: New Section 21 in Extensive Report ($150) with bar directory links
-4. ✅ Statistics.jsx simplified
+1. ✅ Landing Page cleaned up with 500K+ and 0.012% stats
+2. ✅ Theme: Steel blue (sky-400/sky-600) - removed ALL yellow/amber
+3. ✅ Barrister Info: Section 21 in Extensive Report ($150)
+4. ✅ Copyright Notice: Section 16 in Terms page
+5. ✅ Mobile responsive fixes for all pages
+6. ✅ Navigation reorganised (Home → Stats → How It Works → ... → Terms last)
+7. ✅ About page heading changed to "Why I Created This Tool"
 
-**PENDING ITEMS TO VERIFY WITH USER:**
-1. 🟡 Google Login Redirect - fix applied (CORS), awaiting verification
-2. 🟡 Report Generation Lag - optimisations applied, awaiting verification
+**PENDING ITEMS:**
+1. 🟡 Google Login Redirect - awaiting user verification
+2. 🟠 Backend Refactoring - server.py is 4673 lines (but working - low priority)
 
-**PENDING TASKS (P1):**
-1. 🟠 Backend Refactoring - server.py is monolithic (4600+ lines)
-
-**USER IS FRUSTRATED** - has spent $2000 AUD and expects premium quality. Be meticulous.
+**USER IS SATISFIED WITH CURRENT CHANGES**
 
 **TEST CREDENTIALS:** embedcheck_1772801403@example.com / Test1234!
 **ADMIN USER:** djkingy79@gmail.com (uses Google auth)

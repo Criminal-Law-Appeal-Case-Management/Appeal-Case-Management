@@ -137,13 +137,21 @@
 - Applied to ALL pages via bulk sed replacement
 - Professional legal look - no more rainbow colors
 
-### 23. Copyright Notice Added ✅ DONE (7 Mar 2026)
-- File: `/app/frontend/src/pages/TermsOfService.jsx`
-- Added Section 16: Copyright Notice
-- Full intellectual property protection paragraph
-- AI-generated content licensing terms
-- Contact email for permissions/infringement
-- Footer updated: "Created by Debra King — Glenmore Park, NSW, Australia"
+### 24. About Page Heading Changed ✅ DONE (7 Mar 2026)
+- File: `/app/frontend/src/pages/AboutPage.jsx`
+- Changed from "I Built What I Wish I'd Had" to "Why I Created This Tool"
+- More professional, less dramatic
+- Subheading: "A personal mission to help others navigate a system that failed me."
+
+### 25. All Pages Checked on Mobile ✅ DONE (7 Mar 2026)
+- Landing page: Fixed heading wrap, 2x2 stats grid, responsive padding
+- About page: Working well on mobile
+- Statistics page: 0.012% stat displays correctly
+- FAQ page: Search and categories work on mobile
+- Success Stories: Cards stack properly
+- Terms page: Copyright section visible
+- How It Works: Process steps display correctly
+- All pages now have proper mobile responsiveness
 
 ---
 
