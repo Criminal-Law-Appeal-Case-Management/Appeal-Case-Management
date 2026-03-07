@@ -130,6 +130,105 @@ const LandingPage = () => {
       </div>
 
       {/* ============================================ */}
+      {/* ATTENTION GRABBING STATISTICS - THE REALITY */}
+      {/* ============================================ */}
+      <section className="py-12 px-6 bg-slate-950 border-b border-slate-800" data-testid="landing-statistics-section">
+        <div className="max-w-5xl mx-auto">
+          
+          {/* THE HOOK - Provocative Opening */}
+          <div className="text-center mb-10">
+            <p className="text-red-500 font-bold text-xs uppercase tracking-widest mb-3 animate-pulse">The Uncomfortable Truth</p>
+            <h2 className="text-2xl sm:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              How Many Innocent People Are Sitting In Prison<br className="hidden sm:block" /> 
+              <span className="text-amber-500">Right Now?</span>
+            </h2>
+            <p className="text-slate-400 text-lg max-w-3xl mx-auto">
+              Every year, thousands of Australians are convicted of crimes. Most accept their fate. 
+              But here's what the system doesn't tell you...
+            </p>
+          </div>
+          
+          {/* THE SHOCKING NUMBERS */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="bg-gradient-to-b from-slate-900 to-slate-950 rounded-xl p-6 text-center border border-slate-800 hover:border-amber-600/50 transition-colors">
+              <p className="text-5xl sm:text-6xl font-bold text-amber-500 mb-2">85K+</p>
+              <p className="text-slate-400 text-sm">Criminal convictions per year in Australia</p>
+            </div>
+            <div className="bg-gradient-to-b from-slate-900 to-slate-950 rounded-xl p-6 text-center border border-slate-800 hover:border-red-600/50 transition-colors">
+              <p className="text-5xl sm:text-6xl font-bold text-red-500 mb-2">95%</p>
+              <p className="text-slate-400 text-sm"><strong className="text-red-400">Never appeal</strong> — they don't even try</p>
+            </div>
+            <div className="bg-gradient-to-b from-slate-900 to-slate-950 rounded-xl p-6 text-center border border-slate-800 hover:border-emerald-600/50 transition-colors">
+              <p className="text-5xl sm:text-6xl font-bold text-emerald-500 mb-2">35%</p>
+              <p className="text-slate-400 text-sm">Of appeals that <strong className="text-emerald-400">ARE lodged succeed</strong></p>
+            </div>
+            <div className="bg-gradient-to-b from-slate-900 to-slate-950 rounded-xl p-6 text-center border border-slate-800 hover:border-purple-600/50 transition-colors">
+              <p className="text-5xl sm:text-6xl font-bold text-purple-500 mb-2">28</p>
+              <p className="text-slate-400 text-sm">Days to lodge — <strong className="text-purple-400">clock is ticking</strong></p>
+            </div>
+          </div>
+          
+          {/* THE MATHS - The Realisation */}
+          <div className="bg-gradient-to-r from-red-900/40 via-amber-900/30 to-red-900/40 rounded-2xl p-8 border border-red-700/50 mb-8">
+            <div className="text-center">
+              <h3 className="text-xl font-bold text-white mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Let's Do The Maths...
+              </h3>
+              <div className="space-y-3 text-left max-w-2xl mx-auto">
+                <p className="text-white text-lg flex items-start gap-3">
+                  <span className="text-amber-500 text-2xl leading-none">→</span>
+                  <span><strong className="text-amber-400">85,000</strong> convictions × <strong className="text-red-400">95%</strong> who don't appeal = <strong className="text-red-500">80,750 people</strong> who never tried</span>
+                </p>
+                <p className="text-white text-lg flex items-start gap-3">
+                  <span className="text-amber-500 text-2xl leading-none">→</span>
+                  <span>If just <strong className="text-amber-400">10%</strong> of those had valid grounds = <strong className="text-amber-500">8,075 people</strong></span>
+                </p>
+                <p className="text-white text-lg flex items-start gap-3">
+                  <span className="text-emerald-500 text-2xl leading-none">→</span>
+                  <span>At the <strong className="text-emerald-400">35% success rate</strong> = <strong className="text-emerald-500">~2,800 people</strong> per year</span>
+                </p>
+              </div>
+              <div className="mt-6 pt-6 border-t border-red-700/50">
+                <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                  That's potentially <span className="text-red-400">thousands of Australians</span> sitting in prison
+                </p>
+                <p className="text-lg text-amber-400 mt-2">
+                  who could have had sentences reduced or convictions overturned — 
+                  <em className="text-slate-300"> but they never knew they had a case.</em>
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          {/* THE QUESTION - Personal Hook */}
+          <div className="bg-slate-900 rounded-2xl p-6 border border-amber-600/30 text-center mb-8">
+            <p className="text-amber-500 font-bold text-sm uppercase tracking-wider mb-2">The Question Is...</p>
+            <p className="text-2xl sm:text-3xl font-bold text-white" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Are You One Of Them?
+            </p>
+            <p className="text-slate-400 mt-3 max-w-xl mx-auto">
+              Your lawyer might have missed something. The judge might have made an error. 
+              The sentence might be excessive. <strong className="text-white">But you'll never know unless you check.</strong>
+            </p>
+          </div>
+          
+          {/* CTA */}
+          <div className="text-center">
+            <Button
+              onClick={() => setShowAuthModal(true)}
+              data-testid="stats-cta-btn"
+              className="bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800 rounded-xl px-10 py-5 text-xl font-semibold shadow-xl shadow-amber-600/30 transition-all hover:scale-105"
+            >
+              Find Out If You Have Grounds
+            </Button>
+            <p className="text-slate-500 text-sm mt-4">
+              Upload your case documents. Our AI will analyse them against Australian appeal law.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================ */}
       {/* SECTION 1: HERO */}
       {/* ============================================ */}
       <section className="relative py-20 md:py-28 px-6 overflow-hidden">

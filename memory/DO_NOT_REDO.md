@@ -112,6 +112,15 @@
 - Changed "All This For Free" to "Create Your Account To Get Started"
 - **DO NOT CHANGE**
 
+### 20. Landing Page Statistics Section Enhanced ✅ DONE (7 Mar 2026)
+- File: `/app/frontend/src/pages/LandingPage.jsx`
+- Added provocative headline: "How Many Innocent People Are Sitting In Prison Right Now?"
+- 4 dramatic stat cards with colour coding (85K+, 95%, 35%, 28 days)
+- "Let's Do The Maths..." calculation breakdown showing 80,750 → 8,075 → 2,800 people per year
+- "Are You One Of Them?" personal hook section
+- Clear CTA: "Find Out If You Have Grounds"
+- **DO NOT CHANGE THIS SECTION**
+
 ---
 
 ## STILL PENDING - WHAT ACTUALLY NEEDS WORK:

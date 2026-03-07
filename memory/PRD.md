@@ -14,32 +14,37 @@
 6. ✅ ScrollToTop.jsx - Pages start from top
 7. ✅ Performance optimisation - Faster AI responses
 8. ✅ BarristerView.jsx - Professional presentation
+9. ✅ **LandingPage.jsx Statistics Section** - Enhanced with provocative hook, maths breakdown, and personal CTA (7 Mar 2026)
 
 **ACTUALLY PENDING:**
-1. 🔴 About Page Rewrite - more intriguing content
-2. 🔴 Full App Theme - black/gold/white/blue palette
-3. 🟠 Barrister Info in third report tier
-4. 🟠 Backend refactoring (server.py is monolithic)
+1. 🔴 Full App Theme - black/gold/white/blue palette (user priority)
+2. 🟠 Barrister Info in third report tier
+3. 🟠 Backend refactoring (server.py is monolithic)
 
 **See /app/memory/DO_NOT_REDO.md for full list**
 
 ---
 
-**WHAT WAS DONE THIS SESSION:**
-1. ✅ ReportView.jsx COMPLETELY REWRITTEN - matches landing page samples (green/blue/purple headers)
-2. ✅ Statistics page REDESIGNED - big numbers, Key Insights, better layout
-3. ✅ Success Stories - now 4 columns with strong headers
-4. ✅ Dark mode toggle added to ALL pages via PageHeader component
-5. ✅ ScrollToTop added - pages start from top on navigation
-6. ✅ Performance optimisation - reduced context limits, faster retry logic
+**WHAT WAS DONE THIS SESSION (7 Mar 2026 Latest):**
+1. ✅ **Landing Page Statistics Section ENHANCED** - Added:
+   - Provocative headline: "How Many Innocent People Are Sitting In Prison Right Now?"
+   - 4 dramatic stat cards (85K+, 95%, 35%, 28 days)
+   - "Let's Do The Maths..." calculation breakdown
+   - "Are You One Of Them?" personal hook
+   - Clear CTA button
+2. ✅ Statistics.jsx simplified (removed duplicate national stats now on landing page)
+
+**PENDING ITEMS TO VERIFY WITH USER:**
+1. 🟡 Google Login Redirect - fix applied (CORS), awaiting verification
+2. 🟡 Report Generation Lag - optimisations applied, awaiting verification
+3. 🟡 Report Visual Design - markdown rendering fixed, awaiting feedback
 
 **PENDING TASKS (P0):**
-1. 🔴 About Page Rewrite - user wants more intriguing content
-2. 🔴 Full App Theme Update - user wants black/gold/white/blue colour palette
+1. 🔴 Full App Theme Update - user wants black/gold/white/blue colour palette
 
 **PENDING TASKS (P1):**
-3. 🟠 Add Barrister Information to third paid report tier
-4. 🟠 Backend Refactoring - server.py is monolithic (4600+ lines)
+2. 🟠 Add Barrister Information to third paid report tier
+3. 🟠 Backend Refactoring - server.py is monolithic (4600+ lines)
 
 **USER IS FRUSTRATED** - has spent $2000 AUD and expects premium quality. Be meticulous.
 
