@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { Scale, ArrowLeft, Moon, Sun, Menu, X, Upload, FileText, Clock, BarChart3, CheckCircle, ChevronRight, Search, FileCheck, Presentation, Download, AlertTriangle, Users, Lightbulb, Gavel } from "lucide-react";
+import { Scale, Upload, FileText, Clock, BarChart3, CheckCircle, ChevronRight, Search, FileCheck, Presentation, Download, AlertTriangle, Users, Lightbulb, Gavel } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
-import { useTheme } from "../contexts/ThemeContext";
+import PageHeader from "../components/PageHeader";
 
 const HowToUsePage = () => {
-  const { theme, toggleTheme } = useTheme();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const steps = [
     {
       num: 1,
@@ -154,46 +151,8 @@ const HowToUsePage = () => {
 
   return (
     <div className="min-h-screen bg-background" style={{ fontFamily: 'Manrope, sans-serif' }}>
-      {/* Header */}
-      <header className="bg-slate-900 dark:bg-slate-950 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center">
-              <Scale className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-lg font-semibold text-white tracking-tight hidden sm:block" style={{ fontFamily: 'Crimson Pro, serif' }}>
-              Appeal Case Manager
-            </span>
-          </Link>
-          <div className="hidden md:flex items-center gap-4">
-            <Link to="/glossary" className="text-slate-400 hover:text-white text-sm transition-colors">Legal Terms</Link>
-            <Link to="/legal-resources" className="text-slate-400 hover:text-white text-sm transition-colors">Resources</Link>
-            <Link to="/legal-framework" className="text-slate-400 hover:text-white text-sm transition-colors">Legal Framework</Link>
-            <Link to="/faq" className="text-slate-400 hover:text-white text-sm transition-colors">FAQ</Link>
-            <button onClick={toggleTheme} className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
-              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-            <Link to="/">
-              <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800 rounded-lg">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-            </Link>
-          </div>
-          <button className="md:hidden p-2 text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-slate-800 border-t border-slate-700 px-6 py-4 space-y-3">
-            <Link to="/glossary" className="block py-2 text-slate-300 hover:text-white">Legal Terms</Link>
-            <Link to="/legal-resources" className="block py-2 text-slate-300 hover:text-white">Resources</Link>
-            <Link to="/legal-framework" className="block py-2 text-slate-300 hover:text-white">Legal Framework</Link>
-            <Link to="/faq" className="block py-2 text-slate-300 hover:text-white">FAQ</Link>
-            <Link to="/" className="block py-2 text-amber-500 hover:text-amber-400">Back to Home</Link>
-          </div>
-        )}
-      </header>
+      {/* Shared Page Header */}
+      <PageHeader showBackButton={true} backTo="/" />
 
       {/* Hero */}
       <section className="py-12 px-6 bg-gradient-to-b from-slate-900 to-slate-800 text-white">

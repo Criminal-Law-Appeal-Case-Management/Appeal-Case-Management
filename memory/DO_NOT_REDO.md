@@ -103,6 +103,15 @@
 - Premium Legal Analysis heading
 - **DO NOT CHANGE LANDING PAGE**
 
+### 18. HowToUsePage Updated ✅ DONE
+- Now uses PageHeader component
+- Report prices updated to $99/$100/$150
+- **DO NOT CHANGE**
+
+### 19. Landing Page CTA Fixed ✅ DONE
+- Changed "All This For Free" to "Create Your Account To Get Started"
+- **DO NOT CHANGE**
+
 ---
 
 ## STILL PENDING - WHAT ACTUALLY NEEDS WORK:

@@ -603,10 +603,10 @@ const LandingPage = () => {
           <div className="mt-12 text-center">
             <div className="inline-block bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-8">
               <p className="text-white font-bold text-xl mb-2" style={{ fontFamily: 'Crimson Pro, serif' }}>
-                All This For Free To Get Started
+                Create Your Account To Get Started
               </p>
               <p className="text-slate-400 mb-4">
-                No credit card • No commitment • Pay only for premium AI analysis when you need it
+                No credit card required • Pay only for premium reports when you're ready
               </p>
               <Button
                 onClick={() => setShowAuthModal(true)}
