@@ -278,6 +278,13 @@ const LandingPage = () => {
                   </Button>
                 </Link>
               </div>
+              
+              {/* Legal Professionals Link */}
+              <div className="mt-4 text-center lg:text-left">
+                <Link to="/professional-summary" className="text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 text-sm font-medium underline underline-offset-2">
+                  For Legal Professionals →
+                </Link>
+              </div>
             </div>
             
             {/* Right - Hero Image */}
