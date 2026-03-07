@@ -3672,9 +3672,18 @@ For each case include:
 
 ## 9. STATUTORY + DOCTRINAL FRAMEWORK MAP
 Section-level mapping of all key Acts and appellate principles applicable to this matter.
+Include clickable links to legislation where possible:
+- NSW Legislation: https://legislation.nsw.gov.au/view/html/inforce/current/act-1999-092 (Crimes Act)
+- Commonwealth: https://www.legislation.gov.au/
+- For each Act section mentioned, provide the direct URL if available
 
 ## 10. COURT PATHWAY OPERATIONS PLAYBOOK
 For all relevant court levels provide filing sequence, documents/forms, deadlines, and extension-of-time route.
+Include direct links to downloadable forms:
+- NSW: https://www.supremecourt.justice.nsw.gov.au/Pages/sco2_courtofcriminalappeal/cca_forms.aspx
+- VIC: https://www.supremecourt.vic.gov.au/forms
+- QLD: https://www.courts.qld.gov.au/court-users/forms-and-fees
+For each form mentioned, provide the direct download link where available.
 
 ## 11. AGGRESSIVE SUBMISSIONS BLUEPRINT
 Provide both written and oral submission strategy with argument sequence, authority placement, likely bench questions, and response lines.
@@ -3772,9 +3781,22 @@ For each authority include:
 
 ## 10. STATUTORY + DOCTRINAL MASTER MAP
 Complete section-level map of Acts, appellate principles, and doctrine application in this matter.
+Include clickable links to legislation:
+- NSW: https://legislation.nsw.gov.au/
+- VIC: https://www.legislation.vic.gov.au/
+- QLD: https://www.legislation.qld.gov.au/
+- Commonwealth: https://www.legislation.gov.au/
+For each Act section referenced, provide the direct URL where the user can read the full text.
 
 ## 11. COURT-PATHWAY OPERATIONS GUIDE
 Operational filing playbook across all relevant court levels, including extension-of-time contingencies.
+Include direct links to court forms and filing pages:
+- NSW Court of Criminal Appeal: https://www.supremecourt.justice.nsw.gov.au/Pages/sco2_courtofcriminalappeal/cca_forms.aspx
+- VIC Court of Appeal: https://www.supremecourt.vic.gov.au/forms
+- QLD Court of Appeal: https://www.courts.qld.gov.au/court-users/forms-and-fees
+- SA Supreme Court: https://www.courts.sa.gov.au/going-to-court/forms/
+- WA Supreme Court: https://www.supremecourt.wa.gov.au/F/forms.aspx
+For each required form, provide the exact download link.
 
 ## 12. WRITTEN SUBMISSIONS MASTER OUTLINE
 Argument architecture, authority sequencing, and evidence anchoring for a high-impact written brief.

@@ -60,6 +60,18 @@
 - Comparative Sentencing tables now include case links
 - **DO NOT CHANGE REPORT PROMPTS**
 
+### 11. Legislation & Court Form Links in Reports ✅ DONE
+- Updated report prompts to include links to legislation (NSW, VIC, QLD, Commonwealth)
+- Updated report prompts to include links to court appeal forms
+- **DO NOT CHANGE REPORT PROMPTS**
+
+### 12. PageHeader Applied to All Pages ✅ DONE
+- LegalGlossary.jsx - now uses PageHeader
+- FormTemplates.jsx - now uses PageHeader
+- Logo now shows "Click to go Home" label
+- All navigation works consistently
+- **DO NOT CHANGE PAGEHEADER**
+
 ---
 
 ## STILL PENDING - WHAT ACTUALLY NEEDS WORK:
