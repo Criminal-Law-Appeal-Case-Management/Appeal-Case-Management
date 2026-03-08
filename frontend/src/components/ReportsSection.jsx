@@ -38,7 +38,7 @@ const REPORT_TYPES = [
     value: "full_detailed", 
     label: "Full Detailed Report", 
     description: "Barrister-grade deep dossier with comparative sentencing and full options matrix",
-    price: 29.00,
+    price: 100.00,
     priceId: "full_report",
     isFree: false
   },
@@ -46,7 +46,7 @@ const REPORT_TYPES = [
     value: "extensive_log", 
     label: "Extensive Log Report", 
     description: "Master litigation brief with expanded precedent modelling and hearing script",
-    price: 39.00,
+    price: 150.00,
     priceId: "extensive_report",
     isFree: false
   }
@@ -486,7 +486,7 @@ const ReportsSection = ({
         }}
         onPaymentSuccess={handlePaymentSuccess}
         featureType={pendingReportType === 'extensive_log' ? 'extensive_report' : 'full_report'}
-        price={pendingReportType === 'extensive_log' ? 39.00 : 29.00}
+        price={pendingReportType === 'extensive_log' ? 150.00 : 100.00}
         caseId={caseId}
       />
     </>

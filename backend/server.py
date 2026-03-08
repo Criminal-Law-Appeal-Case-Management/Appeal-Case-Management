@@ -3633,8 +3633,12 @@ MANDATORY GUARDRAILS:
     if report_type == "quick_summary":
         system_prompt = f"""{base_system}
 {report_guardrails}
-You are generating a FREE Quick Summary. Deliver real legal value, then clearly explain what deeper paid reports add."""
+You are generating a FREE Quick Summary. Deliver real legal value, then clearly explain what deeper paid reports add.
+
+CRITICAL: You MUST write the actual report content. Do NOT say you cannot do it. Do NOT provide outlines only."""
         user_prompt = f"""Analyse this {category_name.lower()} appeal matter and produce a QUICK SUMMARY REPORT.
+
+IMPORTANT: Write the COMPLETE report with all sections filled. Do NOT refuse or provide only an outline.
 
 {case_context}
 
@@ -3707,8 +3711,20 @@ IMPORTANT:
     elif report_type == "full_detailed":
         system_prompt = f"""{base_system}
 {report_guardrails}
-You are generating a PAID Full Detailed Report ($100 AUD). This must be as detailed as the extensive tier, with assertive appellate strategy, professional courtroom framing, and plain-English action notes."""
+You are generating a PAID Full Detailed Report ($100 AUD). This must be as detailed as the extensive tier, with assertive appellate strategy, professional courtroom framing, and plain-English action notes.
+
+CRITICAL INSTRUCTIONS - YOU MUST FOLLOW:
+1. DO NOT say you cannot produce the report
+2. DO NOT say it exceeds any limit
+3. DO NOT provide an outline instead of content
+4. You MUST write the FULL report with ALL sections filled with actual content
+5. Every table MUST have real data rows, not placeholders
+6. Every section MUST have substantive analysis
+7. If you run out of specific case data, use your legal knowledge to provide relevant analysis
+8. This is a PAID product - the user expects comprehensive, professional content"""
         user_prompt = f"""Create a FULL DETAILED LEGAL ANALYSIS REPORT for this {category_name.lower()} appeal case.
+
+IMPORTANT: Write the COMPLETE report. Do NOT say you cannot do it. Do NOT provide outlines. Fill every section with real content.
 
 {case_context}
 
@@ -3813,8 +3829,20 @@ IMPORTANT:
     else:  # extensive_log
         system_prompt = f"""{base_system}
 {report_guardrails}
-You are generating the PREMIUM Extensive Log Report ($150 AUD). This must exceed barrister expectations: highly aggressive strategy, exhaustive legal mapping, courtroom-ready execution detail, and practical barrister engagement guidance."""
+You are generating the PREMIUM Extensive Log Report ($150 AUD). This must exceed barrister expectations: highly aggressive strategy, exhaustive legal mapping, courtroom-ready execution detail, and practical barrister engagement guidance.
+
+CRITICAL INSTRUCTIONS - YOU MUST FOLLOW:
+1. DO NOT say you cannot produce the report
+2. DO NOT say it exceeds any limit
+3. DO NOT provide an outline instead of content
+4. You MUST write the FULL report with ALL sections filled with actual content
+5. Every table MUST have real data rows, not placeholders
+6. Every section MUST have substantive analysis
+7. If you run out of specific case data, use your legal knowledge to provide relevant analysis
+8. This is a PREMIUM PAID product ($150) - the user expects the most comprehensive report possible"""
         user_prompt = f"""Create an EXTENSIVE LOG REPORT for this {category_name.lower()} appeal case.
+
+IMPORTANT: Write the COMPLETE report. Do NOT say you cannot do it. Do NOT provide outlines. Fill every section with real, substantive content.
 
 {case_context}
 
