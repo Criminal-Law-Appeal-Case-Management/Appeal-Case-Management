@@ -470,23 +470,25 @@ const ReportView = () => {
               </div>
             </div>
 
-            {/* Full Analysis Sections - Like Landing Page with Proper Formatting */}
+            {/* Full Analysis Sections - Premium Styled Cards */}
             <div className="space-y-6" data-testid="report-full-analysis-section">
               {sections.map((section, idx) => (
                 <article 
                   key={section.id} 
                   id={section.id} 
-                  className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden"
+                  className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg overflow-hidden"
                 >
-                  <div className={`border-b-2 ${config.sectionBorder} px-5 py-3 bg-slate-50 dark:bg-slate-700/50`}>
-                    <h3 className="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2" data-testid={`report-section-heading-${idx + 1}`}>
-                      <span className={`w-6 h-6 rounded ${config.badgeBg} text-white text-xs flex items-center justify-center font-bold`}>
+                  {/* Section Header with Gradient */}
+                  <div className={`${config.headerBg} px-5 py-4`}>
+                    <h3 className="font-bold text-white text-base flex items-center gap-3" data-testid={`report-section-heading-${idx + 1}`}>
+                      <span className="w-8 h-8 rounded-full bg-white/20 backdrop-blur text-white text-sm flex items-center justify-center font-bold border border-white/30">
                         {idx + 1}
                       </span>
                       {section.title}
                     </h3>
                   </div>
-                  <div className="p-5" data-testid={`report-section-content-${idx + 1}`}>
+                  {/* Section Content with Left Border Accent */}
+                  <div className={`p-5 border-l-4 ${config.sectionBorder} bg-gradient-to-r from-slate-50 to-white dark:from-slate-800 dark:to-slate-800`} data-testid={`report-section-content-${idx + 1}`}>
                     <MarkdownBlock text={section.content} testId={`report-section-md-${idx + 1}`} />
                   </div>
                 </article>
