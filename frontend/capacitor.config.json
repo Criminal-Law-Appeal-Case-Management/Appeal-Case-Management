@@ -1,10 +1,9 @@
 {
-  "appId": "com.debking.criminalappealai",
-  "appName": "Criminal Appeal AI",
+  "appId": "com.debking.appealcasemanager",
+  "appName": "Appeal Case Manager",
   "webDir": "build",
   "server": {
-    "androidScheme": "https",
-    "iosScheme": "https"
+    "androidScheme": "https"
   },
   "plugins": {
     "SplashScreen": {
@@ -25,7 +24,11 @@
       "resizeOnFullScreen": true
     },
     "PushNotifications": {
-      "presentationOptions": ["badge", "sound", "alert"]
+      "presentationOptions": [
+        "badge",
+        "sound",
+        "alert"
+      ]
     }
   },
   "ios": {
