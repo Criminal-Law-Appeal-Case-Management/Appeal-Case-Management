@@ -4457,15 +4457,77 @@ async def export_report_pdf(case_id: str, report_id: str, request: Request):
     
     analysis_text = report.get('content', {}).get('analysis', 'No analysis available.')
     
-    # Split analysis into paragraphs for better formatting
-    paragraphs = analysis_text.split('\n\n')
-    for para in paragraphs:
-        if para.strip():
-            # Clean up markdown-style formatting
-            clean_para = para.replace('**', '').replace('##', '').strip()
-            if clean_para:
-                story.append(Paragraph(clean_para, styles['ReportBodyText']))
-                story.append(Spacer(1, 3*mm))
+    # Parse markdown tables and convert to PDF tables
+    import re
+    
+    def parse_markdown_table(table_text):
+        """Convert markdown table to reportlab Table"""
+        lines = [l.strip() for l in table_text.strip().split('\n') if l.strip()]
+        if len(lines) < 2:
+            return None
+        
+        # Parse table rows
+        rows = []
+        for line in lines:
+            if '---' in line or '|---' in line:
+                continue  # Skip separator line
+            cells = [c.strip() for c in line.split('|')]
+            cells = [c for c in cells if c]  # Remove empty cells
+            if cells:
+                rows.append(cells)
+        
+        if len(rows) < 1:
+            return None
+        
+        # Create table with styling
+        table = Table(rows, repeatRows=1)
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1e293b')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 8),
+            ('FONTSIZE', (0, 1), (-1, -1), 7),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f8fafc')]),
+            ('LEFTPADDING', (0, 0), (-1, -1), 4),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+            ('TOPPADDING', (0, 0), (-1, -1), 4),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ]))
+        return table
+    
+    # Split content by table patterns
+    table_pattern = r'(\|[^\n]+\|(?:\n\|[^\n]+\|)+)'
+    parts = re.split(table_pattern, analysis_text)
+    
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        
+        # Check if this is a table
+        if part.startswith('|') and '|' in part:
+            table = parse_markdown_table(part)
+            if table:
+                story.append(Spacer(1, 5*mm))
+                story.append(table)
+                story.append(Spacer(1, 5*mm))
+            continue
+        
+        # Regular text - split into paragraphs
+        paragraphs = part.split('\n\n')
+        for para in paragraphs:
+            if para.strip():
+                # Clean up markdown-style formatting
+                clean_para = para.replace('**', '').replace('##', '').replace('#', '').strip()
+                # Convert markdown links to plain text with URL
+                clean_para = re.sub(r'\[([^\]]+)\]\(([^\)]+)\)', r'\1 (\2)', clean_para)
+                if clean_para:
+                    story.append(Paragraph(clean_para, styles['ReportBodyText']))
+                    story.append(Spacer(1, 3*mm))
     
     # Footer disclaimer
     story.append(Spacer(1, 15*mm))
