@@ -4526,8 +4526,9 @@ async def export_report_pdf(case_id: str, report_id: str, request: Request):
                 # Convert markdown links to clickable PDF links
                 # Format: [text](url) -> <a href="url">text</a>
                 clean_para = re.sub(r'\[([^\]]+)\]\((https?://[^\)]+)\)', r'<a href="\2" color="blue">\1</a>', clean_para)
-                # Also make bare URLs clickable
-                clean_para = re.sub(r'(?<!\href=")(https?://[^\s\)<]+)', r'<a href="\1" color="blue">\1</a>', clean_para)
+                # Also make bare URLs clickable (skip if already in href)
+                if 'href=' not in clean_para:
+                    clean_para = re.sub(r'(https?://[^\s\)<]+)', r'<a href="\1" color="blue">\1</a>', clean_para)
                 if clean_para:
                     story.append(Paragraph(clean_para, styles['ReportBodyText']))
                     story.append(Spacer(1, 3*mm))
