@@ -321,31 +321,77 @@ const ReportsSection = ({
                   <CollapsibleContent>
                     <div className="px-4 pb-4 border-t border-slate-100 pt-4">
                       <div className="space-y-4" data-testid={`report-inline-full-${report.report_id}`}>
-                        <div className="rounded-lg bg-indigo-50 border border-indigo-200 p-3" data-testid={`report-inline-summary-${report.report_id}`}>
-                          <p className="text-xs text-indigo-700 font-semibold uppercase tracking-wide mb-1">In-browser full view</p>
-                          <p className="text-sm text-slate-700">
-                            This report is fully readable below. You can also open the professional full page view.
+                        {/* Styled Header Banner */}
+                        <div className={`rounded-xl overflow-hidden ${
+                          report.report_type === 'extensive_log' 
+                            ? 'bg-gradient-to-r from-purple-900 via-slate-900 to-indigo-900' 
+                            : report.report_type === 'full_detailed'
+                            ? 'bg-gradient-to-r from-slate-900 to-blue-900'
+                            : 'bg-green-600'
+                        } p-4 text-white`}>
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="w-2 h-2 bg-white rounded-full"></div>
+                            <p className="text-xs uppercase tracking-wider font-semibold opacity-90">
+                              {getReportTypeLabel(report.report_type)}
+                            </p>
+                          </div>
+                          <p className="text-sm opacity-80">
+                            Click "Full View" or "PDF" for the complete professional layout
                           </p>
                         </div>
 
-                        <div className="rounded-lg border border-slate-200 p-3 bg-white" data-testid={`report-inline-content-${report.report_id}`}>
-                          <div className="prose prose-slate prose-sm max-w-none">
+                        {/* Styled Content Sections */}
+                        <div className="rounded-xl border border-slate-200 overflow-hidden bg-white" data-testid={`report-inline-content-${report.report_id}`}>
+                          <div className="prose prose-slate prose-sm max-w-none p-4">
                             <ReactMarkdown
                               remarkPlugins={[remarkGfm]}
                               components={{
-                                h1: ({children}) => <h1 className="text-lg font-bold text-slate-900 mt-4 mb-2 pb-1 border-b border-slate-200" style={{fontFamily: 'Crimson Pro, serif'}}>{children}</h1>,
-                                h2: ({children}) => <h2 className="text-base font-bold text-slate-800 mt-4 mb-2" style={{fontFamily: 'Crimson Pro, serif'}}>{children}</h2>,
-                                h3: ({children}) => <h3 className="text-sm font-semibold text-slate-700 mt-3 mb-1">{children}</h3>,
+                                h1: ({children}) => (
+                                  <div className={`-mx-4 px-4 py-3 mb-3 ${
+                                    report.report_type === 'extensive_log' 
+                                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600' 
+                                      : report.report_type === 'full_detailed'
+                                      ? 'bg-gradient-to-r from-slate-700 to-blue-700'
+                                      : 'bg-green-600'
+                                  } text-white`}>
+                                    <h1 className="text-base font-bold m-0" style={{fontFamily: 'Crimson Pro, serif'}}>{children}</h1>
+                                  </div>
+                                ),
+                                h2: ({children}) => (
+                                  <div className={`-mx-4 px-4 py-2 mb-2 mt-4 ${
+                                    report.report_type === 'extensive_log' 
+                                      ? 'bg-purple-100 border-l-4 border-purple-500' 
+                                      : report.report_type === 'full_detailed'
+                                      ? 'bg-blue-100 border-l-4 border-blue-500'
+                                      : 'bg-green-100 border-l-4 border-green-500'
+                                  }`}>
+                                    <h2 className="text-sm font-bold text-slate-800 m-0" style={{fontFamily: 'Crimson Pro, serif'}}>{children}</h2>
+                                  </div>
+                                ),
+                                h3: ({children}) => <h3 className="text-sm font-semibold text-slate-700 mt-3 mb-1 flex items-center gap-2"><span className={`w-1.5 h-1.5 rounded-full ${
+                                  report.report_type === 'extensive_log' ? 'bg-purple-500' : report.report_type === 'full_detailed' ? 'bg-blue-500' : 'bg-green-500'
+                                }`}></span>{children}</h3>,
                                 p: ({children}) => <p className="text-sm text-slate-700 mb-2 leading-relaxed">{children}</p>,
                                 ul: ({children}) => <ul className="list-disc ml-4 mb-2 text-sm text-slate-700 space-y-1">{children}</ul>,
                                 ol: ({children}) => <ol className="list-decimal ml-4 mb-2 text-sm text-slate-700 space-y-1">{children}</ol>,
                                 li: ({children}) => <li className="leading-relaxed">{children}</li>,
                                 strong: ({children}) => <strong className="font-semibold text-slate-900">{children}</strong>,
                                 em: ({children}) => <em className="italic">{children}</em>,
-                                table: ({children}) => <div className="overflow-x-auto my-2"><table className="min-w-full text-xs border border-slate-200 rounded">{children}</table></div>,
-                                thead: ({children}) => <thead className="bg-slate-100">{children}</thead>,
-                                th: ({children}) => <th className="px-2 py-1.5 text-left font-semibold text-slate-800 border-b border-slate-200">{children}</th>,
-                                td: ({children}) => <td className="px-2 py-1.5 text-slate-700 border-b border-slate-100">{children}</td>,
+                                table: ({children}) => (
+                                  <div className="overflow-x-auto my-3 rounded-lg border border-slate-200">
+                                    <table className="min-w-full text-xs">{children}</table>
+                                  </div>
+                                ),
+                                thead: ({children}) => <thead className={`${
+                                  report.report_type === 'extensive_log' 
+                                    ? 'bg-purple-900 text-white' 
+                                    : report.report_type === 'full_detailed'
+                                    ? 'bg-slate-800 text-white'
+                                    : 'bg-green-700 text-white'
+                                }`}>{children}</thead>,
+                                th: ({children}) => <th className="px-3 py-2 text-left font-semibold text-xs">{children}</th>,
+                                td: ({children}) => <td className="px-3 py-2 text-slate-700 border-b border-slate-100 text-xs">{children}</td>,
+                                tr: ({children}) => <tr className="even:bg-slate-50">{children}</tr>,
                                 blockquote: ({children}) => <blockquote className="border-l-3 border-sky-400 pl-3 my-2 text-slate-600 italic bg-sky-50 py-1 rounded-r">{children}</blockquote>,
                                 a: ({href, children}) => <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{children}</a>,
                               }}
