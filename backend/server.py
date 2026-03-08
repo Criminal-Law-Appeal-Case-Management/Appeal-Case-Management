@@ -634,7 +634,7 @@ async def send_deadline_reminder(request: Request, case_id: str):
                         <p style="margin: 0; color: #991b1b;"><strong>Don't miss your deadline!</strong></p>
                         <p style="margin: 10px 0 0 0; color: #7f1d1d;">If you haven't already, consider generating an appeal report to understand your options.</p>
                     </div>
-                    <a href="https://case-analysis-hub.preview.emergentagent.com/dashboard" 
+                    <a href="https://appeal-timeline-pro.preview.emergentagent.com/dashboard" 
                        style="display: inline-block; background: #0ea5e9; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
                         View Your Case
                     </a>
@@ -4782,7 +4782,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
     allow_origins=[
-        "https://case-analysis-hub.preview.emergentagent.com",
+        "https://appeal-timeline-pro.preview.emergentagent.com",
         "http://localhost:3000",
         "http://127.0.0.1:3000"
     ],
