@@ -65,22 +65,9 @@ const AuthCallback = ({ onComplete }) => {
     hasProcessed.current = true;
 
     const processAuth = async () => {
-      // Check both window.location.hash and any stored hash (for mobile browsers)
-      let hash = window.location.hash;
-      console.log("[AuthCallback] Raw hash:", hash);
-      
-      // Some mobile browsers strip the hash on redirect - check URL search params as fallback
-      if (!hash && window.location.search) {
-        const searchParams = new URLSearchParams(window.location.search);
-        const sessionIdFromSearch = searchParams.get("session_id");
-        if (sessionIdFromSearch) {
-          hash = `#session_id=${sessionIdFromSearch}`;
-          console.log("[AuthCallback] Found session_id in search params instead");
-        }
-      }
-      
-      const sessionId = hash ? new URLSearchParams(hash.substring(1)).get("session_id") : null;
-      console.log("[AuthCallback] Processing auth, session_id:", sessionId ? sessionId.substring(0, 10) + "..." : "missing");
+      const hash = window.location.hash;
+      const sessionId = new URLSearchParams(hash.substring(1)).get("session_id");
+      console.log("[AuthCallback] Processing auth, session_id:", sessionId ? "present" : "missing");
 
       if (sessionId) {
         try {
@@ -99,7 +86,7 @@ const AuthCallback = ({ onComplete }) => {
           delete userData.session_token; // Don't keep token in React state
           
           // Small delay to ensure everything is set
-          await new Promise(resolve => setTimeout(resolve, 300));
+          await new Promise(resolve => setTimeout(resolve, 200));
           
           console.log("[AuthCallback] Navigating to dashboard with user state:", userData?.email);
           
@@ -117,7 +104,7 @@ const AuthCallback = ({ onComplete }) => {
           navigate("/", { replace: true });
         }
       } else {
-        console.log("[AuthCallback] No session_id found in URL");
+        console.log("[AuthCallback] No session_id found in URL hash");
         if (onComplete) onComplete();
         navigate("/", { replace: true });
       }
@@ -217,25 +204,10 @@ const ProtectedRoute = ({ children }) => {
 function AppRouter() {
   const location = useLocation();
   const [authCompleted, setAuthCompleted] = useState(false);
-  const [initialCheckDone, setInitialCheckDone] = useState(false);
 
-  // Check for session_id in hash - check both location.hash AND window.location.hash
-  // Also check search params as some mobile browsers put it there
-  const hashHasSession = location.hash?.includes("session_id=") || window.location.hash?.includes("session_id=");
-  const searchHasSession = window.location.search?.includes("session_id=");
-  const hasSessionId = hashHasSession || searchHasSession;
+  // Check for session_id in hash - but only process it once
+  const hasSessionId = location.hash?.includes("session_id=");
   const shouldShowAuthCallback = hasSessionId && !authCompleted;
-  
-  // Debug logging for auth flow
-  useEffect(() => {
-    if (!initialCheckDone) {
-      console.log("[AppRouter] Initial check - hash:", window.location.hash, "search:", window.location.search);
-      setInitialCheckDone(true);
-    }
-    if (hasSessionId) {
-      console.log("[AppRouter] session_id detected, showing AuthCallback");
-    }
-  }, [hasSessionId, initialCheckDone]);
 
   // Handle auth completion - this clears the hash and marks auth as done
   const handleAuthComplete = () => {
