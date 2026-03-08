@@ -9,6 +9,7 @@ import ScrollToTop from "./components/ScrollToTop";
 
 // Pages
 import LandingPage from "./pages/LandingPage";
+import AuthCallbackPage from "./pages/AuthCallback";
 import Dashboard from "./pages/Dashboard";
 import CaseDetail from "./pages/CaseDetail";
 import ReportView from "./pages/ReportView";
@@ -244,6 +245,7 @@ function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/auth/callback" element={<AuthCallbackPage />} />
       <Route
         path="/dashboard"
         element={
