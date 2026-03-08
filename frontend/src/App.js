@@ -204,14 +204,33 @@ const ProtectedRoute = ({ children }) => {
 function AppRouter() {
   const location = useLocation();
   const [authCompleted, setAuthCompleted] = useState(false);
+  const [hasSessionId, setHasSessionId] = useState(false);
 
-  // Check for session_id in hash - but only process it once
-  const hasSessionId = location.hash?.includes("session_id=");
+  // Check for session_id on mount and when location changes
+  // Use window.location.hash directly as react-router location.hash can be delayed on mobile
+  useEffect(() => {
+    const checkForSession = () => {
+      const hash = window.location.hash || location.hash || '';
+      if (hash.includes('session_id=') && !authCompleted) {
+        console.log('[AppRouter] Found session_id in hash:', hash.substring(0, 30));
+        setHasSessionId(true);
+      }
+    };
+    
+    // Check immediately
+    checkForSession();
+    
+    // Also check after a short delay for mobile browsers
+    const timer = setTimeout(checkForSession, 100);
+    return () => clearTimeout(timer);
+  }, [location, authCompleted]);
+
   const shouldShowAuthCallback = hasSessionId && !authCompleted;
 
   // Handle auth completion - this clears the hash and marks auth as done
   const handleAuthComplete = () => {
     setAuthCompleted(true);
+    setHasSessionId(false);
     // Clear the hash from URL after auth completes
     if (window.location.hash) {
       window.history.replaceState(null, '', window.location.pathname);
