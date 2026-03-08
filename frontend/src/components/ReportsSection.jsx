@@ -30,9 +30,9 @@ const REPORT_TYPES = [
     value: "quick_summary", 
     label: "Quick Summary", 
     description: "Rapid triage brief with key grounds preview and immediate next steps",
-    price: 0,
-    priceId: null,
-    isFree: true
+    price: 99.00,
+    priceId: "quick_report",
+    isFree: false
   },
   { 
     value: "full_detailed", 
