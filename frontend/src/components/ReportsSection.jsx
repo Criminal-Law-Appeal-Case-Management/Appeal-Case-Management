@@ -140,10 +140,14 @@ const ReportsSection = ({
     toast.info("Generating report with optimised evidence context. Large cases may still take a few minutes.");
     
     try {
+      const token = localStorage.getItem('session_token');
       const response = await axios.post(
         `${API}/cases/${caseId}/reports/generate`,
         { report_type: reportType, aggressive_mode: aggressiveMode },
-        { timeout: 240000 }
+        { 
+          timeout: 240000,
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        }
       );
       
       toast.success("Report generated successfully");
