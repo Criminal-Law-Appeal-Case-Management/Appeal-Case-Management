@@ -1,6 +1,7 @@
 # Appeal Case Manager - Product Requirements Document
 ## Owner: Deb King (djkingy79@gmail.com)
 ## Status: WORKING ✅ (8 March 2026)
+## Last Updated: 8 March 2026 - Report generation verified, print fixed, CORS fixed for deployment
 
 ---
 
@@ -105,7 +106,25 @@ Code saved to user's GitHub for backup and future development.
 
 ---
 
+## DEPLOYMENT STATUS
+
+- **Preview URL:** https://appeal-timeline-pro.preview.emergentagent.com (LIVE & WORKING)
+- **Custom Domain:** criminallawappealmanagement.com.au (pending Railway deployment)
+- **CORS:** Fixed to use environment variables (production-ready)
+- **Railway Guide:** See `/app/RAILWAY_DEPLOYMENT_GUIDE.md`
+
+---
+
+## RECENT FIXES (8 March 2026)
+
+1. ✅ Report Generation - Verified working (was temporary 502 error)
+2. ✅ Print Functionality - CSS print styles working, header buttons hidden
+3. ✅ CORS Configuration - Now reads from CORS_ORIGINS env variable
+
+---
+
 ## REFUND STATUS
 
 User spent ~$2,500 AUD across 23 tasks for this app.
 Evidence reports created for bank dispute and ACCC complaint.
+

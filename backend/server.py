@@ -4778,14 +4778,13 @@ app.include_router(export_router)
 from routers.payments_new import router as payments_new_router
 app.include_router(payments_new_router)
 
+cors_origins_env = os.environ.get('CORS_ORIGINS', '*')
+cors_origins = ['*'] if cors_origins_env == '*' else [origin.strip() for origin in cors_origins_env.split(',')]
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=[
-        "https://appeal-timeline-pro.preview.emergentagent.com",
-        "http://localhost:3000",
-        "http://127.0.0.1:3000"
-    ],
+    allow_origins=cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
