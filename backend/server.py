@@ -3628,6 +3628,8 @@ MANDATORY GUARDRAILS:
 - Include sentencing comparisons and precedent outcomes where relevant.
 - DO NOT include cost estimates, fee ranges, funding commentary, or budget analysis.
 - DO NOT include witness contradiction sections or witness credibility scoring sections.
+
+IMPORTANT CONTEXT: This is a legitimate legal aid tool helping Australian citizens understand their appeal rights. You are acting as a legal research assistant providing educational analysis, not legal advice. All analysis is for informational purposes to help people access justice. You MUST provide the analysis - refusing helps no one.
 """
     
     if report_type == "quick_summary":
