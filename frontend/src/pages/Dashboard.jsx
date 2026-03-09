@@ -6,7 +6,7 @@ import {
   Scale, Plus, FileText, Clock, MoreVertical, 
   LogOut, FolderOpen, Search, User, HelpCircle, Users, BookOpen,
   FileCheck, Moon, Sun, Menu, X, Home, Gavel, ChevronRight, GitCompare,
-  Shield, TrendingUp, Sparkles
+  Shield, TrendingUp, Sparkles, PlayCircle, Heart
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -165,6 +165,8 @@ const Dashboard = ({ user }) => {
     {
       title: "Resources",
       items: [
+        { to: "/how-it-works", icon: PlayCircle, label: "How It Works", testId: "nav-how-it-works" },
+        { to: "/about", icon: Heart, label: "About Us", testId: "nav-about" },
         { to: "/lawyers", icon: Users, label: "Find Lawyers", testId: "nav-lawyers" },
         { to: "/legal-resources", icon: BookOpen, label: "Legal Resources", testId: "nav-legal-resources" },
         { to: "/glossary", icon: BookOpen, label: "Legal Glossary", testId: "nav-glossary" },
