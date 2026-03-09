@@ -99,33 +99,41 @@ const getReadiness = (score) => {
   return { label: "Urgent Build", tone: "text-rose-600", bar: "bg-rose-500", note: "Substantial preparation required before filing strategy is finalised." };
 };
 
-const MarkdownBlock = ({ text, testId }) => (
-  <ReactMarkdown
-    remarkPlugins={[remarkGfm]}
-    components={{
-      h1: ({ children }) => <h1 className="text-xl font-bold mt-6 mb-3 text-slate-900 dark:text-white" style={{ fontFamily: "Crimson Pro, serif" }}>{children}</h1>,
-      h2: ({ children }) => <h2 className="text-lg font-bold mt-5 mb-3 text-slate-900 dark:text-white" style={{ fontFamily: "Crimson Pro, serif" }}>{children}</h2>,
-      h3: ({ children }) => <h3 className="text-base font-semibold mt-4 mb-2 text-slate-900 dark:text-white">{children}</h3>,
-      p: ({ children }) => <p className="text-slate-700 dark:text-slate-300 leading-7 mb-3 text-sm">{children}</p>,
-      ul: ({ children }) => <ul className="list-disc ml-5 mb-3 space-y-1 text-slate-700 dark:text-slate-300 text-sm">{children}</ul>,
-      ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 space-y-1 text-slate-700 dark:text-slate-300 text-sm">{children}</ol>,
-      li: ({ children }) => <li className="leading-6">{children}</li>,
-      blockquote: ({ children }) => <blockquote className="border-l-4 border-indigo-300 pl-4 italic text-slate-700 dark:text-slate-300 my-3 text-sm">{children}</blockquote>,
-      table: ({ children }) => (
-        <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700 my-4" data-testid={`${testId}-table-wrapper`}>
-          <table className="min-w-full text-sm table-auto">{children}</table>
-        </div>
-      ),
-      thead: ({ children }) => <thead className="bg-slate-100 dark:bg-slate-800">{children}</thead>,
-      th: ({ children }) => <th className="px-4 py-3 text-left font-semibold text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700 whitespace-nowrap">{children}</th>,
-      td: ({ children }) => <td className="px-4 py-3 align-top text-slate-700 dark:text-slate-300 border-b border-slate-100 dark:border-slate-800 break-words max-w-xs">{children}</td>,
-      code: ({ children }) => <code className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded">{children}</code>,
-      a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{children}</a>,
-    }}
-  >
-    {text}
-  </ReactMarkdown>
-);
+const MarkdownBlock = ({ text, testId }) => {
+  // Pre-process text to convert bare URLs to markdown links
+  const processedText = text?.replace(
+    /(https?:\/\/[^\s\)]+)/g,
+    '[$1]($1)'
+  ) || '';
+  
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        h1: ({ children }) => <h1 className="text-xl font-bold mt-6 mb-3 text-slate-900 dark:text-white" style={{ fontFamily: "Crimson Pro, serif" }}>{children}</h1>,
+        h2: ({ children }) => <h2 className="text-lg font-bold mt-5 mb-3 text-slate-900 dark:text-white" style={{ fontFamily: "Crimson Pro, serif" }}>{children}</h2>,
+        h3: ({ children }) => <h3 className="text-base font-semibold mt-4 mb-2 text-slate-900 dark:text-white">{children}</h3>,
+        p: ({ children }) => <p className="text-slate-700 dark:text-slate-300 leading-7 mb-3 text-sm">{children}</p>,
+        ul: ({ children }) => <ul className="list-disc ml-5 mb-3 space-y-1 text-slate-700 dark:text-slate-300 text-sm">{children}</ul>,
+        ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 space-y-1 text-slate-700 dark:text-slate-300 text-sm">{children}</ol>,
+        li: ({ children }) => <li className="leading-6">{children}</li>,
+        blockquote: ({ children }) => <blockquote className="border-l-4 border-indigo-300 pl-4 italic text-slate-700 dark:text-slate-300 my-3 text-sm">{children}</blockquote>,
+        table: ({ children }) => (
+          <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700 my-4" data-testid={`${testId}-table-wrapper`}>
+            <table className="min-w-full text-sm table-auto">{children}</table>
+          </div>
+        ),
+        thead: ({ children }) => <thead className="bg-slate-100 dark:bg-slate-800">{children}</thead>,
+        th: ({ children }) => <th className="px-4 py-3 text-left font-semibold text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700 whitespace-nowrap">{children}</th>,
+        td: ({ children }) => <td className="px-4 py-3 align-top text-slate-700 dark:text-slate-300 border-b border-slate-100 dark:border-slate-800 break-words max-w-xs">{children}</td>,
+        code: ({ children }) => <code className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded">{children}</code>,
+        a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline break-all">{children}</a>,
+      }}
+    >
+      {processedText}
+    </ReactMarkdown>
+  );
+};
 
 // Report type configurations matching landing page design EXACTLY
 const reportTypeConfig = {
