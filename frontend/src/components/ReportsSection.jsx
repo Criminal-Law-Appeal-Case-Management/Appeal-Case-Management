@@ -181,7 +181,10 @@ const ReportsSection = ({
     if (!confirm("Delete this report?")) return;
     
     try {
-      await axios.delete(`${API}/cases/${caseId}/reports/${reportId}`);
+      const token = localStorage.getItem('session_token');
+      await axios.delete(`${API}/cases/${caseId}/reports/${reportId}`, {
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+      });
       setReports(reports.filter(r => r.report_id !== reportId));
       toast.success("Report deleted");
     } catch (error) {
