@@ -326,6 +326,33 @@ const HowItWorksPage = () => {
 
         </section>
 
+        {/* FOR LEGAL PROFESSIONALS - Barrister View Section */}
+        <section className="rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 p-8 text-white">
+          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-2">FOR LEGAL PROFESSIONALS</p>
+          <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+            Barrister View Built for Conference and Hearing
+          </h2>
+          <p className="text-slate-300 leading-relaxed mb-6">
+            Not just a pretty printout. Barrister View turns your report into a courtroom briefing deck: lead grounds, 
+            statutory map, comparative sentencing pathways, relief options, chronology pressure points, and an oral 
+            submissions sequence your counsel can use immediately.
+          </p>
+          <div className="space-y-4">
+            <div className="bg-white/10 rounded-xl p-4">
+              <h3 className="font-bold text-lg mb-1">Dual-audience format</h3>
+              <p className="text-slate-300 text-sm">Technical legal framing + plain-English notes for family and clients.</p>
+            </div>
+            <div className="bg-white/10 rounded-xl p-4">
+              <h3 className="font-bold text-lg mb-1">Third Paid Report Tier</h3>
+              <p className="text-slate-300 text-sm">Extensive Log now includes expanded case law modelling and hearing script.</p>
+            </div>
+            <div className="bg-white/10 rounded-xl p-4">
+              <h3 className="font-bold text-lg mb-1">Print-Ready Output</h3>
+              <p className="text-slate-300 text-sm">PDF and Word exports formatted for court submission.</p>
+            </div>
+          </div>
+        </section>
+
         <section className="rounded-2xl border border-border bg-card p-6 text-center" data-testid="how-it-works-demo-section">
           <div className="flex items-center justify-center gap-2 mb-3">
             <Sparkles className="w-5 h-5 text-indigo-600" />
