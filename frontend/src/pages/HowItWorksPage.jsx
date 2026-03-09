@@ -17,7 +17,22 @@ import {
   PlayCircle,
   Sparkles,
   ChevronRight,
+  Clock,
+  BarChart3,
+  FileText,
+  ListChecks,
+  Shield,
 } from "lucide-react";
+
+const FeatureCard = ({ icon: Icon, title, desc }) => (
+  <div className="rounded-xl border border-border bg-card p-4 hover:shadow-md transition-shadow text-center">
+    <div className="w-10 h-10 mx-auto rounded-lg bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center mb-3">
+      <Icon className="w-5 h-5 text-sky-600 dark:text-sky-400" />
+    </div>
+    <h3 className="font-semibold text-sm text-foreground mb-1">{title}</h3>
+    <p className="text-xs text-muted-foreground">{desc}</p>
+  </div>
+);
 
 const HowItWorksPage = () => {
   const flowSteps = [
@@ -46,21 +61,21 @@ const HowItWorksPage = () => {
   const reportPricing = [
     {
       title: "Quick Summary",
-      price: "Free",
+      price: "$99 AUD",
       note: "Fast overview, early issue spotting, immediate next actions.",
-      tone: "border-blue-200 bg-blue-50 dark:bg-blue-900/20",
+      tone: "border-green-200 bg-green-50 dark:bg-green-900/20",
     },
     {
       title: "Full Detailed Report",
       price: "$100 AUD",
       note: "Premium legal analysis with strategic framing and filing guidance.",
-      tone: "border-sky-300 bg-sky-50 dark:bg-sky-900/20",
+      tone: "border-blue-300 bg-blue-50 dark:bg-blue-900/20",
     },
     {
       title: "Extensive Log Report",
       price: "$150 AUD",
       note: "Barrister-level depth with comparative sentencing and options matrix.",
-      tone: "border-blue-300 bg-blue-50 dark:bg-blue-900/20",
+      tone: "border-purple-300 bg-purple-50 dark:bg-purple-900/20",
     },
   ];
 
@@ -108,6 +123,207 @@ const HowItWorksPage = () => {
               </div>
             );
           })}
+        </section>
+
+        {/* Feature Grid */}
+        <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <FeatureCard icon={Upload} title="Upload Documents" desc="Organise case files in one place" />
+          <FeatureCard icon={Clock} title="Build Timelines" desc="AI-generated event chronology" />
+          <FeatureCard icon={BarChart3} title="Find Issues" desc="Flag potential appeal grounds" />
+          <FeatureCard icon={FileCheck} title="Generate Reports" desc="Structured case summaries" />
+          <FeatureCard icon={FileText} title="OCR Extraction" desc="Text from scanned documents" />
+          <FeatureCard icon={Presentation} title="Barrister View" desc="Conference-ready hearing deck" />
+          <FeatureCard icon={ListChecks} title="Progress Tracker" desc="Track appeal process steps" />
+          <FeatureCard icon={Shield} title="Secure Storage" desc="Your data, your control" />
+        </section>
+
+        {/* DETAILED STEP-BY-STEP WITH VISUALS */}
+        <section className="space-y-16">
+          
+          {/* Step 1: Upload Documents */}
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg">
+                  <Upload className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-sky-600 dark:text-sky-500 font-bold text-sm uppercase tracking-wider">Step 1</span>
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mt-2 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Upload Your Case Documents
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Create a case and upload all relevant documents — transcripts, evidence, court records, witness statements. 
+                The system automatically extracts text using OCR and organises everything in one place.
+              </p>
+              <div className="mt-4 flex items-center gap-4">
+                <img 
+                  src="https://images.unsplash.com/photo-1589307904488-7d60ff29c975?crop=entropy&cs=srgb&fm=jpg&q=85&w=80&h=80&fit=crop" 
+                  alt="Legal documents"
+                  className="w-14 h-14 rounded-xl object-cover shadow-md"
+                />
+                <p className="text-sm text-muted-foreground italic">Supports PDF, DOCX, images, and scanned exhibits</p>
+              </div>
+            </div>
+            <div className="bg-card rounded-2xl p-5 border border-border shadow-lg">
+              <div className="bg-slate-800 text-white px-4 py-3 rounded-t-xl text-sm font-medium flex items-center gap-2">
+                <Scale className="w-4 h-4 text-sky-500" />
+                Case: R v Smith [2024]
+              </div>
+              <div className="p-4 space-y-2 bg-card rounded-b-xl">
+                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg text-sm">
+                  <FileText className="w-5 h-5 text-blue-600" />
+                  <span className="flex-1 font-medium">Trial_Transcript_Day1.pdf</span>
+                  <span className="text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded">Transcript</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg text-sm">
+                  <FileText className="w-5 h-5 text-green-600" />
+                  <span className="flex-1 font-medium">Witness_Statement.pdf</span>
+                  <span className="text-xs bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded">Evidence</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg text-sm">
+                  <FileText className="w-5 h-5 text-sky-600" />
+                  <span className="flex-1 font-medium">Sentencing_Remarks.pdf</span>
+                  <span className="text-xs bg-sky-100 dark:bg-sky-900/30 px-2 py-1 rounded">Court Doc</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Step 2: AI Timeline */}
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="order-2 md:order-1 bg-card rounded-2xl p-5 border border-border shadow-lg">
+              <div className="text-base font-semibold text-foreground mb-4 flex items-center gap-2">
+                <Clock className="w-5 h-5 text-sky-600" />
+                Timeline of Events
+              </div>
+              <div className="relative pl-6 border-l-2 border-sky-500 space-y-4">
+                <div className="relative">
+                  <div className="absolute -left-8 w-4 h-4 bg-sky-500 rounded-full border-2 border-white"></div>
+                  <div className="text-xs text-sky-600 font-semibold">15 March 2023</div>
+                  <div className="text-sm font-semibold text-foreground">Incident Occurred</div>
+                </div>
+                <div className="relative">
+                  <div className="absolute -left-8 w-4 h-4 bg-sky-500 rounded-full border-2 border-white"></div>
+                  <div className="text-xs text-sky-600 font-semibold">16 March 2023</div>
+                  <div className="text-sm font-semibold text-foreground">Arrest Made</div>
+                </div>
+                <div className="relative">
+                  <div className="absolute -left-8 w-4 h-4 bg-sky-500 rounded-full border-2 border-white"></div>
+                  <div className="text-xs text-sky-600 font-semibold">22 August 2023</div>
+                  <div className="text-sm font-semibold text-foreground">Trial Commenced</div>
+                </div>
+                <div className="relative">
+                  <div className="absolute -left-8 w-4 h-4 bg-red-500 rounded-full border-2 border-white"></div>
+                  <div className="text-xs text-red-600 font-semibold">5 September 2023</div>
+                  <div className="text-sm font-semibold text-foreground">Verdict & Sentencing</div>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 md:order-2">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500 to-sky-700 flex items-center justify-center shadow-lg">
+                  <Clock className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-sky-600 dark:text-sky-500 font-bold text-sm uppercase tracking-wider">Step 2</span>
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mt-2 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                AI-Generated Timeline
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                The system analyses your documents and automatically builds a chronological timeline of key events. 
+                This helps visualise the sequence from incident through arrest, trial, and sentencing.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 3: Grounds Identified */}
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shadow-lg">
+                  <Scale className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-sky-600 dark:text-sky-500 font-bold text-sm uppercase tracking-wider">Step 3</span>
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mt-2 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Potential Grounds Identified
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                The AI analyses your case documents against known appeal grounds. It flags potential issues such as 
+                procedural errors, misdirections to the jury, or elements that may not have been properly established.
+              </p>
+            </div>
+            <div className="bg-card rounded-2xl p-5 border border-border shadow-lg space-y-3">
+              <div className="text-base font-semibold text-foreground flex items-center gap-2">
+                <BarChart3 className="w-5 h-5 text-emerald-600" />
+                Potential Grounds (3 Found)
+              </div>
+              <div className="border border-sky-200 bg-sky-50 dark:bg-sky-900/20 rounded-lg p-3">
+                <span className="text-xs font-medium text-sky-700 bg-sky-100 px-2 py-0.5 rounded">STRONG</span>
+                <h4 className="font-semibold text-foreground text-sm mt-1">Misdirection on Mens Rea</h4>
+                <p className="text-xs text-muted-foreground">Judge's direction on intent may have been inadequate</p>
+              </div>
+              <div className="border border-blue-200 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
+                <span className="text-xs font-medium text-blue-700 bg-blue-100 px-2 py-0.5 rounded">MODERATE</span>
+                <h4 className="font-semibold text-foreground text-sm mt-1">Procedural Fairness Issue</h4>
+                <p className="text-xs text-muted-foreground">Defence may not have had adequate time to prepare</p>
+              </div>
+              <div className="border border-slate-200 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3">
+                <span className="text-xs font-medium text-slate-600 bg-slate-200 px-2 py-0.5 rounded">POTENTIAL</span>
+                <h4 className="font-semibold text-foreground text-sm mt-1">Fresh Evidence Available</h4>
+                <p className="text-xs text-muted-foreground">New witness statement may impact findings</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Step 4: Generate Reports */}
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-lg">
+                <FileCheck className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-sky-600 dark:text-sky-500 font-bold text-sm uppercase tracking-wider">Step 4</span>
+            </div>
+            <h3 className="text-2xl font-bold text-foreground mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+              Generate AI-Powered Reports
+            </h3>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Our AI generates barrister-quality legal analysis with similar cases, legislation links, and complete appeal filing guides.
+            </p>
+          </div>
+
+          {/* Step 5: Barrister View */}
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="order-2 md:order-1 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white shadow-xl">
+              <div className="flex items-center gap-2 mb-4">
+                <Scale className="w-5 h-5 text-amber-400" />
+                <span className="text-amber-400 font-semibold">BARRISTER VIEW</span>
+              </div>
+              <h4 className="text-lg font-bold mb-2">R v Thompson [2024]</h4>
+              <div className="space-y-2 text-sm text-slate-300">
+                <p>• Case Strength: 78%</p>
+                <p>• Primary Ground: Misdirection</p>
+                <p>• Filing Deadline: 14 days</p>
+              </div>
+            </div>
+            <div className="order-1 md:order-2">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg">
+                  <Presentation className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-sky-600 dark:text-sky-500 font-bold text-sm uppercase tracking-wider">Step 5</span>
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mt-2 mb-4" style={{ fontFamily: 'Crimson Pro, serif' }}>
+                Present in Barrister View
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Use the stunning Barrister View to present your case analysis in conference-ready format. 
+                Perfect for legal consultations and court preparation.
+              </p>
+            </div>
+          </div>
+
         </section>
 
         <section className="rounded-2xl border border-border bg-card p-6 text-center" data-testid="how-it-works-demo-section">
